@@ -1,0 +1,35 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:01:25
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "main_FinderM.csp"
+include "core_defs.csp"
+include "main_defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate main_FinderM
+P_main_FinderM = let
+	id__ = 0
+	
+	
+	const_main_FinderM_DELIVERY = 2
+	const_main_FinderM_TOP = 1
+	
+within
+	main_FinderM::O__(
+		id__,
+		const_main_FinderM_DELIVERY,
+		const_main_FinderM_LV,
+		const_main_FinderM_TOP
+	)
+assert P_main_FinderM :[deadlock-free]	
+assert P_main_FinderM;RUN({r__}) :[deadlock-free]
+assert P_main_FinderM :[deterministic]
+assert P_main_FinderM :[divergence-free]

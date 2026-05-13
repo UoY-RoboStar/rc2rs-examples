@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 06-05-2026 11:18:49
+--
+
+include "pkg254__sim_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg254__sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f
+P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg254__sim::OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f::O__(id__,
+				param_i)
+assert P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f :[deadlock-free]	
+assert P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f;RUN({r__}) :[deadlock-free]
+assert P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f :[deterministic]
+assert P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg254__sim_OP_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f

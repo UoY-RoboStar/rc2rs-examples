@@ -1,0 +1,37 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "pkg727_main_sim_GoHome.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_GoHome
+P_pkg727_main_sim_GoHome = let
+	cycle_pkg727_main_sim_GoHome_GoHome = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg727_main_sim_GoHome::O__(
+		id__,
+		const_pkg727_main_sim_GoHome_goHTime
+	)
+assert P_pkg727_main_sim_GoHome :[deadlock-free]	
+assert P_pkg727_main_sim_GoHome;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_GoHome :[deterministic]
+assert P_pkg727_main_sim_GoHome :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_GoHome[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_GoHome

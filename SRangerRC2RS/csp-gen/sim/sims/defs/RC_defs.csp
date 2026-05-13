@@ -1,0 +1,132 @@
+module RC
+	--include "../../../timed/defs/SimFW.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|SimFW::CMovement::obstacle.in|}
+	OutputEvents = {|SimFW::CMovement::moveCall,SimFW::CMovement::stopCall|}
+	ExternalEvents = {|SimFW::CMovement::obstacle.in
+					   ,SimFW::CMovement::moveCall,SimFW::CMovement::stopCall|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_obstacle.Bool
+	
+	datatype RegisterDataOutput = o_move.core_real.core_real
+		| o_stop
+	
+	
+	nametype RegisterOutputs = {|
+	o_move,
+	o_stop|}
+	
+	nametype RegisterInputs = {|
+	i_obstacle|}
+	
+	datatype COutputEvents = COutput_move
+		| COutput_stop
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_obstacle = registerRead.i_obstacle?b__ ->
+								if b__ then (SimFW::CMovement::obstacle.in -> A1_obstacle [] A1_obstacle)
+									   else A1_obstacle
+		
+														
+	within
+			     	A1_obstacle
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+			read(COutput_move) = SimFW::CMovement::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_stop) = SimFW::CMovement::stopCall -> registerWrite.o_stop -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_obstacle?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(SimFW::CMovement::D__(id__,
+				    const_SimFW_Movement_stm_ref0_lv,
+				    const_SimFW_Movement_stm_ref0_PI,
+				    const_SimFW_Movement_stm_ref0_av)\{|SimFW::CMovement::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av) =
+		prioritise(
+			((TLFree(id__,
+					    const_SimFW_Movement_stm_ref0_lv,
+					    const_SimFW_Movement_stm_ref0_PI,
+					    const_SimFW_Movement_stm_ref0_av) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av) =
+		prioritise(
+			((SimFW::CMovement::D__(id__,
+					    const_SimFW_Movement_stm_ref0_lv,
+					    const_SimFW_Movement_stm_ref0_PI,
+					    const_SimFW_Movement_stm_ref0_av)\{|SimFW::CMovement::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av) = D__(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av)
+
+endmodule

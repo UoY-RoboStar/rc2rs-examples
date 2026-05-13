@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg867__defs.csp"
+include "state_timed_defs.csp"
+include "pkg867__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
+P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 = let
+	id__ = 0
+	
+	param_d = 0
+	
+	
+	
+within
+	pkg867_::OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7::O__(id__,
+				param_d)
+assert P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 :[deadlock-free]	
+assert P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 :[deterministic]
+assert P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__OP_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7

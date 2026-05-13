@@ -1,0 +1,22 @@
+package pkg254_ controller MainController {
+	event turn : Chemical::Angle
+	event stop
+	event gas : Seq( Chemical::GasSensor )
+	event resume
+	opref MainController_ref_normal_GasAnalysis_Analysis_t3_op = pkg254_::normal_GasAnalysis_Analysis_t3_op
+	opref MainController_ref_normal_GasAnalysis_GasDetected_t9a_op = pkg254_::normal_GasAnalysis_GasDetected_t9a_op
+	opref MainController_ref_normal_GasAnalysis_GasDetected_t8_op = pkg254_::normal_GasAnalysis_GasDetected_t8_op
+	opref MainController_ref_tStop = pkg254_main::tStop
+	opref MainController_ref_deadlineCheck = pkg254_main::deadlineCheck
+	opref MainController_ref_waitOp = pkg254_main::waitOp
+	opref MainController_ref_waitInterval = pkg254_main::waitInterval
+	opref MainController_ref_clone_normal_GasAnalysis_Analysis_t3_op = pkg254_::clone_normal_GasAnalysis_Analysis_t3_op
+	opref MainController_ref_clone_normal_GasAnalysis_GasDetected_t9a_op = pkg254_::clone_normal_GasAnalysis_GasDetected_t9a_op
+	opref MainController_ref_clone_normal_GasAnalysis_GasDetected_t8_op = pkg254_::clone_normal_GasAnalysis_GasDetected_t8_op
+	sref stm_ref0 = pkg254_::GasAnalysis
+	connection MainController on gas to stm_ref0 on gas
+	connection stm_ref0 on turn to MainController on turn
+	connection stm_ref0 on stop to MainController on stop
+	connection stm_ref0 on resume to MainController on resume
+}
+

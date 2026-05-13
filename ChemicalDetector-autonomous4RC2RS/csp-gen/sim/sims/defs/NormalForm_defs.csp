@@ -1,0 +1,182 @@
+module NormalForm
+	--include "../../../timed/defs/pkg254_main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|pkg254_main::ChemicalDetector::obstacle.in,pkg254_main::ChemicalDetector::gas.in,pkg254_main::ChemicalDetector::odometer.in|}
+	OutputEvents = {|pkg254_main::ChemicalDetector::randomWalkCall,pkg254_main::ChemicalDetector::moveCall,pkg254_main::ChemicalDetector::shortRandomWalkCall,pkg254_main::ChemicalDetector::flag.out|}
+	ExternalEvents = {|pkg254_main::ChemicalDetector::obstacle.in,pkg254_main::ChemicalDetector::gas.in,pkg254_main::ChemicalDetector::odometer.in
+					   ,pkg254_main::ChemicalDetector::randomWalkCall,pkg254_main::ChemicalDetector::moveCall,pkg254_main::ChemicalDetector::shortRandomWalkCall,pkg254_main::ChemicalDetector::flag.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_obstacle.Bool.Location_Loc
+		| i_gas.Bool.LSeq(Chemical_GasSensor,2)
+		| i_odometer.Bool.core_real
+	
+	datatype RegisterDataOutput = o_randomWalk
+		| o_move.core_real.Chemical_Angle
+		| o_shortRandomWalk
+		| o_flag
+	
+	
+	nametype RegisterOutputs = {|
+	o_randomWalk,
+	o_move,
+	o_shortRandomWalk,
+	o_flag|}
+	
+	nametype RegisterInputs = {|
+	i_obstacle,
+	i_gas,
+	i_odometer|}
+	
+	datatype COutputEvents = COutput_randomWalk
+		| COutput_move
+		| COutput_shortRandomWalk
+		| COutput_flag
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_obstacle = registerRead.i_obstacle?b__.x__ ->
+								if b__ then (pkg254_main::ChemicalDetector::obstacle.in.x__ -> A1_obstacle [] A1_obstacle)
+									   else A1_obstacle
+		A1_gas = registerRead.i_gas?b__.x__ ->
+								if b__ then (pkg254_main::ChemicalDetector::gas.in.x__ -> A1_gas [] A1_gas)
+									   else A1_gas
+		A1_odometer = registerRead.i_odometer?b__.x__ ->
+								if b__ then (pkg254_main::ChemicalDetector::odometer.in.x__ -> A1_odometer [] A1_odometer)
+									   else A1_odometer
+		
+														
+	within
+			     	A1_obstacle
+			     	 |||
+			     	A1_gas
+			     	 |||
+			     	A1_odometer
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_NormalForm_NormalForm) = let
+			
+			read(COutput_randomWalk) = pkg254_main::ChemicalDetector::randomWalkCall -> registerWrite.o_randomWalk -> SKIP
+			read(COutput_move) = pkg254_main::ChemicalDetector::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_shortRandomWalk) = pkg254_main::ChemicalDetector::shortRandomWalkCall -> registerWrite.o_shortRandomWalk -> SKIP
+			read(COutput_flag) = pkg254_main::ChemicalDetector::flag.out -> registerWrite.o_flag -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_NormalForm_NormalForm); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_NormalForm_NormalForm) = let
+			A3 = ((registerRead.i_obstacle?x__ -> SKIP)
+				|||
+			(registerRead.i_gas?x__ -> SKIP)
+				|||
+			(registerRead.i_odometer?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_NormalForm_NormalForm) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_NormalForm_NormalForm))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_NormalForm_NormalForm)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(pkg254_main::ChemicalDetector::D__(id__,
+				    const_pkg254__MicroController_stm_ref0_lv,
+				    const_pkg254__MicroController_stm_ref0_evadeTime,
+				    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+				    const_pkg254__MicroController_stm_ref0_stuckDist,
+				    const_pkg254__MicroController_stm_ref0_outPeriod,
+				    const_pkg254__MainController_stm_ref0_thr)\{|pkg254_main::ChemicalDetector::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr) =
+		prioritise(
+			((TLFree(id__,
+					    const_pkg254__MicroController_stm_ref0_lv,
+					    const_pkg254__MicroController_stm_ref0_evadeTime,
+					    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+					    const_pkg254__MicroController_stm_ref0_stuckDist,
+					    const_pkg254__MicroController_stm_ref0_outPeriod,
+					    const_pkg254__MainController_stm_ref0_thr) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr) =
+		prioritise(
+			((pkg254_main::ChemicalDetector::D__(id__,
+					    const_pkg254__MicroController_stm_ref0_lv,
+					    const_pkg254__MicroController_stm_ref0_evadeTime,
+					    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+					    const_pkg254__MicroController_stm_ref0_stuckDist,
+					    const_pkg254__MicroController_stm_ref0_outPeriod,
+					    const_pkg254__MainController_stm_ref0_thr)\{|pkg254_main::ChemicalDetector::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr) = D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr)
+
+endmodule

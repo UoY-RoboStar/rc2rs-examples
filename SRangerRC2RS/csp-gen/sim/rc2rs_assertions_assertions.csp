@@ -1,0 +1,236 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+include "defs/state_timed_defs.csp"
+include "defs/core_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "sims/defs/NormalForm_defs.csp"
+include "defs/pkg224_SimFW_sim_defs.csp"
+include "../timed/defs/pkg224_SimFW_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/file_SimMovement_defs.csp"
+include "defs/core_timed_defs.csp"
+include "sims/defs/RC_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "instantiations.csp"
+include "../timed/defs/SimFW_defs.csp"
+include "../timed/defs/pkg224_SimFW.csp"
+include "../timed/defs/SimFW.csp"
+include "defs/pkg224_SimFW_sim.csp"
+include "defs/relation_toolkit_defs.csp"
+
+channel r__
+
+transparent chase
+
+-- A1 - schedulable
+assert let 
+	cycle_NormalForm_NormalForm = 1
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_Movement_stm_ref0_lv = const_pkg224_SimFW_SMovement_lv
+	const_pkg224_SimFW_Movement_stm_ref0_PI = const_pkg224_SimFW_SMovement_PI
+	const_pkg224_SimFW_Movement_stm_ref0_av = const_pkg224_SimFW_SMovement_av
+		
+within
+	NormalForm::TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg224_SimFW_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_Movement_stm_ref0_av):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A2 - timed deadlock free
+assert prioritise(let 
+	cycle_pkg224_SimFW_sim_CMovement_CMovement = 1
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_sim_Movement_stm_ref0_lv = const_pkg224_SimFW_sim_SMovement_lv
+	const_pkg224_SimFW_sim_Movement_stm_ref0_PI = const_pkg224_SimFW_sim_SMovement_PI
+	const_pkg224_SimFW_sim_Movement_stm_ref0_av = const_pkg224_SimFW_sim_SMovement_av
+		
+within
+	pkg224_SimFW_sim::CMovement::D__(id__,cycle_pkg224_SimFW_sim_CMovement_CMovement,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_av)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
+
+-- A3 - refinement
+assert let
+	rename_in_NormalForm(NormalForm::i_obstacle.x__) = pkg224_SimFW_sim::CMovement::i_obstacle.x__
+	rename_out_NormalForm(NormalForm::o_stop) = pkg224_SimFW_sim::CMovement::o_stop
+	rename_out_NormalForm(NormalForm::o_move.lv.av) = pkg224_SimFW_sim::CMovement::o_move.lv.av
+within
+	prioritise(let 
+		cycle_NormalForm_NormalForm = 1
+		id__ = 0
+		
+		
+		
+		const_pkg224_SimFW_Movement_stm_ref0_lv = const_pkg224_SimFW_SMovement_lv
+		const_pkg224_SimFW_Movement_stm_ref0_PI = const_pkg224_SimFW_SMovement_PI
+		const_pkg224_SimFW_Movement_stm_ref0_av = const_pkg224_SimFW_SMovement_av
+			
+	within
+		NormalForm::D__(id__,cycle_NormalForm_NormalForm,
+				    const_pkg224_SimFW_Movement_stm_ref0_lv,
+				    const_pkg224_SimFW_Movement_stm_ref0_PI,
+				    const_pkg224_SimFW_Movement_stm_ref0_av),<{},{tock}>)
+	[[ NormalForm::registerRead.x__ <- pkg224_SimFW_sim::CMovement::registerRead.rename_in_NormalForm(x__) | x__ <- NormalForm::RegisterInputs ]]
+	[[ NormalForm::registerWrite.x__ <- pkg224_SimFW_sim::CMovement::registerWrite.rename_out_NormalForm(x__) | x__ <- NormalForm::RegisterOutputs ]]
+ [FD= let 
+	cycle_pkg224_SimFW_sim_CMovement_CMovement = 1
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_sim_Movement_stm_ref0_lv = const_pkg224_SimFW_sim_SMovement_lv
+	const_pkg224_SimFW_sim_Movement_stm_ref0_PI = const_pkg224_SimFW_sim_SMovement_PI
+	const_pkg224_SimFW_sim_Movement_stm_ref0_av = const_pkg224_SimFW_sim_SMovement_av
+		
+within
+	pkg224_SimFW_sim::CMovement::D__(id__,cycle_pkg224_SimFW_sim_CMovement_CMovement,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_av) :[tau priority]: {tock}
+
+-- A4 - refinement
+assert let
+	rename_in_CMovement(pkg224_SimFW_sim::CMovement::i_obstacle.x__) = NormalForm::i_obstacle.x__
+	rename_out_CMovement(pkg224_SimFW_sim::CMovement::o_move.lv.av) = NormalForm::o_move.lv.av
+	rename_out_CMovement(pkg224_SimFW_sim::CMovement::o_stop) = NormalForm::o_stop
+within
+	prioritise(let 
+		cycle_pkg224_SimFW_sim_CMovement_CMovement = 1
+		id__ = 0
+		
+		
+		
+		const_pkg224_SimFW_sim_Movement_stm_ref0_lv = const_pkg224_SimFW_sim_SMovement_lv
+		const_pkg224_SimFW_sim_Movement_stm_ref0_PI = const_pkg224_SimFW_sim_SMovement_PI
+		const_pkg224_SimFW_sim_Movement_stm_ref0_av = const_pkg224_SimFW_sim_SMovement_av
+			
+	within
+		pkg224_SimFW_sim::CMovement::D__(id__,cycle_pkg224_SimFW_sim_CMovement_CMovement,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_lv,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_PI,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_av),<{},{tock}>)
+	[[ pkg224_SimFW_sim::CMovement::registerRead.x__ <- NormalForm::registerRead.rename_in_CMovement(x__) | x__ <- pkg224_SimFW_sim::CMovement::RegisterInputs ]]
+	[[ pkg224_SimFW_sim::CMovement::registerWrite.x__ <- NormalForm::registerWrite.rename_out_CMovement(x__) | x__ <- pkg224_SimFW_sim::CMovement::RegisterOutputs ]]
+ [FD= let 
+	cycle_NormalForm_NormalForm = 1
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_Movement_stm_ref0_lv = const_pkg224_SimFW_SMovement_lv
+	const_pkg224_SimFW_Movement_stm_ref0_PI = const_pkg224_SimFW_SMovement_PI
+	const_pkg224_SimFW_Movement_stm_ref0_av = const_pkg224_SimFW_SMovement_av
+		
+within
+	NormalForm::D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg224_SimFW_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_Movement_stm_ref0_av) :[tau priority]: {tock}
+
+-- A5 - schedulable
+assert let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+	const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+	const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+		
+within
+	RC::TLF(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A6 - refinement
+assert let
+	rename_in_RC(RC::i_obstacle.x__) = pkg224_SimFW_sim::CMovement::i_obstacle.x__
+	rename_out_RC(RC::o_move.lv.av) = pkg224_SimFW_sim::CMovement::o_move.lv.av
+	rename_out_RC(RC::o_stop) = pkg224_SimFW_sim::CMovement::o_stop
+within
+	prioritise(let 
+		cycle_RC_RC = 1
+		id__ = 0
+		
+		
+		
+		const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+		const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+		const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+			
+	within
+		RC::D__(id__,cycle_RC_RC,
+				    const_SimFW_Movement_stm_ref0_lv,
+				    const_SimFW_Movement_stm_ref0_PI,
+				    const_SimFW_Movement_stm_ref0_av),<{},{tock}>)
+	[[ RC::registerRead.x__ <- pkg224_SimFW_sim::CMovement::registerRead.rename_in_RC(x__) | x__ <- RC::RegisterInputs ]]
+	[[ RC::registerWrite.x__ <- pkg224_SimFW_sim::CMovement::registerWrite.rename_out_RC(x__) | x__ <- RC::RegisterOutputs ]]
+ [FD= let 
+	cycle_pkg224_SimFW_sim_CMovement_CMovement = 1
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_sim_Movement_stm_ref0_lv = const_pkg224_SimFW_sim_SMovement_lv
+	const_pkg224_SimFW_sim_Movement_stm_ref0_PI = const_pkg224_SimFW_sim_SMovement_PI
+	const_pkg224_SimFW_sim_Movement_stm_ref0_av = const_pkg224_SimFW_sim_SMovement_av
+		
+within
+	pkg224_SimFW_sim::CMovement::D__(id__,cycle_pkg224_SimFW_sim_CMovement_CMovement,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_sim_Movement_stm_ref0_av) :[tau priority]: {tock}
+
+-- A7 - refinement
+assert let
+	rename_in_CMovement(pkg224_SimFW_sim::CMovement::i_obstacle.x__) = RC::i_obstacle.x__
+	rename_out_CMovement(pkg224_SimFW_sim::CMovement::o_move.lv.av) = RC::o_move.lv.av
+	rename_out_CMovement(pkg224_SimFW_sim::CMovement::o_stop) = RC::o_stop
+within
+	prioritise(let 
+		cycle_pkg224_SimFW_sim_CMovement_CMovement = 1
+		id__ = 0
+		
+		
+		
+		const_pkg224_SimFW_sim_Movement_stm_ref0_lv = const_pkg224_SimFW_sim_SMovement_lv
+		const_pkg224_SimFW_sim_Movement_stm_ref0_PI = const_pkg224_SimFW_sim_SMovement_PI
+		const_pkg224_SimFW_sim_Movement_stm_ref0_av = const_pkg224_SimFW_sim_SMovement_av
+			
+	within
+		pkg224_SimFW_sim::CMovement::D__(id__,cycle_pkg224_SimFW_sim_CMovement_CMovement,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_lv,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_PI,
+				    const_pkg224_SimFW_sim_Movement_stm_ref0_av),<{},{tock}>)
+	[[ pkg224_SimFW_sim::CMovement::registerRead.x__ <- RC::registerRead.rename_in_CMovement(x__) | x__ <- pkg224_SimFW_sim::CMovement::RegisterInputs ]]
+	[[ pkg224_SimFW_sim::CMovement::registerWrite.x__ <- RC::registerWrite.rename_out_CMovement(x__) | x__ <- pkg224_SimFW_sim::CMovement::RegisterOutputs ]]
+ [FD= let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+	const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+	const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+		
+within
+	RC::D__(id__,cycle_RC_RC,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av) :[tau priority]: {tock}
+

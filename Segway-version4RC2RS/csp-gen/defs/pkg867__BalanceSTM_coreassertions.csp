@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg867__BalanceSTM.csp"
+include "state_defs.csp"
+include "pkg867__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg867__BalanceSTM
+P_pkg867__BalanceSTM = let
+	id__ = 0
+	
+	
+	
+within
+	pkg867__BalanceSTM::O__(
+		id__,
+		const_pkg867__BalanceSTM_maxAngle,
+		const_pkg867__BalanceSTM_loopTime,
+		const_pkg867__BalanceSTM_startupDelay,
+		const_pkg867__BalanceSTM_speedUpdate,
+		const_pkg867__BalanceSTM_rotationUpdate,
+		const_pkg867__BalanceSTM_angleBudget,
+		const_pkg867__BalanceSTM_speedBudget,
+		const_pkg867__BalanceSTM_rotationBudget,
+		const_pkg867__BalanceSTM_motorBudget
+	)
+assert P_pkg867__BalanceSTM :[deadlock-free]	
+assert P_pkg867__BalanceSTM;RUN({r__}) :[deadlock-free]
+assert P_pkg867__BalanceSTM :[deterministic]
+assert P_pkg867__BalanceSTM :[divergence-free]

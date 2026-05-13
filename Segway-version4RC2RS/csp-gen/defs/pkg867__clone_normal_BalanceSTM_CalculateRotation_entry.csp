@@ -1,0 +1,516 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+-- compileSelfContainedOperation
+module OP_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i|
+	              NID_f|
+	              NID_j_4_8|
+	              NID_j_3_10|
+	              NID_j_2_20
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_rotationCount, set_rotationCount, setL_rotationCount, setR_rotationCount: core_nat
+	channel get_currGyroZ, set_currGyroZ, setL_currGyroZ, setR_currGyroZ: core_real
+	channel get_rotationOutput, set_rotationOutput, setL_rotationOutput, setR_rotationOutput: core_real
+	
+	-- Shared variable channels
+	channel set_EXT_rotationCount: core_nat
+	channel set_EXT_currGyroZ: core_real
+	channel set_EXT_rotationOutput: core_real
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel gyroZ__: NIDS.InOut.core_real
+	channel gyroZ: InOut.core_real
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call: core_nat.core_nat
+	channel RotationPIDCall: core_real
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call: core_real
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call: core_nat
+	
+	enterSS = {|
+	i::enter,
+	f::enter,
+	j_4_8::enter,
+	j_3_10::enter,
+	j_2_20::enter
+	|}
+	
+	enteredSS = 	{|
+	f::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+		set_EXT_rotationCount,
+		set_EXT_currGyroZ,
+		set_EXT_rotationOutput
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	set_EXT_rotationCount, set_rotationCount,
+		set_EXT_currGyroZ, set_currGyroZ,
+		set_EXT_rotationOutput, set_rotationOutput
+	,	gyroZ
+	,	clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call,
+		RotationPIDCall,
+		clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call,
+		clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call,
+		clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call
+		, share__
+		|}
+	
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- Initial: i
+	module i
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Final state: f
+	module f
+	
+	exports
+	
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+		--	Rule: behaviours(Node)
+		D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+				
+				Entering 	= entered -> SKIP ; Active
+				Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+				Interrupted	= share__choice(exit -> exited -> Inactive)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j_4_8
+	module j_4_8
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j_3_10
+	module j_3_10
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j_2_20
+	module j_2_20
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = D__(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_m,
+				param_n) 	= clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call.param_m.param_n -> SKIP
+	CALL__RotationPID(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_diff) 	= RotationPIDCall.param_diff -> SKIP
+	CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_diff) 	= clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call.param_diff -> SKIP
+	CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) 	= clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call -> SKIP
+	CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_d) 	= clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call.param_d -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) \ {terminate}
+	
+	STM_VS_O(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) \ {terminate}
+	
+	-- Transitions
+	Transitions(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = ((let
+		Trans = (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((true&CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13(
+			 			id__,
+			 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+			 			0
+			 		) ; j_4_8::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_j_4_8 -> SKIP ;  ((share__choice(get_currGyroZ?currGyroZ -> true&CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3(
+			 			id__,
+			 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+			 			currGyroZ
+			 		)) ; j_3_10::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_j_3_10 -> SKIP ;  ((true&CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19(
+			 			id__,
+			 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget
+			 		) ; j_2_20::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_j_2_20 -> SKIP ;  ((true&CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10(
+			 			id__,
+			 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+			 			0,
+			 			const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget
+			 		) ; f::enter -> SKIP))))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i::enter,
+				f::enter,
+				j_4_8::enter,
+				j_3_10::enter,
+				j_2_20::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i,internal__.NID_j_4_8,internal__.NID_j_3_10,internal__.NID_j_2_20|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i::D__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   f::D__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_4_8::D__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_3_10::D__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_2_20::D__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[f::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+					 [[j_4_8::interrupt <- x__ | x__ <- {|internal__.NID_j_4_8|}]]
+					 [[j_3_10::interrupt <- x__ | x__ <- {|internal__.NID_j_3_10|}]]
+					 [[j_2_20::interrupt <- x__ | x__ <- {|internal__.NID_j_2_20|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					|}) |]
+					 ((i::enter -> Transitions(id__,
+					 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					 )
+					)
+					)
+				)
+				 \ hideSet)
+				[[
+					gyroZ__.x____ <- gyroZ
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		dbisim((MachineBody(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)\ enteredSS)
+		)
+	
+	
+	Stateful(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		((
+			(Behaviour(id__,
+					    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i::enter,
+				f::enter,
+				j_4_8::enter,
+				j_3_10::enter,
+				j_2_20::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i,internal__.NID_j_4_8,internal__.NID_j_3_10,internal__.NID_j_2_20|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i::VS_O__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   f::VS_O__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_4_8::VS_O__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_3_10::VS_O__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   [| { share__, terminate } |] (
+					   j_2_20::VS_O__(id__,
+					   		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[f::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+					 [[j_4_8::interrupt <- x__ | x__ <- {|internal__.NID_j_4_8|}]]
+					 [[j_3_10::interrupt <- x__ | x__ <- {|internal__.NID_j_3_10|}]]
+					 [[j_2_20::interrupt <- x__ | x__ <- {|internal__.NID_j_2_20|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					|}) |]
+					 ((i::enter -> Transitions(id__,
+					 		    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					 )
+					)
+					)
+				)
+				 \ hideSet)
+				[[
+					gyroZ__.x____ <- gyroZ
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget))
+		)
+	
+	
+	Stateful_VS_O(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = terminate -> SKIP
+	
+	getsetLocalChannels = {||}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = STM_VS_O(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	
+	D__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = STM(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) \ internal_events
+	O__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = sbisim(diamond(D__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)))
+	VS__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = FVS__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)
+	VS_O__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = sbisim(diamond(FVS__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget)))
+	HEXT__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = O__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = O__(id__,
+			    const_pkg867__clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) [|{share__}|] SKIP
+			endmodule

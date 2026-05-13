@@ -1,0 +1,44 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_AppleHarvestControl.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_AppleHarvestControl
+P_pkg727_main_sim_AppleHarvestControl = let
+	cycle_pkg727_main_sim_AppleHarvestControl_AppleHarvestControl = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg727_main_sim_AppleHarvestControl::O__(
+		id__,
+		const_pkg727_main_sim_AppleHarvestControl_hideTime,
+		const_pkg727_main_sim_AppleHarvestControl_approachTime,
+		const_pkg727_main_sim_AppleHarvestControl_graspTime,
+		const_pkg727_main_sim_AppleHarvestControl_dropTime,
+		const_pkg727_main_sim_AppleHarvestControl_pickTime,
+		const_pkg727_main_sim_AppleHarvestControl_pickDeadl,
+		const_pkg727_main_sim_AppleHarvestControl_homePos,
+		const_pkg727_main_sim_AppleHarvestControl_storagePos
+	)
+assert P_pkg727_main_sim_AppleHarvestControl :[deadlock-free]	
+assert P_pkg727_main_sim_AppleHarvestControl;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_AppleHarvestControl :[deterministic]
+assert P_pkg727_main_sim_AppleHarvestControl :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_AppleHarvestControl[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_AppleHarvestControl

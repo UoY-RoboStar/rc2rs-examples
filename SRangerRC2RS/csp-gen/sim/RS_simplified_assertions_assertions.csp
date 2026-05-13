@@ -1,0 +1,298 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+include "defs/SimCMovement.csp"
+include "defs/state_timed_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/core_defs.csp"
+include "defs/file_SimMovement_defs.csp"
+include "defs/core_timed_defs.csp"
+include "defs/pkg224_SimFW_sim_defs.csp"
+
+channel r__
+
+transparent chase
+
+-- generate const_SimFW_SMovement_PI
+const_SimFW_SMovement_PI = 3
+
+-- generate const_SimSMovement_PI
+const_SimSMovement_PI = const_SimFW_SMovement_PI
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_SimFW_SMovement_av
+const_SimFW_SMovement_av = 2
+
+-- generate const_SimSMovement_av
+const_SimSMovement_av = const_SimFW_SMovement_av
+
+-- generate const_SimFW_SMovement_lv
+const_SimFW_SMovement_lv = 1
+
+-- generate const_SimSMovement_lv
+const_SimSMovement_lv = const_SimFW_SMovement_lv
+
+-- generate nat
+nametype core_nat = { 0..3}
+
+-- BASIC TYPES
+
+-- generate real
+nametype core_real = { -3..3} 
+
+-- CLOCKS
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS			
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- CYCLE DEFINITIONS
+-- generate cycle_SimCMovement_SimCMovement
+cycle_SimCMovement_SimCMovement = 1
+-- generate cycle_SimMovement_SimMovement
+cycle_SimMovement_SimMovement = 1
+-- generate cycle_SimSMovement_SimSMovement
+cycle_SimSMovement_SimSMovement = 1
+
+MinusNoNeg(e1,e2,T) = if e1-e2 > 0 then Minus(e1,e2,T) else 0
+
+Timed(OneStep) {
+	
+	-- Simplfied RoboSim semantics, written within a timed-section
+
+	-- Main process with maximal progress.
+	Spec = timed_priority(
+			StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ -> Initial,0)
+			)
+
+	Initial = 	SMoving;
+				DMoving;
+				Waiting;
+				STurning;
+				DTurning(1);
+				Initial			
+
+	SMoving = StartBy(SimCMovement::registerWrite.SimCMovement::o_move.const_SimSMovement_lv.0 -> SKIP,0)
+					
+	DMoving = WAIT(cycle_SimCMovement_SimCMovement);
+				StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?obstacle ->
+					if obstacle then
+						StartBy(SimCMovement::registerWrite.SimCMovement::o_stop -> SKIP,0)
+					else
+						DMoving,
+				0)
+				
+	Waiting = WAIT(cycle_SimCMovement_SimCMovement)
+	
+	STurning = StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+				StartBy(SimCMovement::registerWrite.SimCMovement::o_move.0.const_SimSMovement_av -> SKIP,0)
+			   ,0)
+			   
+	-- Note the use of a parameter MBC to replicate the current value of the clock MBC
+	DTurning(MBC) = WAIT(cycle_SimCMovement_SimCMovement);
+						StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+							if (MBC >= Div(const_SimSMovement_PI,const_SimSMovement_av,core_real)) then
+								SKIP
+							else
+								DTurning(MBC+1)	
+						,0)
+	
+	-- For verification using tick-tock need to provide alphabet of Spec process,
+	-- which in this case is exactly the same as that of the built-in calculated
+	-- by RoboTool
+	Spec__sem__events = SimCMovement::sem__events
+}
+
+-- Simplfied RoboSim semantics, written outside a timed-section in pure tock-CSP
+
+-- Main process
+USpec = SimCMovement::registerRead.SimCMovement::i_obstacle?x__ -> UInitial
+
+UInitial = 	USMoving;
+			UDMoving;
+			UWaiting;
+			USTurning;
+			UDTurning(1);
+			UInitial			
+
+USMoving = SimCMovement::registerWrite.SimCMovement::o_move.const_SimSMovement_lv.0 -> SKIP
+				
+UDMoving = wait(cycle_SimCMovement_SimCMovement);
+			SimCMovement::registerRead.SimCMovement::i_obstacle?obstacle ->
+				if obstacle then
+					SimCMovement::registerWrite.SimCMovement::o_stop -> SKIP
+				else
+					UDMoving
+			
+UWaiting = wait(cycle_SimCMovement_SimCMovement)
+
+USTurning = SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+			SimCMovement::registerWrite.SimCMovement::o_move.0.const_SimSMovement_av -> SKIP
+		   
+-- Note the use of a parameter MBC to replicate the current value of the clock MBC
+UDTurning(MBC) = wait(cycle_SimCMovement_SimCMovement);
+					SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+						if (MBC >= Div(const_SimSMovement_PI,const_SimSMovement_av,core_real)) then
+							SKIP
+						else
+							UDTurning(MBC+1)	
+
+-- For verification using tick-tock need to provide alphabet of Spec process,
+-- which in this case is exactly the same as that of the built-in calculated
+-- by RoboTool
+USpec__sem__events = SimCMovement::sem__events
+
+-- A0 - equal
+assert let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) [FD= Spec :[tau priority]: {tock}
+assert Spec [FD= let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) :[tau priority]: {tock}
+
+-- A1 - equal
+instance MS_RA_A1 = model_shifting(union(SimCMovement::sem__events,Spec__sem__events))
+instance MS_LA_A1 = model_shifting(union(SimCMovement::sem__events,Spec__sem__events))
+assert MS_RA_A1::TT(let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av)) [T= MS_RA_A1::TT(Spec) :[tau priority]: {tock}
+assert MS_LA_A1::TT(Spec) [T= MS_LA_A1::TT(let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av)) :[tau priority]: {tock}
+
+-- A2 - equal
+assert let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) [FD= USpec :[tau priority]: {tock}
+assert USpec [FD= let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) :[tau priority]: {tock}
+
+-- A3 - equal
+instance MS_RA_A3 = model_shifting(union(SimCMovement::sem__events,USpec__sem__events))
+instance MS_LA_A3 = model_shifting(union(SimCMovement::sem__events,USpec__sem__events))
+assert MS_RA_A3::TT(let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av)) [T= MS_RA_A3::TT(USpec) :[tau priority]: {tock}
+assert MS_LA_A3::TT(USpec) [T= MS_LA_A3::TT(let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av)) :[tau priority]: {tock}
+

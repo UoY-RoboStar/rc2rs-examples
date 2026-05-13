@@ -1,0 +1,77 @@
+stm AppleHarvestControl - It updates the variable positions** 
+
+    requires GlobalVariables {var apples : Set( Coord3D )
+	                          var positions : Coord3D -> JointsPos * JointsPos * JointsPos}
+    
+    state LocalizeFruit {
+			entry CHTBA ( img ) ; localized = false
+	} //CHTBA updates the global variable apples
+    
+    state GetApple {
+		entry ( move ( positions* ( nextApple ) [ 1 ] ) ; wait ( [ 0 , approachTime ] ) ; 
+		       grasp ( positions* ( nextApple ) [ 2 ] ) ; wait ( [ 1 , graspTime ] ) ; pick ( ) ; 
+		       wait ( [ 1 , pickTime ] ) ; drop ( positions* ( nextApple ) [ 3 ] ) ; 
+		       wait ( [ 0 , dropTime ] ) ) <{ pickDeadl }
+		exit positions* = fdiff ( nextApple , positions* )
+	}
+	
+	transition t6 {
+		from j0
+		to Next
+		condition not isEmpty ( positions* )
+	}
+	transition t7 {
+		from j0
+		to GoingHome
+		condition isEmpty ( positions* )
+		action startGoHome
+	}
+	
+	state LocalizeFruit {
+			entry CHTBA ( img ) ; localized = false
+	}
+    
+ **the global variables are required by the operation CHTBA, which is called by the state machine AppleHarvestControl
+ operation CHTBA ( 
+img : Image
+) {
+	requires AppleCoordinates }
+	
+
+interface AppleCoordinates {
+	var apples** : Set( Coord3D )
+}
+    
+    
+ stm IkSolver - It updates the variables positions and apples
+   
+    requires GlobalVariables
+    
+    transition t3 {
+		from Solve
+		to Loop
+		action 
+	      if ( jointInLimit ( p1 ) \/ jointInLimit ( p2 ) \/ jointInLimit ( p3 ) ) 
+	      then positions* = addApple ( positions* , apple , p1 , p2 , p3 ) else skip end;
+	      global!positions***
+	}
+    
+    state Solve {
+		entry p1 = jointApproach ( apple ) ; p2 = jointFruit ( apple ) ; p3 = jointStorage ( apple )
+		exit apples* = diff ( apples* , { apple } )
+	}
+	
+	transition t2 {
+		from Loop
+		to Solve
+		condition apples* != { }
+		action apple = choose ( apples* )
+	}
+	transition t4 {
+		from Loop
+		to Ready
+		condition apples* == { }
+		action endIKSolver
+	}
+	
+

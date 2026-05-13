@@ -1,0 +1,26 @@
+package pkg254__sim controller MicroController {
+	requires pkg254_main::Operations event turn : Chemical::Angle
+	event obstacle : Location::Loc
+	event flag
+	event stop
+	event resume
+	event odometer : real
+	opref MicroController_ref_clone_normal_Movement_TryingAgain_t11_op = pkg254__sim::clone_normal_Movement_TryingAgain_t11_op
+	opref MicroController_ref_clone_normal_Movement_GettingOut_entry = pkg254__sim::clone_normal_Movement_GettingOut_entry
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry = pkg254__sim::clone_normal_Movement_Avoiding_entry
+	opref MicroController_ref_clone_normal_Movement_Found_entry = pkg254__sim::clone_normal_Movement_Found_entry
+	opref MicroController_ref_clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f = pkg254__sim::clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 = pkg254__sim::clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 = pkg254__sim::clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f = pkg254__sim::clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f
+	opref MicroController_ref_clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f = pkg254__sim::clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f
+	sref stm_ref0 = pkg254__sim::Movement
+	connection MicroController on turn to stm_ref0 on turn
+	connection MicroController on obstacle to stm_ref0 on obstacle
+	connection stm_ref0 on flag to MicroController on flag
+	connection MicroController on resume to stm_ref0 on resume
+	connection MicroController on stop to stm_ref0 on stop
+	connection MicroController on odometer to stm_ref0 on odometer
+	cycleDef cycle == 1
+}
+

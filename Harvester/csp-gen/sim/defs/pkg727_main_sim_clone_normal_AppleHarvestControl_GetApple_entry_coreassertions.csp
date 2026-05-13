@@ -1,0 +1,44 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "core_timed_defs.csp"
+include "pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry
+P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry = let
+	id__ = 0
+	
+	
+	const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickTime = 0
+	const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_approachTime = 0
+	const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_dropTime = 0
+	const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl = 0
+	const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime = 0
+	
+	
+within
+	pkg727_main_sim::OP_clone_normal_AppleHarvestControl_GetApple_entry::O__(id__,
+			    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
+			    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
+			    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
+			    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
+			    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime)
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry :[deadlock-free]	
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry :[deterministic]
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_GetApple_entry

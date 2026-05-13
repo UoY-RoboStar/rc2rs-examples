@@ -1,0 +1,40 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 13:19:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "set_toolkit_defs.csp"
+include "core_defs.csp"
+include "main_defs.csp"
+include "main_AppleHarvestControl.csp"
+include "state_defs.csp"
+include "setoperations_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate main_AppleHarvestControl
+P_main_AppleHarvestControl = let
+	id__ = 0
+	
+	
+	
+within
+	main_AppleHarvestControl::O__(
+		id__,
+		const_main_AppleHarvestControl_hideTime,
+		const_main_AppleHarvestControl_approachTime,
+		const_main_AppleHarvestControl_graspTime,
+		const_main_AppleHarvestControl_dropTime,
+		const_main_AppleHarvestControl_pickTime,
+		const_main_AppleHarvestControl_pickDeadl,
+		const_main_AppleHarvestControl_homePos,
+		const_main_AppleHarvestControl_storagePos
+	)
+assert P_main_AppleHarvestControl :[deadlock-free]	
+assert P_main_AppleHarvestControl;RUN({r__}) :[deadlock-free]
+assert P_main_AppleHarvestControl :[deterministic]
+assert P_main_AppleHarvestControl :[divergence-free]

@@ -1,0 +1,38 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 06-05-2026 11:01:27
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg213_main_sim_defs.csp"
+include "state_timed_defs.csp"
+include "pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op
+P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op = let
+	id__ = 0
+	
+	
+	const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_TOP = 1
+	const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_LV = 0
+	
+	
+within
+	pkg213_main_sim::OP_clone_normal_FinderM_Delivering_t3_op::O__(id__,
+			    const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_TOP,
+			    const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_LV)
+assert P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op :[deadlock-free]	
+assert P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op :[deterministic]
+assert P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_sim_OP_clone_normal_FinderM_Delivering_t3_op

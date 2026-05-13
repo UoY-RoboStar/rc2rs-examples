@@ -1,0 +1,2360 @@
+package pkg867_ interface PIDs {
+	AnglePID ( newError : real , diff : real )
+	SpeedPID ( newError : real )
+	RotationPID ( diff : real )
+}
+
+interface req_normal_BalanceSTM_CalculateAngle_entry {
+	AnglePID ( newError : real , diff : real )
+	enableInterrupts ( )
+	const angleBudget : nat
+	var currAngle : real , currGyroX : real
+	var angleOutput : real = 0
+}
+
+interface I_events_normal_BalanceSTM_CalculateAngle_entry {
+	event angle : real
+	event gyroX : real
+}
+
+interface I_normal_BalanceSTM_CalculateAngle_entry {
+	normal_BalanceSTM_CalculateAngle_entry ( )
+}
+
+interface req_normal_BalanceSTM_CalculateSpeed_entry {
+	SpeedPID ( newError : real )
+	var currLeftVel : real , speedCount : nat , currRightVel : real
+	const speedBudget : nat
+	var speedIntegral : real = 0 , speedOutput : real = 0
+}
+
+interface I_events_normal_BalanceSTM_CalculateSpeed_entry {
+	event rightMotorVelocity : real
+	event leftMotorVelocity : real
+}
+
+interface I_normal_BalanceSTM_CalculateSpeed_entry {
+	normal_BalanceSTM_CalculateSpeed_entry ( )
+}
+
+interface req_normal_BalanceSTM_StopMotors_entry {
+	setLeftMotorSpeed ( speed : real )
+	setRightMotorSpeed ( speed : real )
+	const motorBudget : nat
+}
+
+interface I_normal_BalanceSTM_StopMotors_entry {
+	normal_BalanceSTM_StopMotors_entry ( )
+}
+
+interface req_normal_BalanceSTM_Initialisation_entry {
+	const startupDelay : nat
+	var speedCount : nat , rotationCount : nat
+	clock loopTimer
+}
+
+interface I_normal_BalanceSTM_Initialisation_entry {
+	normal_BalanceSTM_Initialisation_entry ( )
+}
+
+interface req_normal_BalanceSTM_CalculateRotation_entry {
+	RotationPID ( diff : real )
+	const rotationBudget : nat
+	var rotationCount : nat , currGyroZ : real
+	var rotationOutput : real = 0
+}
+
+interface I_events_normal_BalanceSTM_CalculateRotation_entry {
+	event gyroZ : real
+}
+
+interface I_normal_BalanceSTM_CalculateRotation_entry {
+	normal_BalanceSTM_CalculateRotation_entry ( )
+}
+
+interface req_normal_BalanceSTM_SetMotors_entry {
+	setLeftMotorSpeed ( speed : real )
+	setRightMotorSpeed ( speed : real )
+	const motorBudget : nat
+	var angleOutput : real = 0 , rotationOutput : real = 0 , speedOutput : real = 0
+}
+
+interface I_normal_BalanceSTM_SetMotors_entry {
+	normal_BalanceSTM_SetMotors_entry ( )
+}
+
+interface req_normal_BalanceSTM_CalculateAngle_t3_op {
+	var speedCount : nat
+}
+
+interface I_normal_BalanceSTM_CalculateAngle_t3_op {
+	normal_BalanceSTM_CalculateAngle_t3_op ( )
+}
+
+interface req_normal_BalanceSTM_j1_t5_op {
+	var rotationCount : nat
+}
+
+interface I_normal_BalanceSTM_j1_t5_op {
+	normal_BalanceSTM_j1_t5_op ( )
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( )
+}
+
+interface I_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t {
+	deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( d : nat )
+}
+
+interface req_normal_BalanceSTM_CalculateSpeed_entry_t {
+	var currLeftVel : real
+}
+
+interface I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t {
+	var currLeftVel : real
+	var g : boolean = false
+}
+
+interface I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t {
+	event leftMotorVelocity : real
+}
+
+interface I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t {
+	event leftMotorVelocity : real
+}
+
+interface I_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t {
+	deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( d : nat )
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t {
+	normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( )
+}
+
+interface req_normal_BalanceSTM_CalculateRotation_entry_t {
+	var currGyroZ : real
+}
+
+interface I_req_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t {
+	var currGyroZ : real
+	var g : boolean = false
+}
+
+interface I_eventsnormal_BalanceSTM_CalculateRotation_entry_t {
+	event gyroZ : real
+}
+
+interface I_events_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t {
+	event gyroZ : real
+}
+
+interface I_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 {
+	deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( d : nat )
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( )
+}
+
+interface req_normal_BalanceSTM_CalculateAngle_entry_t_5_5 {
+	var currAngle : real
+}
+
+interface I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 {
+	var currAngle : real
+	var g : boolean = false
+}
+
+interface I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_5_5 {
+	event angle : real
+}
+
+interface I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 {
+	event angle : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( )
+}
+
+interface I_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 {
+	deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( d : nat )
+}
+
+interface req_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 {
+	var currRightVel : real
+}
+
+interface I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 {
+	var currRightVel : real
+	var g : boolean = false
+}
+
+interface I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 {
+	event rightMotorVelocity : real
+}
+
+interface I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t_5_6 {
+	event rightMotorVelocity : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( )
+}
+
+interface I_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 {
+	deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( d : nat )
+}
+
+interface req_normal_BalanceSTM_CalculateAngle_entry_t_4_14 {
+	var currGyroX : real
+}
+
+interface I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 {
+	var currGyroX : real
+	var g : boolean = false
+}
+
+interface I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_4_14 {
+	event gyroX : real
+}
+
+interface I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 {
+	event gyroX : real
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t {
+	var currRightVel : real
+}
+
+interface I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t {
+	event rightMotorVelocity : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15 {
+	var g : boolean = false
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24 {
+	var g : boolean = false
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op ( )
+}
+
+interface I_req_normal_BalanceSTM_Initialisation_entry_i_t {
+	var speedCount : nat
+}
+
+interface I_normal_BalanceSTM_Initialisation_entry_i_t_op {
+	normal_BalanceSTM_Initialisation_entry_i_t_op ( )
+}
+
+interface I_req_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3 {
+	var rotationCount : nat
+}
+
+interface I_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op {
+	normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t {
+	var currLeftVel : real
+}
+
+interface I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t {
+	event leftMotorVelocity : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22 {
+	var g : boolean = false
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25 {
+	var g : boolean = false
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op ( )
+}
+
+interface I_req_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17 {
+	var speedCount : nat
+}
+
+interface I_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op {
+	normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op ( )
+}
+
+interface I_req_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16 {
+	clock loopTimer
+}
+
+interface I_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op {
+	normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t {
+	var currGyroX : real
+}
+
+interface I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t {
+	event gyroX : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t {
+	var currGyroZ : real
+}
+
+interface I_events_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t {
+	event gyroZ : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18 {
+	var g : boolean = false
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op ( )
+}
+
+interface I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t {
+	var currAngle : real
+}
+
+interface I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t {
+	event angle : real
+}
+
+interface I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op {
+	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op ( )
+}
+
+interface I_req_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10 {
+	var rotationCount : nat
+}
+
+interface I_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op {
+	normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op ( )
+}
+
+interface I_clone_normal_BalanceSTM_CalculateSpeed_entry {
+	clone_normal_BalanceSTM_CalculateSpeed_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_CalculateAngle_entry {
+	clone_normal_BalanceSTM_CalculateAngle_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_StopMotors_entry {
+	clone_normal_BalanceSTM_StopMotors_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_Initialisation_entry {
+	clone_normal_BalanceSTM_Initialisation_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_CalculateRotation_entry {
+	clone_normal_BalanceSTM_CalculateRotation_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_SetMotors_entry {
+	clone_normal_BalanceSTM_SetMotors_entry ( )
+}
+
+interface I_clone_normal_BalanceSTM_j1_t5_op {
+	clone_normal_BalanceSTM_j1_t5_op ( )
+}
+
+interface I_clone_normal_BalanceSTM_CalculateAngle_t3_op {
+	clone_normal_BalanceSTM_CalculateAngle_t3_op ( )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1 {
+	clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1 ( m : nat , n : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2 {
+	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2 ( )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3 {
+	clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3 ( diff : real )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4 {
+	clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4 ( d : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5 {
+	clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5 ( m : nat , n : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6 {
+	clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6 ( m : nat , n : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 {
+	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 ( d : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8 {
+	clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8 ( )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 {
+	clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 ( d : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10 {
+	clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10 ( m : nat , n : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11 {
+	clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11 ( )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12 {
+	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12 ( d : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13 {
+	clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13 ( d : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14 {
+	clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14 ( newError : real , diff : real )
+}
+
+interface I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15 {
+	clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15 ( )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16 {
+	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16 ( newError : real )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17 {
+	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17 ( m : nat , n : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18 {
+	clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18 ( i : nat )
+}
+
+interface I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19 {
+	clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_waitOp_j_j_20 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_waitOp_j_j_20 ( i : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5_waitOp_j_j_22 {
+	clone_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5_waitOp_j_j_22 ( i : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_deadlineCheck_during_23 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_deadlineCheck_during_23 ( d : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6_waitOp_j_j_24 {
+	clone_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6_waitOp_j_j_24 ( i : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_deadlineCheck_during_26 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_deadlineCheck_during_26 ( d : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_normal_AnglePID_UpdateOutput_entry_entry_27 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_normal_AnglePID_UpdateOutput_entry_entry_27 ( newError : real , diff : real )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 {
+	clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30 ( )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10_waitOp_j_j_31 {
+	clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10_waitOp_j_j_31 ( i : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_deadlineCheck_during_32 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_deadlineCheck_during_32 ( d : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33 ( newError : real )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_deadlineCheck_during_34 {
+	clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_deadlineCheck_during_34 ( d : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17_waitOp_j_j_35 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17_waitOp_j_j_35 ( i : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_deadlineCheck_during_36 {
+	clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_deadlineCheck_during_36 ( d : nat )
+}
+
+interface I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 {
+	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 ( newError : real )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op_i_j_2_22_38 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op_i_j_2_22_38 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op_j_2_22_f_39 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op_j_2_22_f_39 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op_i_j_2_25_40 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op_i_j_2_25_40 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_j_2_2_f_41 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_j_2_2_f_41 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op_i_j_2_15_42 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op_i_j_2_15_42 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op_j_2_24_f_43 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op_j_2_24_f_43 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op_j_2_15_f_44 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op_j_2_15_f_44 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op_j_2_18_f_45 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op_j_2_18_f_45 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_i_t_op_i_j_2_2_46 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_i_t_op_i_j_2_2_46 ( newError : real )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op_i_j_2_24_47 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op_i_j_2_24_47 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op_j_2_25_f_48 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op_j_2_25_f_48 ( )
+}
+
+interface I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 {
+	clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 ( )
+}
+
+stm BalanceSTM {
+	uses HallSensorsI uses IMUI uses pkg867_::AnglePIDVars uses pkg867_::SpeedPIDVars uses pkg867_::RotationPIDVars requires MotorsI requires InterruptsI requires PIDs requires I_clone_normal_BalanceSTM_CalculateSpeed_entry requires I_clone_normal_BalanceSTM_CalculateAngle_entry requires I_clone_normal_BalanceSTM_StopMotors_entry requires I_clone_normal_BalanceSTM_Initialisation_entry requires I_clone_normal_BalanceSTM_CalculateRotation_entry requires I_clone_normal_BalanceSTM_SetMotors_entry requires I_clone_normal_BalanceSTM_j1_t5_op requires I_clone_normal_BalanceSTM_CalculateAngle_t3_op const maxAngle : real
+	const loopTime : nat
+	var currAngle : real , currGyroX : real , currGyroY : real , currGyroZ : real , currLeftVel : real , currRightVel : real
+	const startupDelay : nat
+	var speedCount : nat , rotationCount : nat
+	const speedUpdate : nat , rotationUpdate : nat
+	const angleBudget : nat , speedBudget : nat , rotationBudget : nat , motorBudget : nat
+	initial i0
+	state CalculateAngle {
+		initial i
+		state EmptyCycle {
+		}
+		transition tCalculateAngle {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_CalculateAngle_entry ( )
+	}
+	state CalculateSpeed {
+		initial i
+		state EmptyCycle {
+		}
+		transition tCalculateSpeed {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_CalculateSpeed_entry ( )
+	}
+	state CalculateRotation {
+		state EmptyCycle {
+		}
+		initial i
+		transition tCalculateRotation {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_CalculateRotation_entry ( )
+	}
+	state SetMotors {
+		state EmptyCycle {
+		}
+		initial i
+		transition tSetMotors {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_SetMotors_entry ( )
+	}
+	junction j0
+	junction j1
+	junction j2
+	state StopMotors {
+		state EmptyCycle {
+		}
+		initial i
+		transition tStopMotors {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_StopMotors_entry ( )
+	}
+	state WaitForNextIteration {
+		state EmptyCycle {
+		}
+		initial i
+		transition tWaitForNextIteration {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Initialisation {
+		state EmptyCycle {
+		}
+		initial i
+		transition tInitialisation {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BalanceSTM_Initialisation_entry ( )
+	}
+	junction j3
+	transition t1 {
+		from j0
+		to CalculateSpeed
+		condition speedCount >= speedUpdate
+	}
+	transition t2 {
+		from CalculateSpeed
+		to j1
+	}
+	transition t3 {
+		from CalculateAngle
+		to j0
+		action clone_normal_BalanceSTM_CalculateAngle_t3_op ( )
+	}
+	transition t4 {
+		from j0
+		to j1
+		condition speedCount < speedUpdate
+	}
+	transition t8 {
+		from CalculateRotation
+		to j2
+	}
+	transition t9 {
+		from j2
+		to SetMotors
+		condition currAngle <= maxAngle /\ currAngle >= - maxAngle
+	}
+	transition t10 {
+		from j2
+		to StopMotors
+		condition currAngle > maxAngle \/ currAngle < - maxAngle
+	}
+	transition t12 {
+		from WaitForNextIteration
+		to CalculateAngle
+		# loopTimer
+		condition since ( loopTimer ) >= loopTime
+		action disableInterrupts ( )
+	}
+	transition t7 {
+		from StopMotors
+		to WaitForNextIteration
+	}
+	transition t11 {
+		from SetMotors
+		to WaitForNextIteration
+	}
+	transition t0 {
+		from i0
+		to Initialisation
+	}
+	transition t13 {
+		from Initialisation
+		to WaitForNextIteration
+	}
+	transition t5 {
+		from j1
+		to j3
+		action clone_normal_BalanceSTM_j1_t5_op ( )
+	}
+	transition t6 {
+		from j3
+		to CalculateRotation
+		condition rotationCount >= rotationUpdate
+	}
+	transition t14 {
+		from j3
+		to j2
+		condition rotationCount < rotationUpdate
+	}
+	clock loopTimer
+}
+
+operation normal_BalanceSTM_CalculateAngle_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateAngle_entry requires req_normal_BalanceSTM_CalculateAngle_entry requires I_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 requires I_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 requires pkg867_main::I_waitInterval final f
+	initial i
+	junction j_5_5
+	junction j_4_14
+	junction j_3_19
+	junction j_2_23
+	transition t {
+		from i
+		to j_5_5
+		action enableInterrupts ( )
+	}
+	transition t_5_5 {
+		from j_5_5
+		to j_4_14
+		action deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( 0 )
+	}
+	transition t_4_14 {
+		from j_4_14
+		to j_3_19
+		action deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( 0 )
+	}
+	transition t_3_19 {
+		from j_3_19
+		to j_2_23
+		action AnglePID ( currAngle , currGyroX )
+	}
+	transition t_2_23 {
+		from j_2_23
+		to f
+		action waitInterval ( 0 , angleBudget )
+	}
+}
+
+operation normal_BalanceSTM_CalculateSpeed_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateSpeed_entry requires req_normal_BalanceSTM_CalculateSpeed_entry requires I_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t requires I_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 requires pkg867_main::I_waitInterval requires I_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op final f
+	initial i
+	junction j_5_6
+	junction j_4_13
+	junction j_3_17
+	junction j_2_21
+	transition t {
+		from i
+		to j_5_6
+		action deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( 0 )
+	}
+	transition t_5_6 {
+		from j_5_6
+		to j_4_13
+		action deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( 0 )
+	}
+	transition t_4_13 {
+		from j_4_13
+		to j_3_17
+		action SpeedPID ( currLeftVel + currRightVel )
+	}
+	transition t_3_17 {
+		from j_3_17
+		to j_2_21
+		action normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op ( )
+	}
+	transition t_2_21 {
+		from j_2_21
+		to f
+		action waitInterval ( 0 , speedBudget )
+	}
+}
+
+operation normal_BalanceSTM_StopMotors_entry ( ) {
+	requires req_normal_BalanceSTM_StopMotors_entry requires pkg867_main::I_waitInterval final f
+	initial i
+	junction j_3_7
+	junction j_2_12
+	transition t {
+		from i
+		to j_3_7
+		action setLeftMotorSpeed ( 0 )
+	}
+	transition t_3_7 {
+		from j_3_7
+		to j_2_12
+		action setRightMotorSpeed ( 0 )
+	}
+	transition t_2_12 {
+		from j_2_12
+		to f
+		action waitInterval ( 0 , motorBudget )
+	}
+}
+
+operation normal_BalanceSTM_Initialisation_entry ( ) {
+	requires req_normal_BalanceSTM_Initialisation_entry requires pkg867_main::I_waitOp requires I_normal_BalanceSTM_Initialisation_entry_i_t_op requires I_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op requires I_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op final f
+	initial i
+	junction j_4_3
+	junction j_3_9
+	junction j_2_16
+	transition t {
+		from i
+		to j_4_3
+		action normal_BalanceSTM_Initialisation_entry_i_t_op ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_9
+		action normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op ( )
+	}
+	transition t_3_9 {
+		from j_3_9
+		to j_2_16
+		action waitOp ( startupDelay )
+	}
+	transition t_2_16 {
+		from j_2_16
+		to f
+		action normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op ( )
+	}
+}
+
+operation normal_BalanceSTM_CalculateRotation_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateRotation_entry requires req_normal_BalanceSTM_CalculateRotation_entry requires I_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t requires pkg867_main::I_waitInterval requires I_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op initial i
+	final f
+	junction j_4_8
+	junction j_3_10
+	junction j_2_20
+	transition t {
+		from i
+		to j_4_8
+		action deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( 0 )
+	}
+	transition t_4_8 {
+		from j_4_8
+		to j_3_10
+		action RotationPID ( currGyroZ )
+	}
+	transition t_3_10 {
+		from j_3_10
+		to j_2_20
+		action normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op ( )
+	}
+	transition t_2_20 {
+		from j_2_20
+		to f
+		action waitInterval ( 0 , rotationBudget )
+	}
+}
+
+operation normal_BalanceSTM_SetMotors_entry ( ) {
+	requires req_normal_BalanceSTM_SetMotors_entry requires pkg867_main::I_waitInterval final f
+	initial i
+	junction j_3_4
+	junction j_2_11
+	transition t {
+		from i
+		to j_3_4
+		action setLeftMotorSpeed ( angleOutput + speedOutput - rotationOutput )
+	}
+	transition t_3_4 {
+		from j_3_4
+		to j_2_11
+		action setRightMotorSpeed ( angleOutput + speedOutput + rotationOutput )
+	}
+	transition t_2_11 {
+		from j_2_11
+		to f
+		action waitInterval ( 0 , motorBudget )
+	}
+}
+
+operation normal_BalanceSTM_CalculateAngle_t3_op ( ) {
+	requires req_normal_BalanceSTM_CalculateAngle_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedCount = speedCount + 1
+	}
+}
+
+operation normal_BalanceSTM_j1_t5_op ( ) {
+	requires req_normal_BalanceSTM_j1_t5_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rotationCount = rotationCount + 1
+	}
+}
+
+operation deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t requires pkg867_main::I_deadlineCheck requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t requires req_normal_BalanceSTM_CalculateSpeed_entry_t var g : boolean = false
+	final f
+	initial i
+	state S0 {
+		state S1 {
+		}
+		initial i
+		final f
+		transition t1 {
+			from S1
+			to f
+			action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during deadlineCheck ( d )
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t requires I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op final f
+	initial i
+	junction j_2_18
+	transition t {
+		from i
+		to j_2_18
+		action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op ( )
+	}
+	transition t_2_18 {
+		from j_2_18
+		to f
+		action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op ( )
+	}
+}
+
+operation deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateRotation_entry_t requires pkg867_main::I_deadlineCheck requires I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t requires req_normal_BalanceSTM_CalculateRotation_entry_t var g : boolean = false
+	initial i
+	final f
+	state S0 {
+		final f
+		state S1 {
+		}
+		initial i
+		transition t0 {
+			from i
+			to S1
+		}
+		transition t1 {
+			from S1
+			to f
+			action normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( )
+		}
+		during deadlineCheck ( d )
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t requires I_req_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t requires I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op requires I_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op initial i
+	final f
+	junction j_2_15
+	transition t {
+		from i
+		to j_2_15
+		action normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op ( )
+	}
+	transition t_2_15 {
+		from j_2_15
+		to f
+		action normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op ( )
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 requires I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op final f
+	initial i
+	junction j_2_24
+	transition t {
+		from i
+		to j_2_24
+		action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op ( )
+	}
+	transition t_2_24 {
+		from j_2_24
+		to f
+		action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op ( )
+	}
+}
+
+operation deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_5_5 requires pkg867_main::I_deadlineCheck requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 requires req_normal_BalanceSTM_CalculateAngle_entry_t_5_5 var g : boolean = false
+	state S0 {
+		initial i
+		final f
+		state S1 {
+		}
+		transition t1 {
+			from S1
+			to f
+			action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5 ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during deadlineCheck ( d )
+	}
+	final f
+	initial i
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t_5_6 requires pkg867_main::I_deadlineCheck requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 requires req_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 var g : boolean = false
+	final f
+	state S0 {
+		state S1 {
+		}
+		final f
+		initial i
+		transition t1 {
+			from S1
+			to f
+			action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during deadlineCheck ( d )
+	}
+	initial i
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 requires I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op requires I_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op initial i
+	final f
+	junction j_2_22
+	transition t {
+		from i
+		to j_2_22
+		action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op ( )
+	}
+	transition t_2_22 {
+		from j_2_22
+		to f
+		action normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op ( )
+	}
+}
+
+operation deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_4_14 requires pkg867_main::I_deadlineCheck requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 requires req_normal_BalanceSTM_CalculateAngle_entry_t_4_14 var g : boolean = false
+	initial i
+	state S0 {
+		final f
+		initial i
+		state S1 {
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		transition t1 {
+			from S1
+			to f
+			action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( )
+		}
+		during deadlineCheck ( d )
+	}
+	final f
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 requires I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op requires I_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op final f
+	initial i
+	junction j_2_25
+	transition t {
+		from i
+		to j_2_25
+		action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op ( )
+	}
+	transition t_2_25 {
+		from j_2_25
+		to f
+		action normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op ( )
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rightMotorVelocity ? currRightVel
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation normal_BalanceSTM_Initialisation_entry_i_t_op ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action speedCount = 0
+	}
+}
+
+operation normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action rotationCount = 0
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action leftMotorVelocity ? currLeftVel
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op ( ) {
+	requires I_req_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedCount = 0
+	}
+}
+
+operation normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # loopTimer
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gyroX ? currGyroX
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gyroZ ? currGyroZ
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action angle ? currAngle
+	}
+}
+
+operation normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op ( ) {
+	requires I_req_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rotationCount = 0
+	}
+}
+
+operation clone_normal_BalanceSTM_CalculateSpeed_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateSpeed_entry requires req_normal_BalanceSTM_CalculateSpeed_entry requires I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2 requires I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 requires I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12 requires I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16 requires I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17 final f
+	initial i
+	junction j_5_6
+	junction j_4_13
+	junction j_3_17
+	junction j_2_21
+	transition t {
+		from i
+		to j_5_6
+		action clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 ( 0 )
+	}
+	transition t_5_6 {
+		from j_5_6
+		to j_4_13
+		action clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12 ( 0 )
+	}
+	transition t_4_13 {
+		from j_4_13
+		to j_3_17
+		action clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16 ( currLeftVel + currRightVel )
+	}
+	transition t_3_17 {
+		from j_3_17
+		to j_2_21
+		action clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2 ( )
+	}
+	transition t_2_21 {
+		from j_2_21
+		to f
+		action clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17 ( 0 , speedBudget )
+	}
+}
+
+operation clone_normal_BalanceSTM_CalculateAngle_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateAngle_entry requires req_normal_BalanceSTM_CalculateAngle_entry requires I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1 requires I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4 requires I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 requires I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14 final f
+	initial i
+	junction j_5_5
+	junction j_4_14
+	junction j_3_19
+	junction j_2_23
+	transition t {
+		from i
+		to j_5_5
+		action enableInterrupts ( )
+	}
+	transition t_5_5 {
+		from j_5_5
+		to j_4_14
+		action clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4 ( 0 )
+	}
+	transition t_4_14 {
+		from j_4_14
+		to j_3_19
+		action clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 ( 0 )
+	}
+	transition t_3_19 {
+		from j_3_19
+		to j_2_23
+		action clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14 ( currAngle , currGyroX )
+	}
+	transition t_2_23 {
+		from j_2_23
+		to f
+		action clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1 ( 0 , angleBudget )
+	}
+}
+
+operation clone_normal_BalanceSTM_StopMotors_entry ( ) {
+	requires req_normal_BalanceSTM_StopMotors_entry requires I_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5 final f
+	initial i
+	junction j_3_7
+	junction j_2_12
+	transition t {
+		from i
+		to j_3_7
+		action setLeftMotorSpeed ( 0 )
+	}
+	transition t_3_7 {
+		from j_3_7
+		to j_2_12
+		action setRightMotorSpeed ( 0 )
+	}
+	transition t_2_12 {
+		from j_2_12
+		to f
+		action clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5 ( 0 , motorBudget )
+	}
+}
+
+operation clone_normal_BalanceSTM_Initialisation_entry ( ) {
+	requires req_normal_BalanceSTM_Initialisation_entry requires I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8 requires I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11 requires I_clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15 requires I_clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18 final f
+	initial i
+	junction j_4_3
+	junction j_3_9
+	junction j_2_16
+	transition t {
+		from i
+		to j_4_3
+		action clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15 ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_9
+		action clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8 ( )
+	}
+	transition t_3_9 {
+		from j_3_9
+		to j_2_16
+		action clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18 ( startupDelay )
+	}
+	transition t_2_16 {
+		from j_2_16
+		to f
+		action clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11 ( )
+	}
+}
+
+operation clone_normal_BalanceSTM_CalculateRotation_entry ( ) {
+	uses I_events_normal_BalanceSTM_CalculateRotation_entry requires req_normal_BalanceSTM_CalculateRotation_entry requires I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3 requires I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10 requires I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13 requires I_clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19 initial i
+	final f
+	junction j_4_8
+	junction j_3_10
+	junction j_2_20
+	transition t {
+		from i
+		to j_4_8
+		action clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13 ( 0 )
+	}
+	transition t_4_8 {
+		from j_4_8
+		to j_3_10
+		action clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3 ( currGyroZ )
+	}
+	transition t_3_10 {
+		from j_3_10
+		to j_2_20
+		action clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19 ( )
+	}
+	transition t_2_20 {
+		from j_2_20
+		to f
+		action clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10 ( 0 , rotationBudget )
+	}
+}
+
+operation clone_normal_BalanceSTM_SetMotors_entry ( ) {
+	requires req_normal_BalanceSTM_SetMotors_entry requires I_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6 final f
+	initial i
+	junction j_3_4
+	junction j_2_11
+	transition t {
+		from i
+		to j_3_4
+		action setLeftMotorSpeed ( angleOutput + speedOutput - rotationOutput )
+	}
+	transition t_3_4 {
+		from j_3_4
+		to j_2_11
+		action setRightMotorSpeed ( angleOutput + speedOutput + rotationOutput )
+	}
+	transition t_2_11 {
+		from j_2_11
+		to f
+		action clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6 ( 0 , motorBudget )
+	}
+}
+
+operation clone_normal_BalanceSTM_j1_t5_op ( ) {
+	requires req_normal_BalanceSTM_j1_t5_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rotationCount = rotationCount + 1
+	}
+}
+
+operation clone_normal_BalanceSTM_CalculateAngle_t3_op ( ) {
+	requires req_normal_BalanceSTM_CalculateAngle_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedCount = speedCount + 1
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1 ( m : nat
+, n : nat
+) {
+	requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_waitOp_j_j_20 junction j
+	initial i
+	final f
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_waitOp_j_j_20 ( 1 )
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2 ( ) {
+	requires I_req_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedCount = 0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3 ( diff : real
+) {
+	requires pkg867_::RotationPIDVars const D : real
+	initial i0
+	final f0
+	transition t0 {
+		from i0
+		to f0
+		action rotationOutput = D * diff
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_5_5 requires req_normal_BalanceSTM_CalculateAngle_entry_t_5_5 requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21 requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_deadlineCheck_during_34 var g : boolean = false
+	state S0 {
+		initial i
+		final f
+		state S1 {
+		}
+		transition t1 {
+			from S1
+			to f
+			action clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21 ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_deadlineCheck_during_34 ( d )
+	}
+	final f
+	initial i
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5 ( m : nat
+, n : nat
+) {
+	requires I_clone_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5_waitOp_j_j_22 junction j
+	initial i
+	final f
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action clone_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5_waitOp_j_j_22 ( 1 )
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6 ( m : nat
+, n : nat
+) {
+	requires I_clone_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6_waitOp_j_j_24 junction j
+	initial i
+	final f
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action clone_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6_waitOp_j_j_24 ( 1 )
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t requires req_normal_BalanceSTM_CalculateSpeed_entry_t requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28 requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_deadlineCheck_during_32 var g : boolean = false
+	final f
+	initial i
+	state S0 {
+		state S1 {
+		}
+		initial i
+		final f
+		transition t1 {
+			from S1
+			to f
+			action clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28 ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_deadlineCheck_during_32 ( d )
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8 ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action rotationCount = 0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateAngle_entry_t_4_14 requires req_normal_BalanceSTM_CalculateAngle_entry_t_4_14 requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_deadlineCheck_during_23 requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30 var g : boolean = false
+	initial i
+	state S0 {
+		final f
+		initial i
+		state S1 {
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		transition t1 {
+			from S1
+			to f
+			action clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30 ( )
+		}
+		during clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_deadlineCheck_during_23 ( d )
+	}
+	final f
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10 ( m : nat
+, n : nat
+) {
+	requires I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10_waitOp_j_j_31 junction j
+	initial i
+	final f
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10_waitOp_j_j_31 ( 1 )
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11 ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # loopTimer
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateSpeed_entry_t_5_6 requires req_normal_BalanceSTM_CalculateSpeed_entry_t_5_6 requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25 requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_deadlineCheck_during_26 var g : boolean = false
+	final f
+	state S0 {
+		state S1 {
+		}
+		final f
+		initial i
+		transition t1 {
+			from S1
+			to f
+			action clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25 ( )
+		}
+		transition t0 {
+			from i
+			to S1
+		}
+		during clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_deadlineCheck_during_26 ( d )
+	}
+	initial i
+	transition t0 {
+		from i
+		to S0
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13 ( d : nat
+) {
+	uses I_eventsnormal_BalanceSTM_CalculateRotation_entry_t requires req_normal_BalanceSTM_CalculateRotation_entry_t requires I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 requires I_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_deadlineCheck_during_36 var g : boolean = false
+	initial i
+	final f
+	state S0 {
+		final f
+		state S1 {
+		}
+		initial i
+		transition t0 {
+			from i
+			to S1
+		}
+		transition t1 {
+			from S1
+			to f
+			action clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 ( )
+		}
+		during clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_deadlineCheck_during_36 ( d )
+	}
+	transition t1 {
+		from S0
+		to f
+		condition g
+	}
+	transition t0 {
+		from i
+		to S0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14 ( newError : real
+, diff : real
+) {
+	requires pkg867_::AnglePIDVars requires I_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_normal_AnglePID_UpdateOutput_entry_entry_27 const P : real , D : real
+	initial i0
+	state UpdateOutput {
+		entry clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_normal_AnglePID_UpdateOutput_entry_entry_27 ( newError , diff )
+	}
+	final f0
+	transition t0 {
+		from i0
+		to UpdateOutput
+	}
+	transition t1 {
+		from UpdateOutput
+		to f0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15 ( ) {
+	requires I_req_normal_BalanceSTM_Initialisation_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action speedCount = 0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16 ( newError : real
+) {
+	requires pkg867_::SpeedPIDVars requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33 requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 const P : real , I : real
+	const maxIntegral : real
+	initial i0
+	state UpdateIntegral {
+		entry clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33 ( newError )
+	}
+	state UpdateOutput {
+		entry clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 ( newError )
+	}
+	final f0
+	transition t0 {
+		from i0
+		to UpdateIntegral
+	}
+	transition t1 {
+		from UpdateIntegral
+		to UpdateOutput
+	}
+	transition t2 {
+		from UpdateOutput
+		to f0
+	}
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17 ( m : nat
+, n : nat
+) {
+	requires I_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17_waitOp_j_j_35 junction j
+	initial i
+	final f
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17_waitOp_j_j_35 ( 1 )
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19 ( ) {
+	requires I_req_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rotationCount = 0
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_waitOp_j_j_20 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 requires I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_5_5 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op_j_2_24_f_43 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op_i_j_2_24_47 final f
+	initial i
+	junction j_2_24
+	transition t {
+		from i
+		to j_2_24
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op_i_j_2_24_47 ( )
+	}
+	transition t_2_24 {
+		from j_2_24
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op_j_2_24_f_43 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5_waitOp_j_j_22 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_deadlineCheck_during_23 ( d : nat
+) {
+	requires pkg867_main::ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6_waitOp_j_j_24 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 requires I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t_5_6 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op_i_j_2_22_38 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op_j_2_22_f_39 initial i
+	final f
+	junction j_2_22
+	transition t {
+		from i
+		to j_2_22
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op_i_j_2_22_38 ( )
+	}
+	transition t_2_22 {
+		from j_2_22
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op_j_2_22_f_39 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_deadlineCheck_during_26 ( d : nat
+) {
+	requires pkg867_main::ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_normal_AnglePID_UpdateOutput_entry_entry_27 ( newError : real
+, diff : real
+) {
+	requires pkg867_::req_normal_AnglePID_UpdateOutput_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action angleOutput = newError * P + diff * D
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t requires I_req_normal_normal_BalanceSTM_CalculateSpeed_entry_S0_t requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op_j_2_18_f_45 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 final f
+	initial i
+	junction j_2_18
+	transition t {
+		from i
+		to j_2_18
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 ( )
+	}
+	transition t_2_18 {
+		from j_2_18
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op_j_2_18_f_45 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t requires I_req_normal_normal_BalanceSTM_CalculateRotation_entry_S0_t requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op_i_j_2_15_42 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op_j_2_15_f_44 initial i
+	final f
+	junction j_2_15
+	transition t {
+		from i
+		to j_2_15
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op_i_j_2_15_42 ( )
+	}
+	transition t_2_15 {
+		from j_2_15
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op_j_2_15_f_44 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30 ( ) {
+	uses I_events_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 requires I_req_normal_normal_BalanceSTM_CalculateAngle_entry_S0_t_4_14 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op_i_j_2_25_40 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op_j_2_25_f_48 final f
+	initial i
+	junction j_2_25
+	transition t {
+		from i
+		to j_2_25
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op_i_j_2_25_40 ( )
+	}
+	transition t_2_25 {
+		from j_2_25
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op_j_2_25_f_48 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10_waitOp_j_j_31 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_deadlineCheck_during_32 ( d : nat
+) {
+	requires pkg867_main::ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33 ( newError : real
+) {
+	requires pkg867_::req_normal_SpeedPID_UpdateIntegral_entry requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_j_2_2_f_41 requires I_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_i_t_op_i_j_2_2_46 initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_i_t_op_i_j_2_2_46 ( newError )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_j_2_2_f_41 ( )
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_deadlineCheck_during_34 ( d : nat
+) {
+	requires pkg867_main::ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17_waitOp_j_j_35 ( i : nat
+) {
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_deadlineCheck_during_36 ( d : nat
+) {
+	requires pkg867_main::ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 ( newError : real
+) {
+	requires pkg867_::req_normal_SpeedPID_UpdateOutput_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedOutput = newError * P + speedIntegral * I
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t_op_i_j_2_22_38 ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action rightMotorVelocity ? currRightVel
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12_S1_f_25_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22_op_j_2_22_f_39 ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_2_22_t_2_22 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t_op_i_j_2_25_40 ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gyroX ? currGyroX
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_j_2_2_f_41 ( ) {
+	requires pkg867_::I_req_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedIntegral = if speedIntegral > maxIntegral then maxIntegral else if speedIntegral < - maxIntegral then - maxIntegral else speedIntegral end end
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t_op_i_j_2_15_42 ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gyroZ ? currGyroZ
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24_op_j_2_24_f_43 ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_2_24_t_2_24 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15_op_j_2_15_f_44 ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_j_2_15_t_2_15 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18_op_j_2_18_f_45 ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_j_2_18_t_2_18 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33_normal_SpeedPID_UpdateIntegral_entry_i_t_op_i_j_2_2_46 ( newError : real
+) {
+	requires pkg867_::I_req_normal_SpeedPID_UpdateIntegral_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action speedIntegral = speedIntegral + newError
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_j_5_5_j_4_14_4_S1_f_21_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t_op_i_j_2_24_47 ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action angle ? currAngle
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9_S1_f_30_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25_op_j_2_25_f_48 ( ) {
+	requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_2_25_t_2_25 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action g = true
+	}
+}
+
+operation clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 ( ) {
+	uses I_events_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t requires I_req_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action leftMotorVelocity ? currLeftVel
+	}
+}
+

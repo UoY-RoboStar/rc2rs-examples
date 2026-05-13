@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg867__deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t.csp"
+include "pkg867__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t
+P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t = let
+	id__ = 0
+	
+	param_d = 0
+	
+	
+	
+within
+	pkg867_::OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t::O__(id__,
+				param_d)
+assert P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t :[deadlock-free]	
+assert P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t :[deterministic]
+assert P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__OP_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t

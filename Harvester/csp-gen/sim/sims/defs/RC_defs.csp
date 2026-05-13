@@ -1,0 +1,196 @@
+module RC
+	--include "../../../timed/defs/main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|main::Harvester::takePic.in|}
+	OutputEvents = {|main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::pickCall,main::Harvester::goHomeCall,main::Harvester::dropCall|}
+	ExternalEvents = {|main::Harvester::takePic.in
+					   ,main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::pickCall,main::Harvester::goHomeCall,main::Harvester::dropCall|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_takePic.Bool.main_Image
+	
+	datatype RegisterDataOutput = o_hideArm
+		| o_move.main_JointsPos
+		| o_grasp.main_JointsPos
+		| o_pick
+		| o_goHome
+		| o_drop.main_JointsPos
+	
+	
+	nametype RegisterOutputs = {|
+	o_hideArm,
+	o_move,
+	o_grasp,
+	o_pick,
+	o_goHome,
+	o_drop|}
+	
+	nametype RegisterInputs = {|
+	i_takePic|}
+	
+	datatype COutputEvents = COutput_hideArm
+		| COutput_move
+		| COutput_grasp
+		| COutput_pick
+		| COutput_goHome
+		| COutput_drop
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_takePic = registerRead.i_takePic?b__.x__ ->
+								if b__ then (main::Harvester::takePic.in.x__ -> A1_takePic [] A1_takePic)
+									   else A1_takePic
+		
+														
+	within
+			     	A1_takePic
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+			read(COutput_hideArm) = main::Harvester::hideArmCall -> registerWrite.o_hideArm -> SKIP
+			read(COutput_move) = main::Harvester::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_grasp) = main::Harvester::graspCall?x__ -> registerWrite.o_grasp.x__ -> SKIP
+			read(COutput_pick) = main::Harvester::pickCall -> registerWrite.o_pick -> SKIP
+			read(COutput_goHome) = main::Harvester::goHomeCall -> registerWrite.o_goHome -> SKIP
+			read(COutput_drop) = main::Harvester::dropCall?x__ -> registerWrite.o_drop.x__ -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_takePic?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(main::Harvester::D__(id__,
+				    const_main_ControlArm_stm_ref0_hideTime,
+				    const_main_ControlArm_stm_ref0_approachTime,
+				    const_main_ControlArm_stm_ref0_graspTime,
+				    const_main_ControlArm_stm_ref0_dropTime,
+				    const_main_ControlArm_stm_ref0_pickTime,
+				    const_main_ControlArm_stm_ref0_pickDeadl,
+				    const_main_ControlArm_stm_ref0_homePos,
+				    const_main_ControlArm_stm_ref0_storagePos,
+				    const_main_ControlArm_stm_ref2_goHTime)\{|main::Harvester::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime) =
+		prioritise(
+			((TLFree(id__,
+					    const_main_ControlArm_stm_ref0_hideTime,
+					    const_main_ControlArm_stm_ref0_approachTime,
+					    const_main_ControlArm_stm_ref0_graspTime,
+					    const_main_ControlArm_stm_ref0_dropTime,
+					    const_main_ControlArm_stm_ref0_pickTime,
+					    const_main_ControlArm_stm_ref0_pickDeadl,
+					    const_main_ControlArm_stm_ref0_homePos,
+					    const_main_ControlArm_stm_ref0_storagePos,
+					    const_main_ControlArm_stm_ref2_goHTime) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime) =
+		prioritise(
+			((main::Harvester::D__(id__,
+					    const_main_ControlArm_stm_ref0_hideTime,
+					    const_main_ControlArm_stm_ref0_approachTime,
+					    const_main_ControlArm_stm_ref0_graspTime,
+					    const_main_ControlArm_stm_ref0_dropTime,
+					    const_main_ControlArm_stm_ref0_pickTime,
+					    const_main_ControlArm_stm_ref0_pickDeadl,
+					    const_main_ControlArm_stm_ref0_homePos,
+					    const_main_ControlArm_stm_ref0_storagePos,
+					    const_main_ControlArm_stm_ref2_goHTime)\{|main::Harvester::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime) = D__(id__,cycle_RC_RC,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime)
+
+endmodule

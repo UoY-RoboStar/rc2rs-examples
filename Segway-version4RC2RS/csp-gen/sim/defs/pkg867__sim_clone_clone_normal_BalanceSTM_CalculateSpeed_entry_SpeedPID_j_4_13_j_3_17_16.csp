@@ -1,0 +1,952 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:37:02
+--
+
+-- compileSelfContainedOperation
+module OP_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i0|
+	              NID_UpdateIntegral|
+	              NID_UpdateOutput|
+	              NID_f0
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_speedIntegral, set_speedIntegral, setL_speedIntegral, setR_speedIntegral: core_real
+	channel get_speedOutput, set_speedOutput, setL_speedOutput, setR_speedOutput: core_real
+	channel get_gyroZF, set_gyroZF, setL_gyroZF, setR_gyroZF: core_boolean
+	channel get_gyroXF, set_gyroXF, setL_gyroXF, setR_gyroXF: core_boolean
+	channel get_rightMotorVelocityF, set_rightMotorVelocityF, setL_rightMotorVelocityF, setR_rightMotorVelocityF: core_boolean
+	channel get_angleF, set_angleF, setL_angleF, setR_angleF: core_boolean
+	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
+	
+	-- Shared variable channels
+	channel set_EXT_speedOutput: core_real
+	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_speedIntegral: core_real
+	channel set_EXT_leftMotorVelocityF: core_boolean
+	channel set_EXT_rightMotorVelocityF: core_boolean
+	channel set_EXT_angleF: core_boolean
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37Call: core_real
+	channel clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33Call: core_real
+	
+	enterSS = {|
+	i0::enter,
+	UpdateIntegral::enter,
+	UpdateOutput::enter,
+	f0::enter
+	|}
+	
+	enteredSS = 	{|
+	UpdateIntegral::entered,
+	UpdateOutput::entered,
+	f0::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+		set_EXT_speedOutput,
+		set_EXT_gyroZF,
+		set_EXT_gyroXF,
+		set_EXT_speedIntegral,
+		set_EXT_leftMotorVelocityF,
+		set_EXT_rightMotorVelocityF,
+		set_EXT_angleF
+	|}
+	
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_UpdateIntegral : core_clock_type 
+	channel get_CLID_UpdateOutput : core_clock_type 
+	channel get_CLID_f0 : core_clock_type 
+	--channel increment__
+	
+	CLID_UpdateIntegral_clock_type(id__,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_UpdateOutput_clock_type(id__,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_f0_clock_type(id__,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+	
+	-- RoboSim-specific declarations
+	channel endexec, endexec_action
+	channel endexec__ : NIDS
+	channel startexec, startexec_action
+	
+	-- declaring registerRead/Write datatypes
+	
+	
+	nametype RegisterOutputs = {||}
+		
+	nametype RegisterInputs = {||}
+	
+	
+	-- variable channels
+	
+	-- channel set with all visible events
+	sem__events = {|endexec,terminate
+	,	clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37Call,
+		clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33Call
+		, share__
+		|}
+	
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateIntegral
+		module UpdateIntegral
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33(
+								id__,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+								param_newError
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33(
+								id__,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+								param_newError
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateOutput
+		module UpdateOutput
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37(
+								id__,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+								param_newError
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37(
+								id__,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+							    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+								param_newError
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: f0
+		module f0
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+						
+						Entering 	= entered -> SKIP ; Active
+						Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+						Interrupted	= share__choice(exit -> exited -> Inactive)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = D__(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37(id__,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+					param_newError) = EDeadline(clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37Call.param_newError,0)
+		CALL__clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33(id__,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral,
+					param_newError) = EDeadline(clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateIntegral_entry_entry_33Call.param_newError,0)
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+		Stateful(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) \ {terminate}
+		
+		STM_VS_O(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+		Stateful(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) \ {terminate}
+		
+		-- Transitions
+		Transitions(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = ((let
+			Trans = TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; UpdateIntegral::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_UpdateIntegral -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; UpdateOutput::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_UpdateOutput -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; f0::enter -> SKIP)))
+				 []
+				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 []
+				 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+				 )
+			,SKIP);Trans
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			dbisim((
+			let
+				finalNodesEntered = {|f0::entered|}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					UpdateIntegral::enter,
+					UpdateOutput::enter,
+					f0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_i0,internal__.NID_UpdateIntegral,internal__.NID_UpdateOutput|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::D__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   UpdateIntegral::D__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   UpdateOutput::D__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   f0::D__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   )
+						   )
+						   )
+						 )
+						 [[UpdateIntegral::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateIntegral|}]]
+						 [[UpdateOutput::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateOutput|}]]
+						 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 			param_newError,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateIntegral,UpdateIntegral::entered,get_CLID_UpdateOutput,UpdateOutput::entered|}
+			 within
+				(MachineBody(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		
+		Stateful(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 			param_newError,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [| {terminate} |] Clocks(id__,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			dbisim((
+			let
+				finalNodesEntered = {|f0::entered|}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					UpdateIntegral::enter,
+					UpdateOutput::enter,
+					f0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_i0,internal__.NID_UpdateIntegral,internal__.NID_UpdateOutput|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::VS_O__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   UpdateIntegral::VS_O__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   UpdateOutput::VS_O__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   [| { share__, terminate } |] (
+						   f0::VS_O__(id__,
+						   			param_newError,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						   		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+						   )
+						   )
+						   )
+						 )
+						 [[UpdateIntegral::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateIntegral|}]]
+						 [[UpdateOutput::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateOutput|}]]
+						 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 			param_newError,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateIntegral,UpdateIntegral::entered,get_CLID_UpdateOutput,UpdateOutput::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		
+		Stateful_VS_O(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			dbisim((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,
+							param_newError,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 			param_newError,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [| {terminate} |] Clocks(id__,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				 		          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		
+		-- varMemory process
+		varMemory(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = terminate -> SKIP
+		
+		getsetLocalChannels = {||}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = STM_VS_O(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) \ localClockResets
+		D__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = timed_priority(STM(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) \ union(internal_events,localClockResets))
+		O__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = dbisim(D__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		VS__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = FVS__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+		VS_O__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = dbisim(FVS__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		HEXT__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = O__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = dbisim(timed_priority(STM(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) \ internal_events))
+		HUP__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = timed_priority(O__(id__,
+					param_newError,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				    const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_UpdateIntegral(id__,x__,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			TimeOut_1(
+				UpdateIntegral::entered -> Clock_CLID_UpdateIntegral(id__,0,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				[]
+				get_CLID_UpdateIntegral!x__ -> Clock_CLID_UpdateIntegral(id__,x__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateIntegral(id__,clock_type_plus(x__,1,CLID_UpdateIntegral_clock_type(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)),
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		Clock_CLID_UpdateOutput(id__,x__,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+			TimeOut_1(
+				UpdateOutput::entered -> Clock_CLID_UpdateOutput(id__,0,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				[]
+				get_CLID_UpdateOutput!x__ -> Clock_CLID_UpdateOutput(id__,x__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateOutput(id__,clock_type_plus(x__,1,CLID_UpdateOutput_clock_type(id__,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)),
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+						          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		
+		StateClocks(id__,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = dbisim(Clock_CLID_UpdateIntegral(id__,0,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_UpdateOutput(id__,0,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				          const_pkg867__sim_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral))
+		)
+		
+		stateClockSync = {|get_CLID_UpdateIntegral,UpdateIntegral::entered,get_CLID_UpdateOutput,UpdateOutput::entered|}
+		
+		}
+			endmodule

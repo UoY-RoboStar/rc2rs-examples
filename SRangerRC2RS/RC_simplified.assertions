@@ -1,0 +1,129 @@
+
+/*
+ * File with simplified semantics of the RoboChart model and the verification
+ * using both FD and tick-tock.
+ */
+timed csp Instantiations csp-begin
+
+-- generate const_SimFW_SMovement_PI
+const_SimFW_SMovement_PI = 3
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_SimFW_SMovement_av
+const_SimFW_SMovement_av = 2
+
+-- generate const_SimFW_SMovement_lv
+const_SimFW_SMovement_lv = 1
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate nat
+nametype core_nat = { 0..3}
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC TYPES
+
+-- generate real
+nametype core_real = { -3..3} 
+
+-- CLOCKS
+
+-- generate int
+nametype core_int = { -3..3}
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+MinusNoNeg(e1,e2,T) = if e1-e2 > 0 then Minus(e1,e2,T) else 0
+
+csp-end
+
+timed csp Spec csp-begin
+
+Timed(OneStep) {
+	
+	-- Simplfied RoboChart semantics, written within a timed-section
+
+	-- Main process with maximal progress.
+	Spec = timed_priority(Initial)
+
+	Initial = 	EntryMoving; 
+				Obs; 
+				EntryTurning;
+				-- In the RoboChart model #MBC is reset after obstacle, so we need to subtract 2 units
+				-- from that, given that EntryTurning consumes, at least, 2 time units.
+				WAIT(MinusNoNeg(Div(const_SimFW_SMovement_PI,const_SimFW_SMovement_av,core_nat),2,core_nat)); 
+				Initial
+
+	EntryMoving = StartBy(SimFW::CMovement::moveCall.const_SimFW_SMovement_lv.0 -> WAIT(1),0)
+	
+	Obs = SimFW::CMovement::obstacle.in -> SKIP
+	
+	EntryTurning = StartBy(SimFW::CMovement::stopCall -> WAIT(1) ;
+					StartBy(SimFW::CMovement::moveCall.0.const_SimFW_SMovement_av -> WAIT(1),
+						0),
+					0)
+	
+	-- For verification using tick-tock need to provide alphabet of Spec process,
+	-- which in this case is exactly the same as that of the built-in calculated
+	-- by RoboTool
+	Spec__sem__events = SimFW::CMovement::sem__events
+}
+
+csp-end
+
+timed csp USpec csp-begin
+
+-- Simplfied RoboChart semantics, written outside a timed-section
+
+-- No need to enforce maximal progress due to writing spec in pure CSP
+USpec = UInitial
+
+UInitial = 	UEntryMoving; 
+			UObs; 
+			UEntryTurning;
+			-- In the RoboChart model #MBC is reset after obstacle, so we need to subtract 2 units
+			-- from that, given that EntryTurning consumes, at least, 2 time units.
+			wait(MinusNoNeg(Div(const_SimFW_SMovement_PI,const_SimFW_SMovement_av,core_nat),2,core_nat)); 
+			UInitial
+
+UEntryMoving = SimFW::CMovement::moveCall.const_SimFW_SMovement_lv.0 -> wait(1)
+
+-- Note the explicit use of tock below.
+UObs = SimFW::CMovement::obstacle.in -> SKIP [] tock -> UObs
+
+UEntryTurning = SimFW::CMovement::stopCall -> wait(1) ;
+					SimFW::CMovement::moveCall.0.const_SimFW_SMovement_av -> wait(1)
+	
+-- For verification using tick-tock need to provide alphabet of Spec process,
+-- which in this case is exactly the same as that of the built-in calculated
+-- by RoboTool
+USpec__sem__events = SimFW::CMovement::sem__events
+	
+csp-end
+
+timed assertion A0 : SimFW::CMovement equals Spec
+timed assertion A1 : SimFW::CMovement equals Spec in the tick-tock model
+
+timed assertion A2 : SimFW::CMovement equals USpec
+timed assertion A3 : SimFW::CMovement equals USpec in the tick-tock model

@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_IKSolver.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_IKSolver
+P_pkg727_main_sim_IKSolver = let
+	cycle_pkg727_main_sim_IKSolver_IKSolver = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg727_main_sim_IKSolver::O__(
+		id__
+	)
+assert P_pkg727_main_sim_IKSolver :[deadlock-free]	
+assert P_pkg727_main_sim_IKSolver;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_IKSolver :[deterministic]
+assert P_pkg727_main_sim_IKSolver :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_IKSolver[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_IKSolver

@@ -1,0 +1,44 @@
+package pkg867_ interface AnglePIDVars {
+	var angleOutput : real = 0
+}
+
+interface req_normal_AnglePID_UpdateOutput_entry {
+	const P : real , D : real
+	var angleOutput : real = 0
+}
+
+interface I_normal_AnglePID_UpdateOutput_entry {
+	normal_AnglePID_UpdateOutput_entry ( newError : real , diff : real )
+}
+
+operation AnglePID ( newError : real
+, diff : real
+) {
+	requires AnglePIDVars requires I_normal_AnglePID_UpdateOutput_entry const P : real , D : real
+	initial i0
+	state UpdateOutput {
+		entry normal_AnglePID_UpdateOutput_entry ( newError , diff )
+	}
+	final f0
+	transition t0 {
+		from i0
+		to UpdateOutput
+	}
+	transition t1 {
+		from UpdateOutput
+		to f0
+	}
+}
+
+operation normal_AnglePID_UpdateOutput_entry ( newError : real
+, diff : real
+) {
+	requires req_normal_AnglePID_UpdateOutput_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action angleOutput = newError * P + diff * D
+	}
+}
+

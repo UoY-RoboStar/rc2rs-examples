@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 13:19:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "set_toolkit_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "main_defs.csp"
+include "state_timed_defs.csp"
+include "setoperations_defs.csp"
+include "robochart_defs.csp"
+include "main_NearestNeighbour.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate main_OP_NearestNeighbour
+P_main_OP_NearestNeighbour = let
+	id__ = 0
+	
+	
+	
+	
+within
+	main::OP_NearestNeighbour::O__(id__)
+assert P_main_OP_NearestNeighbour :[deadlock-free]	
+assert P_main_OP_NearestNeighbour;RUN({r__}) :[deadlock-free]
+assert P_main_OP_NearestNeighbour :[deterministic]
+assert P_main_OP_NearestNeighbour :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_OP_NearestNeighbour[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_OP_NearestNeighbour

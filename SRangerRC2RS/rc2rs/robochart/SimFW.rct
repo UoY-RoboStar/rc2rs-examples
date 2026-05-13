@@ -1,0 +1,403 @@
+package pkg224_SimFW interface MovementI {
+	move ( lv : real , av : real )
+	stop ( )
+}
+ 
+interface ObstacleI {
+	event obstacle
+}
+
+interface req_normal_SMovement_Moving_entry {
+	move ( lv : real , av : real )
+	const lv : real
+}
+
+interface I_normal_SMovement_Moving_entry {
+	normal_SMovement_Moving_entry ( )
+}
+
+interface req_normal_SMovement_Moving_t2_op {
+	stop ( )
+	clock MBC
+}
+
+interface I_normal_SMovement_Moving_t2_op {
+	normal_SMovement_Moving_t2_op ( )
+}
+
+interface req_normal_SMovement_Turning_entry {
+	move ( lv : real , av : real )
+	const av : real
+}
+
+interface I_req_normal_SMovement_Moving_t2_op_i_t{
+	clock MBC
+}
+
+interface I_normal_SMovement_Turning_entry {
+	normal_SMovement_Turning_entry ( )
+}
+
+interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+interface I_clone_normal_SMovement_Moving_t2_op_i_t_op_i_j_3_3{
+	clone_normal_SMovement_Moving_t2_op_i_t_op_i_j_3_3 ( )
+}
+
+interface I_clone_normal_SMovement_Turning_entry {
+	clone_normal_SMovement_Turning_entry ( )
+}
+
+interface I_clone_normal_SMovement_Moving_entry {
+	clone_normal_SMovement_Moving_entry ( )
+}
+
+interface I_clone_normal_SMovement_Moving_t2_op {
+	clone_normal_SMovement_Moving_t2_op ( )
+}
+
+interface I_clone_waitOp_j_2_2_f {
+	clone_waitOp_j_2_2_f ( i : nat )
+}
+
+interface I_clone_waitOp_j_2_4_f {
+	clone_waitOp_j_2_4_f ( i : nat )
+}
+
+interface I_clone_waitOp_j_2_5_f{
+	clone_waitOp_j_2_5_f ( i : nat)
+}
+
+controller Movement {
+	uses ObstacleI requires MovementI opref Movement_ref_normal_SMovement_Moving_entry = normal_SMovement_Moving_entry
+	opref Movement_ref_normal_SMovement_Moving_t2_op = normal_SMovement_Moving_t2_op
+	opref Movement_ref_normal_SMovement_Turning_entry = normal_SMovement_Turning_entry
+	opref Movement_ref_tStop = tStop
+	opref Movement_ref_deadlineCheck = deadlineCheck
+	opref Movement_ref_waitOp = waitOp
+	opref Movement_ref_waitInterval = waitInterval
+	opref Movement_ref_clone_normal_SMovement_Turning_entry = clone_normal_SMovement_Turning_entry
+	opref Movement_ref_clone_normal_SMovement_Moving_entry = clone_normal_SMovement_Moving_entry
+	opref Movement_ref_clone_normal_SMovement_Moving_t2_op = clone_normal_SMovement_Moving_t2_op
+	opref Movement_ref_clone_waitOp_j_2_2_f = clone_waitOp_j_2_2_f
+	opref Movement_ref_clone_waitOp_j_2_4_f = clone_waitOp_j_2_4_f
+	sref stm_ref0 = SMovement
+	connection Movement on obstacle to stm_ref0 on obstacle
+}
+
+stm SMovement {
+	uses ObstacleI requires MovementI requires I_normal_SMovement_Moving_entry requires I_normal_SMovement_Moving_t2_op requires I_normal_SMovement_Turning_entry requires I_clone_normal_SMovement_Turning_entry requires I_clone_normal_SMovement_Moving_entry requires I_clone_normal_SMovement_Moving_t2_op const lv : real
+	const PI : real
+	const av : real
+	initial i1
+	state Moving {
+		initial i
+		state EmptyCycle {
+		}
+		transition tMoving {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_SMovement_Moving_entry ( )
+	}
+	state Turning {
+		initial i
+		state EmptyCycle {
+		}
+		transition tTurning {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_SMovement_Turning_entry ( )
+	}
+	transition t1 {
+		from i1
+		to Moving
+	}
+	transition t2 {
+		from Moving
+		to Turning
+		trigger obstacle
+		# MBC
+		action clone_normal_SMovement_Moving_t2_op ( )
+	}
+	transition t3 {
+		from Turning
+		to Moving
+		condition since ( MBC ) >= PI / av
+	}
+	clock MBC
+}
+
+operation normal_SMovement_Moving_entry ( ) {
+	requires req_normal_SMovement_Moving_entry requires I_waitOp final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action move ( lv , 0 )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action waitOp ( 1 )
+	}
+}
+
+operation normal_SMovement_Moving_t2_op ( ) {
+	requires req_normal_SMovement_Moving_t2_op requires I_waitOp initial i
+	final f
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action stop ( )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action waitOp ( 1 )
+	}
+}
+
+operation normal_SMovement_Turning_entry ( ) {
+	requires req_normal_SMovement_Turning_entry requires I_waitOp final f
+	initial i
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action move ( 0 , av )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action waitOp ( 1 )
+	}
+}
+
+operation tStop ( ) {
+	initial i
+	state sStop {
+	}
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	initial i0
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp final f
+	junction j
+	initial i
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	clock C
+}
+
+operation clone_normal_SMovement_Turning_entry ( ) {
+	requires req_normal_SMovement_Turning_entry requires I_waitOp requires I_clone_waitOp_j_2_4_f final f
+	initial i
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action move ( 0 , av )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action clone_waitOp_j_2_4_f ( 1 )
+	}
+}
+
+operation clone_normal_SMovement_Moving_entry ( ) {
+	requires req_normal_SMovement_Moving_entry requires I_waitOp requires I_clone_waitOp_j_2_2_f final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action move ( lv , 0 )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_waitOp_j_2_2_f ( 1 )
+	}
+}
+
+
+
+operation clone_normal_SMovement_Moving_t2_op ( ) {
+	requires req_normal_SMovement_Moving_t2_op  requires I_clone_waitOp_j_2_4_f initial i
+	final f
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action stop ( )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action clone_waitOp_j_2_4_f ( 1 ) 
+	}
+}
+
+
+
+operation clone_waitOp_j_2_2_f ( i : nat
+) {
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	initial i0
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_waitOp_j_2_4_f ( i : nat
+) {
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	initial i0
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_waitOp_j_2_3_f ( i : nat
+) {
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	initial i0
+	final f
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+module CMovement {
+	connection FootBot on obstacle to ctrl_ref0 on obstacle ( _async )
+	robotic platform FootBot {
+		uses ObstacleI provides MovementI }
+
+	cref ctrl_ref0 = Movement
+}
+

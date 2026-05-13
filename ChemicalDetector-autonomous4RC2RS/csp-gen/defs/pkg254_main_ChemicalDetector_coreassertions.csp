@@ -1,0 +1,85 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg254_main_ChemicalDetector.csp"
+include "state_defs.csp"
+include "pkg254_main_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg254_main_ChemicalDetector
+P_pkg254_main_ChemicalDetector = let
+	id__ = 0
+	
+	
+	
+	const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
+	const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
+	const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
+	const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
+	const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+	const_pkg254__MainController_stm_ref0_thr = const_pkg254__GasAnalysis_thr
+		
+	
+within
+	pkg254_main_ChemicalDetector::O__(id__,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod,
+			    const_pkg254__MainController_stm_ref0_thr)
+assert P_pkg254_main_ChemicalDetector :[deadlock-free]	
+assert P_pkg254_main_ChemicalDetector;RUN({r__}) :[deadlock-free]
+assert P_pkg254_main_ChemicalDetector :[deterministic]
+assert P_pkg254_main_ChemicalDetector :[divergence-free]
+
+-- generate pkg254_main_ChemicalDetector_ctrl_ref0
+P_pkg254_main_ChemicalDetector_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
+	const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
+	const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
+	const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
+	const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+		
+within
+	pkg254_main_ChemicalDetector::ctrl_ref0::O__(id__,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod)
+
+assert P_pkg254_main_ChemicalDetector_ctrl_ref0 :[deadlock-free]	
+assert P_pkg254_main_ChemicalDetector_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg254_main_ChemicalDetector_ctrl_ref0 :[deterministic]
+assert P_pkg254_main_ChemicalDetector_ctrl_ref0 :[divergence-free]
+
+-- generate pkg254_main_ChemicalDetector_ctrl_ref1
+P_pkg254_main_ChemicalDetector_ctrl_ref1 = let
+	id__ = 0
+	
+	
+	
+	const_pkg254__MainController_stm_ref0_thr = const_pkg254__GasAnalysis_thr
+		
+within
+	pkg254_main_ChemicalDetector::ctrl_ref1::O__(id__,
+			    const_pkg254__MainController_stm_ref0_thr)
+
+assert P_pkg254_main_ChemicalDetector_ctrl_ref1 :[deadlock-free]	
+assert P_pkg254_main_ChemicalDetector_ctrl_ref1;RUN({r__}) :[deadlock-free]
+assert P_pkg254_main_ChemicalDetector_ctrl_ref1 :[deterministic]
+assert P_pkg254_main_ChemicalDetector_ctrl_ref1 :[divergence-free]
+

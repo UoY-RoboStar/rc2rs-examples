@@ -1,0 +1,115 @@
+package pkg867_ interface SpeedPIDVars {
+	var speedIntegral : real = 0
+	var speedOutput : real = 0
+}
+
+interface req_normal_SpeedPID_UpdateOutput_entry {
+	const P : real , I : real
+	var speedIntegral : real = 0 , speedOutput : real = 0
+}
+
+interface I_normal_SpeedPID_UpdateOutput_entry {
+	normal_SpeedPID_UpdateOutput_entry ( newError : real )
+}
+
+interface req_normal_SpeedPID_UpdateIntegral_entry {
+	const maxIntegral : real
+	var speedIntegral : real = 0
+}
+
+interface I_normal_SpeedPID_UpdateIntegral_entry {
+	normal_SpeedPID_UpdateIntegral_entry ( newError : real )
+}
+
+interface I_req_normal_SpeedPID_UpdateIntegral_entry_i_t {
+	var speedIntegral : real = 0
+}
+
+interface I_normal_SpeedPID_UpdateIntegral_entry_i_t_op {
+	normal_SpeedPID_UpdateIntegral_entry_i_t_op ( newError : real )
+}
+
+interface I_req_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2 {
+	const maxIntegral : real
+	var speedIntegral : real = 0
+}
+
+interface I_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op {
+	normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op ( )
+}
+
+operation SpeedPID ( newError : real
+) {
+	requires SpeedPIDVars requires I_normal_SpeedPID_UpdateOutput_entry requires I_normal_SpeedPID_UpdateIntegral_entry const P : real , I : real
+	const maxIntegral : real
+	initial i0
+	state UpdateIntegral {
+		entry normal_SpeedPID_UpdateIntegral_entry ( newError )
+	}
+	state UpdateOutput {
+		entry normal_SpeedPID_UpdateOutput_entry ( newError )
+	}
+	final f0
+	transition t0 {
+		from i0
+		to UpdateIntegral
+	}
+	transition t1 {
+		from UpdateIntegral
+		to UpdateOutput
+	}
+	transition t2 {
+		from UpdateOutput
+		to f0
+	}
+}
+
+operation normal_SpeedPID_UpdateOutput_entry ( newError : real
+) {
+	requires req_normal_SpeedPID_UpdateOutput_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedOutput = newError * P + speedIntegral * I
+	}
+}
+
+operation normal_SpeedPID_UpdateIntegral_entry ( newError : real
+) {
+	requires req_normal_SpeedPID_UpdateIntegral_entry requires I_normal_SpeedPID_UpdateIntegral_entry_i_t_op requires I_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action normal_SpeedPID_UpdateIntegral_entry_i_t_op ( newError )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op ( )
+	}
+}
+
+operation normal_SpeedPID_UpdateIntegral_entry_i_t_op ( newError : real
+) {
+	requires I_req_normal_SpeedPID_UpdateIntegral_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action speedIntegral = speedIntegral + newError
+	}
+}
+
+operation normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op ( ) {
+	requires I_req_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action speedIntegral = if speedIntegral > maxIntegral then maxIntegral else if speedIntegral < - maxIntegral then - maxIntegral else speedIntegral end end
+	}
+}
+

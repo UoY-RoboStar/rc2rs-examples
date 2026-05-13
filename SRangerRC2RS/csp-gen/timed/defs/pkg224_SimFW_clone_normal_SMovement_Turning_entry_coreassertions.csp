@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:58:32
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg224_SimFW_clone_normal_SMovement_Turning_entry.csp"
+include "pkg224_SimFW_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry
+P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry = let
+	id__ = 0
+	
+	
+	const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av = 0
+	
+	
+within
+	pkg224_SimFW::OP_clone_normal_SMovement_Turning_entry::O__(id__,
+			    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av)
+assert P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry :[deadlock-free]	
+assert P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry :[deterministic]
+assert P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg224_SimFW_OP_clone_normal_SMovement_Turning_entry

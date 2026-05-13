@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ASCII"?>
+<robochart:RCPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:robochart="http://www.robocalc.circus/RoboChart" xmlns:robosim="http://www.robocalc.circus/RoboSim">
+  <interfaces name="MovementI">
+    <operations name="move">
+      <parameters name="lv">
+        <type xsi:type="robochart:TypeRef">
+          <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+        </type>
+      </parameters>
+      <parameters name="av">
+        <type xsi:type="robochart:TypeRef">
+          <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+        </type>
+      </parameters>
+    </operations>
+    <operations name="stop"/>
+  </interfaces>
+  <interfaces name="ObstacleI">
+    <events name="obstacle"/>
+  </interfaces>
+  <machines xsi:type="robosim:SimMachineDef" name="SimSMovement">
+    <variableList modifier="CONST">
+      <vars name="PI">
+        <type xsi:type="robochart:TypeRef">
+          <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+        </type>
+      </vars>
+      <vars name="lv">
+        <type xsi:type="robochart:TypeRef">
+          <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+        </type>
+      </vars>
+      <vars name="av">
+        <type xsi:type="robochart:TypeRef">
+          <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+        </type>
+      </vars>
+    </variableList>
+    <clocks name="MBC"/>
+    <nodes xsi:type="robochart:Initial" name="i1"/>
+    <nodes xsi:type="robochart:State" name="SMoving">
+      <actions xsi:type="robochart:EntryAction">
+        <action xsi:type="robosim:SimCall" operation="//@interfaces.0/@operations.0">
+          <args xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.1"/>
+          <args xsi:type="robochart:IntegerExp"/>
+        </action>
+      </actions>
+    </nodes>
+    <nodes xsi:type="robochart:State" name="DMoving"/>
+    <nodes xsi:type="robochart:Junction" name="J1"/>
+    <nodes xsi:type="robochart:State" name="Waiting"/>
+    <nodes xsi:type="robochart:State" name="STurning">
+      <actions xsi:type="robochart:EntryAction">
+        <action xsi:type="robochart:Call" operation="//@interfaces.0/@operations.0">
+          <args xsi:type="robochart:IntegerExp"/>
+          <args xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.2"/>
+        </action>
+      </actions>
+    </nodes>
+    <nodes xsi:type="robochart:State" name="DTurning"/>
+    <nodes xsi:type="robochart:Junction" name="J2"/>
+    <transitions name="t1" source="//@machines.0/@nodes.0" target="//@machines.0/@nodes.1"/>
+    <transitions name="t2" source="//@machines.0/@nodes.1" target="//@machines.0/@nodes.2"/>
+    <transitions name="t3" source="//@machines.0/@nodes.2" target="//@machines.0/@nodes.3">
+      <trigger xsi:type="robosim:ExecTrigger"/>
+    </transitions>
+    <transitions name="t4" source="//@machines.0/@nodes.3" target="//@machines.0/@nodes.2">
+      <condition xsi:type="robochart:Not">
+        <exp xsi:type="robosim:SimRefExp" element="//@interfaces.1/@events.0"/>
+      </condition>
+    </transitions>
+    <transitions name="t5" source="//@machines.0/@nodes.3" target="//@machines.0/@nodes.4">
+      <condition xsi:type="robosim:SimRefExp" element="//@interfaces.1/@events.0"/>
+      <action xsi:type="robochart:SeqStatement">
+        <statements xsi:type="robochart:ClockReset" clock="//@machines.0/@clocks.0"/>
+        <statements xsi:type="robosim:SimCall" operation="//@interfaces.0/@operations.1"/>
+      </action>
+    </transitions>
+    <transitions name="t6" source="//@machines.0/@nodes.4" target="//@machines.0/@nodes.5">
+      <trigger xsi:type="robosim:ExecTrigger"/>
+    </transitions>
+    <transitions name="t7" source="//@machines.0/@nodes.5" target="//@machines.0/@nodes.6"/>
+    <transitions name="t8" source="//@machines.0/@nodes.6" target="//@machines.0/@nodes.7">
+      <trigger xsi:type="robosim:ExecTrigger"/>
+    </transitions>
+    <transitions name="t9" source="//@machines.0/@nodes.7" target="//@machines.0/@nodes.6">
+      <condition xsi:type="robochart:LessThan">
+        <left xsi:type="robochart:ClockExp" clock="//@machines.0/@clocks.0"/>
+        <right xsi:type="robochart:Div">
+          <left xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.0"/>
+          <right xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.2"/>
+        </right>
+      </condition>
+    </transitions>
+    <transitions name="t10" source="//@machines.0/@nodes.7" target="//@machines.0/@nodes.1">
+      <condition xsi:type="robochart:GreaterOrEqual">
+        <left xsi:type="robochart:ClockExp" clock="//@machines.0/@clocks.0"/>
+        <right xsi:type="robochart:Div">
+          <left xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.0"/>
+          <right xsi:type="robochart:RefExp" ref="//@machines.0/@variableList.0/@vars.2"/>
+        </right>
+      </condition>
+    </transitions>
+    <inputContext xsi:type="robosim:InputContext" interfaces="//@interfaces.1"/>
+    <outputContext xsi:type="robosim:OutputContext" rInterfaces="//@interfaces.0"/>
+    <cycleDef xsi:type="robochart:Equals">
+      <left xsi:type="robosim:CycleExp"/>
+      <right xsi:type="robochart:IntegerExp" value="1"/>
+    </cycleDef>
+  </machines>
+  <controllers xsi:type="robosim:SimControllerDef" rInterfaces="//@interfaces.0" interfaces="//@interfaces.1" name="SimMovement">
+    <machines xsi:type="robochart:StateMachineRef" name="sm" ref="//@machines.0"/>
+    <connections from="//@controllers.0" to="//@controllers.0/@machines.0" efrom="//@interfaces.1/@events.0" eto="//@interfaces.1/@events.0"/>
+    <cycleDef xsi:type="robochart:Equals">
+      <left xsi:type="robosim:CycleExp"/>
+      <right xsi:type="robochart:IntegerExp" value="1"/>
+    </cycleDef>
+  </controllers>
+  <modules xsi:type="robosim:SimModule" name="SimCMovement">
+    <connections from="//@modules.0/@nodes.0" to="//@modules.0/@nodes.1" efrom="//@interfaces.1/@events.0" eto="//@interfaces.1/@events.0" async="true"/>
+    <nodes xsi:type="robochart:RoboticPlatformDef" pInterfaces="//@interfaces.0" interfaces="//@interfaces.1" name="Vehicle"/>
+    <nodes xsi:type="robochart:ControllerRef" name="cm" ref="//@controllers.0"/>
+    <cycleDef xsi:type="robochart:Equals">
+      <left xsi:type="robosim:CycleExp"/>
+      <right xsi:type="robochart:IntegerExp" value="1"/>
+    </cycleDef>
+  </modules>
+  <operations xsi:type="robosim:SimOperationDef" name="move" terminates="true">
+    <parameters name="lv">
+      <type xsi:type="robochart:TypeRef">
+        <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+      </type>
+    </parameters>
+    <parameters name="av">
+      <type xsi:type="robochart:TypeRef">
+        <ref xsi:type="robochart:PrimitiveType" href="platform:/plugin/circus.robocalc.robochart.textual/lib/robochart/core.rct#//@types.4"/>
+      </type>
+    </parameters>
+    <inputContext xsi:type="robosim:InputContext"/>
+    <outputContext xsi:type="robosim:OutputContext"/>
+  </operations>
+  <operations xsi:type="robosim:SimOperationDef" name="stop" terminates="true">
+    <inputContext xsi:type="robosim:InputContext"/>
+    <outputContext xsi:type="robosim:OutputContext"/>
+  </operations>
+</robochart:RCPackage>

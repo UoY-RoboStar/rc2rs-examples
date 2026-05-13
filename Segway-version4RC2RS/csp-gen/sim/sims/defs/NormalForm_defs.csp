@@ -1,0 +1,329 @@
+module NormalForm
+	--include "../../../timed/defs/pkg867_main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in|}
+	OutputEvents = {|pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::disableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall|}
+	ExternalEvents = {|pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in
+					   ,pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::disableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_leftMotorVelocity.Bool.core_real
+		| i_rightMotorVelocity.Bool.core_real
+		| i_gyroX.Bool.core_real
+		| i_gyroY.Bool.core_real
+		| i_angle.Bool.core_real
+		| i_gyroZ.Bool.core_real
+	
+	datatype RegisterDataOutput = o_setRightMotorSpeed.core_real
+		| o_enableInterrupts
+		| o_disableInterrupts
+		| o_setLeftMotorSpeed.core_real
+	
+	
+	nametype RegisterOutputs = {|
+	o_setRightMotorSpeed,
+	o_enableInterrupts,
+	o_disableInterrupts,
+	o_setLeftMotorSpeed|}
+	
+	nametype RegisterInputs = {|
+	i_leftMotorVelocity,
+	i_rightMotorVelocity,
+	i_gyroX,
+	i_gyroY,
+	i_angle,
+	i_gyroZ|}
+	
+	datatype COutputEvents = COutput_setRightMotorSpeed
+		| COutput_enableInterrupts
+		| COutput_disableInterrupts
+		| COutput_setLeftMotorSpeed
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_leftMotorVelocity = registerRead.i_leftMotorVelocity?b__.x__ ->
+								if b__ then (pkg867_main::Segway::leftMotorVelocity.in.x__ -> A1_leftMotorVelocity [] A1_leftMotorVelocity)
+									   else A1_leftMotorVelocity
+		A1_rightMotorVelocity = registerRead.i_rightMotorVelocity?b__.x__ ->
+								if b__ then (pkg867_main::Segway::rightMotorVelocity.in.x__ -> A1_rightMotorVelocity [] A1_rightMotorVelocity)
+									   else A1_rightMotorVelocity
+		A1_gyroX = registerRead.i_gyroX?b__.x__ ->
+								if b__ then (pkg867_main::Segway::gyroX.in.x__ -> A1_gyroX [] A1_gyroX)
+									   else A1_gyroX
+		A1_gyroY = registerRead.i_gyroY?b__.x__ ->
+								if b__ then (pkg867_main::Segway::gyroY.in.x__ -> A1_gyroY [] A1_gyroY)
+									   else A1_gyroY
+		A1_angle = registerRead.i_angle?b__.x__ ->
+								if b__ then (pkg867_main::Segway::angle.in.x__ -> A1_angle [] A1_angle)
+									   else A1_angle
+		A1_gyroZ = registerRead.i_gyroZ?b__.x__ ->
+								if b__ then (pkg867_main::Segway::gyroZ.in.x__ -> A1_gyroZ [] A1_gyroZ)
+									   else A1_gyroZ
+		
+														
+	within
+			     	A1_leftMotorVelocity
+			     	 |||
+			     	A1_rightMotorVelocity
+			     	 |||
+			     	A1_gyroX
+			     	 |||
+			     	A1_gyroY
+			     	 |||
+			     	A1_angle
+			     	 |||
+			     	A1_gyroZ
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_NormalForm_NormalForm) = let
+			
+			read(COutput_setRightMotorSpeed) = pkg867_main::Segway::setRightMotorSpeedCall?x__ -> registerWrite.o_setRightMotorSpeed.x__ -> SKIP
+			read(COutput_enableInterrupts) = pkg867_main::Segway::enableInterruptsCall -> registerWrite.o_enableInterrupts -> SKIP
+			read(COutput_disableInterrupts) = pkg867_main::Segway::disableInterruptsCall -> registerWrite.o_disableInterrupts -> SKIP
+			read(COutput_setLeftMotorSpeed) = pkg867_main::Segway::setLeftMotorSpeedCall?x__ -> registerWrite.o_setLeftMotorSpeed.x__ -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_NormalForm_NormalForm); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_NormalForm_NormalForm) = let
+			A3 = ((registerRead.i_leftMotorVelocity?x__ -> SKIP)
+				|||
+			(registerRead.i_rightMotorVelocity?x__ -> SKIP)
+				|||
+			(registerRead.i_gyroX?x__ -> SKIP)
+				|||
+			(registerRead.i_gyroY?x__ -> SKIP)
+				|||
+			(registerRead.i_angle?x__ -> SKIP)
+				|||
+			(registerRead.i_gyroZ?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_NormalForm_NormalForm) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_NormalForm_NormalForm))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_NormalForm_NormalForm)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(pkg867_main::Segway::D__(id__,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+				    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+				   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+				   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+				   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+				   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+				   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+				   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+				   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)\{|pkg867_main::Segway::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) =
+		prioritise(
+			((TLFree(id__,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+					   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+					   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+					   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) =
+		prioritise(
+			((pkg867_main::Segway::D__(id__,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+					    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+					   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+					   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+					   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+					   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+					   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)\{|pkg867_main::Segway::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral) = D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_loopTime,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_pkg867_main_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref0_D,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_P,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_I,
+			   	const_pkg867_main_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_pkg867_main_Segway_SegwayController_op_ref2_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateAngle_entry_AnglePID_j_3_19_j_2_23_14_D,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_P,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_I,
+			   	const_pkg867_main_Segway_SegwayController_SegwayController_ref_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_maxIntegral)
+
+endmodule

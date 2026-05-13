@@ -1,0 +1,84 @@
+package main
+diagram TAP2019 interface Moving {
+	move ( lv : nat )
+	turnBack ( )
+}
+
+interface Camera {
+	event found
+event origin
+}
+
+interface Flying {
+	event takeoff
+	event land
+}
+
+stm FinderM {
+	uses Flying uses Camera requires Moving const DELIVERY : nat = 2
+	const LV : nat
+	event switchOn
+	initial i0
+	state Off {
+	}
+	state Looking {
+		entry move ( LV )
+	}
+	state Delivering {
+		entry wait ( DELIVERY )
+	}
+
+	transition t1 {
+		from Off
+		to Looking
+		trigger switchOn
+		action takeoff; wait( TOP )
+	}
+	transition t2 {
+		from Looking
+		to Delivering
+		trigger found
+		action land
+	}
+	transition t3 {
+		from Delivering
+		to Returning
+		action takeoff ; wait ( TOP ) ; turnBack ( ) ; move ( LV )
+	}
+const TOP : nat = 1
+	transition t0 {
+		from i0
+		to Off
+	}
+state Returning {
+	}
+	transition t4 {
+		from Returning
+		to Off
+		trigger origin
+		action land
+	}
+}
+
+module Rescue {
+	connection Finder on land to Drone on land ( _async )
+	connection Drone on found to Finder on found ( _async )
+	connection Finder on takeoff to Drone on takeoff ( _async )
+	connection Drone on switchOn to Finder on switchOn ( _async )
+	robotic platform Drone {
+		uses Flying uses Camera provides Moving event switchOn
+	}
+
+	controller Finder {
+		uses Flying uses Camera requires Moving event switchOn
+		sref stm_ref0 = FinderM
+		connection Finder on found to stm_ref0 on found
+		connection stm_ref0 on land to Finder on land
+		connection stm_ref0 on takeoff to Finder on takeoff
+		connection Finder on switchOn to stm_ref0 on switchOn
+	connection Finder on origin to stm_ref0 on origin
+	}
+
+	connection Drone on origin to Finder on origin ( _async )
+}
+

@@ -1,0 +1,36 @@
+package pkg254_ controller MicroController {
+	requires pkg254_main::Operations event turn : Chemical::Angle
+	event obstacle : Location::Loc
+	event flag
+	event stop
+	event resume
+	event odometer : real
+	opref MicroController_ref_normal_Movement_Avoiding_entry = pkg254_::normal_Movement_Avoiding_entry
+	opref MicroController_ref_normal_Movement_Found_entry = pkg254_::normal_Movement_Found_entry
+	opref MicroController_ref_normal_Movement_TryingAgain_t11_op = pkg254_::normal_Movement_TryingAgain_t11_op
+	opref MicroController_ref_normal_Movement_GettingOut_entry = pkg254_::normal_Movement_GettingOut_entry
+	opref MicroController_ref_tStop = pkg254_main::tStop
+	opref MicroController_ref_deadlineCheck = pkg254_main::deadlineCheck
+	opref MicroController_ref_waitOp = pkg254_main::waitOp
+	opref MicroController_ref_waitInterval = pkg254_main::waitInterval
+	opref MicroController_ref_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op = pkg254_::normal_Movement_Avoiding_entry_j_3_3_t_3_3_op
+	opref MicroController_ref_normal_Movement_Avoiding_entry_i_t_op = pkg254_::normal_Movement_Avoiding_entry_i_t_op
+	opref MicroController_ref_normal_Movement_Found_entry_j_2_2_t_2_2_op = pkg254_::normal_Movement_Found_entry_j_2_2_t_2_2_op
+	opref MicroController_ref_clone_normal_Movement_TryingAgain_t11_op = pkg254_::clone_normal_Movement_TryingAgain_t11_op
+	opref MicroController_ref_clone_normal_Movement_GettingOut_entry = pkg254_::clone_normal_Movement_GettingOut_entry
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry = pkg254_::clone_normal_Movement_Avoiding_entry
+	opref MicroController_ref_clone_normal_Movement_Found_entry = pkg254_::clone_normal_Movement_Found_entry
+	opref MicroController_ref_clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f = pkg254_::clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 = pkg254_::clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 = pkg254_::clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f = pkg254_::clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f
+	opref MicroController_ref_clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f = pkg254_::clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f
+	sref stm_ref0 = pkg254_::Movement
+	connection MicroController on turn to stm_ref0 on turn
+	connection MicroController on obstacle to stm_ref0 on obstacle
+	connection stm_ref0 on flag to MicroController on flag
+	connection MicroController on resume to stm_ref0 on resume
+	connection MicroController on stop to stm_ref0 on stop
+	connection MicroController on odometer to stm_ref0 on odometer
+}
+

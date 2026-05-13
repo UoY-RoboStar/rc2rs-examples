@@ -1,0 +1,73 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg254__defs.csp"
+include "pkg254__MicroController.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg254__MicroController
+P_pkg254__MicroController = let
+	id__ = 0
+	
+	
+	
+	const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
+	const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
+	const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
+	const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
+	const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+		
+within
+	pkg254__MicroController::O__(id__,
+			    const_pkg254__MicroController_stm_ref0_lv,
+			    const_pkg254__MicroController_stm_ref0_evadeTime,
+			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg254__MicroController_stm_ref0_stuckDist,
+			    const_pkg254__MicroController_stm_ref0_outPeriod)
+
+assert P_pkg254__MicroController :[deadlock-free]	
+assert P_pkg254__MicroController;RUN({r__}) :[deadlock-free]
+assert P_pkg254__MicroController :[deterministic]
+assert P_pkg254__MicroController :[divergence-free]
+
+-- generate pkg254__MicroController_stm_ref0
+P_pkg254__MicroController_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg254__MicroController::stm_ref0::O__(
+		id__,
+		const_pkg254__Movement_lv,
+		const_pkg254__Movement_evadeTime,
+		const_pkg254__Movement_stuckPeriod,
+		const_pkg254__Movement_stuckDist,
+		const_pkg254__Movement_outPeriod
+	)
+assert P_pkg254__MicroController_stm_ref0 :[deadlock-free]	
+assert P_pkg254__MicroController_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg254__MicroController_stm_ref0 :[deterministic]
+assert P_pkg254__MicroController_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg254__MicroController_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg254__MicroController_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg254__MicroController[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg254__MicroController

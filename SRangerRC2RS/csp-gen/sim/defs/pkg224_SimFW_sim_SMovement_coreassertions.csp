@@ -1,0 +1,39 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg224_SimFW_sim_SMovement.csp"
+include "pkg224_SimFW_sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg224_SimFW_sim_SMovement
+P_pkg224_SimFW_sim_SMovement = let
+	cycle_pkg224_SimFW_sim_SMovement_SMovement = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg224_SimFW_sim_SMovement::O__(
+		id__,
+		const_pkg224_SimFW_sim_SMovement_lv,
+		const_pkg224_SimFW_sim_SMovement_PI,
+		const_pkg224_SimFW_sim_SMovement_av
+	)
+assert P_pkg224_SimFW_sim_SMovement :[deadlock-free]	
+assert P_pkg224_SimFW_sim_SMovement;RUN({r__}) :[deadlock-free]
+assert P_pkg224_SimFW_sim_SMovement :[deterministic]
+assert P_pkg224_SimFW_sim_SMovement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg224_SimFW_sim_SMovement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg224_SimFW_sim_SMovement

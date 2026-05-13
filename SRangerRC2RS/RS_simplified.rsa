@@ -1,0 +1,170 @@
+
+/*
+ * File with simplified semantics of the RoboSim model and the verification
+ * using both FD and tick-tock.
+ */
+timed csp Instantiations csp-begin
+
+-- generate const_SimFW_SMovement_PI
+const_SimFW_SMovement_PI = 3
+
+-- generate const_SimSMovement_PI
+const_SimSMovement_PI = const_SimFW_SMovement_PI
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_SimFW_SMovement_av
+const_SimFW_SMovement_av = 2
+
+-- generate const_SimSMovement_av
+const_SimSMovement_av = const_SimFW_SMovement_av
+
+-- generate const_SimFW_SMovement_lv
+const_SimFW_SMovement_lv = 1
+
+-- generate const_SimSMovement_lv
+const_SimSMovement_lv = const_SimFW_SMovement_lv
+
+-- generate nat
+nametype core_nat = { 0..3}
+
+-- BASIC TYPES
+
+-- generate real
+nametype core_real = { -3..3} 
+
+-- CLOCKS
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS			
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- CYCLE DEFINITIONS
+-- generate cycle_SimCMovement_SimCMovement
+cycle_SimCMovement_SimCMovement = 1
+-- generate cycle_SimMovement_SimMovement
+cycle_SimMovement_SimMovement = 1
+-- generate cycle_SimSMovement_SimSMovement
+cycle_SimSMovement_SimSMovement = 1
+
+MinusNoNeg(e1,e2,T) = if e1-e2 > 0 then Minus(e1,e2,T) else 0
+
+csp-end
+
+timed csp Spec csp-begin
+
+Timed(OneStep) {
+	
+	-- Simplfied RoboSim semantics, written within a timed-section
+
+	-- Main process with maximal progress.
+	Spec = timed_priority(
+			StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ -> Initial,0)
+			)
+
+	Initial = 	SMoving;
+				DMoving;
+				Waiting;
+				STurning;
+				DTurning(1);
+				Initial			
+
+	SMoving = StartBy(SimCMovement::registerWrite.SimCMovement::o_move.const_SimSMovement_lv.0 -> SKIP,0)
+					
+	DMoving = WAIT(cycle_SimCMovement_SimCMovement);
+				StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?obstacle ->
+					if obstacle then
+						StartBy(SimCMovement::registerWrite.SimCMovement::o_stop -> SKIP,0)
+					else
+						DMoving,
+				0)
+				
+	Waiting = WAIT(cycle_SimCMovement_SimCMovement)
+	
+	STurning = StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+				StartBy(SimCMovement::registerWrite.SimCMovement::o_move.0.const_SimSMovement_av -> SKIP,0)
+			   ,0)
+			   
+	-- Note the use of a parameter MBC to replicate the current value of the clock MBC
+	DTurning(MBC) = WAIT(cycle_SimCMovement_SimCMovement);
+						StartBy(SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+							if (MBC >= Div(const_SimSMovement_PI,const_SimSMovement_av,core_real)) then
+								SKIP
+							else
+								DTurning(MBC+1)	
+						,0)
+	
+	-- For verification using tick-tock need to provide alphabet of Spec process,
+	-- which in this case is exactly the same as that of the built-in calculated
+	-- by RoboTool
+	Spec__sem__events = SimCMovement::sem__events
+}
+
+csp-end
+
+timed csp USpec csp-begin
+
+-- Simplfied RoboSim semantics, written outside a timed-section in pure tock-CSP
+
+-- Main process
+USpec = SimCMovement::registerRead.SimCMovement::i_obstacle?x__ -> UInitial
+
+UInitial = 	USMoving;
+			UDMoving;
+			UWaiting;
+			USTurning;
+			UDTurning(1);
+			UInitial			
+
+USMoving = SimCMovement::registerWrite.SimCMovement::o_move.const_SimSMovement_lv.0 -> SKIP
+				
+UDMoving = wait(cycle_SimCMovement_SimCMovement);
+			SimCMovement::registerRead.SimCMovement::i_obstacle?obstacle ->
+				if obstacle then
+					SimCMovement::registerWrite.SimCMovement::o_stop -> SKIP
+				else
+					UDMoving
+			
+UWaiting = wait(cycle_SimCMovement_SimCMovement)
+
+USTurning = SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+			SimCMovement::registerWrite.SimCMovement::o_move.0.const_SimSMovement_av -> SKIP
+		   
+-- Note the use of a parameter MBC to replicate the current value of the clock MBC
+UDTurning(MBC) = wait(cycle_SimCMovement_SimCMovement);
+					SimCMovement::registerRead.SimCMovement::i_obstacle?x__ ->
+						if (MBC >= Div(const_SimSMovement_PI,const_SimSMovement_av,core_real)) then
+							SKIP
+						else
+							UDTurning(MBC+1)	
+
+-- For verification using tick-tock need to provide alphabet of Spec process,
+-- which in this case is exactly the same as that of the built-in calculated
+-- by RoboTool
+USpec__sem__events = SimCMovement::sem__events
+
+csp-end
+
+timed assertion A0 : SimCMovement equals Spec
+timed assertion A1 : SimCMovement equals Spec in the tick-tock model
+
+timed assertion A2 : SimCMovement equals USpec
+timed assertion A3 : SimCMovement equals USpec in the tick-tock model

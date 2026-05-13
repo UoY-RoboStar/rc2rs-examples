@@ -1,0 +1,40 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:37:02
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37.csp"
+include "state_timed_defs.csp"
+include "pkg867__sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37
+P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	const_pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37_P = 0
+	const_pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37_I = 0
+	
+	
+within
+	pkg867__sim::OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37::O__(id__,
+				param_newError,
+			    const_pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37_P,
+			    const_pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37_I)
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 :[deadlock-free]	
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37;RUN({r__}) :[deadlock-free]
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 :[deterministic]
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16_normal_SpeedPID_UpdateOutput_entry_entry_37

@@ -1,0 +1,38 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "pkg727_main_sim_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11
+P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11 = let
+	id__ = 0
+	
+	param_m = 0
+	param_n = 0
+	
+	
+	
+within
+	pkg727_main_sim::OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11::O__(id__,
+				param_m,
+				param_n)
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11 :[deadlock-free]	
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11 :[deterministic]
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f_clone_waitInterval_j_8_10_j_7_11

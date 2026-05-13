@@ -1,0 +1,158 @@
+module NormalForm
+	--include "../../../timed/defs/pkg213_main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|pkg213_main::Rescue::switchOn.in,pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in|}
+	OutputEvents = {|pkg213_main::Rescue::takeoff.out,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::land.out|}
+	ExternalEvents = {|pkg213_main::Rescue::switchOn.in,pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in
+					   ,pkg213_main::Rescue::takeoff.out,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::land.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_switchOn.Bool
+		| i_found.Bool
+		| i_origin.Bool
+	
+	datatype RegisterDataOutput = o_takeoff
+		| o_turnBack
+		| o_move.core_nat
+		| o_land
+	
+	
+	nametype RegisterOutputs = {|
+	o_takeoff,
+	o_turnBack,
+	o_move,
+	o_land|}
+	
+	nametype RegisterInputs = {|
+	i_switchOn,
+	i_found,
+	i_origin|}
+	
+	datatype COutputEvents = COutput_takeoff
+		| COutput_turnBack
+		| COutput_move
+		| COutput_land
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_switchOn = registerRead.i_switchOn?b__ ->
+								if b__ then (pkg213_main::Rescue::switchOn.in -> A1_switchOn [] A1_switchOn)
+									   else A1_switchOn
+		A1_found = registerRead.i_found?b__ ->
+								if b__ then (pkg213_main::Rescue::found.in -> A1_found [] A1_found)
+									   else A1_found
+		A1_origin = registerRead.i_origin?b__ ->
+								if b__ then (pkg213_main::Rescue::origin.in -> A1_origin [] A1_origin)
+									   else A1_origin
+		
+														
+	within
+			     	A1_switchOn
+			     	 |||
+			     	A1_found
+			     	 |||
+			     	A1_origin
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_NormalForm_NormalForm) = let
+			
+			read(COutput_takeoff) = pkg213_main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
+			read(COutput_turnBack) = pkg213_main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
+			read(COutput_move) = pkg213_main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_land) = pkg213_main::Rescue::land.out -> registerWrite.o_land -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_NormalForm_NormalForm); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_NormalForm_NormalForm) = let
+			A3 = ((registerRead.i_switchOn?x__ -> SKIP)
+				|||
+			(registerRead.i_found?x__ -> SKIP)
+				|||
+			(registerRead.i_origin?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_NormalForm_NormalForm) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_NormalForm_NormalForm))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_NormalForm_NormalForm)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(pkg213_main::Rescue::D__(id__,
+				    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+				    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+				    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)\{|pkg213_main::Rescue::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP) =
+		prioritise(
+			((TLFree(id__,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_TOP) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP) =
+		prioritise(
+			((pkg213_main::Rescue::D__(id__,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+					    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)\{|pkg213_main::Rescue::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP) = D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)
+
+endmodule

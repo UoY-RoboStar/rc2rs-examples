@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg254__defs.csp"
+include "pkg254__normal_GasAnalysis_GasDetected_t8_op.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg254__OP_normal_GasAnalysis_GasDetected_t8_op
+P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg254_::OP_normal_GasAnalysis_GasDetected_t8_op::O__(id__)
+assert P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op :[deadlock-free]	
+assert P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op;RUN({r__}) :[deadlock-free]
+assert P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op :[deterministic]
+assert P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg254__OP_normal_GasAnalysis_GasDetected_t8_op

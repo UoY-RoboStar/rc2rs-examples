@@ -1,0 +1,2681 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:01:25
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module pkg213_main_FinderM
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i0|
+	              NID_Off|
+	              NID_Looking|
+	              NID_Delivering|
+	              NID_Returning
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel switchOn__: NIDS.InOut
+	channel switchOn: InOut
+	channel takeoff__: NIDS.InOut
+	channel takeoff: InOut
+	channel land__: NIDS.InOut
+	channel land: InOut
+	channel found__: NIDS.InOut
+	channel found: InOut
+	channel origin__: NIDS.InOut
+	channel origin: InOut
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_normal_FinderM_Looking_t2_opCall
+	channel moveCall: core_nat
+	channel clone_normal_FinderM_Delivering_entryCall
+	channel clone_normal_FinderM_Off_t1_opCall
+	channel clone_normal_FinderM_Delivering_t3_opCall
+	channel turnBackCall
+	channel clone_normal_FinderM_Returning_t4_opCall
+	
+	enterSS = {|
+	i0::enter,
+	Off::enter,
+	Looking::enter,
+	Delivering::enter,
+	Returning::enter
+	|}
+	
+	enteredSS = 	{|
+	Off::entered,
+	Looking::entered,
+	Delivering::entered,
+	Returning::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	switchOn,
+		takeoff,
+		land,
+		found,
+		origin
+	,	clone_normal_FinderM_Looking_t2_opCall,
+		moveCall,
+		clone_normal_FinderM_Delivering_entryCall,
+		clone_normal_FinderM_Off_t1_opCall,
+		clone_normal_FinderM_Delivering_t3_opCall,
+		turnBackCall,
+		clone_normal_FinderM_Returning_t4_opCall
+		|}
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Looking : core_clock_type 
+	channel get_CLID_Delivering : core_clock_type 
+	channel get_CLID_Returning : core_clock_type 
+	channel get_CLID_Off : core_clock_type 
+	--channel increment__
+	
+	CLID_Looking_clock_type(id__,
+			          const_pkg213_main_FinderM_DELIVERY,
+			          const_pkg213_main_FinderM_LV,
+			          const_pkg213_main_FinderM_TOP) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Delivering_clock_type(id__,
+			          const_pkg213_main_FinderM_DELIVERY,
+			          const_pkg213_main_FinderM_LV,
+			          const_pkg213_main_FinderM_TOP) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Returning_clock_type(id__,
+			          const_pkg213_main_FinderM_DELIVERY,
+			          const_pkg213_main_FinderM_LV,
+			          const_pkg213_main_FinderM_TOP) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Off_clock_type(id__,
+			          const_pkg213_main_FinderM_DELIVERY,
+			          const_pkg213_main_FinderM_LV,
+			          const_pkg213_main_FinderM_TOP) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Off
+		module Off
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			channel switchOn__: NIDS.InOut
+			channel takeoff__: NIDS.InOut
+			channel land__: NIDS.InOut
+			channel found__: NIDS.InOut
+			channel origin__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg213_main_FinderM_DELIVERY,
+					          const_pkg213_main_FinderM_LV,
+					          const_pkg213_main_FinderM_TOP) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg213_main_FinderM_DELIVERY,
+							          const_pkg213_main_FinderM_LV,
+							          const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)),
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+				
+				StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Looking
+		module Looking
+		
+		enterSS = 
+				{|			EmptyCycle::enter,
+					i::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_EmptyCycle|
+			              NID_i
+			
+			channel internal__ : NIDS
+			channel switchOn__: NIDS.InOut
+			channel takeoff__: NIDS.InOut
+			channel land__: NIDS.InOut
+			channel found__: NIDS.InOut
+			channel origin__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg213_main_FinderM_DELIVERY,
+					          const_pkg213_main_FinderM_LV,
+					          const_pkg213_main_FinderM_TOP) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg213_main_FinderM_DELIVERY,
+							          const_pkg213_main_FinderM_LV,
+							          const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__move(
+								id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP,
+								const_pkg213_main_FinderM_LV
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   i::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__move(
+								id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP,
+								const_pkg213_main_FinderM_LV
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)),
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+				
+				StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Delivering
+		module Delivering
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			channel switchOn__: NIDS.InOut
+			channel takeoff__: NIDS.InOut
+			channel land__: NIDS.InOut
+			channel found__: NIDS.InOut
+			channel origin__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg213_main_FinderM_DELIVERY,
+					          const_pkg213_main_FinderM_LV,
+					          const_pkg213_main_FinderM_TOP) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg213_main_FinderM_DELIVERY,
+							          const_pkg213_main_FinderM_LV,
+							          const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_FinderM_Delivering_entry(
+								id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_FinderM_Delivering_entry(
+								id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)),
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+				
+				StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Returning
+		module Returning
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			channel switchOn__: NIDS.InOut
+			channel takeoff__: NIDS.InOut
+			channel land__: NIDS.InOut
+			channel found__: NIDS.InOut
+			channel origin__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg213_main_FinderM_DELIVERY,
+					          const_pkg213_main_FinderM_LV,
+					          const_pkg213_main_FinderM_TOP) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg213_main_FinderM_DELIVERY,
+							          const_pkg213_main_FinderM_LV,
+							          const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg213_main_FinderM_DELIVERY,
+						 				   		    const_pkg213_main_FinderM_LV,
+						 				   		    const_pkg213_main_FinderM_TOP)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg213_main_FinderM_DELIVERY,
+						 				 		    const_pkg213_main_FinderM_LV,
+						 				 		    const_pkg213_main_FinderM_TOP))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				switchOn__.x____ <- switchOn,
+						 				takeoff__.x____ <- takeoff,
+						 				land__.x____ <- land,
+						 				found__.x____ <- found,
+						 				origin__.x____ <- origin
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg213_main_FinderM_DELIVERY,
+						 				          const_pkg213_main_FinderM_LV,
+						 				          const_pkg213_main_FinderM_TOP))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP)),
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+				
+				StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_FinderM_Looking_t2_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Looking_t2_opCall,0)
+		CALL__move(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP,
+					param_lv) = EDeadline(moveCall.param_lv,0)
+		CALL__clone_normal_FinderM_Delivering_entry(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_entryCall,0)
+		CALL__clone_normal_FinderM_Off_t1_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Off_t1_opCall,0)
+		CALL__clone_normal_FinderM_Delivering_t3_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_t3_opCall,0)
+		CALL__turnBack(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(turnBackCall,0)
+		CALL__clone_normal_FinderM_Returning_t4_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Returning_t4_opCall,0)
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_pkg213_main_FinderM_DELIVERY,
+					    const_pkg213_main_FinderM_LV,
+					    const_pkg213_main_FinderM_TOP))
+		)\sharedVarHide
+		
+		STM_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_pkg213_main_FinderM_DELIVERY,
+					    const_pkg213_main_FinderM_LV,
+					    const_pkg213_main_FinderM_TOP))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = ((let
+			Trans = TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(switchOn__!NID_Off.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_FinderM_Off_t1_op(
+				 			id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP
+				 		) ; Looking::enter -> SKIP)))
+				 [] dbisim((true)&(found__!NID_Looking.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_FinderM_Looking_t2_op(
+				 			id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP
+				 		) ; Delivering::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Delivering -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_FinderM_Delivering_t3_op(
+				 			id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP
+				 		) ; Returning::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Off::enter -> SKIP))))
+				 [] dbisim((true)&(origin__!NID_Returning.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_FinderM_Returning_t4_op(
+				 			id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP
+				 		) ; Off::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					Off::enter,
+					Looking::enter,
+					Delivering::enter,
+					Returning::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|switchOn__.NID_Off.in,found__.NID_Looking.in,internal__.NID_Delivering,internal__.NID_i0,origin__.NID_Returning.in|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::D__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Off::D__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Looking::D__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Delivering::D__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Returning::D__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Off::interrupt <- x__ | x__ <- {|interrupt,switchOn__.NID_Off.in|}]]
+						 [[Looking::interrupt <- x__ | x__ <- {|interrupt,found__.NID_Looking.in|}]]
+						 [[Delivering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Delivering|}]]
+						 [[Returning::interrupt <- x__ | x__ <- {|interrupt,origin__.NID_Returning.in|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_pkg213_main_FinderM_DELIVERY,
+						 		    const_pkg213_main_FinderM_LV,
+						 		    const_pkg213_main_FinderM_TOP))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[
+						switchOn__.x____ <- switchOn,
+						takeoff__.x____ <- takeoff,
+						land__.x____ <- land,
+						found__.x____ <- found,
+						origin__.x____ <- origin
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg213_main_FinderM_DELIVERY,
+				 		          const_pkg213_main_FinderM_LV,
+				 		          const_pkg213_main_FinderM_TOP)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+			 within
+				(MachineBody(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												MachineBody(id__,
+														    const_pkg213_main_FinderM_DELIVERY,
+														    const_pkg213_main_FinderM_LV,
+														    const_pkg213_main_FinderM_TOP)
+												[| {|get_CLID_Off,Off::entered,terminate|} |]
+												dbisim(Clock_CLID_Off(id__,0,
+														          const_pkg213_main_FinderM_DELIVERY,
+														          const_pkg213_main_FinderM_LV,
+														          const_pkg213_main_FinderM_TOP))
+											)\{|get_CLID_Off|}
+										)
+										[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+										dbisim(Clock_CLID_Returning(id__,0,
+												          const_pkg213_main_FinderM_DELIVERY,
+												          const_pkg213_main_FinderM_LV,
+												          const_pkg213_main_FinderM_TOP))
+									)\{|get_CLID_Returning|}
+								)
+								[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
+								dbisim(Clock_CLID_Delivering(id__,0,
+										          const_pkg213_main_FinderM_DELIVERY,
+										          const_pkg213_main_FinderM_LV,
+										          const_pkg213_main_FinderM_TOP))
+							)\{|get_CLID_Delivering|}
+						)
+						[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+						dbisim(Clock_CLID_Looking(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+					)\{|get_CLID_Looking|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP) [| {terminate} |] Clocks(id__,
+				 		          const_pkg213_main_FinderM_DELIVERY,
+				 		          const_pkg213_main_FinderM_LV,
+				 		          const_pkg213_main_FinderM_TOP))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) =
+			(IteratedBehaviour(id__,
+					    const_pkg213_main_FinderM_DELIVERY,
+					    const_pkg213_main_FinderM_LV,
+					    const_pkg213_main_FinderM_TOP))
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					Off::enter,
+					Looking::enter,
+					Delivering::enter,
+					Returning::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|switchOn__.NID_Off.in,found__.NID_Looking.in,internal__.NID_Delivering,internal__.NID_i0,origin__.NID_Returning.in|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::VS_O__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Off::VS_O__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Looking::VS_O__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Delivering::VS_O__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   [| { share__, terminate } |] (
+						   Returning::VS_O__(id__,
+						   		    const_pkg213_main_FinderM_DELIVERY,
+						   		    const_pkg213_main_FinderM_LV,
+						   		    const_pkg213_main_FinderM_TOP)
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Off::interrupt <- x__ | x__ <- {|interrupt,switchOn__.NID_Off.in|}]]
+						 [[Looking::interrupt <- x__ | x__ <- {|interrupt,found__.NID_Looking.in|}]]
+						 [[Delivering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Delivering|}]]
+						 [[Returning::interrupt <- x__ | x__ <- {|interrupt,origin__.NID_Returning.in|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_pkg213_main_FinderM_DELIVERY,
+						 		    const_pkg213_main_FinderM_LV,
+						 		    const_pkg213_main_FinderM_TOP))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[
+						switchOn__.x____ <- switchOn,
+						takeoff__.x____ <- takeoff,
+						land__.x____ <- land,
+						found__.x____ <- found,
+						origin__.x____ <- origin
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg213_main_FinderM_DELIVERY,
+				 		          const_pkg213_main_FinderM_LV,
+				 		          const_pkg213_main_FinderM_TOP)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												MachineBody_VS_O(id__,
+														    const_pkg213_main_FinderM_DELIVERY,
+														    const_pkg213_main_FinderM_LV,
+														    const_pkg213_main_FinderM_TOP)
+												[| {|get_CLID_Off,Off::entered,terminate|} |]
+												dbisim(Clock_CLID_Off(id__,0,
+														          const_pkg213_main_FinderM_DELIVERY,
+														          const_pkg213_main_FinderM_LV,
+														          const_pkg213_main_FinderM_TOP))
+											)\{|get_CLID_Off|}
+										)
+										[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+										dbisim(Clock_CLID_Returning(id__,0,
+												          const_pkg213_main_FinderM_DELIVERY,
+												          const_pkg213_main_FinderM_LV,
+												          const_pkg213_main_FinderM_TOP))
+									)\{|get_CLID_Returning|}
+								)
+								[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
+								dbisim(Clock_CLID_Delivering(id__,0,
+										          const_pkg213_main_FinderM_DELIVERY,
+										          const_pkg213_main_FinderM_LV,
+										          const_pkg213_main_FinderM_TOP))
+							)\{|get_CLID_Delivering|}
+						)
+						[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+						dbisim(Clock_CLID_Looking(id__,0,
+								          const_pkg213_main_FinderM_DELIVERY,
+								          const_pkg213_main_FinderM_LV,
+								          const_pkg213_main_FinderM_TOP))
+					)\{|get_CLID_Looking|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = 
+			dbisim((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,
+						    const_pkg213_main_FinderM_DELIVERY,
+						    const_pkg213_main_FinderM_LV,
+						    const_pkg213_main_FinderM_TOP) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_pkg213_main_FinderM_DELIVERY,
+				 		    const_pkg213_main_FinderM_LV,
+				 		    const_pkg213_main_FinderM_TOP) [| {terminate} |] Clocks(id__,
+				 		          const_pkg213_main_FinderM_DELIVERY,
+				 		          const_pkg213_main_FinderM_LV,
+				 		          const_pkg213_main_FinderM_TOP))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) =
+			(IteratedBehaviour_VS_O(id__,
+					    const_pkg213_main_FinderM_DELIVERY,
+					    const_pkg213_main_FinderM_LV,
+					    const_pkg213_main_FinderM_TOP))
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		
+		-- varMemory process
+		varMemory(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+		
+		getsetLocalChannels = {||}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = STM_VS_O(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) \ localClockResets
+		D__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = timed_priority(STM(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) \ union(internal_events,localClockResets))
+		O__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = dbisim(D__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP))
+		VS__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = FVS__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP)
+		VS_O__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = dbisim(FVS__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP))
+		HEXT__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = O__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = dbisim(timed_priority(STM(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) \ internal_events))
+		HUP__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = timed_priority(O__(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Looking(id__,x__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = 
+			TimeOut_1(
+				Looking::entered -> Clock_CLID_Looking(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)),
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+		Clock_CLID_Delivering(id__,x__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = 
+			TimeOut_1(
+				Delivering::entered -> Clock_CLID_Delivering(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				get_CLID_Delivering!x__ -> Clock_CLID_Delivering(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				terminate -> SKIP,Clock_CLID_Delivering(id__,clock_type_plus(x__,1,CLID_Delivering_clock_type(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)),
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+		Clock_CLID_Returning(id__,x__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = 
+			TimeOut_1(
+				Returning::entered -> Clock_CLID_Returning(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				get_CLID_Returning!x__ -> Clock_CLID_Returning(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				terminate -> SKIP,Clock_CLID_Returning(id__,clock_type_plus(x__,1,CLID_Returning_clock_type(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)),
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+		Clock_CLID_Off(id__,x__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = 
+			TimeOut_1(
+				Off::entered -> Clock_CLID_Off(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)),
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
+		
+		StateClocks(id__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_Looking(id__,0,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Delivering(id__,0,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Returning(id__,0,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Off(id__,0,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP))
+		)
+		)
+		)
+		
+		stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule

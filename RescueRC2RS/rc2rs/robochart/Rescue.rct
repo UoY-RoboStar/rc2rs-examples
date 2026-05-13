@@ -1,0 +1,616 @@
+package pkg213_main 
+interface Moving {
+	move ( lv : nat )
+	turnBack ( )
+}
+
+interface Camera {
+	event found
+	event origin
+}
+
+interface Flying {
+	event takeoff
+	event land
+}
+
+interface I_events_normal_FinderM_Looking_t2_op {
+	event land
+}
+ 
+interface I_normal_FinderM_Looking_t2_op {
+	normal_FinderM_Looking_t2_op ( )
+}
+
+interface req_normal_FinderM_Delivering_entry {
+	const DELIVERY : nat = 2
+}
+
+interface I_normal_FinderM_Delivering_entry {
+	normal_FinderM_Delivering_entry ( )
+}
+
+interface req_normal_FinderM_Off_t1_op {
+	const TOP : nat = 1
+}
+
+interface I_events_normal_FinderM_Off_t1_op {
+	event takeoff
+}
+
+interface I_normal_FinderM_Off_t1_op {
+	normal_FinderM_Off_t1_op ( )
+}
+
+interface I_events_normal_FinderM_Returning_t4_op {
+	event land
+}
+
+interface I_normal_FinderM_Returning_t4_op {
+	normal_FinderM_Returning_t4_op ( )
+}
+
+interface req_normal_FinderM_Delivering_t3_op {
+	move ( lv : nat )
+	turnBack ( )
+	const TOP : nat = 1 , LV : nat
+}
+
+interface I_events_normal_FinderM_Delivering_t3_op {
+	event takeoff
+}
+
+interface I_normal_FinderM_Delivering_t3_op {
+	normal_FinderM_Delivering_t3_op ( )
+}
+
+interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+interface I_events_normal_FinderM_Off_t1_op_i_t {
+	event takeoff
+}
+
+interface I_normal_FinderM_Off_t1_op_i_t_op {
+	normal_FinderM_Off_t1_op_i_t_op ( )
+}
+
+interface I_events_normal_FinderM_Delivering_t3_op_i_t {
+	event takeoff
+}
+
+interface I_normal_FinderM_Delivering_t3_op_i_t_op {
+	normal_FinderM_Delivering_t3_op_i_t_op ( )
+}
+
+interface I_clone_normal_FinderM_Delivering_t3_op_i_t_op {
+	clone_normal_FinderM_Delivering_t3_op_i_t_op ( )
+}
+
+interface I_clone_normal_FinderM_Looking_t2_op {
+	clone_normal_FinderM_Looking_t2_op ( )
+}
+
+interface I_clone_normal_FinderM_Delivering_entry {
+	clone_normal_FinderM_Delivering_entry ( )
+}
+
+interface I_clone_normal_FinderM_Returning_t4_op {
+	clone_normal_FinderM_Returning_t4_op ( )
+}
+
+interface I_clone_normal_FinderM_Off_t1_op {
+	clone_normal_FinderM_Off_t1_op ( )
+}
+
+interface I_clone_normal_FinderM_Delivering_t3_op {
+	clone_normal_FinderM_Delivering_t3_op ( )
+}
+
+stm FinderM {
+	uses Flying uses Camera requires Moving 
+	//requires I_normal_FinderM_Looking_t2_op requires I_normal_FinderM_Delivering_entry requires I_normal_FinderM_Off_t1_op 
+	//requires I_normal_FinderM_Returning_t4_op requires I_normal_FinderM_Delivering_t3_op 
+	requires I_clone_normal_FinderM_Looking_t2_op requires I_clone_normal_FinderM_Delivering_entry 
+	requires I_clone_normal_FinderM_Returning_t4_op requires I_clone_normal_FinderM_Off_t1_op 
+	requires I_clone_normal_FinderM_Delivering_t3_op const DELIVERY : nat = 2
+	const LV : nat
+	const TOP : nat = 1
+	event switchOn
+	initial i0
+	state Off {
+		initial i
+		state EmptyCycle {
+		}
+		transition tOff {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Looking {
+		state EmptyCycle {
+		}
+		initial i
+		transition tLooking {
+			from i
+			to EmptyCycle
+		}
+		entry move ( LV )
+	}
+	state Delivering {
+		initial i
+		state EmptyCycle {
+		}
+		transition tDelivering {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_FinderM_Delivering_entry ( )
+	}
+	state Returning {
+		initial i
+		state EmptyCycle {
+		}
+		transition tReturning {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t1 {
+		from Off
+		to Looking
+		trigger switchOn
+		action clone_normal_FinderM_Off_t1_op ( )
+	}
+	transition t2 {
+		from Looking
+		to Delivering
+		trigger found
+		action clone_normal_FinderM_Looking_t2_op ( )
+	}
+	transition t3 {
+		from Delivering
+		to Returning
+		action clone_normal_FinderM_Delivering_t3_op ( )
+	}
+	transition t0 {
+		from i0
+		to Off
+	}
+	transition t4 {
+		from Returning
+		to Off
+		trigger origin
+		action clone_normal_FinderM_Returning_t4_op ( )
+	}
+}
+
+operation normal_FinderM_Looking_t2_op ( ) {
+	uses I_events_normal_FinderM_Looking_t2_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action land
+	}
+}
+
+operation normal_FinderM_Delivering_entry ( ) {
+	requires req_normal_FinderM_Delivering_entry requires I_waitOp initial i
+	final f
+	transition t {
+		from i
+		to f
+		action waitOp ( DELIVERY )
+	}
+}
+
+operation normal_FinderM_Off_t1_op ( ) {
+	uses I_events_normal_FinderM_Off_t1_op requires req_normal_FinderM_Off_t1_op requires I_waitOp requires I_normal_FinderM_Off_t1_op_i_t_op final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action normal_FinderM_Off_t1_op_i_t_op ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action waitOp ( TOP )
+	}
+}
+
+operation normal_FinderM_Returning_t4_op ( ) {
+	uses I_events_normal_FinderM_Returning_t4_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action land
+	}
+}
+
+operation normal_FinderM_Delivering_t3_op ( ) {
+	uses I_events_normal_FinderM_Delivering_t3_op requires req_normal_FinderM_Delivering_t3_op requires I_waitOp 
+	requires I_normal_FinderM_Delivering_t3_op_i_t_op initial i
+	final f
+	junction j_4_3
+	junction j_3_4
+	junction j_2_5
+	transition t {
+		from i
+		to j_4_3
+		action normal_FinderM_Delivering_t3_op_i_t_op ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_4
+		action waitOp ( TOP )
+	}
+	transition t_3_4 {
+		from j_3_4
+		to j_2_5
+		action turnBack ( )
+	}
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action move ( LV )
+	}
+}
+
+operation tStop ( ) {
+	state sStop {
+	}
+	initial i
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	initial i0
+	final f
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp initial i
+	final f
+	junction j
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	clock C
+}
+
+operation normal_FinderM_Off_t1_op_i_t_op ( ) {
+	uses I_events_normal_FinderM_Off_t1_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action takeoff
+	}
+}
+
+
+operation clone_normal_FinderM_Off_t1_op_i_t_op ( ) {
+	uses I_events_clone_normal_FinderM_Off_t1_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action takeoff
+	}
+}
+
+interface I_clone_normal_FinderM_Off_t1_op_i_t_op {
+	clone_normal_FinderM_Off_t1_op_i_t_op ()
+}
+
+interface I_events_clone_normal_FinderM_Off_t1_op_i_t{
+	event takeoff
+}
+
+operation normal_FinderM_Delivering_t3_op_i_t_op ( ) {
+	uses I_events_normal_FinderM_Delivering_t3_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action takeoff
+	}
+}
+
+operation clone_normal_FinderM_Delivering_t3_op_i_t_op ( ) {
+	uses I_events_clone_normal_FinderM_Delivering_t3_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action takeoff
+	}
+}
+
+interface I_events_clone_normal_FinderM_Delivering_t3_op_i_t{
+	event takeoff
+}
+
+operation clone_normal_FinderM_Looking_t2_op ( ) {
+	uses I_events_normal_FinderM_Looking_t2_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action land
+	}
+}
+
+operation clone_normal_FinderM_Delivering_entry ( ) {
+	requires req_normal_FinderM_Delivering_entry 
+	requires I_clone_normal_FinderM_Delivering_entry_waitOp 
+	initial i
+	final f
+	transition t {
+		from i
+		to f
+		action clone_normal_FinderM_Delivering_entry_waitOp ( DELIVERY )
+	}
+}
+
+interface I_clone_normal_FinderM_Delivering_entry_waitOp{
+	clone_normal_FinderM_Delivering_entry_waitOp (n : nat)
+}
+
+operation clone_normal_FinderM_Returning_t4_op ( ) {
+	uses I_events_normal_FinderM_Returning_t4_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action land
+	}
+}
+
+operation clone_normal_FinderM_Off_t1_op ( ) {
+	uses I_events_normal_FinderM_Off_t1_op 
+	requires req_normal_FinderM_Off_t1_op 
+	requires I_clone_normal_FinderM_Off_t1_waitOp
+	requires I_clone_normal_FinderM_Off_t1_op_i_t_op final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action clone_normal_FinderM_Off_t1_op_i_t_op ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_normal_FinderM_Off_t1_waitOp ( TOP ) 
+	}
+}
+
+interface I_clone_normal_FinderM_Off_t1_waitOp{
+	clone_normal_FinderM_Off_t1_waitOp ( n: nat )
+}
+
+interface I_clone_normal_FinderM_Delivering_t3_waitOp{
+	clone_normal_FinderM_Delivering_t3_waitOp (n : nat)
+}
+
+operation clone_normal_FinderM_Delivering_t3_op ( ) {
+	uses I_events_normal_FinderM_Delivering_t3_op requires req_normal_FinderM_Delivering_t3_op 
+	requires I_clone_normal_FinderM_Delivering_t3_waitOp 
+	requires I_clone_normal_FinderM_Delivering_t3_op_i_t_op initial i
+	final f
+	junction j_4_3
+	junction j_3_4
+	junction j_2_5
+	transition t {
+		from i
+		to j_4_3
+		action clone_normal_FinderM_Delivering_t3_op_i_t_op ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_4
+		action clone_normal_FinderM_Delivering_t3_waitOp ( TOP )
+	}
+	transition t_3_4 {
+		from j_3_4
+		to j_2_5
+		action turnBack ( )
+	}
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action move ( LV )
+	}
+}
+
+operation clone_normal_FinderM_Delivering_entry_waitOp ( n : nat
+) {
+	initial i0
+	final f
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == n
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation clone_normal_FinderM_Delivering_t3_waitOp ( n : nat) {
+	initial i0
+	final f
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == n
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation clone_normal_FinderM_Off_t1_waitOp ( n : nat
+) {
+	initial i0
+	final f
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == n
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+
+module Rescue {
+	connection Finder on land to Drone on land ( _async )
+	connection Drone on found to Finder on found ( _async )
+	connection Finder on takeoff to Drone on takeoff ( _async )
+	connection Drone on switchOn to Finder on switchOn ( _async )
+	connection Drone on origin to Finder on origin ( _async )
+	robotic platform Drone {
+		uses Flying uses Camera provides Moving event switchOn
+	}
+
+	controller Finder {
+		uses Flying uses Camera requires Moving event switchOn
+		//opref Finder_ref_normal_FinderM_Looking_t2_op = normal_FinderM_Looking_t2_op
+		//opref Finder_ref_normal_FinderM_Delivering_entry = normal_FinderM_Delivering_entry
+		//opref Finder_ref_normal_FinderM_Off_t1_op = normal_FinderM_Off_t1_op
+		//opref Finder_ref_normal_FinderM_Returning_t4_op = normal_FinderM_Returning_t4_op
+		//opref Finder_ref_normal_FinderM_Delivering_t3_op = normal_FinderM_Delivering_t3_op
+		opref Finder_ref_tStop = tStop
+		opref Finder_ref_deadlineCheck = deadlineCheck 
+		opref Finder_ref_waitOp = waitOp
+		opref Finder_ref_waitInterval = waitInterval
+		opref Finder_ref_normal_FinderM_Off_t1_op_i_t_op = normal_FinderM_Off_t1_op_i_t_op
+		opref Finder_ref_normal_FinderM_Delivering_t3_op_i_t_op = normal_FinderM_Delivering_t3_op_i_t_op
+		opref Finder_ref_clone_normal_FinderM_Looking_t2_op = clone_normal_FinderM_Looking_t2_op
+		opref Finder_ref_clone_normal_FinderM_Delivering_entry = clone_normal_FinderM_Delivering_entry
+		opref Finder_ref_clone_normal_FinderM_Returning_t4_op = clone_normal_FinderM_Returning_t4_op
+		opref Finder_ref_clone_normal_FinderM_Off_t1_op = clone_normal_FinderM_Off_t1_op
+		opref Finder_ref_clone_normal_FinderM_Delivering_t3_op = clone_normal_FinderM_Delivering_t3_op
+		opref Finder_ref_clone_normal_FinderM_Off_t1_op_i_t_op = clone_normal_FinderM_Off_t1_op_i_t_op
+		opref Finder_ref_clone_normal_FinderM_Delivering_t3_op_i_t_op = clone_normal_FinderM_Delivering_t3_op_i_t_op 
+		opref Finder_ref_clone_normal_FinderM_Delivering_t3_waitOp = clone_normal_FinderM_Delivering_t3_waitOp
+		opref Finder_ref_clone_normal_FinderM_Delivering_entry_waitOp = clone_normal_FinderM_Delivering_entry_waitOp
+		opref Finder_ref_clone_normal_FinderM_Off_t1_waitOp = clone_normal_FinderM_Off_t1_waitOp
+		sref stm_ref0 = FinderM
+		connection Finder on found to stm_ref0 on found
+		connection stm_ref0 on land to Finder on land
+		connection stm_ref0 on takeoff to Finder on takeoff
+		connection Finder on switchOn to stm_ref0 on switchOn
+		connection Finder on origin to stm_ref0 on origin
+	}
+ 
+}
+

@@ -1,0 +1,196 @@
+module NormalForm
+	--include "../../../timed/defs/pkg727_main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|pkg727_main::Harvester::takePic.in|}
+	OutputEvents = {|pkg727_main::Harvester::moveCall,pkg727_main::Harvester::pickCall,pkg727_main::Harvester::hideArmCall,pkg727_main::Harvester::dropCall,pkg727_main::Harvester::graspCall,pkg727_main::Harvester::goHomeCall|}
+	ExternalEvents = {|pkg727_main::Harvester::takePic.in
+					   ,pkg727_main::Harvester::moveCall,pkg727_main::Harvester::pickCall,pkg727_main::Harvester::hideArmCall,pkg727_main::Harvester::dropCall,pkg727_main::Harvester::graspCall,pkg727_main::Harvester::goHomeCall|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_takePic.Bool.main_Image
+	
+	datatype RegisterDataOutput = o_move.main_JointsPos
+		| o_pick
+		| o_hideArm
+		| o_drop.main_JointsPos
+		| o_grasp.main_JointsPos
+		| o_goHome
+	
+	
+	nametype RegisterOutputs = {|
+	o_move,
+	o_pick,
+	o_hideArm,
+	o_drop,
+	o_grasp,
+	o_goHome|}
+	
+	nametype RegisterInputs = {|
+	i_takePic|}
+	
+	datatype COutputEvents = COutput_move
+		| COutput_pick
+		| COutput_hideArm
+		| COutput_drop
+		| COutput_grasp
+		| COutput_goHome
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_takePic = registerRead.i_takePic?b__.x__ ->
+								if b__ then (pkg727_main::Harvester::takePic.in.x__ -> A1_takePic [] A1_takePic)
+									   else A1_takePic
+		
+														
+	within
+			     	A1_takePic
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_NormalForm_NormalForm) = let
+			
+			read(COutput_move) = pkg727_main::Harvester::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_pick) = pkg727_main::Harvester::pickCall -> registerWrite.o_pick -> SKIP
+			read(COutput_hideArm) = pkg727_main::Harvester::hideArmCall -> registerWrite.o_hideArm -> SKIP
+			read(COutput_drop) = pkg727_main::Harvester::dropCall?x__ -> registerWrite.o_drop.x__ -> SKIP
+			read(COutput_grasp) = pkg727_main::Harvester::graspCall?x__ -> registerWrite.o_grasp.x__ -> SKIP
+			read(COutput_goHome) = pkg727_main::Harvester::goHomeCall -> registerWrite.o_goHome -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_NormalForm_NormalForm); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_NormalForm_NormalForm) = let
+			A3 = ((registerRead.i_takePic?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_NormalForm_NormalForm) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_NormalForm_NormalForm))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_NormalForm_NormalForm)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(pkg727_main::Harvester::D__(id__,
+				    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+				    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+				    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+				    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+				    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+				    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+				    const_pkg727_main_ControlArm_stm_ref0_homePos,
+				    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+				    const_pkg727_main_ControlArm_stm_ref2_goHTime)\{|pkg727_main::Harvester::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime) =
+		prioritise(
+			((TLFree(id__,
+					    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+					    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+					    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+					    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+					    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+					    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+					    const_pkg727_main_ControlArm_stm_ref0_homePos,
+					    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+					    const_pkg727_main_ControlArm_stm_ref2_goHTime) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime) =
+		prioritise(
+			((pkg727_main::Harvester::D__(id__,
+					    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+					    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+					    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+					    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+					    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+					    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+					    const_pkg727_main_ControlArm_stm_ref0_homePos,
+					    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+					    const_pkg727_main_ControlArm_stm_ref2_goHTime)\{|pkg727_main::Harvester::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_NormalForm_NormalForm)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime) = D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime)
+
+endmodule

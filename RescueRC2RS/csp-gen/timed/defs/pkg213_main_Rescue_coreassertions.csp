@@ -1,0 +1,95 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:01:25
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg213_main_Rescue.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg213_main_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg213_main_Rescue
+P_pkg213_main_Rescue = let
+	id__ = 0
+	
+	
+	
+	const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY = 2
+	const_pkg213_main_Rescue_Finder_stm_ref0_LV = const_pkg213_main_FinderM_LV
+	const_pkg213_main_Rescue_Finder_stm_ref0_TOP = 1
+		
+	
+within
+	pkg213_main_Rescue::O__(id__,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)
+assert P_pkg213_main_Rescue :[deadlock-free]	
+assert P_pkg213_main_Rescue;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue :[deterministic]
+assert P_pkg213_main_Rescue :[divergence-free]
+
+-- generate pkg213_main_Rescue_Finder
+P_pkg213_main_Rescue_Finder = let
+	id__ = 0
+	
+	
+	
+	const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY = 2
+	const_pkg213_main_Rescue_Finder_stm_ref0_LV = const_pkg213_main_FinderM_LV
+	const_pkg213_main_Rescue_Finder_stm_ref0_TOP = 1
+		
+within
+	pkg213_main_Rescue::Finder::O__(id__,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)
+
+assert P_pkg213_main_Rescue_Finder :[deadlock-free]	
+assert P_pkg213_main_Rescue_Finder;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue_Finder :[deterministic]
+assert P_pkg213_main_Rescue_Finder :[divergence-free]
+
+-- generate pkg213_main_Rescue_Finder_stm_ref0
+P_pkg213_main_Rescue_Finder_stm_ref0 = let
+	id__ = 0
+	
+	
+	const_pkg213_main_FinderM_DELIVERY = 2
+	const_pkg213_main_FinderM_TOP = 1
+	
+within
+	pkg213_main_Rescue::Finder::stm_ref0::O__(
+		id__,
+		const_pkg213_main_FinderM_DELIVERY,
+		const_pkg213_main_FinderM_LV,
+		const_pkg213_main_FinderM_TOP
+	)
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[deadlock-free]	
+assert P_pkg213_main_Rescue_Finder_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[deterministic]
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue_Finder_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue_Finder_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue_Finder[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue_Finder
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue

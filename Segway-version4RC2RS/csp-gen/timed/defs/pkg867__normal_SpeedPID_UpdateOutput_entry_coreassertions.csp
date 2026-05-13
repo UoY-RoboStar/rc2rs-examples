@@ -1,0 +1,43 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:39
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg867__defs.csp"
+include "state_timed_defs.csp"
+include "pkg867__normal_SpeedPID_UpdateOutput_entry.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__OP_normal_SpeedPID_UpdateOutput_entry
+P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	const_pkg867__normal_SpeedPID_UpdateOutput_entry_P = 0
+	const_pkg867__normal_SpeedPID_UpdateOutput_entry_I = 0
+	
+	
+within
+	pkg867_::OP_normal_SpeedPID_UpdateOutput_entry::O__(id__,
+				param_newError,
+			    const_pkg867__normal_SpeedPID_UpdateOutput_entry_P,
+			    const_pkg867__normal_SpeedPID_UpdateOutput_entry_I)
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[deadlock-free]	
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[deterministic]
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry

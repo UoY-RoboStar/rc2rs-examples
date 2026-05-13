@@ -1,0 +1,33 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:58:32
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg224_SimFW_SMovement.csp"
+include "state_defs.csp"
+include "pkg224_SimFW_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg224_SimFW_SMovement
+P_pkg224_SimFW_SMovement = let
+	id__ = 0
+	
+	
+	
+within
+	pkg224_SimFW_SMovement::O__(
+		id__,
+		const_pkg224_SimFW_SMovement_lv,
+		const_pkg224_SimFW_SMovement_PI,
+		const_pkg224_SimFW_SMovement_av
+	)
+assert P_pkg224_SimFW_SMovement :[deadlock-free]	
+assert P_pkg224_SimFW_SMovement;RUN({r__}) :[deadlock-free]
+assert P_pkg224_SimFW_SMovement :[deterministic]
+assert P_pkg224_SimFW_SMovement :[divergence-free]

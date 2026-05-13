@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:01:25
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg213_main_waitOp.csp"
+include "pkg213_main_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg213_main_OP_waitOp
+P_pkg213_main_OP_waitOp = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg213_main::OP_waitOp::O__(id__,
+				param_i)
+assert P_pkg213_main_OP_waitOp :[deadlock-free]	
+assert P_pkg213_main_OP_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_waitOp :[deterministic]
+assert P_pkg213_main_OP_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_waitOp

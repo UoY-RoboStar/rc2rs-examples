@@ -1,0 +1,158 @@
+module RC
+	--include "../../../timed/defs/main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in|}
+	OutputEvents = {|main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
+	ExternalEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in
+					   ,main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_found.Bool
+		| i_origin.Bool
+		| i_switchOn.Bool
+	
+	datatype RegisterDataOutput = o_move.core_nat
+		| o_takeoff
+		| o_turnBack
+		| o_land
+	
+	
+	nametype RegisterOutputs = {|
+	o_move,
+	o_takeoff,
+	o_turnBack,
+	o_land|}
+	
+	nametype RegisterInputs = {|
+	i_found,
+	i_origin,
+	i_switchOn|}
+	
+	datatype COutputEvents = COutput_move
+		| COutput_takeoff
+		| COutput_turnBack
+		| COutput_land
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_found = registerRead.i_found?b__ ->
+								if b__ then (main::Rescue::found.in -> A1_found [] A1_found)
+									   else A1_found
+		A1_origin = registerRead.i_origin?b__ ->
+								if b__ then (main::Rescue::origin.in -> A1_origin [] A1_origin)
+									   else A1_origin
+		A1_switchOn = registerRead.i_switchOn?b__ ->
+								if b__ then (main::Rescue::switchOn.in -> A1_switchOn [] A1_switchOn)
+									   else A1_switchOn
+		
+														
+	within
+			     	A1_found
+			     	 |||
+			     	A1_origin
+			     	 |||
+			     	A1_switchOn
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+			read(COutput_move) = main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_takeoff) = main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
+			read(COutput_turnBack) = main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
+			read(COutput_land) = main::Rescue::land.out -> registerWrite.o_land -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_found?x__ -> SKIP)
+				|||
+			(registerRead.i_origin?x__ -> SKIP)
+				|||
+			(registerRead.i_switchOn?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_main_Rescue_Finder_stm_ref0_LV,
+			    const_main_Rescue_Finder_stm_ref0_TOP) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(main::Rescue::D__(id__,
+				    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+				    const_main_Rescue_Finder_stm_ref0_LV,
+				    const_main_Rescue_Finder_stm_ref0_TOP)\{|main::Rescue::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC,
+			    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_main_Rescue_Finder_stm_ref0_LV,
+			    const_main_Rescue_Finder_stm_ref0_TOP) =
+		prioritise(
+			((TLFree(id__,
+					    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+					    const_main_Rescue_Finder_stm_ref0_LV,
+					    const_main_Rescue_Finder_stm_ref0_TOP) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC,
+			    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_main_Rescue_Finder_stm_ref0_LV,
+			    const_main_Rescue_Finder_stm_ref0_TOP) =
+		prioritise(
+			((main::Rescue::D__(id__,
+					    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+					    const_main_Rescue_Finder_stm_ref0_LV,
+					    const_main_Rescue_Finder_stm_ref0_TOP)\{|main::Rescue::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC,
+			    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_main_Rescue_Finder_stm_ref0_LV,
+			    const_main_Rescue_Finder_stm_ref0_TOP) = D__(id__,cycle_RC_RC,
+			    const_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_main_Rescue_Finder_stm_ref0_LV,
+			    const_main_Rescue_Finder_stm_ref0_TOP)
+
+endmodule

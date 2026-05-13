@@ -1,0 +1,54 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:58:31
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "SimFW_defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "SimFW_Movement.csp"
+include "../instantiations.csp"
+channel r__
+-- generate SimFW_Movement
+P_SimFW_Movement = let
+	id__ = 0
+	
+	
+	
+	const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+	const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+	const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+		
+within
+	SimFW_Movement::O__(id__,
+			    const_SimFW_Movement_stm_ref0_lv,
+			    const_SimFW_Movement_stm_ref0_PI,
+			    const_SimFW_Movement_stm_ref0_av)
+
+assert P_SimFW_Movement :[deadlock-free]	
+assert P_SimFW_Movement;RUN({r__}) :[deadlock-free]
+assert P_SimFW_Movement :[deterministic]
+assert P_SimFW_Movement :[divergence-free]
+
+-- generate SimFW_Movement_stm_ref0
+P_SimFW_Movement_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	SimFW_Movement::stm_ref0::O__(
+		id__,
+		const_SimFW_SMovement_lv,
+		const_SimFW_SMovement_PI,
+		const_SimFW_SMovement_av
+	)
+assert P_SimFW_Movement_stm_ref0 :[deadlock-free]	
+assert P_SimFW_Movement_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_SimFW_Movement_stm_ref0 :[deterministic]
+assert P_SimFW_Movement_stm_ref0 :[divergence-free]

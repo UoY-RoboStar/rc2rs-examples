@@ -1,0 +1,64 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:36:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg867_.csp"
+
+
+-- generate pkg867__OP_AnglePID
+P_pkg867__OP_AnglePID = let
+	id__ = 0
+	
+	param_newError = 0
+	param_diff = 0
+	
+	
+	
+within
+	pkg867_::OP_AnglePID::O__(id__,
+				param_newError,
+				param_diff,
+			    const_pkg867__AnglePID_P,
+			    const_pkg867__AnglePID_D)
+assert P_pkg867__OP_AnglePID :[deadlock-free]	
+assert P_pkg867__OP_AnglePID;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_AnglePID :[deterministic]
+assert P_pkg867__OP_AnglePID :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__OP_AnglePID[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__OP_AnglePID
+-- generate pkg867__OP_normal_AnglePID_UpdateOutput_entry
+P_pkg867__OP_normal_AnglePID_UpdateOutput_entry = let
+	id__ = 0
+	
+	param_newError = 0
+	param_diff = 0
+	
+	const_pkg867__normal_AnglePID_UpdateOutput_entry_P = 0
+	const_pkg867__normal_AnglePID_UpdateOutput_entry_D = 0
+	
+	
+within
+	pkg867_::OP_normal_AnglePID_UpdateOutput_entry::O__(id__,
+				param_newError,
+				param_diff,
+			    const_pkg867__normal_AnglePID_UpdateOutput_entry_P,
+			    const_pkg867__normal_AnglePID_UpdateOutput_entry_D)
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[deadlock-free]	
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[deterministic]
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__OP_normal_AnglePID_UpdateOutput_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__OP_normal_AnglePID_UpdateOutput_entry
+
+

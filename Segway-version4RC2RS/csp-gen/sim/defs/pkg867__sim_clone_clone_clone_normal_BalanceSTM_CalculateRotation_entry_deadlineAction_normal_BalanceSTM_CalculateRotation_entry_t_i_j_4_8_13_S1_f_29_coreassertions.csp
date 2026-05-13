@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:37:02
+--
+
+include "pkg867__sim_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg867__sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29
+P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg867__sim::OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29::O__(id__)
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 :[deadlock-free]	
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29;RUN({r__}) :[deadlock-free]
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 :[deterministic]
+assert P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__sim_OP_clone_clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13_S1_f_29

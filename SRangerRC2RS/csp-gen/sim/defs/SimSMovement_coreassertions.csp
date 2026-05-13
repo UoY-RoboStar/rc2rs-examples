@@ -1,0 +1,39 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "SimSMovement.csp"
+include "state_timed_defs.csp"
+include "file_SimMovement_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate SimSMovement
+P_SimSMovement = let
+	cycle_SimSMovement_SimSMovement = 1
+	id__ = 0
+	
+	
+	
+within
+	SimSMovement::O__(
+		id__,
+		const_SimSMovement_PI,
+		const_SimSMovement_lv,
+		const_SimSMovement_av
+	)
+assert P_SimSMovement :[deadlock-free]	
+assert P_SimSMovement;RUN({r__}) :[deadlock-free]
+assert P_SimSMovement :[deterministic]
+assert P_SimSMovement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_SimSMovement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_SimSMovement

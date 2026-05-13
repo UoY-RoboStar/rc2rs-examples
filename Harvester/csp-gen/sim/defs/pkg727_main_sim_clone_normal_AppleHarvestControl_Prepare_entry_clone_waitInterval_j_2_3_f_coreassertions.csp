@@ -1,0 +1,38 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "pkg727_main_sim_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f
+P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f = let
+	id__ = 0
+	
+	param_m = 0
+	param_n = 0
+	
+	
+	
+within
+	pkg727_main_sim::OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f::O__(id__,
+				param_m,
+				param_n)
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f :[deadlock-free]	
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f :[deterministic]
+assert P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_OP_clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_f

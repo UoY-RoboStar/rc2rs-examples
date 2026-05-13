@@ -1,0 +1,1910 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+module SimMovement
+exports
+
+	transparent dbisim
+	transparent sbisim
+	transparent chase
+
+	-- declaring channels
+	-- allInputs = inputs_evars? false
+	-- allOutputs = outputs_evars? false
+	
+	-- inputs, evars, rvars and outputs as calculated internally
+	-- outputs = {
+	--	(SimMovement::move,sm::move),
+	--	(SimMovement::stop,sm::stop)
+	--	 }
+	-- inputs = {
+	--	(SimMovement::obstacle,sm::obstacle)
+	--	 }
+	-- evars = {}
+	-- dvars = {}
+	
+	-- declaring registerRead/Write datatypes
+	datatype RegisterDataInput = i_obstacle.Bool
+	
+	datatype RegisterDataOutput = o_stop
+		| o_move.core_real.core_real
+		| o_obstacle
+	
+	
+	nametype RegisterOutputs = {|
+	o_move,
+	o_stop|}
+		
+	nametype RegisterInputs = {|
+	i_obstacle|}
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	channel endexec, terminate
+	
+	
+	-- declaring call and ret events for undefined operations
+	channel moveCall: core_real.core_real
+	channel stopCall
+	
+	-- channel set with all visible events
+	sem__events = {|endexec,terminate
+	,registerRead
+	,registerWrite
+	|}
+	
+	module sm
+	exports
+		transparent diamond
+		transparent sbisim
+		transparent dbisim
+		transparent chase
+	
+		-- Transition identifiers
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i1|
+		              NID_SMoving|
+		              NID_DMoving|
+		              NID_J1|
+		              NID_Waiting|
+		              NID_STurning|
+		              NID_DTurning|
+		              NID_J2
+		
+		channel internal__ : NIDS
+		
+		-- Flow channels		
+		channel interrupt
+		channel exited
+		channel exit
+		channel terminate
+		
+		-- Variable channels
+		
+		-- Shared variable channels
+		
+		-- Local variable channels for defined operations that are required by the state machine
+		
+		-- Declaring state machine events
+		
+		-- Declaring call and ret events for undefined operations
+		channel moveCall: core_real.core_real
+		channel stopCall
+		
+		enterSS = {|
+		i1::enter,
+		SMoving::enter,
+		DMoving::enter,
+		J1::enter,
+		Waiting::enter,
+		STurning::enter,
+		DTurning::enter,
+		J2::enter
+		|}
+		
+		enteredSS = 	{|
+		SMoving::entered,
+		DMoving::entered,
+		Waiting::entered,
+		STurning::entered,
+		DTurning::entered
+		|}
+		
+		internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+		
+		shared_variable_events = {|
+		|}
+		
+		datatype ClockSet = 
+			CLID_MBC
+		
+		channel clockReset, clockResetL, clockResetR : ClockSet
+		
+		localClockResets = {|clockReset.CLID_MBC|}
+		
+		
+		channel get_CLID_Waiting : core_clock_type 
+		channel get_CLID_MBC : core_clock_type 
+		channel get_CLID_SMoving : core_clock_type 
+		channel get_CLID_STurning : core_clock_type 
+		channel get_CLID_DMoving : core_clock_type 
+		channel get_CLID_DTurning : core_clock_type 
+		--channel increment__
+		
+		CLID_Waiting_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_MBC_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{},
+		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real}),
+		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real})
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_SMoving_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_STurning_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_DMoving_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_DTurning_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		
+		
+		-- RoboSim-specific declarations
+		channel endexec, endexec_action
+		channel endexec__ : NIDS
+		channel startexec, startexec_action
+		
+		-- declaring registerRead/Write datatypes
+		datatype RegisterDataInput = i_obstacle.Bool
+		
+		
+		datatype RegisterDataOutput = o_move.core_real.core_real
+			| o_stop
+		
+		
+		nametype RegisterOutputs = {|
+		o_move,
+		o_stop|}
+			
+		nametype RegisterInputs = {|
+		i_obstacle|}
+		
+		channel registerRead 	: RegisterDataInput
+		channel registerWrite 	: RegisterDataOutput
+		
+		-- variable channels
+		channel get_obstacle : Bool
+		
+		-- channel set with all visible events
+		sem__events = {|endexec,terminate
+					,registerRead
+					,registerWrite
+		,	moveCall,
+			stopCall
+			|}
+	
+			-- Nodes --
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i1
+			module i1
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: SMoving
+			module SMoving
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__move(
+									id__,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av,
+									const_SimSMovement_lv,
+									0
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__move(
+									id__,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av,
+									const_SimSMovement_lv,
+									0
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: DMoving
+			module DMoving
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: J1
+			module J1
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Waiting
+			module Waiting
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: STurning
+			module STurning
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__move(
+									id__,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av,
+									0,
+									const_SimSMovement_av
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__move(
+									id__,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av,
+									0,
+									const_SimSMovement_av
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: DTurning
+			module DTurning
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: J2
+			module J2
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) = D__(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			-- END of Nodes --
+			
+			Timed(OneStep) {
+			-- Operation calls --
+			-- Only the undefined operations are declared here.
+			-- If the state machine is in isolation, all required operations will be undefined.
+			-- If it is in the context of a controller, the required operations not provided by the
+			-- controller will be declared here, and the defined operations will be defined in the
+			-- context of the Controller module, and therefore within scope of the state machine module.
+			CALL__move(id__,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av,
+						param_lv,
+						param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
+			CALL__stop(id__,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
+			
+			-- END of Operation calls --
+		
+			datatype SOutputEvents = SOutput_move
+				| SOutput_stop
+			
+			cycle(cycle_SimSMovement_SimSMovement) =
+				let
+					project(o_move.x__) = SOutput_move
+					project(o_stop) = SOutput_stop
+			
+					Cycle =
+						Deadline(
+							(registerRead.i_obstacle?x__ -> SKIP);
+							startexec -> CollectOutputs(SOutputEvents),0);
+						TimeOut_1(terminate -> SKIP,WAIT(cycle_SimSMovement_SimSMovement-1);Cycle)
+					
+					CollectOutputs(sout) =
+						(registerWrite?outp:{ outp | outc <- inter(sout,SOutputEvents), outp <- RegisterDataOutput,project(outp) == outc} -> CollectOutputs(diff(sout,{project(outp)}))
+							[]
+						endexec -> SKIP
+						)
+				within
+					Cycle
+			
+			-- STM processes
+			STM(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+			(
+				cycle(cycle_SimSMovement_SimSMovement)
+				[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+				( 
+					(
+						(
+							(startexec -> IteratedStateful(id__,cycle_SimSMovement_SimSMovement,
+									    const_SimSMovement_PI,
+									    const_SimSMovement_lv,
+									    const_SimSMovement_av) \ {terminate}) 
+							[| {share__} |]
+							SKIP
+						) ; 
+						(let
+							Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+						 within
+						 	Ending
+						)
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av))
+				)\sharedVarHide
+			)\{startexec}
+			
+			STM_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+			(
+				cycle(cycle_SimSMovement_SimSMovement)
+				[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+				( 
+					(
+						(
+							(startexec -> IteratedStateful_VS_O(id__,cycle_SimSMovement_SimSMovement,
+									    const_SimSMovement_PI,
+									    const_SimSMovement_lv,
+									    const_SimSMovement_av) \ {terminate}) 
+							[| {share__} |]
+							SKIP
+						) ; 
+						(let
+							Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+						 within
+						 	Ending
+						)
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av))
+				)\sharedVarHide
+			)\{startexec}
+			
+			-- Transitions
+			Transitions(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = ((let
+				Trans = share__choice(get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av) -> get_obstacle?obstacle -> TimeOut_1(
+					 (share__ -> SKIP
+					 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SMoving::enter -> SKIP))))
+					 [] dbisim((true)&(internal__!NID_SMoving -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+					 	X = share__choice(exited -> SKIP [] endexec -> Y)
+					 	Y = share__choice(exited -> SKIP [] startexec -> X)
+					  within
+					  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; DMoving::enter -> SKIP)))
+					 [] dbisim((true)&(endexec__.NID_DMoving -> startexec_action -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+					 	X = share__choice(exited -> SKIP [] endexec -> Y)
+					 	Y = share__choice(exited -> SKIP [] startexec -> X)
+					  within
+					  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; J1::enter -> SKIP)))
+					 [] dbisim(((not (member(obstacle,{true}))))&(internal__!NID_J1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; DMoving::enter -> SKIP))))
+					 [] dbisim((member(obstacle,{true}))&(internal__!NID_J1 -> SKIP ;  ((((share__choice(clockReset.CLID_MBC -> SKIP);true&CALL__stop(
+					 			id__,
+					 		    const_SimSMovement_PI,
+					 		    const_SimSMovement_lv,
+					 		    const_SimSMovement_av
+					 		))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP))))
+					 [] dbisim((true)&(endexec__.NID_Waiting -> startexec_action -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+					 	X = share__choice(exited -> SKIP [] endexec -> Y)
+					 	Y = share__choice(exited -> SKIP [] startexec -> X)
+					  within
+					  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; STurning::enter -> SKIP)))
+					 [] dbisim((true)&(internal__!NID_STurning -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+					 	X = share__choice(exited -> SKIP [] endexec -> Y)
+					 	Y = share__choice(exited -> SKIP [] startexec -> X)
+					  within
+					  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; DTurning::enter -> SKIP)))
+					 [] dbisim((true)&(endexec__.NID_DTurning -> startexec_action -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+					 	X = share__choice(exited -> SKIP [] endexec -> Y)
+					 	Y = share__choice(exited -> SKIP [] startexec -> X)
+					  within
+					  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; J2::enter -> SKIP)))
+					 [] dbisim(((MBC<Div(const_SimSMovement_PI, const_SimSMovement_av, core_real)))&(internal__!NID_J2 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; DTurning::enter -> SKIP))))
+					 [] dbisim(((MBC>=Div(const_SimSMovement_PI, const_SimSMovement_av, core_real)))&(internal__!NID_J2 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SMoving::enter -> SKIP))))
+					 []
+					 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+					 []
+					 terminate -> SKIP
+					 []
+					 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+					 )
+				,SKIP);Trans
+				)
+			within
+				Trans [|{terminate}|> SKIP
+			)
+			)
+			
+			-- Stateful
+			-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+			
+			-- Named process definitions
+			MachineBody(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((
+				let
+					finalNodesEntered = {||}
+				within
+					(dbisim((dbisim((let
+						-- IMPLEMENTATION NOTE:
+						-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						-- modules for defining the semantics of each node.
+						enterSS = {|
+						i1::enter,
+						SMoving::enter,
+						DMoving::enter,
+						J1::enter,
+						Waiting::enter,
+						STurning::enter,
+						DTurning::enter,
+						J2::enter
+						|}
+						hideSet = union(enterSS,{|exit,exited,internal__|})
+					within 
+						((let
+							-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							-- because CSPM modules are used for the semantics of Node.
+							flowevts = union(enterSS,{|exit,exited|})
+							transSync = {|internal__.NID_i1,internal__.NID_SMoving,endexec__.NID_DMoving,internal__.NID_J1,internal__.NID_J1,endexec__.NID_Waiting,internal__.NID_STurning,endexec__.NID_DTurning,internal__.NID_J2,internal__.NID_J2|}
+						within
+							((
+							 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							   i1::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   SMoving::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   DMoving::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   J1::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   Waiting::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   STurning::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   DTurning::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   J2::D__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   )
+							   )
+							   )
+							   )
+							   )
+							   )
+							   )
+							 )
+							 [[SMoving::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SMoving|}]]
+							 [[DMoving::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_DMoving|}]]
+							 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_Waiting|}]]
+							 [[STurning::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_STurning|}]]
+							 [[DTurning::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_DTurning|}]]
+							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+							 [[J1::interrupt <- x__ | x__ <- {|internal__.NID_J1,internal__.NID_J1|}]]
+							 [[J2::interrupt <- x__ | x__ <- {|internal__.NID_J2,internal__.NID_J2|}]]
+							 )
+							  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							 )
+							 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 			,clockResetL.CLID_MBC
+							|}) |]
+							 ((i1::enter -> Transitions(id__,cycle_SimSMovement_SimSMovement,
+							 		    const_SimSMovement_PI,
+							 		    const_SimSMovement_lv,
+							 		    const_SimSMovement_av))
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC |} ]]
+							 )
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+							)
+						)
+						 \ hideSet)
+						[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						[[ endexec_action <- endexec ]]
+						[[ startexec_action <- startexec ]]
+					)
+					)
+					 [| union(stateClockSync,{terminate}) |]
+					 StateClocks(id__,
+					 		          const_SimSMovement_PI,
+					 		          const_SimSMovement_lv,
+					 		          const_SimSMovement_av)
+					)\diff(stateClockSync,enteredSS))
+					 [| {| interrupt |} |] SKIP)
+				)
+				)
+			
+			Behaviour(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((let
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				 within
+					(MachineBody(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)) \ union(stateClockSync,enteredSS)
+				)
+				)
+			
+			IteratedBehaviour(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((let
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				 within
+					(dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															MachineBody(id__,cycle_SimSMovement_SimSMovement,
+																	    const_SimSMovement_PI,
+																	    const_SimSMovement_lv,
+																	    const_SimSMovement_av)
+															[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+															dbisim(Clock_CLID_DTurning(id__,0,
+																	          const_SimSMovement_PI,
+																	          const_SimSMovement_lv,
+																	          const_SimSMovement_av))
+														)\{|get_CLID_DTurning|}
+													)
+													[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
+													dbisim(Clock_CLID_DMoving(id__,0,
+															          const_SimSMovement_PI,
+															          const_SimSMovement_lv,
+															          const_SimSMovement_av))
+												)\{|get_CLID_DMoving|}
+											)
+											[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+											dbisim(Clock_CLID_STurning(id__,0,
+													          const_SimSMovement_PI,
+													          const_SimSMovement_lv,
+													          const_SimSMovement_av))
+										)\{|get_CLID_STurning|}
+									)
+									[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+									dbisim(Clock_CLID_SMoving(id__,0,
+											          const_SimSMovement_PI,
+											          const_SimSMovement_lv,
+											          const_SimSMovement_av))
+								)\{|get_CLID_SMoving|}
+							)
+							[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+							dbisim(Clock_CLID_Waiting(id__,0,
+									          const_SimSMovement_PI,
+									          const_SimSMovement_lv,
+									          const_SimSMovement_av))
+						)\{|get_CLID_Waiting|}
+					)
+					) \ union(stateClockSync,enteredSS)
+				)
+				)
+			
+			Stateful(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				((let
+					getsetLocalChannels = {||}
+					clockSync = {|get_CLID_MBC,clockReset.CLID_MBC|}
+				within
+					(Behaviour(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) 
+					 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+					 (varMemory(id__,cycle_SimSMovement_SimSMovement,
+					 		    const_SimSMovement_PI,
+					 		    const_SimSMovement_lv,
+					 		    const_SimSMovement_av) [| {terminate} |] Clocks(id__,
+					 		          const_SimSMovement_PI,
+					 		          const_SimSMovement_lv,
+					 		          const_SimSMovement_av))
+				 	)\union(getsetLocalChannels,clockSync)
+				)
+				)
+			
+			IteratedStateful(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) =
+				(dbisim(
+					sbisim(
+						IteratedBehaviour(id__,cycle_SimSMovement_SimSMovement,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av)
+						[| {|get_CLID_MBC,clockReset.CLID_MBC,terminate|} |]
+						dbisim(Clock_CLID_MBC(id__,0,
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av))
+					)\{|get_CLID_MBC,clockReset.CLID_MBC|}
+				)
+				)
+			
+			-- Visible counterparts
+			MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((
+				let
+					finalNodesEntered = {||}
+				within
+					(dbisim((dbisim((let
+						-- IMPLEMENTATION NOTE:
+						-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						-- modules for defining the semantics of each node.
+						enterSS = {|
+						i1::enter,
+						SMoving::enter,
+						DMoving::enter,
+						J1::enter,
+						Waiting::enter,
+						STurning::enter,
+						DTurning::enter,
+						J2::enter
+						|}
+						hideSet = union(enterSS,{|exit,exited,internal__|})
+					within 
+						((let
+							-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							-- because CSPM modules are used for the semantics of Node.
+							flowevts = union(enterSS,{|exit,exited|})
+							transSync = {|internal__.NID_i1,internal__.NID_SMoving,endexec__.NID_DMoving,internal__.NID_J1,internal__.NID_J1,endexec__.NID_Waiting,internal__.NID_STurning,endexec__.NID_DTurning,internal__.NID_J2,internal__.NID_J2|}
+						within
+							((
+							 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							   i1::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   SMoving::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   DMoving::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   J1::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   Waiting::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   STurning::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   DTurning::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   [| { share__, terminate } |] (
+							   J2::VS_O__(id__,cycle_SimSMovement_SimSMovement,
+							   		    const_SimSMovement_PI,
+							   		    const_SimSMovement_lv,
+							   		    const_SimSMovement_av)
+							   )
+							   )
+							   )
+							   )
+							   )
+							   )
+							   )
+							 )
+							 [[SMoving::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SMoving|}]]
+							 [[DMoving::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_DMoving|}]]
+							 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_Waiting|}]]
+							 [[STurning::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_STurning|}]]
+							 [[DTurning::interrupt <- x__ | x__ <- {|interrupt,endexec__.NID_DTurning|}]]
+							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+							 [[J1::interrupt <- x__ | x__ <- {|internal__.NID_J1,internal__.NID_J1|}]]
+							 [[J2::interrupt <- x__ | x__ <- {|internal__.NID_J2,internal__.NID_J2|}]]
+							 )
+							  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							 )
+							 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 			,clockResetL.CLID_MBC
+							|}) |]
+							 ((i1::enter -> Transitions(id__,cycle_SimSMovement_SimSMovement,
+							 		    const_SimSMovement_PI,
+							 		    const_SimSMovement_lv,
+							 		    const_SimSMovement_av))
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC |} ]]
+							 )
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+							)
+						)
+						 \ hideSet)
+						[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						[[ endexec_action <- endexec ]]
+						[[ startexec_action <- startexec ]]
+					)
+					)
+					 [| union(stateClockSync,{terminate}) |]
+					 StateClocks(id__,
+					 		          const_SimSMovement_PI,
+					 		          const_SimSMovement_lv,
+					 		          const_SimSMovement_av)
+					)\diff(stateClockSync,enteredSS))
+					 [| {| interrupt |} |] SKIP)
+				)
+				)
+			
+			Behaviour_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((let
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				 within
+					(MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+				)
+				)
+			
+			IteratedBehaviour_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((let
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				 within
+					(dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
+																	    const_SimSMovement_PI,
+																	    const_SimSMovement_lv,
+																	    const_SimSMovement_av)
+															[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+															dbisim(Clock_CLID_DTurning(id__,0,
+																	          const_SimSMovement_PI,
+																	          const_SimSMovement_lv,
+																	          const_SimSMovement_av))
+														)\{|get_CLID_DTurning|}
+													)
+													[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
+													dbisim(Clock_CLID_DMoving(id__,0,
+															          const_SimSMovement_PI,
+															          const_SimSMovement_lv,
+															          const_SimSMovement_av))
+												)\{|get_CLID_DMoving|}
+											)
+											[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+											dbisim(Clock_CLID_STurning(id__,0,
+													          const_SimSMovement_PI,
+													          const_SimSMovement_lv,
+													          const_SimSMovement_av))
+										)\{|get_CLID_STurning|}
+									)
+									[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+									dbisim(Clock_CLID_SMoving(id__,0,
+											          const_SimSMovement_PI,
+											          const_SimSMovement_lv,
+											          const_SimSMovement_av))
+								)\{|get_CLID_SMoving|}
+							)
+							[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+							dbisim(Clock_CLID_Waiting(id__,0,
+									          const_SimSMovement_PI,
+									          const_SimSMovement_lv,
+									          const_SimSMovement_av))
+						)\{|get_CLID_Waiting|}
+					)
+					) \ diff(union(stateClockSync,enteredSS),enteredSS)
+				)
+				)
+			
+			Stateful_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = 
+				dbisim((let
+					getsetLocalChannels = {||}
+					clockSync = {|get_CLID_MBC,clockReset.CLID_MBC|}
+				within
+					(Behaviour_VS_O(id__,cycle_SimSMovement_SimSMovement,
+							    const_SimSMovement_PI,
+							    const_SimSMovement_lv,
+							    const_SimSMovement_av) 
+					 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+					 (varMemory(id__,cycle_SimSMovement_SimSMovement,
+					 		    const_SimSMovement_PI,
+					 		    const_SimSMovement_lv,
+					 		    const_SimSMovement_av) [| {terminate} |] Clocks(id__,
+					 		          const_SimSMovement_PI,
+					 		          const_SimSMovement_lv,
+					 		          const_SimSMovement_av))
+				 	)\union(getsetLocalChannels,clockSync)
+				)
+				)
+			
+			IteratedStateful_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) =
+				(dbisim(
+					sbisim(
+						IteratedBehaviour_VS_O(id__,cycle_SimSMovement_SimSMovement,
+								    const_SimSMovement_PI,
+								    const_SimSMovement_lv,
+								    const_SimSMovement_av)
+						[| {|get_CLID_MBC,clockReset.CLID_MBC,terminate|} |]
+						dbisim(Clock_CLID_MBC(id__,0,
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av))
+					)\{|get_CLID_MBC,clockReset.CLID_MBC|}
+				)
+				)
+			
+			-- END
+			
+			-- Memory
+			-- Memory variables
+			
+			-- varMemory process
+			varMemory(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = terminate -> SKIP
+			
+			getsetLocalChannels = {||}
+			
+			-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+			FVS__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = STM_VS_O(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) \ localClockResets
+			D__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = timed_priority(STM(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) \ union(internal_events,localClockResets))
+			O__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = dbisim(D__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av))
+			VS__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = FVS__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av)
+			VS_O__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = dbisim(FVS__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av))
+			HEXT__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = O__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) [|shared_variable_events|] SKIP
+			FVS_C__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = dbisim(timed_priority(STM(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) \ internal_events))
+			HUP__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = timed_priority(O__(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) [|{share__}|] SKIP)
+			
+			-- Clocks
+			Clock_CLID_MBC(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					clockReset.CLID_MBC -> Clock_CLID_MBC(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_MBC!x__ -> Clock_CLID_MBC(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_MBC(id__,clock_type_plus(x__,1,CLID_MBC_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			
+			Clocks(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = dbisim(Clock_CLID_MBC(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			
+			clockSync = {|get_CLID_MBC,clockReset.CLID_MBC|}
+			
+			Clock_CLID_Waiting(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					Waiting::entered -> Clock_CLID_Waiting(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_Waiting!x__ -> Clock_CLID_Waiting(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_Waiting(id__,clock_type_plus(x__,1,CLID_Waiting_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			Clock_CLID_SMoving(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					SMoving::entered -> Clock_CLID_SMoving(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_SMoving!x__ -> Clock_CLID_SMoving(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_SMoving(id__,clock_type_plus(x__,1,CLID_SMoving_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			Clock_CLID_STurning(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					STurning::entered -> Clock_CLID_STurning(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			Clock_CLID_DMoving(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					DMoving::entered -> Clock_CLID_DMoving(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_DMoving!x__ -> Clock_CLID_DMoving(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_DMoving(id__,clock_type_plus(x__,1,CLID_DMoving_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			Clock_CLID_DTurning(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					DTurning::entered -> Clock_CLID_DTurning(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
+			
+			StateClocks(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = dbisim(Clock_CLID_Waiting(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			[| { terminate } |] (
+			dbisim(Clock_CLID_SMoving(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			[| { terminate } |] (
+			dbisim(Clock_CLID_STurning(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			[| { terminate } |] (
+			dbisim(Clock_CLID_DMoving(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			[| { terminate } |] (
+			dbisim(Clock_CLID_DTurning(id__,0,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av))
+			)
+			)
+			)
+			)
+			
+			stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+			
+			
+			-- Shared memory
+			-- Shared memory variables
+			
+			Memory_obstacle(x__) = (
+				get_obstacle!x__ -> Memory_obstacle(x__)
+				[]
+				registerRead.i_obstacle?x__ -> Memory_obstacle(x__)
+				[]
+				terminate -> SKIP
+			)
+			
+			-- sharedVarMemory process
+			sharedVarMemory(id__,cycle_SimSMovement_SimSMovement,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = (
+			 (terminate -> SKIP
+			 )
+			 [| { terminate } |]
+			 (Memory_obstacle(false)
+			 )
+			)
+			
+			sharedVarSync = union({|get_obstacle|},
+				  {||}
+				 )
+			
+			sharedVarHide = union({|get_obstacle|},
+				  {||}
+				 )
+			
+			}
+	endmodule
+	
+	Timed(OneStep) {
+	CALL__move(id__,
+			    param_lv,
+			    param_av) 	= moveCall.param_lv.param_av -> SKIP
+	CALL__stop(id__) 	= stopCall -> SKIP
+	}
+	
+	Timed(OneStep) {
+	-- (Rule 8) cycleController(...) : CSPProcess
+	datatype SOutputEvents = SOutput_move
+		| SOutput_stop
+	
+	DVarsEvents = {}
+	
+	EVarsEvents = {}
+	
+	cycleController(id__,cycle_SimMovement_SimMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) =
+	let
+				
+		project_sm(sm::o_move.x__) = SOutput_move
+		project_sm(sm::o_stop) = SOutput_stop
+	
+		connected_sm(sm::o_move.x__) = true
+		connected_sm(sm::o_stop) = true
+		connected_sm(_) = false
+	
+		lift_sm(sm::o_move.x__) = o_move.x__
+		lift_sm(sm::o_stop) = o_stop
+		
+		CycleController =
+			Deadline(
+			-- read inputs from the controller and pass to state machines
+			(
+			((registerRead.i_obstacle?x__ ->
+				((sm::registerRead.sm::i_obstacle!x__ -> SKIP))))
+			-- ensure state machines read the values being communicated via evars
+					);
+			-- synchronize on events related to evars to erase memory
+			-- collect outputs, and monitor termination of the cycle, by all controllers
+			(CollectOutputs(SOutputEvents) [| {endexec} |] Monitor),0);
+			-- wait for the cycleDef period
+			TimeOut_1(terminate -> SKIP,WAIT(cycle_SimMovement_SimMovement-1));
+			-- recurse
+			CycleController
+			
+									
+		CollectOutputs(sout) =
+			(sm::registerWrite?outp:{ outp | outc <- diff(sout,union(EVarsEvents,DVarsEvents)), outp <- sm::RegisterDataOutput, connected_sm(outp), project_sm(outp) == outc}
+					-> registerWrite!lift_sm(outp)
+						-> CollectOutputs(diff(sout,{project_sm(outp)}))
+			[]
+			endexec -> SKIP
+			)
+	
+		Monitor = 
+			(	 (sm::endexec -> SKIP)); endexec -> SKIP
+	within
+		CycleController
+	
+	-- (Rule 5) memoryComp(...) : CSPProcess
+	memoryComp(id__,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) = (
+		STOP)
+	
+	
+	-- (Rule 7) [[ c : Controller ]]_C : CSPProcess
+	D__(id__,cycle_SimMovement_SimMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) =
+	timed_priority(
+		(
+			(
+				(
+					(
+					dbisim(cycleController(id__,cycle_SimMovement_SimMovement,
+							    const_SimMovement_sm_PI,
+							    const_SimMovement_sm_lv,
+							    const_SimMovement_sm_av))
+				 	 [| Union({{||},
+				 	 		  {||},
+				 	 		  {||},
+				 	 		  {||}}) |]
+				 	memoryComp(id__,
+				 			    const_SimMovement_sm_PI,
+				 			    const_SimMovement_sm_lv,
+				 			    const_SimMovement_sm_av)
+				 	)\{||}
+					[| {| 	terminate,tock,
+							sm::endexec,sm::registerRead,sm::registerWrite|} |]
+					-- (Rule 9) composeMachines(...) : CSPProcess
+				 	((let
+				 		const_SimSMovement_PI = const_SimMovement_sm_PI
+				 		const_SimSMovement_lv = const_SimMovement_sm_lv
+				 		const_SimSMovement_av = const_SimMovement_sm_av
+				 		cycle_SimSMovement_SimSMovement = cycle_SimMovement_SimMovement
+				 	within
+				 		(sm::D__(id__,cycle_SimSMovement_SimSMovement,
+				 				    const_SimSMovement_PI,
+				 				    const_SimSMovement_lv,
+				 				    const_SimSMovement_av)
+				 		\{| |})
+				 		[[sm::terminate <- terminate]]
+				 	)
+				 	)
+				) \ {|	sm::endexec,sm::registerRead,sm::registerWrite |}
+			) [| {terminate} |> SKIP
+		)
+	)
+	
+	O__(id__,cycle_SimMovement_SimMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) = 
+	timed_priority(
+		dbisim(
+			(
+				(
+					(
+					dbisim(cycleController(id__,cycle_SimMovement_SimMovement,
+							    const_SimMovement_sm_PI,
+							    const_SimMovement_sm_lv,
+							    const_SimMovement_sm_av))
+				 	 [| Union({{||},
+				 	 		  {||},
+				 	 		  {||},
+				 	 		  {||}}) |]
+				 	memoryComp(id__,
+				 			    const_SimMovement_sm_PI,
+				 			    const_SimMovement_sm_lv,
+				 			    const_SimMovement_sm_av)
+				 	)\{||}
+					[| {| 	terminate,tock,
+							sm::endexec,sm::registerRead,sm::registerWrite|} |]
+					-- (Rule 9) composeMachines(...) : CSPProcess
+				 	((let
+				 		const_SimSMovement_PI = const_SimMovement_sm_PI
+				 		const_SimSMovement_lv = const_SimMovement_sm_lv
+				 		const_SimSMovement_av = const_SimMovement_sm_av
+				 		cycle_SimSMovement_SimSMovement = cycle_SimMovement_SimMovement
+				 	within
+				 		(sm::O__(id__,cycle_SimSMovement_SimSMovement,
+				 				    const_SimSMovement_PI,
+				 				    const_SimSMovement_lv,
+				 				    const_SimSMovement_av)
+				 		\{| |})
+				 		[[sm::terminate <- terminate]]
+				 	)
+				 	)
+				) \ {|	sm::endexec,sm::registerRead,sm::registerWrite |}
+			) [| {terminate} |> SKIP
+		)
+	)
+	}
+endmodule

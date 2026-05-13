@@ -1,0 +1,81 @@
+
+csp Instantiations csp-begin
+
+-- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+-- generate const_SimSMovement_PI
+const_SimSMovement_PI = 1
+-- generate const_SimSMovement_lv
+const_SimSMovement_lv = 1
+-- generate const_SimSMovement_av
+const_SimSMovement_av = 1
+-- generate const_SimFW_SMovement_lv
+const_SimFW_SMovement_lv = 1
+-- generate const_SimFW_SMovement_PI
+const_SimFW_SMovement_PI = 1
+-- generate const_SimFW_SMovement_av
+const_SimFW_SMovement_av = 1
+-- generate const_SimMovement_sm_PI
+const_SimMovement_sm_PI = 1
+-- generate const_SimMovement_sm_lv
+const_SimMovement_sm_lv = 1
+-- generate const_SimMovement_sm_av
+const_SimMovement_sm_av = 1
+-- generate const_SimFW_Movement_stm_ref0_lv
+const_SimFW_Movement_stm_ref0_lv = 1
+-- generate const_SimFW_Movement_stm_ref0_PI
+const_SimFW_Movement_stm_ref0_PI = 1
+-- generate const_SimFW_Movement_stm_ref0_av
+const_SimFW_Movement_stm_ref0_av = 1
+
+-- OPERATION CONSTANTS
+
+-- BASIC TYPES
+-- generate nat
+nametype core_nat = {0..2}
+-- generate int
+nametype core_int = { -2..2}
+-- generate string
+nametype core_string = LSeq(Char,2)
+-- generate boolean
+nametype core_boolean = Bool
+-- generate real
+nametype core_real = { -2..2} 
+
+
+-- CLOCKS
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS			
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+csp-end
+
+simulation Sim of SimFW::CMovement {
+	cycleDef { cycle == 1}
+}
+
+assertion A0 : SimCMovement refines Sim
+assertion A1 : SimCMovement refines Sim in the tick-tock model

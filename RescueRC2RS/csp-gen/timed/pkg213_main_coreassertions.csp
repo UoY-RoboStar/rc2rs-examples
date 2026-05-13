@@ -1,0 +1,522 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 06-05-2026 11:01:25
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg213_main.csp"
+
+-- generate pkg213_main_FinderM
+P_pkg213_main_FinderM = let
+	id__ = 0
+	
+	
+	const_pkg213_main_FinderM_DELIVERY = 2
+	const_pkg213_main_FinderM_TOP = 1
+	
+within
+	pkg213_main::FinderM::O__(
+		id__,
+		const_pkg213_main_FinderM_DELIVERY,
+		const_pkg213_main_FinderM_LV,
+		const_pkg213_main_FinderM_TOP
+	)
+assert P_pkg213_main_FinderM :[deadlock-free]	
+assert P_pkg213_main_FinderM;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_FinderM :[deterministic]
+assert P_pkg213_main_FinderM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_FinderM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_FinderM
+
+-- generate pkg213_main_OP_normal_FinderM_Looking_t2_op
+P_pkg213_main_OP_normal_FinderM_Looking_t2_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Looking_t2_op::O__(id__)
+assert P_pkg213_main_OP_normal_FinderM_Looking_t2_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Looking_t2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Looking_t2_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Looking_t2_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Looking_t2_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Looking_t2_op
+-- generate pkg213_main_OP_normal_FinderM_Delivering_entry
+P_pkg213_main_OP_normal_FinderM_Delivering_entry = let
+	id__ = 0
+	
+	
+	const_pkg213_main_normal_FinderM_Delivering_entry_DELIVERY = 2
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Delivering_entry::O__(id__,
+			    const_pkg213_main_normal_FinderM_Delivering_entry_DELIVERY)
+assert P_pkg213_main_OP_normal_FinderM_Delivering_entry :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Delivering_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_entry :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Delivering_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Delivering_entry
+-- generate pkg213_main_OP_normal_FinderM_Off_t1_op
+P_pkg213_main_OP_normal_FinderM_Off_t1_op = let
+	id__ = 0
+	
+	
+	const_pkg213_main_normal_FinderM_Off_t1_op_TOP = 1
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Off_t1_op::O__(id__,
+			    const_pkg213_main_normal_FinderM_Off_t1_op_TOP)
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Off_t1_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Off_t1_op
+-- generate pkg213_main_OP_normal_FinderM_Returning_t4_op
+P_pkg213_main_OP_normal_FinderM_Returning_t4_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Returning_t4_op::O__(id__)
+assert P_pkg213_main_OP_normal_FinderM_Returning_t4_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Returning_t4_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Returning_t4_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Returning_t4_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Returning_t4_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Returning_t4_op
+-- generate pkg213_main_OP_normal_FinderM_Delivering_t3_op
+P_pkg213_main_OP_normal_FinderM_Delivering_t3_op = let
+	id__ = 0
+	
+	
+	const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP = 1
+	const_pkg213_main_normal_FinderM_Delivering_t3_op_LV = 0
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Delivering_t3_op::O__(id__,
+			    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
+			    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV)
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Delivering_t3_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Delivering_t3_op
+-- generate pkg213_main_OP_tStop
+P_pkg213_main_OP_tStop = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_tStop::O__(id__)
+assert P_pkg213_main_OP_tStop :[deadlock-free]	
+assert P_pkg213_main_OP_tStop;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_tStop :[deterministic]
+assert P_pkg213_main_OP_tStop :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_tStop[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_tStop
+-- generate pkg213_main_OP_deadlineCheck
+P_pkg213_main_OP_deadlineCheck = let
+	id__ = 0
+	
+	param_d = 0
+	
+	
+	
+within
+	pkg213_main::OP_deadlineCheck::O__(id__,
+				param_d)
+assert P_pkg213_main_OP_deadlineCheck :[deadlock-free]	
+assert P_pkg213_main_OP_deadlineCheck;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_deadlineCheck :[deterministic]
+assert P_pkg213_main_OP_deadlineCheck :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_deadlineCheck[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_deadlineCheck
+-- generate pkg213_main_OP_waitOp
+P_pkg213_main_OP_waitOp = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg213_main::OP_waitOp::O__(id__,
+				param_i)
+assert P_pkg213_main_OP_waitOp :[deadlock-free]	
+assert P_pkg213_main_OP_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_waitOp :[deterministic]
+assert P_pkg213_main_OP_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_waitOp
+-- generate pkg213_main_OP_waitInterval
+P_pkg213_main_OP_waitInterval = let
+	id__ = 0
+	
+	param_m = 0
+	param_n = 0
+	
+	
+	
+within
+	pkg213_main::OP_waitInterval::O__(id__,
+				param_m,
+				param_n)
+assert P_pkg213_main_OP_waitInterval :[deadlock-free]	
+assert P_pkg213_main_OP_waitInterval;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_waitInterval :[deterministic]
+assert P_pkg213_main_OP_waitInterval :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_waitInterval[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_waitInterval
+-- generate pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op
+P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Off_t1_op_i_t_op::O__(id__)
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Off_t1_op_i_t_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op
+P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Off_t1_op_i_t_op::O__(id__)
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op_i_t_op
+-- generate pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op
+P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_normal_FinderM_Delivering_t3_op_i_t_op::O__(id__)
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op :[deadlock-free]	
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op :[deterministic]
+assert P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_normal_FinderM_Delivering_t3_op_i_t_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op
+P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Delivering_t3_op_i_t_op::O__(id__)
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op_i_t_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Looking_t2_op
+P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Looking_t2_op::O__(id__)
+assert P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Looking_t2_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Delivering_entry
+P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry = let
+	id__ = 0
+	
+	
+	const_pkg213_main_clone_normal_FinderM_Delivering_entry_DELIVERY = 2
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Delivering_entry::O__(id__,
+			    const_pkg213_main_clone_normal_FinderM_Delivering_entry_DELIVERY)
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry
+-- generate pkg213_main_OP_clone_normal_FinderM_Returning_t4_op
+P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Returning_t4_op::O__(id__)
+assert P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Returning_t4_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Off_t1_op
+P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op = let
+	id__ = 0
+	
+	
+	const_pkg213_main_clone_normal_FinderM_Off_t1_op_TOP = 1
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Off_t1_op::O__(id__,
+			    const_pkg213_main_clone_normal_FinderM_Off_t1_op_TOP)
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Off_t1_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op
+P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op = let
+	id__ = 0
+	
+	
+	const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP = 1
+	const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV = 0
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Delivering_t3_op::O__(id__,
+			    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
+			    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV)
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_op
+-- generate pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp
+P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp = let
+	id__ = 0
+	
+	param_n = 0
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Delivering_entry_waitOp::O__(id__,
+				param_n)
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Delivering_entry_waitOp
+-- generate pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp
+P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp = let
+	id__ = 0
+	
+	param_n = 0
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Delivering_t3_waitOp::O__(id__,
+				param_n)
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Delivering_t3_waitOp
+-- generate pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp
+P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp = let
+	id__ = 0
+	
+	param_n = 0
+	
+	
+	
+within
+	pkg213_main::OP_clone_normal_FinderM_Off_t1_waitOp::O__(id__,
+				param_n)
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp :[deadlock-free]	
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp :[deterministic]
+assert P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_OP_clone_normal_FinderM_Off_t1_waitOp
+
+
+-- generate pkg213_main_Rescue
+P_pkg213_main_Rescue = let
+	id__ = 0
+	
+	
+	
+	const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY = 2
+	const_pkg213_main_Rescue_Finder_stm_ref0_LV = const_pkg213_main_FinderM_LV
+	const_pkg213_main_Rescue_Finder_stm_ref0_TOP = 1
+		
+	
+within
+	pkg213_main::Rescue::O__(id__,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)
+assert P_pkg213_main_Rescue :[deadlock-free]	
+assert P_pkg213_main_Rescue;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue :[deterministic]
+assert P_pkg213_main_Rescue :[divergence-free]
+
+-- generate pkg213_main_Rescue_Finder
+P_pkg213_main_Rescue_Finder = let
+	id__ = 0
+	
+	
+	
+	const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY = 2
+	const_pkg213_main_Rescue_Finder_stm_ref0_LV = const_pkg213_main_FinderM_LV
+	const_pkg213_main_Rescue_Finder_stm_ref0_TOP = 1
+		
+within
+	pkg213_main::Rescue::Finder::O__(id__,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_DELIVERY,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_LV,
+			    const_pkg213_main_Rescue_Finder_stm_ref0_TOP)
+
+assert P_pkg213_main_Rescue_Finder :[deadlock-free]	
+assert P_pkg213_main_Rescue_Finder;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue_Finder :[deterministic]
+assert P_pkg213_main_Rescue_Finder :[divergence-free]
+
+-- generate pkg213_main_Rescue_Finder_stm_ref0
+P_pkg213_main_Rescue_Finder_stm_ref0 = let
+	id__ = 0
+	
+	
+	const_pkg213_main_FinderM_DELIVERY = 2
+	const_pkg213_main_FinderM_TOP = 1
+	
+within
+	pkg213_main::Rescue::Finder::stm_ref0::O__(
+		id__,
+		const_pkg213_main_FinderM_DELIVERY,
+		const_pkg213_main_FinderM_LV,
+		const_pkg213_main_FinderM_TOP
+	)
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[deadlock-free]	
+assert P_pkg213_main_Rescue_Finder_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[deterministic]
+assert P_pkg213_main_Rescue_Finder_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue_Finder_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue_Finder_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue_Finder[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue_Finder
+-- timed deadlock free
+assert prioritise(P_pkg213_main_Rescue[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_Rescue

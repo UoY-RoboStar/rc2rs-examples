@@ -1,0 +1,34 @@
+simulation NormalForm of pkg727_main::Harvester{
+	cycleDef cycle==1 
+}
+
+  
+ /*  
+  * Schedulability verification
+  */
+assertion A1: NormalForm is schedulable 
+   
+ 
+ /*   
+  * The RoboSim model is deadlock free
+  */
+ assertion A2: pkg727_main_sim::Harvester is deadlock-free 
+   
+ /*
+  * Conformance verification
+  */
+assertion A3: pkg727_main_sim::Harvester refines NormalForm in the failures divergences model with cycleDef of pkg727_main_sim::Harvester set to 1, and cycleDef of NormalForm set to 1 
+assertion A4: NormalForm refines pkg727_main_sim::Harvester in the failures divergences model with cycleDef of pkg727_main_sim::Harvester set to 1, and cycleDef of NormalForm set to 1 
+ 
+simulation RC of main::Harvester{
+		cycleDef cycle==1 
+}
+assertion A5: RC is schedulable 
+  
+
+  
+ /*
+  * Conformance verification
+  */
+assertion A6: pkg727_main_sim::Harvester refines RC in the failures divergences model with cycleDef of pkg727_main_sim::Harvester set to 1, and cycleDef of RC set to 1 
+assertion A7: RC refines pkg727_main_sim::Harvester in the failures divergences model with cycleDef of pkg727_main_sim::Harvester set to 1, and cycleDef of RC set to 1 

@@ -1,0 +1,298 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 13:19:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "main.csp"
+
+-- generate main_AppleHarvestControl
+P_main_AppleHarvestControl = let
+	id__ = 0
+	
+	
+	
+within
+	main::AppleHarvestControl::O__(
+		id__,
+		const_main_AppleHarvestControl_hideTime,
+		const_main_AppleHarvestControl_approachTime,
+		const_main_AppleHarvestControl_graspTime,
+		const_main_AppleHarvestControl_dropTime,
+		const_main_AppleHarvestControl_pickTime,
+		const_main_AppleHarvestControl_pickDeadl,
+		const_main_AppleHarvestControl_homePos,
+		const_main_AppleHarvestControl_storagePos
+	)
+assert P_main_AppleHarvestControl :[deadlock-free]	
+assert P_main_AppleHarvestControl;RUN({r__}) :[deadlock-free]
+assert P_main_AppleHarvestControl :[deterministic]
+assert P_main_AppleHarvestControl :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_AppleHarvestControl[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_AppleHarvestControl
+-- generate main_IKSolver
+P_main_IKSolver = let
+	id__ = 0
+	
+	
+	
+within
+	main::IKSolver::O__(
+		id__
+	)
+assert P_main_IKSolver :[deadlock-free]	
+assert P_main_IKSolver;RUN({r__}) :[deadlock-free]
+assert P_main_IKSolver :[deterministic]
+assert P_main_IKSolver :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_IKSolver[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_IKSolver
+-- generate main_GoHome
+P_main_GoHome = let
+	id__ = 0
+	
+	
+	
+within
+	main::GoHome::O__(
+		id__,
+		const_main_GoHome_goHTime
+	)
+assert P_main_GoHome :[deadlock-free]	
+assert P_main_GoHome;RUN({r__}) :[deadlock-free]
+assert P_main_GoHome :[deterministic]
+assert P_main_GoHome :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_GoHome[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_GoHome
+
+-- generate main_OP_CHTBA
+P_main_OP_CHTBA = let
+	id__ = 0
+	
+	param_img = 0
+	
+	
+	
+within
+	main::OP_CHTBA::O__(id__,
+				param_img)
+assert P_main_OP_CHTBA :[deadlock-free]	
+assert P_main_OP_CHTBA;RUN({r__}) :[deadlock-free]
+assert P_main_OP_CHTBA :[deterministic]
+assert P_main_OP_CHTBA :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_OP_CHTBA[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_OP_CHTBA
+-- generate main_OP_NearestNeighbour
+P_main_OP_NearestNeighbour = let
+	id__ = 0
+	
+	
+	
+	
+within
+	main::OP_NearestNeighbour::O__(id__)
+assert P_main_OP_NearestNeighbour :[deadlock-free]	
+assert P_main_OP_NearestNeighbour;RUN({r__}) :[deadlock-free]
+assert P_main_OP_NearestNeighbour :[deterministic]
+assert P_main_OP_NearestNeighbour :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_OP_NearestNeighbour[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_OP_NearestNeighbour
+
+-- generate main_ControlArm
+P_main_ControlArm = let
+	id__ = 0
+	
+	
+	
+	const_main_ControlArm_stm_ref0_hideTime = const_main_AppleHarvestControl_hideTime
+	const_main_ControlArm_stm_ref0_approachTime = const_main_AppleHarvestControl_approachTime
+	const_main_ControlArm_stm_ref0_graspTime = const_main_AppleHarvestControl_graspTime
+	const_main_ControlArm_stm_ref0_dropTime = const_main_AppleHarvestControl_dropTime
+	const_main_ControlArm_stm_ref0_pickTime = const_main_AppleHarvestControl_pickTime
+	const_main_ControlArm_stm_ref0_pickDeadl = const_main_AppleHarvestControl_pickDeadl
+	const_main_ControlArm_stm_ref0_homePos = const_main_AppleHarvestControl_homePos
+	const_main_ControlArm_stm_ref0_storagePos = const_main_AppleHarvestControl_storagePos
+	const_main_ControlArm_stm_ref2_goHTime = const_main_GoHome_goHTime
+		
+within
+	main::ControlArm::O__(id__,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime)
+
+assert P_main_ControlArm :[deadlock-free]	
+assert P_main_ControlArm;RUN({r__}) :[deadlock-free]
+assert P_main_ControlArm :[deterministic]
+assert P_main_ControlArm :[divergence-free]
+
+-- generate main_ControlArm_stm_ref0
+P_main_ControlArm_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	main::ControlArm::stm_ref0::O__(
+		id__,
+		const_main_AppleHarvestControl_hideTime,
+		const_main_AppleHarvestControl_approachTime,
+		const_main_AppleHarvestControl_graspTime,
+		const_main_AppleHarvestControl_dropTime,
+		const_main_AppleHarvestControl_pickTime,
+		const_main_AppleHarvestControl_pickDeadl,
+		const_main_AppleHarvestControl_homePos,
+		const_main_AppleHarvestControl_storagePos
+	)
+assert P_main_ControlArm_stm_ref0 :[deadlock-free]	
+assert P_main_ControlArm_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_main_ControlArm_stm_ref0 :[deterministic]
+assert P_main_ControlArm_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_ControlArm_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ControlArm_stm_ref0
+-- generate main_ControlArm_stm_ref1
+P_main_ControlArm_stm_ref1 = let
+	id__ = 0
+	
+	
+	
+within
+	main::ControlArm::stm_ref1::O__(
+		id__
+	)
+assert P_main_ControlArm_stm_ref1 :[deadlock-free]	
+assert P_main_ControlArm_stm_ref1;RUN({r__}) :[deadlock-free]
+assert P_main_ControlArm_stm_ref1 :[deterministic]
+assert P_main_ControlArm_stm_ref1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_ControlArm_stm_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ControlArm_stm_ref1
+-- generate main_ControlArm_stm_ref2
+P_main_ControlArm_stm_ref2 = let
+	id__ = 0
+	
+	
+	
+within
+	main::ControlArm::stm_ref2::O__(
+		id__,
+		const_main_GoHome_goHTime
+	)
+assert P_main_ControlArm_stm_ref2 :[deadlock-free]	
+assert P_main_ControlArm_stm_ref2;RUN({r__}) :[deadlock-free]
+assert P_main_ControlArm_stm_ref2 :[deterministic]
+assert P_main_ControlArm_stm_ref2 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_ControlArm_stm_ref2[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ControlArm_stm_ref2
+-- timed deadlock free
+assert prioritise(P_main_ControlArm[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ControlArm
+
+-- generate main_Harvester
+P_main_Harvester = let
+	id__ = 0
+	
+	
+	
+	const_main_ControlArm_stm_ref2_goHTime = const_main_GoHome_goHTime
+	const_main_ControlArm_stm_ref0_hideTime = const_main_AppleHarvestControl_hideTime
+	const_main_ControlArm_stm_ref0_approachTime = const_main_AppleHarvestControl_approachTime
+	const_main_ControlArm_stm_ref0_graspTime = const_main_AppleHarvestControl_graspTime
+	const_main_ControlArm_stm_ref0_dropTime = const_main_AppleHarvestControl_dropTime
+	const_main_ControlArm_stm_ref0_pickTime = const_main_AppleHarvestControl_pickTime
+	const_main_ControlArm_stm_ref0_pickDeadl = const_main_AppleHarvestControl_pickDeadl
+	const_main_ControlArm_stm_ref0_homePos = const_main_AppleHarvestControl_homePos
+	const_main_ControlArm_stm_ref0_storagePos = const_main_AppleHarvestControl_storagePos
+		
+	
+within
+	main::Harvester::O__(id__,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime)
+assert P_main_Harvester :[deadlock-free]	
+assert P_main_Harvester;RUN({r__}) :[deadlock-free]
+assert P_main_Harvester :[deterministic]
+assert P_main_Harvester :[divergence-free]
+
+-- generate main_Harvester_ctrl_ref0
+P_main_Harvester_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_main_ControlArm_stm_ref0_hideTime = const_main_AppleHarvestControl_hideTime
+	const_main_ControlArm_stm_ref0_approachTime = const_main_AppleHarvestControl_approachTime
+	const_main_ControlArm_stm_ref0_graspTime = const_main_AppleHarvestControl_graspTime
+	const_main_ControlArm_stm_ref0_dropTime = const_main_AppleHarvestControl_dropTime
+	const_main_ControlArm_stm_ref0_pickTime = const_main_AppleHarvestControl_pickTime
+	const_main_ControlArm_stm_ref0_pickDeadl = const_main_AppleHarvestControl_pickDeadl
+	const_main_ControlArm_stm_ref0_homePos = const_main_AppleHarvestControl_homePos
+	const_main_ControlArm_stm_ref0_storagePos = const_main_AppleHarvestControl_storagePos
+	const_main_ControlArm_stm_ref2_goHTime = const_main_GoHome_goHTime
+		
+within
+	main::Harvester::ctrl_ref0::O__(id__,
+			    const_main_ControlArm_stm_ref0_hideTime,
+			    const_main_ControlArm_stm_ref0_approachTime,
+			    const_main_ControlArm_stm_ref0_graspTime,
+			    const_main_ControlArm_stm_ref0_dropTime,
+			    const_main_ControlArm_stm_ref0_pickTime,
+			    const_main_ControlArm_stm_ref0_pickDeadl,
+			    const_main_ControlArm_stm_ref0_homePos,
+			    const_main_ControlArm_stm_ref0_storagePos,
+			    const_main_ControlArm_stm_ref2_goHTime)
+
+assert P_main_Harvester_ctrl_ref0 :[deadlock-free]	
+assert P_main_Harvester_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_main_Harvester_ctrl_ref0 :[deterministic]
+assert P_main_Harvester_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_main_Harvester_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_Harvester_ctrl_ref0
+-- timed deadlock free
+assert prioritise(P_main_Harvester[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_Harvester

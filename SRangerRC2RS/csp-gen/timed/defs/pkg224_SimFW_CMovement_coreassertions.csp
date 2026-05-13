@@ -1,0 +1,71 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 11:58:32
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg224_SimFW_CMovement.csp"
+include "state_timed_defs.csp"
+include "pkg224_SimFW_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg224_SimFW_CMovement
+P_pkg224_SimFW_CMovement = let
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_Movement_stm_ref0_lv = const_pkg224_SimFW_SMovement_lv
+	const_pkg224_SimFW_Movement_stm_ref0_PI = const_pkg224_SimFW_SMovement_PI
+	const_pkg224_SimFW_Movement_stm_ref0_av = const_pkg224_SimFW_SMovement_av
+		
+	
+within
+	pkg224_SimFW_CMovement::O__(id__,
+			    const_pkg224_SimFW_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_Movement_stm_ref0_av)
+assert P_pkg224_SimFW_CMovement :[deadlock-free]	
+assert P_pkg224_SimFW_CMovement;RUN({r__}) :[deadlock-free]
+assert P_pkg224_SimFW_CMovement :[deterministic]
+assert P_pkg224_SimFW_CMovement :[divergence-free]
+
+-- generate pkg224_SimFW_CMovement_ctrl_ref0
+P_pkg224_SimFW_CMovement_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_pkg224_SimFW_Movement_stm_ref0_lv = const_pkg224_SimFW_SMovement_lv
+	const_pkg224_SimFW_Movement_stm_ref0_PI = const_pkg224_SimFW_SMovement_PI
+	const_pkg224_SimFW_Movement_stm_ref0_av = const_pkg224_SimFW_SMovement_av
+		
+within
+	pkg224_SimFW_CMovement::ctrl_ref0::O__(id__,
+			    const_pkg224_SimFW_Movement_stm_ref0_lv,
+			    const_pkg224_SimFW_Movement_stm_ref0_PI,
+			    const_pkg224_SimFW_Movement_stm_ref0_av)
+
+assert P_pkg224_SimFW_CMovement_ctrl_ref0 :[deadlock-free]	
+assert P_pkg224_SimFW_CMovement_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg224_SimFW_CMovement_ctrl_ref0 :[deterministic]
+assert P_pkg224_SimFW_CMovement_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_pkg224_SimFW_CMovement_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg224_SimFW_CMovement_ctrl_ref0
+-- timed deadlock free
+assert prioritise(P_pkg224_SimFW_CMovement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg224_SimFW_CMovement

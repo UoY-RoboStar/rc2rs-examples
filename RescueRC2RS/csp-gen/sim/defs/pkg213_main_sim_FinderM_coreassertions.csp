@@ -1,0 +1,41 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 06-05-2026 11:01:27
+--
+
+include "pkg213_main_sim_FinderM.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg213_main_sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg213_main_sim_FinderM
+P_pkg213_main_sim_FinderM = let
+	cycle_pkg213_main_sim_FinderM_FinderM = 1
+	id__ = 0
+	
+	
+	const_pkg213_main_sim_FinderM_DELIVERY = 2
+	const_pkg213_main_sim_FinderM_TOP = 1
+	
+within
+	pkg213_main_sim_FinderM::O__(
+		id__,
+		const_pkg213_main_sim_FinderM_DELIVERY,
+		const_pkg213_main_sim_FinderM_LV,
+		const_pkg213_main_sim_FinderM_TOP
+	)
+assert P_pkg213_main_sim_FinderM :[deadlock-free]	
+assert P_pkg213_main_sim_FinderM;RUN({r__}) :[deadlock-free]
+assert P_pkg213_main_sim_FinderM :[deterministic]
+assert P_pkg213_main_sim_FinderM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg213_main_sim_FinderM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg213_main_sim_FinderM

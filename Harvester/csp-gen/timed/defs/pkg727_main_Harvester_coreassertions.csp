@@ -1,0 +1,95 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 13:19:59
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "pkg727_main_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_Harvester.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_Harvester
+P_pkg727_main_Harvester = let
+	id__ = 0
+	
+	
+	
+	const_pkg727_main_ControlArm_stm_ref2_goHTime = const_pkg727_main_GoHome_goHTime
+	const_pkg727_main_ControlArm_stm_ref0_hideTime = const_pkg727_main_AppleHarvestControl_hideTime
+	const_pkg727_main_ControlArm_stm_ref0_approachTime = const_pkg727_main_AppleHarvestControl_approachTime
+	const_pkg727_main_ControlArm_stm_ref0_graspTime = const_pkg727_main_AppleHarvestControl_graspTime
+	const_pkg727_main_ControlArm_stm_ref0_dropTime = const_pkg727_main_AppleHarvestControl_dropTime
+	const_pkg727_main_ControlArm_stm_ref0_pickTime = const_pkg727_main_AppleHarvestControl_pickTime
+	const_pkg727_main_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_AppleHarvestControl_pickDeadl
+	const_pkg727_main_ControlArm_stm_ref0_homePos = const_pkg727_main_AppleHarvestControl_homePos
+	const_pkg727_main_ControlArm_stm_ref0_storagePos = const_pkg727_main_AppleHarvestControl_storagePos
+		
+	
+within
+	pkg727_main_Harvester::O__(id__,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime)
+assert P_pkg727_main_Harvester :[deadlock-free]	
+assert P_pkg727_main_Harvester;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_Harvester :[deterministic]
+assert P_pkg727_main_Harvester :[divergence-free]
+
+-- generate pkg727_main_Harvester_ctrl_ref0
+P_pkg727_main_Harvester_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_pkg727_main_ControlArm_stm_ref0_hideTime = const_pkg727_main_AppleHarvestControl_hideTime
+	const_pkg727_main_ControlArm_stm_ref0_approachTime = const_pkg727_main_AppleHarvestControl_approachTime
+	const_pkg727_main_ControlArm_stm_ref0_graspTime = const_pkg727_main_AppleHarvestControl_graspTime
+	const_pkg727_main_ControlArm_stm_ref0_dropTime = const_pkg727_main_AppleHarvestControl_dropTime
+	const_pkg727_main_ControlArm_stm_ref0_pickTime = const_pkg727_main_AppleHarvestControl_pickTime
+	const_pkg727_main_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_AppleHarvestControl_pickDeadl
+	const_pkg727_main_ControlArm_stm_ref0_homePos = const_pkg727_main_AppleHarvestControl_homePos
+	const_pkg727_main_ControlArm_stm_ref0_storagePos = const_pkg727_main_AppleHarvestControl_storagePos
+	const_pkg727_main_ControlArm_stm_ref2_goHTime = const_pkg727_main_GoHome_goHTime
+		
+within
+	pkg727_main_Harvester::ctrl_ref0::O__(id__,
+			    const_pkg727_main_ControlArm_stm_ref0_hideTime,
+			    const_pkg727_main_ControlArm_stm_ref0_approachTime,
+			    const_pkg727_main_ControlArm_stm_ref0_graspTime,
+			    const_pkg727_main_ControlArm_stm_ref0_dropTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickTime,
+			    const_pkg727_main_ControlArm_stm_ref0_pickDeadl,
+			    const_pkg727_main_ControlArm_stm_ref0_homePos,
+			    const_pkg727_main_ControlArm_stm_ref0_storagePos,
+			    const_pkg727_main_ControlArm_stm_ref2_goHTime)
+
+assert P_pkg727_main_Harvester_ctrl_ref0 :[deadlock-free]	
+assert P_pkg727_main_Harvester_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_Harvester_ctrl_ref0 :[deterministic]
+assert P_pkg727_main_Harvester_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_pkg727_main_Harvester_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_Harvester_ctrl_ref0
+-- timed deadlock free
+assert prioritise(P_pkg727_main_Harvester[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_Harvester

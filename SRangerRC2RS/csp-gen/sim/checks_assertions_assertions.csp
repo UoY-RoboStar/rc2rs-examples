@@ -1,0 +1,170 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:58:34
+--
+
+include "defs/SimCMovement.csp"
+include "defs/state_timed_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/core_defs.csp"
+include "defs/file_SimMovement_defs.csp"
+include "defs/core_timed_defs.csp"
+include "sims/defs/Sim_defs.csp"
+include "../timed/defs/SimFW_defs.csp"
+include "../timed/defs/SimFW.csp"
+include "defs/pkg224_SimFW_sim_defs.csp"
+
+channel r__
+
+transparent chase
+
+-- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+-- generate const_SimSMovement_PI
+const_SimSMovement_PI = 1
+-- generate const_SimSMovement_lv
+const_SimSMovement_lv = 1
+-- generate const_SimSMovement_av
+const_SimSMovement_av = 1
+-- generate const_SimFW_SMovement_lv
+const_SimFW_SMovement_lv = 1
+-- generate const_SimFW_SMovement_PI
+const_SimFW_SMovement_PI = 1
+-- generate const_SimFW_SMovement_av
+const_SimFW_SMovement_av = 1
+-- generate const_SimMovement_sm_PI
+const_SimMovement_sm_PI = 1
+-- generate const_SimMovement_sm_lv
+const_SimMovement_sm_lv = 1
+-- generate const_SimMovement_sm_av
+const_SimMovement_sm_av = 1
+-- generate const_SimFW_Movement_stm_ref0_lv
+const_SimFW_Movement_stm_ref0_lv = 1
+-- generate const_SimFW_Movement_stm_ref0_PI
+const_SimFW_Movement_stm_ref0_PI = 1
+-- generate const_SimFW_Movement_stm_ref0_av
+const_SimFW_Movement_stm_ref0_av = 1
+
+-- OPERATION CONSTANTS
+
+-- BASIC TYPES
+-- generate nat
+nametype core_nat = {0..2}
+-- generate int
+nametype core_int = { -2..2}
+-- generate string
+nametype core_string = LSeq(Char,2)
+-- generate boolean
+nametype core_boolean = Bool
+-- generate real
+nametype core_real = { -2..2} 
+
+
+-- CLOCKS
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS			
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- A0 - refinement
+assert let
+	rename_in_Sim(Sim::i_obstacle.x__) = SimCMovement::i_obstacle.x__
+	rename_out_Sim(Sim::o_move.lv.av) = SimCMovement::o_move.lv.av
+	rename_out_Sim(Sim::o_stop) = SimCMovement::o_stop
+within
+	prioritise(let 
+		cycle_Sim_Sim = 1
+		id__ = 0
+		
+		
+		
+		const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+		const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+		const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+			
+	within
+		Sim::D__(id__,cycle_Sim_Sim,
+				    const_SimFW_Movement_stm_ref0_lv,
+				    const_SimFW_Movement_stm_ref0_PI,
+				    const_SimFW_Movement_stm_ref0_av),<{},{tock}>)
+	[[ Sim::registerRead.x__ <- SimCMovement::registerRead.rename_in_Sim(x__) | x__ <- Sim::RegisterInputs ]]
+	[[ Sim::registerWrite.x__ <- SimCMovement::registerWrite.rename_out_Sim(x__) | x__ <- Sim::RegisterOutputs ]]
+ [FD= let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av) :[tau priority]: {tock}
+
+-- A1 - refinement
+instance MS_A_A1 = model_shifting(union(SimCMovement::sem__events,SimCMovement::sem__events))
+assert MS_A_A1::TT(let
+	rename_in_Sim(Sim::i_obstacle.x__) = SimCMovement::i_obstacle.x__
+	rename_out_Sim(Sim::o_move.lv.av) = SimCMovement::o_move.lv.av
+	rename_out_Sim(Sim::o_stop) = SimCMovement::o_stop
+within
+	prioritise(let 
+		cycle_Sim_Sim = 1
+		id__ = 0
+		
+		
+		
+		const_SimFW_Movement_stm_ref0_lv = const_SimFW_SMovement_lv
+		const_SimFW_Movement_stm_ref0_PI = const_SimFW_SMovement_PI
+		const_SimFW_Movement_stm_ref0_av = const_SimFW_SMovement_av
+			
+	within
+		Sim::D__(id__,cycle_Sim_Sim,
+				    const_SimFW_Movement_stm_ref0_lv,
+				    const_SimFW_Movement_stm_ref0_PI,
+				    const_SimFW_Movement_stm_ref0_av),<{},{tock}>)
+	[[ Sim::registerRead.x__ <- SimCMovement::registerRead.rename_in_Sim(x__) | x__ <- Sim::RegisterInputs ]]
+	[[ Sim::registerWrite.x__ <- SimCMovement::registerWrite.rename_out_Sim(x__) | x__ <- Sim::RegisterOutputs ]]
+) [T= MS_A_A1::TT(let 
+	cycle_SimCMovement_SimCMovement = 1
+	id__ = 0
+	
+	
+	
+	const_SimMovement_sm_PI = const_SimSMovement_PI
+	const_SimMovement_sm_lv = const_SimSMovement_lv
+	const_SimMovement_sm_av = const_SimSMovement_av
+		
+within
+	SimCMovement::D__(id__,cycle_SimCMovement_SimCMovement,
+			    const_SimMovement_sm_PI,
+			    const_SimMovement_sm_lv,
+			    const_SimMovement_sm_av))
+

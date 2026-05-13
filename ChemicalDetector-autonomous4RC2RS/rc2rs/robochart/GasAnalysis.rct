@@ -1,0 +1,185 @@
+package pkg254_ import Chemical::analysis 
+import Chemical::goreq import Chemical::intensity import Chemical::location import Chemical::Status interface I_events_normal_GasAnalysis_Analysis_t3_op {
+	event resume
+}
+
+interface I_normal_GasAnalysis_Analysis_t3_op {
+	normal_GasAnalysis_Analysis_t3_op ( )
+}
+
+interface req_normal_GasAnalysis_GasDetected_t9a_op {
+	var gs : Seq( Chemical::GasSensor )
+}
+
+interface I_events_normal_GasAnalysis_GasDetected_t9a_op {
+	event turn : Chemical::Angle
+}
+
+interface I_normal_GasAnalysis_GasDetected_t9a_op {
+	normal_GasAnalysis_GasDetected_t9a_op ( )
+}
+
+interface I_events_normal_GasAnalysis_GasDetected_t8_op {
+	event stop
+}
+
+interface I_normal_GasAnalysis_GasDetected_t8_op {
+	normal_GasAnalysis_GasDetected_t8_op ( )
+}
+
+interface I_clone_normal_GasAnalysis_Analysis_t3_op {
+	clone_normal_GasAnalysis_Analysis_t3_op ( )
+}
+
+interface I_clone_normal_GasAnalysis_GasDetected_t9a_op {
+	clone_normal_GasAnalysis_GasDetected_t9a_op ( )
+}
+
+interface I_clone_normal_GasAnalysis_GasDetected_t8_op {
+	clone_normal_GasAnalysis_GasDetected_t8_op ( ) 
+}
+
+stm GasAnalysis {
+	requires I_clone_normal_GasAnalysis_Analysis_t3_op requires I_clone_normal_GasAnalysis_GasDetected_t9a_op requires I_clone_normal_GasAnalysis_GasDetected_t8_op var gs : Seq( Chemical::GasSensor )
+	const thr : Chemical::Intensity
+	event gas : Seq( Chemical::GasSensor )
+	event resume
+	event turn : Chemical::Angle
+	event stop
+	initial i1
+	state NoGas {
+		initial i
+		state EmptyCycle {
+		}
+		transition tNoGas {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Analysis {
+		state EmptyCycle {
+		}
+		initial i
+		transition tAnalysis {
+			from i
+			to EmptyCycle
+		}
+	}
+	state GasDetected {
+		initial i
+		state EmptyCycle {
+		}
+		transition tGasDetected {
+			from i
+			to EmptyCycle
+		}
+	}
+	final j1
+	state Reading {
+		state EmptyCycle {
+		}
+		initial i
+		transition tReading {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t1 {
+		from i1
+		to NoGas
+	}
+	transition t2 {
+		from NoGas
+		to Analysis
+		trigger gas ? gs
+	}
+	transition t3 {
+		from Analysis
+		to NoGas
+		condition analysis ( gs ) == Status :: noGas
+		action clone_normal_GasAnalysis_Analysis_t3_op ( )
+	}
+	transition t4 {
+		from Analysis
+		to GasDetected
+		condition analysis ( gs ) == Status :: gasD
+	}
+	transition t8 {
+		from GasDetected
+		to j1
+		condition goreq ( intensity ( gs ) , thr )
+		action clone_normal_GasAnalysis_GasDetected_t8_op ( )
+	}
+	transition t9a {
+		from GasDetected
+		to Reading
+		condition not goreq ( intensity ( gs ) , thr )
+		action clone_normal_GasAnalysis_GasDetected_t9a_op ( )
+	}
+	transition t0 {
+		from Reading
+		to Analysis
+		trigger gas ? gs
+	}
+}
+
+operation normal_GasAnalysis_Analysis_t3_op ( ) {
+	uses I_events_normal_GasAnalysis_Analysis_t3_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action resume
+	}
+}
+
+operation normal_GasAnalysis_GasDetected_t9a_op ( ) {
+	uses I_events_normal_GasAnalysis_GasDetected_t9a_op requires req_normal_GasAnalysis_GasDetected_t9a_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action turn ! location ( gs )
+	}
+}
+
+operation normal_GasAnalysis_GasDetected_t8_op ( ) {
+	uses I_events_normal_GasAnalysis_GasDetected_t8_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action stop
+	}
+}
+
+operation clone_normal_GasAnalysis_Analysis_t3_op ( ) {
+	uses I_events_normal_GasAnalysis_Analysis_t3_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action resume
+	}
+}
+
+operation clone_normal_GasAnalysis_GasDetected_t9a_op ( ) {
+	uses I_events_normal_GasAnalysis_GasDetected_t9a_op requires req_normal_GasAnalysis_GasDetected_t9a_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action turn ! location ( gs )
+	}
+}
+
+operation clone_normal_GasAnalysis_GasDetected_t8_op ( ) {
+	uses I_events_normal_GasAnalysis_GasDetected_t8_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action stop
+	}
+}
+

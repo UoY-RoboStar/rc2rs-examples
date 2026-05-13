@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 12-05-2026 13:19:59
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "pkg727_main_defs.csp"
+include "core_defs.csp"
+include "pkg727_main_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f
+P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg727_main::OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f::O__(id__)
+assert P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f :[deadlock-free]	
+assert P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f :[deterministic]
+assert P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_OP_clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f

@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 13:20:02
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg727_main_sim_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f.csp"
+include "state_timed_defs.csp"
+include "pkg727_main_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f
+P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg727_main_sim::OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f::O__(id__)
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f :[deadlock-free]	
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f;RUN({r__}) :[deadlock-free]
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f :[deterministic]
+assert P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg727_main_sim_OP_clone_normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_j_2_9_t_2_9_op_j_2_9_f

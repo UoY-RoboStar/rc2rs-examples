@@ -1,0 +1,33 @@
+simulation NormalForm of pkg224_SimFW::CMovement{
+	cycleDef cycle==1 
+} 
+ 
+ /* 
+  * Schedulability verification
+  */
+assertion A1: NormalForm is schedulable 
+   
+
+ /* 
+  * The RoboSim model is deadlock free
+  */
+ assertion A2: pkg224_SimFW_sim::CMovement is deadlock-free 
+   
+ /*
+  * Conformance verification
+  */
+assertion A3: pkg224_SimFW_sim::CMovement refines NormalForm in the failures divergences model with cycleDef of pkg224_SimFW_sim::CMovement set to 1, and cycleDef of NormalForm set to 1 
+assertion A4: NormalForm refines pkg224_SimFW_sim::CMovement in the failures divergences model with cycleDef of pkg224_SimFW_sim::CMovement set to 1, and cycleDef of NormalForm set to 1 
+ 
+simulation RC of SimFW::CMovement{
+		cycleDef cycle==1 
+}
+assertion A5: RC is schedulable 
+  
+
+  
+ /*
+  * Conformance verification
+  */
+assertion A6: pkg224_SimFW_sim::CMovement refines RC in the failures divergences model with cycleDef of pkg224_SimFW_sim::CMovement set to 1, and cycleDef of RC set to 1 
+assertion A7: RC refines pkg224_SimFW_sim::CMovement in the failures divergences model with cycleDef of pkg224_SimFW_sim::CMovement set to 1, and cycleDef of RC set to 1 

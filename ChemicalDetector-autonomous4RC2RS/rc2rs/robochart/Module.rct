@@ -1,5 +1,5 @@
-package pkg254_main interface Operations {
-	move (   lv : real , a : Chemical::Angle )
+package pkg994_ChemicalDetector import Chemical::Angle import Chemical::Status import Location::Loc interface Operations {
+	move (   lv : real , a : Angle )
 	randomWalk ( )
 	shortRandomWalk ( )
 }
@@ -20,10 +20,18 @@ interface I_waitInterval {
 	waitInterval ( m : nat , n : nat )
 }
 
+operation shortRandomWalk ( ) {
+	terminates }
+
+operation move ( lv : real
+, a : Angle
+) {
+	terminates }
+
 operation tStop ( ) {
-	initial i
 	state sStop {
 	}
+	initial i
 	transition t {
 		from i
 		to sStop
@@ -32,8 +40,8 @@ operation tStop ( ) {
 
 operation deadlineCheck ( d : nat
 ) {
-	requires ItStop final f
-	initial i
+	requires ItStop initial i
+	final f
 	transition t {
 		from i
 		to f
@@ -43,6 +51,8 @@ operation deadlineCheck ( d : nat
 
 operation waitOp ( i : nat
 ) {
+	final f
+	initial i0
 	state Waiting {
 		state EmptyCycle {
 		}
@@ -52,17 +62,15 @@ operation waitOp ( i : nat
 			to EmptyCycle
 		}
 	}
-	initial i0
-	final f
-	transition t2 {
-		from Waiting
-		to f
-		condition since ( C ) == i
-	}
 	transition t {
 		from i0
 		to Waiting
 		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
 	}
 	clock C
 }
@@ -78,16 +86,16 @@ operation waitInterval ( m : nat
 		to j
 		action # C
 	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
 	transition trSelf {
 		from j
 		to j
 		condition since ( C ) < n
 		action waitOp ( 1 )
-	}
-	transition trF {
-		from j
-		to f
-		condition since ( C ) >= m
 	}
 	clock C
 }
@@ -103,11 +111,11 @@ module ChemicalDetector {
 	robotic platform Vehicle {
 		provides Operations event flag
 		event gas : Seq( Chemical::GasSensor )
-		event obstacle : Location::Loc
+		event obstacle : Loc
 		event odometer : real
 	}
 
-	cref ctrl_ref0 = pkg254_::MicroController
-	cref ctrl_ref1 = pkg254_::MainController
+	cref ctrl_ref0 = pkg994_::MicroController
+	cref ctrl_ref1 = pkg994_::MainController
 }
 

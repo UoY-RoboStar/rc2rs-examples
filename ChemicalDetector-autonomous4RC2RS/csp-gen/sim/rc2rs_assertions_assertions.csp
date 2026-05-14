@@ -1,29 +1,29 @@
 
 --
 -- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 06-05-2026 11:18:49
+-- Automatically generated on 14-05-2026 19:42:45
 --
 
-include "../timed/defs/pkg254_main_defs.csp"
 include "defs/state_timed_defs.csp"
 include "defs/core_defs.csp"
-include "defs/pkg254__sim_defs.csp"
-include "defs/pkg254_main_sim_defs.csp"
+include "defs/pkg994_ChemicalDetector_sim_defs.csp"
+include "defs/pkg994__sim_defs.csp"
 include "../timed/defs/file_Module_defs.csp"
 include "defs/sequence_toolkit_defs.csp"
 include "../timed/defs/Location_defs.csp"
 include "../timed/defs/file_MainController_defs.csp"
-include "../timed/defs/pkg254__defs.csp"
 include "sims/defs/NormalForm_defs.csp"
-include "defs/pkg254_main_sim.csp"
 include "defs/function_toolkit_defs.csp"
 include "defs/robochart_defs.csp"
+include "defs/pkg994_ChemicalDetector_sim.csp"
 include "defs/core_timed_defs.csp"
 include "../timed/defs/file_MicroController_defs.csp"
-include "../timed/defs/pkg254_main.csp"
+include "../timed/defs/pkg994_ChemicalDetector_defs.csp"
 include "../timed/defs/file_GasAnalysis_defs.csp"
+include "../timed/defs/pkg994_ChemicalDetector.csp"
 include "defs/set_toolkit_defs.csp"
 include "../timed/defs/file_Movement_defs.csp"
+include "../timed/defs/pkg994__defs.csp"
 include "instantiations.csp"
 include "defs/relation_toolkit_defs.csp"
 include "../timed/defs/Chemical_defs.csp"
@@ -39,54 +39,54 @@ assert let
 	
 	
 	
-	const_pkg254__MainController_stm_ref0_thr = const_pkg254__GasAnalysis_thr
-	const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
-	const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
-	const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
-	const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
-	const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+	const_pkg994__MainController_stm_ref0_thr = const_pkg994__GasAnalysis_thr
+	const_pkg994__MicroController_stm_ref0_lv = const_pkg994__Movement_lv
+	const_pkg994__MicroController_stm_ref0_evadeTime = const_pkg994__Movement_evadeTime
+	const_pkg994__MicroController_stm_ref0_stuckPeriod = const_pkg994__Movement_stuckPeriod
+	const_pkg994__MicroController_stm_ref0_stuckDist = const_pkg994__Movement_stuckDist
+	const_pkg994__MicroController_stm_ref0_outPeriod = const_pkg994__Movement_outPeriod
 		
 within
 	NormalForm::TLF(id__,cycle_NormalForm_NormalForm,
-			    const_pkg254__MicroController_stm_ref0_lv,
-			    const_pkg254__MicroController_stm_ref0_evadeTime,
-			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
-			    const_pkg254__MicroController_stm_ref0_stuckDist,
-			    const_pkg254__MicroController_stm_ref0_outPeriod,
-			    const_pkg254__MainController_stm_ref0_thr):[deadlock free [F]] :[tau priority]: {tock}
+			    const_pkg994__MicroController_stm_ref0_lv,
+			    const_pkg994__MicroController_stm_ref0_evadeTime,
+			    const_pkg994__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg994__MicroController_stm_ref0_stuckDist,
+			    const_pkg994__MicroController_stm_ref0_outPeriod,
+			    const_pkg994__MainController_stm_ref0_thr):[deadlock free [F]] :[tau priority]: {tock}
 
 -- A2 - timed deadlock free
 assert prioritise(let 
-	cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector = 1
+	cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector = 1
 	id__ = 0
 	
 	
 	
-	const_pkg254__sim_MicroController_stm_ref0_lv = const_pkg254__sim_Movement_lv
-	const_pkg254__sim_MicroController_stm_ref0_evadeTime = const_pkg254__sim_Movement_evadeTime
-	const_pkg254__sim_MicroController_stm_ref0_stuckPeriod = const_pkg254__sim_Movement_stuckPeriod
-	const_pkg254__sim_MicroController_stm_ref0_stuckDist = const_pkg254__sim_Movement_stuckDist
-	const_pkg254__sim_MicroController_stm_ref0_outPeriod = const_pkg254__sim_Movement_outPeriod
-	const_pkg254__sim_MainController_stm_ref0_thr = const_pkg254__sim_GasAnalysis_thr
+	const_pkg994__sim_MainController_stm_ref0_thr = const_pkg994__sim_GasAnalysis_thr
+	const_pkg994__sim_MicroController_stm_ref0_lv = const_pkg994__sim_Movement_lv
+	const_pkg994__sim_MicroController_stm_ref0_evadeTime = const_pkg994__sim_Movement_evadeTime
+	const_pkg994__sim_MicroController_stm_ref0_stuckPeriod = const_pkg994__sim_Movement_stuckPeriod
+	const_pkg994__sim_MicroController_stm_ref0_stuckDist = const_pkg994__sim_Movement_stuckDist
+	const_pkg994__sim_MicroController_stm_ref0_outPeriod = const_pkg994__sim_Movement_outPeriod
 		
 within
-	pkg254_main_sim::ChemicalDetector::D__(id__,cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector,
-			    const_pkg254__sim_MicroController_stm_ref0_lv,
-			    const_pkg254__sim_MicroController_stm_ref0_evadeTime,
-			    const_pkg254__sim_MicroController_stm_ref0_stuckPeriod,
-			    const_pkg254__sim_MicroController_stm_ref0_stuckDist,
-			    const_pkg254__sim_MicroController_stm_ref0_outPeriod,
-			    const_pkg254__sim_MainController_stm_ref0_thr)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
+	pkg994_ChemicalDetector_sim::ChemicalDetector::D__(id__,cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector,
+			    const_pkg994__sim_MicroController_stm_ref0_lv,
+			    const_pkg994__sim_MicroController_stm_ref0_evadeTime,
+			    const_pkg994__sim_MicroController_stm_ref0_stuckPeriod,
+			    const_pkg994__sim_MicroController_stm_ref0_stuckDist,
+			    const_pkg994__sim_MicroController_stm_ref0_outPeriod,
+			    const_pkg994__sim_MainController_stm_ref0_thr)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
 
 -- A3 - refinement
 assert let
-	rename_in_NormalForm(NormalForm::i_obstacle.x__.y__) = pkg254_main_sim::ChemicalDetector::i_obstacle.x__.y__
-	rename_in_NormalForm(NormalForm::i_gas.x__.y__) = pkg254_main_sim::ChemicalDetector::i_gas.x__.y__
-	rename_in_NormalForm(NormalForm::i_odometer.x__.y__) = pkg254_main_sim::ChemicalDetector::i_odometer.x__.y__
-	rename_out_NormalForm(NormalForm::o_randomWalk) = pkg254_main_sim::ChemicalDetector::o_randomWalk
-	rename_out_NormalForm(NormalForm::o_move.lv.a) = pkg254_main_sim::ChemicalDetector::o_move.lv.a
-	rename_out_NormalForm(NormalForm::o_shortRandomWalk) = pkg254_main_sim::ChemicalDetector::o_shortRandomWalk
-	rename_out_NormalForm(NormalForm::o_flag) = pkg254_main_sim::ChemicalDetector::o_flag
+	rename_in_NormalForm(NormalForm::i_odometer.x__.y__) = pkg994_ChemicalDetector_sim::ChemicalDetector::i_odometer.x__.y__
+	rename_in_NormalForm(NormalForm::i_gas.x__.y__) = pkg994_ChemicalDetector_sim::ChemicalDetector::i_gas.x__.y__
+	rename_in_NormalForm(NormalForm::i_obstacle.x__.y__) = pkg994_ChemicalDetector_sim::ChemicalDetector::i_obstacle.x__.y__
+	rename_out_NormalForm(NormalForm::o_move.lv.a) = pkg994_ChemicalDetector_sim::ChemicalDetector::o_move.lv.a
+	rename_out_NormalForm(NormalForm::o_flag) = pkg994_ChemicalDetector_sim::ChemicalDetector::o_flag
+	rename_out_NormalForm(NormalForm::o_randomWalk) = pkg994_ChemicalDetector_sim::ChemicalDetector::o_randomWalk
+	rename_out_NormalForm(NormalForm::o_shortRandomWalk) = pkg994_ChemicalDetector_sim::ChemicalDetector::o_shortRandomWalk
 within
 	prioritise(let 
 		cycle_NormalForm_NormalForm = 1
@@ -94,97 +94,97 @@ within
 		
 		
 		
-		const_pkg254__MainController_stm_ref0_thr = const_pkg254__GasAnalysis_thr
-		const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
-		const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
-		const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
-		const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
-		const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+		const_pkg994__MainController_stm_ref0_thr = const_pkg994__GasAnalysis_thr
+		const_pkg994__MicroController_stm_ref0_lv = const_pkg994__Movement_lv
+		const_pkg994__MicroController_stm_ref0_evadeTime = const_pkg994__Movement_evadeTime
+		const_pkg994__MicroController_stm_ref0_stuckPeriod = const_pkg994__Movement_stuckPeriod
+		const_pkg994__MicroController_stm_ref0_stuckDist = const_pkg994__Movement_stuckDist
+		const_pkg994__MicroController_stm_ref0_outPeriod = const_pkg994__Movement_outPeriod
 			
 	within
 		NormalForm::D__(id__,cycle_NormalForm_NormalForm,
-				    const_pkg254__MicroController_stm_ref0_lv,
-				    const_pkg254__MicroController_stm_ref0_evadeTime,
-				    const_pkg254__MicroController_stm_ref0_stuckPeriod,
-				    const_pkg254__MicroController_stm_ref0_stuckDist,
-				    const_pkg254__MicroController_stm_ref0_outPeriod,
-				    const_pkg254__MainController_stm_ref0_thr),<{},{tock}>)
-	[[ NormalForm::registerRead.x__ <- pkg254_main_sim::ChemicalDetector::registerRead.rename_in_NormalForm(x__) | x__ <- NormalForm::RegisterInputs ]]
-	[[ NormalForm::registerWrite.x__ <- pkg254_main_sim::ChemicalDetector::registerWrite.rename_out_NormalForm(x__) | x__ <- NormalForm::RegisterOutputs ]]
+				    const_pkg994__MicroController_stm_ref0_lv,
+				    const_pkg994__MicroController_stm_ref0_evadeTime,
+				    const_pkg994__MicroController_stm_ref0_stuckPeriod,
+				    const_pkg994__MicroController_stm_ref0_stuckDist,
+				    const_pkg994__MicroController_stm_ref0_outPeriod,
+				    const_pkg994__MainController_stm_ref0_thr),<{},{tock}>)
+	[[ NormalForm::registerRead.x__ <- pkg994_ChemicalDetector_sim::ChemicalDetector::registerRead.rename_in_NormalForm(x__) | x__ <- NormalForm::RegisterInputs ]]
+	[[ NormalForm::registerWrite.x__ <- pkg994_ChemicalDetector_sim::ChemicalDetector::registerWrite.rename_out_NormalForm(x__) | x__ <- NormalForm::RegisterOutputs ]]
  [FD= let 
-	cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector = 1
+	cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector = 1
 	id__ = 0
 	
 	
 	
-	const_pkg254__sim_MicroController_stm_ref0_lv = const_pkg254__sim_Movement_lv
-	const_pkg254__sim_MicroController_stm_ref0_evadeTime = const_pkg254__sim_Movement_evadeTime
-	const_pkg254__sim_MicroController_stm_ref0_stuckPeriod = const_pkg254__sim_Movement_stuckPeriod
-	const_pkg254__sim_MicroController_stm_ref0_stuckDist = const_pkg254__sim_Movement_stuckDist
-	const_pkg254__sim_MicroController_stm_ref0_outPeriod = const_pkg254__sim_Movement_outPeriod
-	const_pkg254__sim_MainController_stm_ref0_thr = const_pkg254__sim_GasAnalysis_thr
+	const_pkg994__sim_MainController_stm_ref0_thr = const_pkg994__sim_GasAnalysis_thr
+	const_pkg994__sim_MicroController_stm_ref0_lv = const_pkg994__sim_Movement_lv
+	const_pkg994__sim_MicroController_stm_ref0_evadeTime = const_pkg994__sim_Movement_evadeTime
+	const_pkg994__sim_MicroController_stm_ref0_stuckPeriod = const_pkg994__sim_Movement_stuckPeriod
+	const_pkg994__sim_MicroController_stm_ref0_stuckDist = const_pkg994__sim_Movement_stuckDist
+	const_pkg994__sim_MicroController_stm_ref0_outPeriod = const_pkg994__sim_Movement_outPeriod
 		
 within
-	pkg254_main_sim::ChemicalDetector::D__(id__,cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector,
-			    const_pkg254__sim_MicroController_stm_ref0_lv,
-			    const_pkg254__sim_MicroController_stm_ref0_evadeTime,
-			    const_pkg254__sim_MicroController_stm_ref0_stuckPeriod,
-			    const_pkg254__sim_MicroController_stm_ref0_stuckDist,
-			    const_pkg254__sim_MicroController_stm_ref0_outPeriod,
-			    const_pkg254__sim_MainController_stm_ref0_thr) :[tau priority]: {tock}
+	pkg994_ChemicalDetector_sim::ChemicalDetector::D__(id__,cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector,
+			    const_pkg994__sim_MicroController_stm_ref0_lv,
+			    const_pkg994__sim_MicroController_stm_ref0_evadeTime,
+			    const_pkg994__sim_MicroController_stm_ref0_stuckPeriod,
+			    const_pkg994__sim_MicroController_stm_ref0_stuckDist,
+			    const_pkg994__sim_MicroController_stm_ref0_outPeriod,
+			    const_pkg994__sim_MainController_stm_ref0_thr) :[tau priority]: {tock}
 
 -- A4 - refinement
 assert let
-	rename_in_ChemicalDetector(pkg254_main_sim::ChemicalDetector::i_obstacle.x__.y__) = NormalForm::i_obstacle.x__.y__
-	rename_in_ChemicalDetector(pkg254_main_sim::ChemicalDetector::i_gas.x__.y__) = NormalForm::i_gas.x__.y__
-	rename_in_ChemicalDetector(pkg254_main_sim::ChemicalDetector::i_odometer.x__.y__) = NormalForm::i_odometer.x__.y__
-	rename_out_ChemicalDetector(pkg254_main_sim::ChemicalDetector::o_randomWalk) = NormalForm::o_randomWalk
-	rename_out_ChemicalDetector(pkg254_main_sim::ChemicalDetector::o_shortRandomWalk) = NormalForm::o_shortRandomWalk
-	rename_out_ChemicalDetector(pkg254_main_sim::ChemicalDetector::o_flag) = NormalForm::o_flag
-	rename_out_ChemicalDetector(pkg254_main_sim::ChemicalDetector::o_move.lv.a) = NormalForm::o_move.lv.a
+	rename_in_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::i_gas.x__.y__) = NormalForm::i_gas.x__.y__
+	rename_in_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::i_odometer.x__.y__) = NormalForm::i_odometer.x__.y__
+	rename_in_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::i_obstacle.x__.y__) = NormalForm::i_obstacle.x__.y__
+	rename_out_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::o_shortRandomWalk) = NormalForm::o_shortRandomWalk
+	rename_out_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::o_flag) = NormalForm::o_flag
+	rename_out_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::o_move.lv.a) = NormalForm::o_move.lv.a
+	rename_out_ChemicalDetector(pkg994_ChemicalDetector_sim::ChemicalDetector::o_randomWalk) = NormalForm::o_randomWalk
 within
 	prioritise(let 
-		cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector = 1
+		cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector = 1
 		id__ = 0
 		
 		
 		
-		const_pkg254__sim_MicroController_stm_ref0_lv = const_pkg254__sim_Movement_lv
-		const_pkg254__sim_MicroController_stm_ref0_evadeTime = const_pkg254__sim_Movement_evadeTime
-		const_pkg254__sim_MicroController_stm_ref0_stuckPeriod = const_pkg254__sim_Movement_stuckPeriod
-		const_pkg254__sim_MicroController_stm_ref0_stuckDist = const_pkg254__sim_Movement_stuckDist
-		const_pkg254__sim_MicroController_stm_ref0_outPeriod = const_pkg254__sim_Movement_outPeriod
-		const_pkg254__sim_MainController_stm_ref0_thr = const_pkg254__sim_GasAnalysis_thr
+		const_pkg994__sim_MainController_stm_ref0_thr = const_pkg994__sim_GasAnalysis_thr
+		const_pkg994__sim_MicroController_stm_ref0_lv = const_pkg994__sim_Movement_lv
+		const_pkg994__sim_MicroController_stm_ref0_evadeTime = const_pkg994__sim_Movement_evadeTime
+		const_pkg994__sim_MicroController_stm_ref0_stuckPeriod = const_pkg994__sim_Movement_stuckPeriod
+		const_pkg994__sim_MicroController_stm_ref0_stuckDist = const_pkg994__sim_Movement_stuckDist
+		const_pkg994__sim_MicroController_stm_ref0_outPeriod = const_pkg994__sim_Movement_outPeriod
 			
 	within
-		pkg254_main_sim::ChemicalDetector::D__(id__,cycle_pkg254_main_sim_ChemicalDetector_ChemicalDetector,
-				    const_pkg254__sim_MicroController_stm_ref0_lv,
-				    const_pkg254__sim_MicroController_stm_ref0_evadeTime,
-				    const_pkg254__sim_MicroController_stm_ref0_stuckPeriod,
-				    const_pkg254__sim_MicroController_stm_ref0_stuckDist,
-				    const_pkg254__sim_MicroController_stm_ref0_outPeriod,
-				    const_pkg254__sim_MainController_stm_ref0_thr),<{},{tock}>)
-	[[ pkg254_main_sim::ChemicalDetector::registerRead.x__ <- NormalForm::registerRead.rename_in_ChemicalDetector(x__) | x__ <- pkg254_main_sim::ChemicalDetector::RegisterInputs ]]
-	[[ pkg254_main_sim::ChemicalDetector::registerWrite.x__ <- NormalForm::registerWrite.rename_out_ChemicalDetector(x__) | x__ <- pkg254_main_sim::ChemicalDetector::RegisterOutputs ]]
+		pkg994_ChemicalDetector_sim::ChemicalDetector::D__(id__,cycle_pkg994_ChemicalDetector_sim_ChemicalDetector_ChemicalDetector,
+				    const_pkg994__sim_MicroController_stm_ref0_lv,
+				    const_pkg994__sim_MicroController_stm_ref0_evadeTime,
+				    const_pkg994__sim_MicroController_stm_ref0_stuckPeriod,
+				    const_pkg994__sim_MicroController_stm_ref0_stuckDist,
+				    const_pkg994__sim_MicroController_stm_ref0_outPeriod,
+				    const_pkg994__sim_MainController_stm_ref0_thr),<{},{tock}>)
+	[[ pkg994_ChemicalDetector_sim::ChemicalDetector::registerRead.x__ <- NormalForm::registerRead.rename_in_ChemicalDetector(x__) | x__ <- pkg994_ChemicalDetector_sim::ChemicalDetector::RegisterInputs ]]
+	[[ pkg994_ChemicalDetector_sim::ChemicalDetector::registerWrite.x__ <- NormalForm::registerWrite.rename_out_ChemicalDetector(x__) | x__ <- pkg994_ChemicalDetector_sim::ChemicalDetector::RegisterOutputs ]]
  [FD= let 
 	cycle_NormalForm_NormalForm = 1
 	id__ = 0
 	
 	
 	
-	const_pkg254__MainController_stm_ref0_thr = const_pkg254__GasAnalysis_thr
-	const_pkg254__MicroController_stm_ref0_lv = const_pkg254__Movement_lv
-	const_pkg254__MicroController_stm_ref0_evadeTime = const_pkg254__Movement_evadeTime
-	const_pkg254__MicroController_stm_ref0_stuckPeriod = const_pkg254__Movement_stuckPeriod
-	const_pkg254__MicroController_stm_ref0_stuckDist = const_pkg254__Movement_stuckDist
-	const_pkg254__MicroController_stm_ref0_outPeriod = const_pkg254__Movement_outPeriod
+	const_pkg994__MainController_stm_ref0_thr = const_pkg994__GasAnalysis_thr
+	const_pkg994__MicroController_stm_ref0_lv = const_pkg994__Movement_lv
+	const_pkg994__MicroController_stm_ref0_evadeTime = const_pkg994__Movement_evadeTime
+	const_pkg994__MicroController_stm_ref0_stuckPeriod = const_pkg994__Movement_stuckPeriod
+	const_pkg994__MicroController_stm_ref0_stuckDist = const_pkg994__Movement_stuckDist
+	const_pkg994__MicroController_stm_ref0_outPeriod = const_pkg994__Movement_outPeriod
 		
 within
 	NormalForm::D__(id__,cycle_NormalForm_NormalForm,
-			    const_pkg254__MicroController_stm_ref0_lv,
-			    const_pkg254__MicroController_stm_ref0_evadeTime,
-			    const_pkg254__MicroController_stm_ref0_stuckPeriod,
-			    const_pkg254__MicroController_stm_ref0_stuckDist,
-			    const_pkg254__MicroController_stm_ref0_outPeriod,
-			    const_pkg254__MainController_stm_ref0_thr) :[tau priority]: {tock}
+			    const_pkg994__MicroController_stm_ref0_lv,
+			    const_pkg994__MicroController_stm_ref0_evadeTime,
+			    const_pkg994__MicroController_stm_ref0_stuckPeriod,
+			    const_pkg994__MicroController_stm_ref0_stuckDist,
+			    const_pkg994__MicroController_stm_ref0_outPeriod,
+			    const_pkg994__MainController_stm_ref0_thr) :[tau priority]: {tock}
 

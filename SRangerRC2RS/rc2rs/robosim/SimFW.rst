@@ -57,7 +57,7 @@ interface I_clone_waitOp_j_2_4_f_softwareOps_clone_normal_SMovement_Moving_t2_op
 }
 
 interface IctrEvars_SMovement {
-	var obstacleF : boolean = false
+	var obstacleF : boolean = true
 }
 
 interface ObstacleI_inpEvs_SMovement {

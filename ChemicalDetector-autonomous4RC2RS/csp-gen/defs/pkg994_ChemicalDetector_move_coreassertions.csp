@@ -1,0 +1,33 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg994_ChemicalDetector_move.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "pkg994_ChemicalDetector_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg994_ChemicalDetector_OP_move
+P_pkg994_ChemicalDetector_OP_move = let
+	id__ = 0
+	
+	param_lv = 0
+	param_a = Chemical_Angle_Left
+	
+	
+	
+within
+	pkg994_ChemicalDetector::OP_move::O__(id__,
+				param_lv,
+				param_a)
+assert P_pkg994_ChemicalDetector_OP_move :[deadlock-free]	
+assert P_pkg994_ChemicalDetector_OP_move;RUN({r__}) :[deadlock-free]
+assert P_pkg994_ChemicalDetector_OP_move :[deterministic]
+assert P_pkg994_ChemicalDetector_OP_move :[divergence-free]

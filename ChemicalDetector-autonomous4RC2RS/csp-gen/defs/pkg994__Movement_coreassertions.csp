@@ -1,0 +1,35 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg994__Movement.csp"
+include "pkg994__defs.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg994__Movement
+P_pkg994__Movement = let
+	id__ = 0
+	
+	
+	
+within
+	pkg994__Movement::O__(
+		id__,
+		const_pkg994__Movement_lv,
+		const_pkg994__Movement_evadeTime,
+		const_pkg994__Movement_stuckPeriod,
+		const_pkg994__Movement_stuckDist,
+		const_pkg994__Movement_outPeriod
+	)
+assert P_pkg994__Movement :[deadlock-free]	
+assert P_pkg994__Movement;RUN({r__}) :[deadlock-free]
+assert P_pkg994__Movement :[deterministic]
+assert P_pkg994__Movement :[divergence-free]

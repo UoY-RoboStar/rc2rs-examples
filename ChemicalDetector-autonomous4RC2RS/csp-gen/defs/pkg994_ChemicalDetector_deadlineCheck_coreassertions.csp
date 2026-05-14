@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg994_ChemicalDetector_deadlineCheck.csp"
+include "state_defs.csp"
+include "pkg994_ChemicalDetector_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg994_ChemicalDetector_OP_deadlineCheck
+P_pkg994_ChemicalDetector_OP_deadlineCheck = let
+	id__ = 0
+	
+	param_d = 0
+	
+	
+	
+within
+	pkg994_ChemicalDetector::OP_deadlineCheck::O__(id__,
+				param_d)
+assert P_pkg994_ChemicalDetector_OP_deadlineCheck :[deadlock-free]	
+assert P_pkg994_ChemicalDetector_OP_deadlineCheck;RUN({r__}) :[deadlock-free]
+assert P_pkg994_ChemicalDetector_OP_deadlineCheck :[deterministic]
+assert P_pkg994_ChemicalDetector_OP_deadlineCheck :[divergence-free]

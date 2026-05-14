@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "pkg994__defs.csp"
+include "core_defs.csp"
+include "pkg994__normal_Movement_GettingOut_entry.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg994__OP_normal_Movement_GettingOut_entry
+P_pkg994__OP_normal_Movement_GettingOut_entry = let
+	id__ = 0
+	
+	
+	const_pkg994__normal_Movement_GettingOut_entry_outPeriod = 0
+	
+	
+within
+	pkg994_::OP_normal_Movement_GettingOut_entry::O__(id__,
+			    const_pkg994__normal_Movement_GettingOut_entry_outPeriod)
+assert P_pkg994__OP_normal_Movement_GettingOut_entry :[deadlock-free]	
+assert P_pkg994__OP_normal_Movement_GettingOut_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg994__OP_normal_Movement_GettingOut_entry :[deterministic]
+assert P_pkg994__OP_normal_Movement_GettingOut_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg994__OP_normal_Movement_GettingOut_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg994__OP_normal_Movement_GettingOut_entry

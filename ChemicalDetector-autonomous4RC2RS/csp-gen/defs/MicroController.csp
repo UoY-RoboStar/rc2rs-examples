@@ -1,7 +1,7 @@
 
 --
 -- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 06-05-2026 11:18:43
+-- Automatically generated on 14-05-2026 19:42:41
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -28,9 +28,9 @@
 		
 		
 		-- declaring call and ret events for undefined operations
+		channel moveCall: core_real.Chemical_Angle
 		channel shortRandomWalkCall
 		channel randomWalkCall
-		channel moveCall: core_real.Chemical_Angle
 		
 		-- declaring controller termination channel
 		channel terminate
@@ -44,9 +44,9 @@
 			stop,
 			resume,
 			odometer
-		,	shortRandomWalkCall,
-			randomWalkCall,
-			moveCall
+		,	moveCall,
+			shortRandomWalkCall,
+			randomWalkCall
 		|}
 
 		-- defined operations
@@ -105,9 +105,9 @@
 			channel flag: InOut
 			
 			-- Declaring call and ret events for undefined operations
+			channel moveCall: core_real.Chemical_Angle
 			channel shortRandomWalkCall
 			channel randomWalkCall
-			channel moveCall: core_real.Chemical_Angle
 			
 			enterSS = {|
 			i1::enter,
@@ -146,9 +146,9 @@
 				turn,
 				stop,
 				flag
-			,	shortRandomWalkCall,
-				randomWalkCall,
-				moveCall
+			,	moveCall,
+				shortRandomWalkCall,
+				randomWalkCall
 				|}
 		
 			-- Nodes --
@@ -854,6 +854,14 @@
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
+			CALL__move(id__,
+					    const_Movement_lv,
+					    const_Movement_evadeTime,
+					    const_Movement_stuckPeriod,
+					    const_Movement_stuckDist,
+					    const_Movement_outPeriod,
+						param_lv,
+						param_a) 	= moveCall.param_lv.param_a -> SKIP
 			CALL__shortRandomWalk(id__,
 					    const_Movement_lv,
 					    const_Movement_evadeTime,
@@ -866,14 +874,6 @@
 					    const_Movement_stuckPeriod,
 					    const_Movement_stuckDist,
 					    const_Movement_outPeriod) 	= randomWalkCall -> SKIP
-			CALL__move(id__,
-					    const_Movement_lv,
-					    const_Movement_evadeTime,
-					    const_Movement_stuckPeriod,
-					    const_Movement_stuckDist,
-					    const_Movement_outPeriod,
-						param_lv,
-						param_a) 	= moveCall.param_lv.param_a -> SKIP
 			
 			-- END of Operation calls --
 			
@@ -1100,14 +1100,14 @@
 							 [[GettingOut::interrupt <- x__ | x__ <- {|interrupt,turn__.NID_GettingOut.in,stop__.NID_GettingOut.in,resume__.NID_GettingOut.in|}]]
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
+							  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_a |} ]] 
 							  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
 							 			,setL_d0
 							 			,setL_d1
-							 			,setR_a
-							 			 			,setR_l
+							 			,setR_l
+							 			 			,setR_a
 							 			|}) |]
 							 ((i1::enter -> Transitions(id__,
 							 		    const_Movement_lv,
@@ -1116,10 +1116,10 @@
 							 		    const_Movement_stuckDist,
 							 		    const_Movement_outPeriod))
 							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
-							  [[set_a <- setR_a,set_l <- setR_l]]
+							  [[set_l <- setR_l,set_a <- setR_a]]
 							 )
 							)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
-							 [[setR_a <- set_a,setR_l <- set_l]]
+							 [[setR_l <- set_l,setR_a <- set_a]]
 							)
 						)
 						 \ hideSet)
@@ -1342,14 +1342,14 @@
 							 [[GettingOut::interrupt <- x__ | x__ <- {|interrupt,turn__.NID_GettingOut.in,stop__.NID_GettingOut.in,resume__.NID_GettingOut.in|}]]
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
+							  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_a |} ]] 
 							  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
 							 			,setL_d0
 							 			,setL_d1
-							 			,setR_a
-							 			 			,setR_l
+							 			,setR_l
+							 			 			,setR_a
 							 			|}) |]
 							 ((i1::enter -> Transitions(id__,
 							 		    const_Movement_lv,
@@ -1358,10 +1358,10 @@
 							 		    const_Movement_stuckDist,
 							 		    const_Movement_outPeriod))
 							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
-							  [[set_a <- setR_a,set_l <- setR_l]]
+							  [[set_l <- setR_l,set_a <- setR_a]]
 							 )
 							)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
-							 [[setR_a <- set_a,setR_l <- set_l]]
+							 [[setR_l <- set_l,setR_a <- set_a]]
 							)
 						)
 						 \ hideSet)
@@ -1612,11 +1612,11 @@
 		endmodule
 		
 			-- undefined operations
-			CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
-			CALL__randomWalk(id__) 	= randomWalkCall -> SKIP
 			CALL__move(id__,
 					    param_lv,
 					    param_a) 	= moveCall.param_lv.param_a -> SKIP
+			CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
+			CALL__randomWalk(id__) 	= randomWalkCall -> SKIP
 			
 			-- declaring controller memory
 			Memory(id__) = SKIP
@@ -1647,9 +1647,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::moveCall <- moveCall,
 						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::moveCall <- moveCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -1697,9 +1697,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::moveCall <- moveCall,
 						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::moveCall <- moveCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -1747,9 +1747,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::moveCall <- moveCall,
 						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::moveCall <- moveCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -1798,9 +1798,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::moveCall <- moveCall,
 						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::moveCall <- moveCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|

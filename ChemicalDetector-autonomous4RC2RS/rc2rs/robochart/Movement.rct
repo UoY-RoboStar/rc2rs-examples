@@ -1,4 +1,16 @@
-package pkg254_ import Chemical::Angle interface req_normal_Movement_Avoiding_entry {
+package pkg994_ import Chemical::Angle import Chemical::Status import Location::Loc interface req_normal_Movement_Found_entry {
+	move ( lv : real , a : Angle )
+}
+
+interface I_events_normal_Movement_Found_entry {
+	event flag
+}
+
+interface I_normal_Movement_Found_entry {
+	normal_Movement_Found_entry ( )
+}
+
+interface req_normal_Movement_Avoiding_entry {
 	const evadeTime : nat
 	var d0 : real
 }
@@ -9,18 +21,6 @@ interface I_events_normal_Movement_Avoiding_entry {
 
 interface I_normal_Movement_Avoiding_entry {
 	normal_Movement_Avoiding_entry ( )
-}
-
-interface req_normal_Movement_Found_entry {
-	move ( lv : real , a : Angle )
-}
-
-interface I_events_normal_Movement_Found_entry {
-	event flag
-}
-
-interface I_normal_Movement_Found_entry {
-	normal_Movement_Found_entry ( )
 }
 
 interface req_normal_Movement_TryingAgain_t11_op {
@@ -68,6 +68,10 @@ interface I_normal_Movement_Found_entry_j_2_2_t_2_2_op {
 	normal_Movement_Found_entry_j_2_2_t_2_2_op ( )
 }
 
+interface I_clone_normal_Movement_Found_entry {
+	clone_normal_Movement_Found_entry ( )
+}
+
 interface I_clone_normal_Movement_TryingAgain_t11_op {
 	clone_normal_Movement_TryingAgain_t11_op ( )
 }
@@ -80,55 +84,51 @@ interface I_clone_normal_Movement_Avoiding_entry {
 	clone_normal_Movement_Avoiding_entry ( )
 }
 
-interface I_clone_normal_Movement_Found_entry {
-	clone_normal_Movement_Found_entry ( )
+interface I_clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1 {
+	clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1 ( i : nat )
 }
 
-interface I_clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f {
-	clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f ( i : nat )
+interface I_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2 {
+	clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2 ( )
 }
 
-interface I_clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 {
-	clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 ( )
+interface I_clone_clone_normal_Movement_GettingOut_entry_waitOp_j_2_4_f_3 {
+	clone_clone_normal_Movement_GettingOut_entry_waitOp_j_2_4_f_3 ( i : nat )
 }
 
-interface I_clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 {
-	clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 ( )
+interface I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f_4 {
+	clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f_4 ( )
 }
 
-interface I_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f {
-	clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f ( i : nat )
-}
-
-interface I_clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f {
-	clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f ( )
+interface I_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5 {
+	clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5 ( )
 }
 
 stm Movement {
-	requires pkg254_main::Operations requires I_clone_normal_Movement_TryingAgain_t11_op requires I_clone_normal_Movement_GettingOut_entry requires I_clone_normal_Movement_Avoiding_entry requires I_clone_normal_Movement_Found_entry const lv : real , evadeTime : nat , stuckPeriod : nat , stuckDist : real , outPeriod : nat
+	requires pkg994_ChemicalDetector::Operations requires I_clone_normal_Movement_Found_entry requires I_clone_normal_Movement_TryingAgain_t11_op requires I_clone_normal_Movement_GettingOut_entry requires I_clone_normal_Movement_Avoiding_entry const lv : real , evadeTime : nat , stuckPeriod : nat , stuckDist : real , outPeriod : nat
 	var a : Angle , d0 : real , d1 : real
-	var l : Location::Loc
-	event obstacle : Location::Loc
+	var l : Loc
+	event obstacle : Loc
 	event odometer : real
 	event resume
 	event turn : Angle
 	event stop
 	event flag
-	initial i1
+	initial i1 
 	state Waiting {
 		initial i
-		state EmptyCycle {
+		state EmptyCycle { 
 		}
 		transition tWaiting {
 			from i
 			to EmptyCycle
 		}
-		during randomWalk ( )
+		during randomWalk()
 	}
 	state Going {
+		initial i
 		state EmptyCycle {
 		}
-		initial i
 		transition tGoing {
 			from i
 			to EmptyCycle
@@ -147,9 +147,9 @@ stm Movement {
 	}
 	final j1
 	state Avoiding {
-		initial i
 		state EmptyCycle {
 		}
+		initial i
 		transition tAvoiding {
 			from i
 			to EmptyCycle
@@ -176,9 +176,9 @@ stm Movement {
 		}
 	}
 	state GettingOut {
+		initial i
 		state EmptyCycle {
 		}
-		initial i
 		transition tGettingOut {
 			from i
 			to EmptyCycle
@@ -304,8 +304,24 @@ stm Movement {
 	clock T
 }
 
+operation normal_Movement_Found_entry ( ) {
+	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_normal_Movement_Found_entry_j_2_2_t_2_2_op initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action move ( 0 , Angle :: Front )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action normal_Movement_Found_entry_j_2_2_t_2_2_op ( )
+	}
+}
+
 operation normal_Movement_Avoiding_entry ( ) {
-	uses I_events_normal_Movement_Avoiding_entry requires req_normal_Movement_Avoiding_entry requires pkg254_main::I_waitOp requires I_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op requires I_normal_Movement_Avoiding_entry_i_t_op initial i
+	uses I_events_normal_Movement_Avoiding_entry requires req_normal_Movement_Avoiding_entry requires pkg994_ChemicalDetector::I_waitOp requires I_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op requires I_normal_Movement_Avoiding_entry_i_t_op initial i
 	final f
 	junction j_3_3
 	junction j_2_5
@@ -326,22 +342,6 @@ operation normal_Movement_Avoiding_entry ( ) {
 	}
 }
 
-operation normal_Movement_Found_entry ( ) {
-	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_normal_Movement_Found_entry_j_2_2_t_2_2_op final f
-	initial i
-	junction j_2_2
-	transition t {
-		from i
-		to j_2_2
-		action move ( 0 , Angle :: Front )
-	}
-	transition t_2_2 {
-		from j_2_2
-		to f
-		action normal_Movement_Found_entry_j_2_2_t_2_2_op ( )
-	}
-}
-
 operation normal_Movement_TryingAgain_t11_op ( ) {
 	uses I_events_normal_Movement_TryingAgain_t11_op requires req_normal_Movement_TryingAgain_t11_op initial i
 	final f
@@ -353,8 +353,8 @@ operation normal_Movement_TryingAgain_t11_op ( ) {
 }
 
 operation normal_Movement_GettingOut_entry ( ) {
-	requires req_normal_Movement_GettingOut_entry requires pkg254_main::I_waitOp final f
-	initial i
+	requires req_normal_Movement_GettingOut_entry requires pkg994_ChemicalDetector::I_waitOp initial i
+	final f
 	junction j_2_4
 	transition t {
 		from i
@@ -369,8 +369,8 @@ operation normal_Movement_GettingOut_entry ( ) {
 }
 
 operation normal_Movement_Avoiding_entry_j_3_3_t_3_3_op ( ) {
-	initial i
 	final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -389,12 +389,28 @@ operation normal_Movement_Avoiding_entry_i_t_op ( ) {
 }
 
 operation normal_Movement_Found_entry_j_2_2_t_2_2_op ( ) {
-	uses I_events_normal_Movement_Found_entry_j_2_2_t_2_2 initial i
-	final f
+	uses I_events_normal_Movement_Found_entry_j_2_2_t_2_2 final f
+	initial i
 	transition t {
 		from i
 		to f
 		action flag
+	}
+}
+
+operation clone_normal_Movement_Found_entry ( ) {
+	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f_4 initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action move ( 0 , Angle :: Front )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f_4 ( )
 	}
 }
 
@@ -409,8 +425,8 @@ operation clone_normal_Movement_TryingAgain_t11_op ( ) {
 }
 
 operation clone_normal_Movement_GettingOut_entry ( ) {
-	requires req_normal_Movement_GettingOut_entry requires pkg254_main::I_waitOp requires I_clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f final f
-	initial i
+	requires req_normal_Movement_GettingOut_entry requires I_clone_clone_normal_Movement_GettingOut_entry_waitOp_j_2_4_f_3 initial i
+	final f
 	junction j_2_4
 	transition t {
 		from i
@@ -420,50 +436,36 @@ operation clone_normal_Movement_GettingOut_entry ( ) {
 	transition t_2_4 {
 		from j_2_4
 		to f
-		action clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f ( outPeriod )
+		action clone_clone_normal_Movement_GettingOut_entry_waitOp_j_2_4_f_3 ( outPeriod )
 	}
 }
 
 operation clone_normal_Movement_Avoiding_entry ( ) {
-	uses I_events_normal_Movement_Avoiding_entry requires req_normal_Movement_Avoiding_entry requires pkg254_main::I_waitOp requires I_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op requires I_normal_Movement_Avoiding_entry_i_t_op requires I_clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 requires I_clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 requires I_clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f initial i
+	uses I_events_normal_Movement_Avoiding_entry requires req_normal_Movement_Avoiding_entry requires I_clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1 requires I_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2 requires I_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5 initial i
 	final f
 	junction j_3_3
 	junction j_2_5
 	transition t {
 		from i
 		to j_3_3
-		action clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 ( )
+		action clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2 ( )
 	}
 	transition t_3_3 {
 		from j_3_3
 		to j_2_5
-		action clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 ( )
+		action clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5 ( )
 	}
 	transition t_2_5 {
 		from j_2_5
 		to f
-		action clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f ( evadeTime )
+		action clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1 ( evadeTime )
 	}
 }
 
-operation clone_normal_Movement_Found_entry ( ) {
-	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_normal_Movement_Found_entry_j_2_2_t_2_2_op requires I_clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f final f
-	initial i
-	junction j_2_2
-	transition t {
-		from i
-		to j_2_2
-		action move ( 0 , Angle :: Front )
-	}
-	transition t_2_2 {
-		from j_2_2
-		to f
-		action clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f ( )
-	}
-}
-
-operation clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f ( i : nat
+operation clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1 ( i : nat
 ) {
+	final f
+	initial i0
 	state Waiting {
 		state EmptyCycle {
 		}
@@ -473,32 +475,20 @@ operation clone_normal_Movement_GettingOut_entry_clone_waitOp_j_2_4_f ( i : nat
 			to EmptyCycle
 		}
 	}
-	initial i0
-	final f
-	transition t2 {
-		from Waiting
-		to f
-		condition since ( C ) == i
-	}
 	transition t {
 		from i0
 		to Waiting
 		action # C
 	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
 	clock C
 }
 
-operation clone_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5 ( ) {
-	initial i
-	final f
-	transition t {
-		from i
-		to f
-		action skip
-	}
-}
-
-operation clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 ( ) {
+operation clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2 ( ) {
 	uses I_events_normal_Movement_Avoiding_entry_i_t requires I_req_normal_Movement_Avoiding_entry_i_t initial i
 	final f
 	transition t {
@@ -508,8 +498,10 @@ operation clone_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3 ( ) {
 	}
 }
 
-operation clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f ( i : nat
+operation clone_clone_normal_Movement_GettingOut_entry_waitOp_j_2_4_f_3 ( i : nat
 ) {
+	final f
+	initial i0
 	state Waiting {
 		state EmptyCycle {
 		}
@@ -519,28 +511,36 @@ operation clone_normal_Movement_Avoiding_entry_clone_waitOp_j_2_5_f ( i : nat
 			to EmptyCycle
 		}
 	}
-	initial i0
-	final f
-	transition t2 {
-		from Waiting
-		to f
-		condition since ( C ) == i
-	}
 	transition t {
 		from i0
 		to Waiting
 		action # C
 	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
 	clock C
 }
 
-operation clone_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f ( ) {
-	uses I_events_normal_Movement_Found_entry_j_2_2_t_2_2 initial i
-	final f
+operation clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_2_t_2_2_op_j_2_2_f_4 ( ) {
+	uses I_events_normal_Movement_Found_entry_j_2_2_t_2_2 final f
+	initial i
 	transition t {
 		from i
 		to f
 		action flag
+	}
+}
+
+operation clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5 ( ) {
+	final f
+	initial i
+	transition t {
+		from i
+		to f
+		action skip
 	}
 }
 

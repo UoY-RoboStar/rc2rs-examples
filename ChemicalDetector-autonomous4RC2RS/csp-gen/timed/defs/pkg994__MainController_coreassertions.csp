@@ -1,0 +1,61 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "pkg994__defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg994__MainController.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg994__MainController
+P_pkg994__MainController = let
+	id__ = 0
+	
+	
+	
+	const_pkg994__MainController_stm_ref0_thr = const_pkg994__GasAnalysis_thr
+		
+within
+	pkg994__MainController::O__(id__,
+			    const_pkg994__MainController_stm_ref0_thr)
+
+assert P_pkg994__MainController :[deadlock-free]	
+assert P_pkg994__MainController;RUN({r__}) :[deadlock-free]
+assert P_pkg994__MainController :[deterministic]
+assert P_pkg994__MainController :[divergence-free]
+
+-- generate pkg994__MainController_stm_ref0
+P_pkg994__MainController_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg994__MainController::stm_ref0::O__(
+		id__,
+		const_pkg994__GasAnalysis_thr
+	)
+assert P_pkg994__MainController_stm_ref0 :[deadlock-free]	
+assert P_pkg994__MainController_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg994__MainController_stm_ref0 :[deterministic]
+assert P_pkg994__MainController_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg994__MainController_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg994__MainController_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg994__MainController[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg994__MainController

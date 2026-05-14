@@ -1,7 +1,7 @@
 
 --
 -- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 06-05-2026 11:18:43
+-- Automatically generated on 14-05-2026 19:42:41
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -60,9 +60,9 @@ exports
 	channel flag: InOut
 	
 	-- Declaring call and ret events for undefined operations
+	channel moveCall: core_real.Chemical_Angle
 	channel shortRandomWalkCall
 	channel randomWalkCall
-	channel moveCall: core_real.Chemical_Angle
 	
 	enterSS = {|
 	i1::enter,
@@ -101,9 +101,9 @@ exports
 		turn,
 		stop,
 		flag
-	,	shortRandomWalkCall,
-		randomWalkCall,
-		moveCall
+	,	moveCall,
+		shortRandomWalkCall,
+		randomWalkCall
 		|}
 	datatype ClockSet = 
 		CLID_T
@@ -113,18 +113,18 @@ exports
 	localClockResets = {|clockReset.CLID_T|}
 	
 	
-	channel get_CLID_j1 : core_clock_type 
-	channel get_CLID_Avoiding : core_clock_type 
-	channel get_CLID_Going : core_clock_type 
-	channel get_CLID_Found : core_clock_type 
-	channel get_CLID_GettingOut : core_clock_type 
-	channel get_CLID_Waiting : core_clock_type 
-	channel get_CLID_TryingAgain : core_clock_type 
-	channel get_CLID_AvoidingAgain : core_clock_type 
 	channel get_CLID_T : core_clock_type 
+	channel get_CLID_Going : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_Avoiding : core_clock_type 
+	channel get_CLID_AvoidingAgain : core_clock_type 
+	channel get_CLID_GettingOut : core_clock_type 
+	channel get_CLID_TryingAgain : core_clock_type 
+	channel get_CLID_Found : core_clock_type 
+	channel get_CLID_j1 : core_clock_type 
 	--channel increment__
 	
-	CLID_j1_clock_type(id__,
+	CLID_T_clock_type(id__,
 			          const_Movement_lv,
 			          const_Movement_evadeTime,
 			          const_Movement_stuckPeriod,
@@ -132,55 +132,14 @@ exports
 			          const_Movement_outPeriod) = 
 		let
 			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_Avoiding_clock_type(id__,
-			          const_Movement_lv,
-			          const_Movement_evadeTime,
-			          const_Movement_stuckPeriod,
-			          const_Movement_stuckDist,
-			          const_Movement_outPeriod) = 
-		let
-			max = (clock_type_max(Union({
-	{}
+	({const_Movement_stuckPeriod|stuckPeriod <- core_nat}),
+	({const_Movement_stuckPeriod|stuckPeriod <- core_nat})
 	}))+1)
 		ctype = {0..max}
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Going_clock_type(id__,
-			          const_Movement_lv,
-			          const_Movement_evadeTime,
-			          const_Movement_stuckPeriod,
-			          const_Movement_stuckDist,
-			          const_Movement_outPeriod) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_Found_clock_type(id__,
-			          const_Movement_lv,
-			          const_Movement_evadeTime,
-			          const_Movement_stuckPeriod,
-			          const_Movement_stuckDist,
-			          const_Movement_outPeriod) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_GettingOut_clock_type(id__,
 			          const_Movement_lv,
 			          const_Movement_evadeTime,
 			          const_Movement_stuckPeriod,
@@ -208,7 +167,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_TryingAgain_clock_type(id__,
+	CLID_Avoiding_clock_type(id__,
 			          const_Movement_lv,
 			          const_Movement_evadeTime,
 			          const_Movement_stuckPeriod,
@@ -236,7 +195,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_T_clock_type(id__,
+	CLID_GettingOut_clock_type(id__,
 			          const_Movement_lv,
 			          const_Movement_evadeTime,
 			          const_Movement_stuckPeriod,
@@ -244,8 +203,49 @@ exports
 			          const_Movement_outPeriod) = 
 		let
 			max = (clock_type_max(Union({
-	({const_Movement_stuckPeriod|stuckPeriod <- core_nat}),
-	({const_Movement_stuckPeriod|stuckPeriod <- core_nat})
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_TryingAgain_clock_type(id__,
+			          const_Movement_lv,
+			          const_Movement_evadeTime,
+			          const_Movement_stuckPeriod,
+			          const_Movement_stuckDist,
+			          const_Movement_outPeriod) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Found_clock_type(id__,
+			          const_Movement_lv,
+			          const_Movement_evadeTime,
+			          const_Movement_stuckPeriod,
+			          const_Movement_stuckDist,
+			          const_Movement_outPeriod) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_j1_clock_type(id__,
+			          const_Movement_lv,
+			          const_Movement_evadeTime,
+			          const_Movement_stuckPeriod,
+			          const_Movement_stuckDist,
+			          const_Movement_outPeriod) = 
+		let
+			max = (clock_type_max(Union({
+	{}
 	}))+1)
 		ctype = {0..max}
 	within
@@ -1073,6 +1073,14 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__move(id__,
+				    const_Movement_lv,
+				    const_Movement_evadeTime,
+				    const_Movement_stuckPeriod,
+				    const_Movement_stuckDist,
+				    const_Movement_outPeriod,
+					param_lv,
+					param_a) = EDeadline(moveCall.param_lv.param_a,0)
 		CALL__shortRandomWalk(id__,
 				    const_Movement_lv,
 				    const_Movement_evadeTime,
@@ -1085,14 +1093,6 @@ exports
 				    const_Movement_stuckPeriod,
 				    const_Movement_stuckDist,
 				    const_Movement_outPeriod) = EDeadline(randomWalkCall,0)
-		CALL__move(id__,
-				    const_Movement_lv,
-				    const_Movement_evadeTime,
-				    const_Movement_stuckPeriod,
-				    const_Movement_stuckDist,
-				    const_Movement_outPeriod,
-					param_lv,
-					param_a) = EDeadline(moveCall.param_lv.param_a,0)
 		
 		-- END of Operation calls --
 	
@@ -1326,15 +1326,15 @@ exports
 						 [[GettingOut::interrupt <- x__ | x__ <- {|interrupt,turn__.NID_GettingOut.in,stop__.NID_GettingOut.in,resume__.NID_GettingOut.in|}]]
 						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
+						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_a |} ]] 
 						  [[set_d0 <- setL_d0,set_d1 <- setL_d1,clockReset.CLID_T <- clockResetL.CLID_T]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
 						 			,setL_d0
 						 			,setL_d1
 						 			,clockResetL.CLID_T
-						 			,setR_a
-						 			 			,setR_l
+						 			,setR_l
+						 			 			,setR_a
 						 			|}) |]
 						 ((i1::enter -> Transitions(id__,
 						 		    const_Movement_lv,
@@ -1343,10 +1343,10 @@ exports
 						 		    const_Movement_stuckDist,
 						 		    const_Movement_outPeriod))
 						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1,clockResetL.CLID_T |} ]]
-						  [[set_a <- setR_a,set_l <- setR_l]]
+						  [[set_l <- setR_l,set_a <- setR_a]]
 						 )
 						)[[setL_d0 <- set_d0,setL_d1 <- set_d1,clockResetL.CLID_T <- clockReset.CLID_T]]
-						 [[setR_a <- set_a,setR_l <- set_l]]
+						 [[setR_l <- set_l,setR_a <- set_a]]
 						)
 					)
 					 \ hideSet)
@@ -1380,7 +1380,7 @@ exports
 				    const_Movement_stuckDist,
 				    const_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Avoiding,Avoiding::entered,get_CLID_Going,Going::entered,get_CLID_Found,Found::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Found,Found::entered|}
 			 within
 				(MachineBody(id__,
 						    const_Movement_lv,
@@ -1403,7 +1403,7 @@ exports
 				    const_Movement_stuckDist,
 				    const_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Avoiding,Avoiding::entered,get_CLID_Going,Going::entered,get_CLID_Found,Found::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Found,Found::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1425,14 +1425,14 @@ exports
 																				    const_Movement_stuckPeriod,
 																				    const_Movement_stuckDist,
 																				    const_Movement_outPeriod)
-																		[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
-																		dbisim(Clock_CLID_AvoidingAgain(id__,0,
+																		[| {|get_CLID_Found,Found::entered,terminate|} |]
+																		dbisim(Clock_CLID_Found(id__,0,
 																				          const_Movement_lv,
 																				          const_Movement_evadeTime,
 																				          const_Movement_stuckPeriod,
 																				          const_Movement_stuckDist,
 																				          const_Movement_outPeriod))
-																	)\{|get_CLID_AvoidingAgain|}
+																	)\{|get_CLID_Found|}
 																)
 																[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
 																dbisim(Clock_CLID_TryingAgain(id__,0,
@@ -1443,50 +1443,50 @@ exports
 																		          const_Movement_outPeriod))
 															)\{|get_CLID_TryingAgain|}
 														)
-														[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
-														dbisim(Clock_CLID_Waiting(id__,0,
+														[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
+														dbisim(Clock_CLID_GettingOut(id__,0,
 																          const_Movement_lv,
 																          const_Movement_evadeTime,
 																          const_Movement_stuckPeriod,
 																          const_Movement_stuckDist,
 																          const_Movement_outPeriod))
-													)\{|get_CLID_Waiting|}
+													)\{|get_CLID_GettingOut|}
 												)
-												[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
-												dbisim(Clock_CLID_GettingOut(id__,0,
+												[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
+												dbisim(Clock_CLID_AvoidingAgain(id__,0,
 														          const_Movement_lv,
 														          const_Movement_evadeTime,
 														          const_Movement_stuckPeriod,
 														          const_Movement_stuckDist,
 														          const_Movement_outPeriod))
-											)\{|get_CLID_GettingOut|}
+											)\{|get_CLID_AvoidingAgain|}
 										)
-										[| {|get_CLID_Found,Found::entered,terminate|} |]
-										dbisim(Clock_CLID_Found(id__,0,
+										[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
+										dbisim(Clock_CLID_Avoiding(id__,0,
 												          const_Movement_lv,
 												          const_Movement_evadeTime,
 												          const_Movement_stuckPeriod,
 												          const_Movement_stuckDist,
 												          const_Movement_outPeriod))
-									)\{|get_CLID_Found|}
+									)\{|get_CLID_Avoiding|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+								dbisim(Clock_CLID_Waiting(id__,0,
 										          const_Movement_lv,
 										          const_Movement_evadeTime,
 										          const_Movement_stuckPeriod,
 										          const_Movement_stuckDist,
 										          const_Movement_outPeriod))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Waiting|}
 						)
-						[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
-						dbisim(Clock_CLID_Avoiding(id__,0,
+						[| {|get_CLID_Going,Going::entered,terminate|} |]
+						dbisim(Clock_CLID_Going(id__,0,
 								          const_Movement_lv,
 								          const_Movement_evadeTime,
 								          const_Movement_stuckPeriod,
 								          const_Movement_stuckDist,
 								          const_Movement_outPeriod))
-					)\{|get_CLID_Avoiding|}
+					)\{|get_CLID_Going|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -1693,15 +1693,15 @@ exports
 						 [[GettingOut::interrupt <- x__ | x__ <- {|interrupt,turn__.NID_GettingOut.in,stop__.NID_GettingOut.in,resume__.NID_GettingOut.in|}]]
 						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
+						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_a |} ]] 
 						  [[set_d0 <- setL_d0,set_d1 <- setL_d1,clockReset.CLID_T <- clockResetL.CLID_T]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
 						 			,setL_d0
 						 			,setL_d1
 						 			,clockResetL.CLID_T
-						 			,setR_a
-						 			 			,setR_l
+						 			,setR_l
+						 			 			,setR_a
 						 			|}) |]
 						 ((i1::enter -> Transitions(id__,
 						 		    const_Movement_lv,
@@ -1710,10 +1710,10 @@ exports
 						 		    const_Movement_stuckDist,
 						 		    const_Movement_outPeriod))
 						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1,clockResetL.CLID_T |} ]]
-						  [[set_a <- setR_a,set_l <- setR_l]]
+						  [[set_l <- setR_l,set_a <- setR_a]]
 						 )
 						)[[setL_d0 <- set_d0,setL_d1 <- set_d1,clockResetL.CLID_T <- clockReset.CLID_T]]
-						 [[setR_a <- set_a,setR_l <- set_l]]
+						 [[setR_l <- set_l,setR_a <- set_a]]
 						)
 					)
 					 \ hideSet)
@@ -1747,7 +1747,7 @@ exports
 				    const_Movement_stuckDist,
 				    const_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Avoiding,Avoiding::entered,get_CLID_Going,Going::entered,get_CLID_Found,Found::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Found,Found::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 						    const_Movement_lv,
@@ -1770,7 +1770,7 @@ exports
 				    const_Movement_stuckDist,
 				    const_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Avoiding,Avoiding::entered,get_CLID_Going,Going::entered,get_CLID_Found,Found::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Found,Found::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1792,14 +1792,14 @@ exports
 																				    const_Movement_stuckPeriod,
 																				    const_Movement_stuckDist,
 																				    const_Movement_outPeriod)
-																		[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
-																		dbisim(Clock_CLID_AvoidingAgain(id__,0,
+																		[| {|get_CLID_Found,Found::entered,terminate|} |]
+																		dbisim(Clock_CLID_Found(id__,0,
 																				          const_Movement_lv,
 																				          const_Movement_evadeTime,
 																				          const_Movement_stuckPeriod,
 																				          const_Movement_stuckDist,
 																				          const_Movement_outPeriod))
-																	)\{|get_CLID_AvoidingAgain|}
+																	)\{|get_CLID_Found|}
 																)
 																[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
 																dbisim(Clock_CLID_TryingAgain(id__,0,
@@ -1810,50 +1810,50 @@ exports
 																		          const_Movement_outPeriod))
 															)\{|get_CLID_TryingAgain|}
 														)
-														[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
-														dbisim(Clock_CLID_Waiting(id__,0,
+														[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
+														dbisim(Clock_CLID_GettingOut(id__,0,
 																          const_Movement_lv,
 																          const_Movement_evadeTime,
 																          const_Movement_stuckPeriod,
 																          const_Movement_stuckDist,
 																          const_Movement_outPeriod))
-													)\{|get_CLID_Waiting|}
+													)\{|get_CLID_GettingOut|}
 												)
-												[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
-												dbisim(Clock_CLID_GettingOut(id__,0,
+												[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
+												dbisim(Clock_CLID_AvoidingAgain(id__,0,
 														          const_Movement_lv,
 														          const_Movement_evadeTime,
 														          const_Movement_stuckPeriod,
 														          const_Movement_stuckDist,
 														          const_Movement_outPeriod))
-											)\{|get_CLID_GettingOut|}
+											)\{|get_CLID_AvoidingAgain|}
 										)
-										[| {|get_CLID_Found,Found::entered,terminate|} |]
-										dbisim(Clock_CLID_Found(id__,0,
+										[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
+										dbisim(Clock_CLID_Avoiding(id__,0,
 												          const_Movement_lv,
 												          const_Movement_evadeTime,
 												          const_Movement_stuckPeriod,
 												          const_Movement_stuckDist,
 												          const_Movement_outPeriod))
-									)\{|get_CLID_Found|}
+									)\{|get_CLID_Avoiding|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+								dbisim(Clock_CLID_Waiting(id__,0,
 										          const_Movement_lv,
 										          const_Movement_evadeTime,
 										          const_Movement_stuckPeriod,
 										          const_Movement_stuckDist,
 										          const_Movement_outPeriod))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Waiting|}
 						)
-						[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
-						dbisim(Clock_CLID_Avoiding(id__,0,
+						[| {|get_CLID_Going,Going::entered,terminate|} |]
+						dbisim(Clock_CLID_Going(id__,0,
 								          const_Movement_lv,
 								          const_Movement_evadeTime,
 								          const_Movement_stuckPeriod,
 								          const_Movement_stuckDist,
 								          const_Movement_outPeriod))
-					)\{|get_CLID_Avoiding|}
+					)\{|get_CLID_Going|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -2129,38 +2129,6 @@ exports
 		
 		clockSync = {|get_CLID_T,clockReset.CLID_T|}
 		
-		Clock_CLID_Avoiding(id__,x__,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod) = 
-			TimeOut_1(
-				Avoiding::entered -> Clock_CLID_Avoiding(id__,0,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				get_CLID_Avoiding!x__ -> Clock_CLID_Avoiding(id__,x__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_Avoiding(id__,clock_type_plus(x__,1,CLID_Avoiding_clock_type(id__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)),
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod))
 		Clock_CLID_Going(id__,x__,
 				          const_Movement_lv,
 				          const_Movement_evadeTime,
@@ -2183,70 +2151,6 @@ exports
 						          const_Movement_outPeriod)
 				[]
 				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)),
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod))
-		Clock_CLID_Found(id__,x__,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod) = 
-			TimeOut_1(
-				Found::entered -> Clock_CLID_Found(id__,0,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				get_CLID_Found!x__ -> Clock_CLID_Found(id__,x__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_Found(id__,clock_type_plus(x__,1,CLID_Found_clock_type(id__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)),
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod))
-		Clock_CLID_GettingOut(id__,x__,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod) = 
-			TimeOut_1(
-				GettingOut::entered -> Clock_CLID_GettingOut(id__,0,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				get_CLID_GettingOut!x__ -> Clock_CLID_GettingOut(id__,x__,
-						          const_Movement_lv,
-						          const_Movement_evadeTime,
-						          const_Movement_stuckPeriod,
-						          const_Movement_stuckDist,
-						          const_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_GettingOut(id__,clock_type_plus(x__,1,CLID_GettingOut_clock_type(id__,
 						          const_Movement_lv,
 						          const_Movement_evadeTime,
 						          const_Movement_stuckPeriod,
@@ -2289,28 +2193,28 @@ exports
 						          const_Movement_stuckPeriod,
 						          const_Movement_stuckDist,
 						          const_Movement_outPeriod))
-		Clock_CLID_TryingAgain(id__,x__,
+		Clock_CLID_Avoiding(id__,x__,
 				          const_Movement_lv,
 				          const_Movement_evadeTime,
 				          const_Movement_stuckPeriod,
 				          const_Movement_stuckDist,
 				          const_Movement_outPeriod) = 
 			TimeOut_1(
-				TryingAgain::entered -> Clock_CLID_TryingAgain(id__,0,
+				Avoiding::entered -> Clock_CLID_Avoiding(id__,0,
 						          const_Movement_lv,
 						          const_Movement_evadeTime,
 						          const_Movement_stuckPeriod,
 						          const_Movement_stuckDist,
 						          const_Movement_outPeriod)
 				[]
-				get_CLID_TryingAgain!x__ -> Clock_CLID_TryingAgain(id__,x__,
+				get_CLID_Avoiding!x__ -> Clock_CLID_Avoiding(id__,x__,
 						          const_Movement_lv,
 						          const_Movement_evadeTime,
 						          const_Movement_stuckPeriod,
 						          const_Movement_stuckDist,
 						          const_Movement_outPeriod)
 				[]
-				terminate -> SKIP,Clock_CLID_TryingAgain(id__,clock_type_plus(x__,1,CLID_TryingAgain_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_Avoiding(id__,clock_type_plus(x__,1,CLID_Avoiding_clock_type(id__,
 						          const_Movement_lv,
 						          const_Movement_evadeTime,
 						          const_Movement_stuckPeriod,
@@ -2353,34 +2257,109 @@ exports
 						          const_Movement_stuckPeriod,
 						          const_Movement_stuckDist,
 						          const_Movement_outPeriod))
+		Clock_CLID_GettingOut(id__,x__,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod) = 
+			TimeOut_1(
+				GettingOut::entered -> Clock_CLID_GettingOut(id__,0,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				get_CLID_GettingOut!x__ -> Clock_CLID_GettingOut(id__,x__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_GettingOut(id__,clock_type_plus(x__,1,CLID_GettingOut_clock_type(id__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)),
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod))
+		Clock_CLID_TryingAgain(id__,x__,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod) = 
+			TimeOut_1(
+				TryingAgain::entered -> Clock_CLID_TryingAgain(id__,0,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				get_CLID_TryingAgain!x__ -> Clock_CLID_TryingAgain(id__,x__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_TryingAgain(id__,clock_type_plus(x__,1,CLID_TryingAgain_clock_type(id__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)),
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod))
+		Clock_CLID_Found(id__,x__,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod) = 
+			TimeOut_1(
+				Found::entered -> Clock_CLID_Found(id__,0,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				get_CLID_Found!x__ -> Clock_CLID_Found(id__,x__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_Found(id__,clock_type_plus(x__,1,CLID_Found_clock_type(id__,
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod)),
+						          const_Movement_lv,
+						          const_Movement_evadeTime,
+						          const_Movement_stuckPeriod,
+						          const_Movement_stuckDist,
+						          const_Movement_outPeriod))
 		
 		StateClocks(id__,
 				          const_Movement_lv,
 				          const_Movement_evadeTime,
 				          const_Movement_stuckPeriod,
 				          const_Movement_stuckDist,
-				          const_Movement_outPeriod) = dbisim(Clock_CLID_Avoiding(id__,0,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_Going(id__,0,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_Found(id__,0,
-				          const_Movement_lv,
-				          const_Movement_evadeTime,
-				          const_Movement_stuckPeriod,
-				          const_Movement_stuckDist,
-				          const_Movement_outPeriod))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_GettingOut(id__,0,
+				          const_Movement_outPeriod) = dbisim(Clock_CLID_Going(id__,0,
 				          const_Movement_lv,
 				          const_Movement_evadeTime,
 				          const_Movement_stuckPeriod,
@@ -2394,7 +2373,7 @@ exports
 				          const_Movement_stuckDist,
 				          const_Movement_outPeriod))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_TryingAgain(id__,0,
+		dbisim(Clock_CLID_Avoiding(id__,0,
 				          const_Movement_lv,
 				          const_Movement_evadeTime,
 				          const_Movement_stuckPeriod,
@@ -2407,6 +2386,27 @@ exports
 				          const_Movement_stuckPeriod,
 				          const_Movement_stuckDist,
 				          const_Movement_outPeriod))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_GettingOut(id__,0,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_TryingAgain(id__,0,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Found(id__,0,
+				          const_Movement_lv,
+				          const_Movement_evadeTime,
+				          const_Movement_stuckPeriod,
+				          const_Movement_stuckDist,
+				          const_Movement_outPeriod))
 		)
 		)
 		)
@@ -2414,7 +2414,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_Avoiding,Avoiding::entered,get_CLID_Going,Going::entered,get_CLID_Found,Found::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
+		stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Found,Found::entered|}
 		
 		-- Shared memory
 		-- Shared memory variables

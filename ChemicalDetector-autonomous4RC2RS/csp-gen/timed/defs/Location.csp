@@ -1,7 +1,7 @@
 
 --
 -- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 06-05-2026 11:18:43
+-- Automatically generated on 14-05-2026 19:42:41
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -45,9 +45,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel moveCall: core_real.Chemical_Angle
 	channel shortRandomWalkCall
 	channel randomWalkCall
-	channel moveCall: core_real.Chemical_Angle
 	
 	enterSS = {|
 	i0::enter,
@@ -68,9 +68,9 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	shortRandomWalkCall,
-		randomWalkCall,
-		moveCall
+	,	moveCall,
+		shortRandomWalkCall,
+		randomWalkCall
 		, share__
 		|}
 	
@@ -263,14 +263,14 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__shortRandomWalk(id__,
-				    const_Location_changeDirection_lv) = EDeadline(shortRandomWalkCall,0)
-		CALL__randomWalk(id__,
-				    const_Location_changeDirection_lv) = EDeadline(randomWalkCall,0)
 		CALL__move(id__,
 				    const_Location_changeDirection_lv,
 					param_lv,
 					param_a) = EDeadline(moveCall.param_lv.param_a,0)
+		CALL__shortRandomWalk(id__,
+				    const_Location_changeDirection_lv) = EDeadline(shortRandomWalkCall,0)
+		CALL__randomWalk(id__,
+				    const_Location_changeDirection_lv) = EDeadline(randomWalkCall,0)
 		
 		-- END of Operation calls --
 	

@@ -1,21 +1,26 @@
-package pkg254__sim import Chemical::analysis 
-import Chemical::goreq import Chemical::intensity 
-import Chemical::location import Chemical::Status 
-import Chemical::analysis import Chemical::goreq 
-import Chemical::intensity import Chemical::location 
-import Chemical::Status interface I_events_normal_GasAnalysis_Analysis_t3_op_outEvs {
+package pkg994__sim import Chemical::analysis import Chemical::Angle import Chemical::goreq import Chemical::intensity import Chemical::location import Chemical::Status import Location::Loc import Chemical::analysis import Chemical::goreq import Chemical::intensity import Chemical::location import Chemical::Status interface I_events_normal_GasAnalysis_GasDetected_t8_op_outEvs {
+	event stop
+}
+
+interface I_events_normal_GasAnalysis_Analysis_t3_op_outEvs {
 	event resume
+}
+
+interface I_events_normal_GasAnalysis_GasDetected_t9a_op_outEvs {
+	event turn : Angle
 }
 
 interface req_normal_GasAnalysis_GasDetected_t9a_op_localVars {
 	var gs : Seq( Chemical::GasSensor )
 }
 
-interface I_events_normal_GasAnalysis_GasDetected_t9a_op_outEvs {
-	event turn : Chemical::Angle
+interface I_clone_normal_GasAnalysis_GasDetected_t9a_op_softwareOps_GasAnalysis {
+	clone_normal_GasAnalysis_GasDetected_t9a_op ( )
 }
 
-interface I_events_normal_GasAnalysis_GasDetected_t8_op_outEvs {
+interface I_outEvs_GasAnalysis {
+	event resume
+	event turn : Angle
 	event stop
 }
 
@@ -23,47 +28,37 @@ interface I_inpEvs_GasAnalysis {
 	event gas : Seq( Chemical::GasSensor )
 }
 
-interface I_clone_normal_GasAnalysis_GasDetected_t8_op_softwareOps_GasAnalysis {
-	clone_normal_GasAnalysis_GasDetected_t8_op ( )
+interface IctrEvars_GasAnalysis {
+	var gasF : boolean = true
 }
 
-interface IctrEvars_GasAnalysis {
-	var gasF : boolean = false
+interface I_clone_normal_GasAnalysis_GasDetected_t8_op_softwareOps_GasAnalysis {
+	clone_normal_GasAnalysis_GasDetected_t8_op ( )
 }
 
 interface I_clone_normal_GasAnalysis_Analysis_t3_op_softwareOps_GasAnalysis {
 	clone_normal_GasAnalysis_Analysis_t3_op ( )
 }
 
-interface I_outEvs_GasAnalysis {
-	event resume
-	event turn : Chemical::Angle
-	event stop
-}
-
-interface I_clone_normal_GasAnalysis_GasDetected_t9a_op_softwareOps_GasAnalysis {
-	clone_normal_GasAnalysis_GasDetected_t9a_op ( )
-}
-
 stm GasAnalysis {
-	uses IctrEvars_GasAnalysis requires I_clone_normal_GasAnalysis_Analysis_t3_op_softwareOps_GasAnalysis requires I_clone_normal_GasAnalysis_GasDetected_t9a_op_softwareOps_GasAnalysis requires I_clone_normal_GasAnalysis_GasDetected_t8_op_softwareOps_GasAnalysis var gs : Seq( Chemical::GasSensor )
+	uses IctrEvars_GasAnalysis requires I_clone_normal_GasAnalysis_GasDetected_t8_op_softwareOps_GasAnalysis requires I_clone_normal_GasAnalysis_Analysis_t3_op_softwareOps_GasAnalysis requires I_clone_normal_GasAnalysis_GasDetected_t9a_op_softwareOps_GasAnalysis var gs : Seq( Chemical::GasSensor )
 	const thr : Chemical::Intensity
 	input context { uses I_inpEvs_GasAnalysis }
 	output context { uses I_outEvs_GasAnalysis }
 	cycleDef cycle == 1
-	initial i1
+	initial i1 
 	state NoGas {
 		initial i
 		state EmptyCycle {
 		}
-		transition tNoGas { 
+		transition tNoGas {
 			from i
-			to EmptyCycle
+			to EmptyCycle 
 		}
 		transition tEmptyCycle_GasAnalysis_NoGas_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition  not ( $ gas ? gs /\ gasF )
+			condition not ( true /\ ( ( $ gas ? gs /\ gasF ) ) )
 			action exec ; gasF = true
 		}
 	}
@@ -78,7 +73,7 @@ stm GasAnalysis {
 		transition tEmptyCycle_GasAnalysis_Analysis_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( analysis ( gs ) == Status :: gasD ) /\ not ( analysis ( gs ) == Status :: noGas )
+			condition ( not ( analysis ( gs ) == Status :: gasD ) /\ not ( analysis ( gs ) == Status :: noGas ) )
 			action exec ; gasF = true
 		}
 	}
@@ -93,7 +88,7 @@ stm GasAnalysis {
 		transition tEmptyCycle_GasAnalysis_GasDetected_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( not goreq ( intensity ( gs ) , thr ) ) /\ not ( goreq ( intensity ( gs ) , thr ) )
+			condition ( not ( not goreq ( intensity ( gs ) , thr ) ) /\ not ( goreq ( intensity ( gs ) , thr ) ) )
 			action exec ; gasF = true
 		}
 	}
@@ -109,7 +104,7 @@ stm GasAnalysis {
 		transition tEmptyCycle_GasAnalysis_Reading_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( $ gas ? gs /\ gasF )
+			condition not ( true /\ ( ( $ gas ? gs /\ gasF ) ) )
 			action exec ; gasF = true
 		}
 	}
@@ -151,19 +146,32 @@ stm GasAnalysis {
 	}
 }
 
-operation clone_normal_GasAnalysis_Analysis_t3_op ( ) {
-	initial i
+operation clone_normal_GasAnalysis_GasDetected_t8_op ( ) {
+	requires IctrEvars_GasAnalysis initial i
 	final f
 	transition t {
 		from i
 		to f
+		action $ stop
+	}
+	input context { }
+	output context { uses I_events_normal_GasAnalysis_GasDetected_t8_op_outEvs }
+}
+
+operation clone_normal_GasAnalysis_Analysis_t3_op ( ) {
+	requires IctrEvars_GasAnalysis initial i
+	final f
+	transition t {
+		from i
+		to f
+		action $ resume
 	}
 	input context { }
 	output context { uses I_events_normal_GasAnalysis_Analysis_t3_op_outEvs }
 }
 
 operation clone_normal_GasAnalysis_GasDetected_t9a_op ( ) {
-	requires req_normal_GasAnalysis_GasDetected_t9a_op_localVars initial i
+	requires req_normal_GasAnalysis_GasDetected_t9a_op_localVars requires IctrEvars_GasAnalysis initial i
 	final f
 	transition t {
 		from i
@@ -172,16 +180,5 @@ operation clone_normal_GasAnalysis_GasDetected_t9a_op ( ) {
 	}
 	input context { }
 	output context { uses I_events_normal_GasAnalysis_GasDetected_t9a_op_outEvs }
-}
-
-operation clone_normal_GasAnalysis_GasDetected_t8_op ( ) {
-	initial i
-	final f
-	transition t {
-		from i
-		to f
-	}
-	input context { }
-	output context { uses I_events_normal_GasAnalysis_GasDetected_t8_op_outEvs }
 }
 

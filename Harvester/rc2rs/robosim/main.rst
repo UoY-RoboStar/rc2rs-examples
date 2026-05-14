@@ -466,7 +466,7 @@ interface SolverControl_inpEvs_AppleHarvestControl {
 }
 
 interface IctrEvars_AppleHarvestControl {
-	var endIKSolverF : boolean = false , endGoHomeF : boolean = false , takePicF : boolean = false
+	var endIKSolverF : boolean = true , endGoHomeF : boolean = true , takePicF : boolean = true
 }
 
 interface I_clone_normal_AppleHarvestControl_GetApple_exit_softwareOps_AppleHarvestControl {
@@ -522,7 +522,7 @@ interface I_clone_normal_IKSolver_Solve_t3_op_softwareOps_IKSolver {
 }
 
 interface IctrEvars_IKSolver {
-	var startIKSolverF : boolean = false
+	var startIKSolverF : boolean = true
 }
 
 interface I_clone_normal_GoHome_Going_entry_softwareOps_GoHome {
@@ -551,7 +551,7 @@ interface GoHomeControl_inpEvs_GoHome {
 }
 
 interface IctrEvars_GoHome {
-	var startGoHomeF : boolean = false
+	var startGoHomeF : boolean = true
 }
 
 controller ControlArm {

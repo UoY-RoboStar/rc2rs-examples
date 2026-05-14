@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 14-05-2026 19:42:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg994_ChemicalDetector_waitOp.csp"
+include "state_timed_defs.csp"
+include "pkg994_ChemicalDetector_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg994_ChemicalDetector_OP_waitOp
+P_pkg994_ChemicalDetector_OP_waitOp = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg994_ChemicalDetector::OP_waitOp::O__(id__,
+				param_i)
+assert P_pkg994_ChemicalDetector_OP_waitOp :[deadlock-free]	
+assert P_pkg994_ChemicalDetector_OP_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg994_ChemicalDetector_OP_waitOp :[deterministic]
+assert P_pkg994_ChemicalDetector_OP_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg994_ChemicalDetector_OP_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg994_ChemicalDetector_OP_waitOp

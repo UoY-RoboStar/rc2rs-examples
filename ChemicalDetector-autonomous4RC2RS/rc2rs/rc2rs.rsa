@@ -1,22 +1,22 @@
-simulation NormalForm of pkg254_main::ChemicalDetector{
+simulation NormalForm of pkg994_ChemicalDetector::ChemicalDetector{
 	cycleDef cycle==1
 }
  
  /*
-  * Schedulability verification
+  * Schedulability verification 
   */
 assertion A1: NormalForm is schedulable 
   
 
- /*
+ /* 
   * The RoboSim model is deadlock free
   */
-assertion A2: pkg254_main_sim::ChemicalDetector is deadlock-free 
-  
+assertion A2: pkg994_ChemicalDetector_sim::ChemicalDetector is deadlock-free 
+   
  
  /*
   * Conformance verification
   */
-assertion A3: pkg254_main_sim::ChemicalDetector refines NormalForm in the failures divergences model with cycleDef of pkg254_main_sim::ChemicalDetector set to 1, and cycleDef of NormalForm set to 1 
-assertion A4: NormalForm refines pkg254_main_sim::ChemicalDetector in the failures divergences model with cycleDef of pkg254_main_sim::ChemicalDetector set to 1, and cycleDef of NormalForm set to 1 
+assertion A3: pkg994_ChemicalDetector_sim::ChemicalDetector refines NormalForm in the failures divergences model with cycleDef of pkg994_ChemicalDetector_sim::ChemicalDetector set to 1, and cycleDef of NormalForm set to 1 
+assertion A4: NormalForm refines pkg994_ChemicalDetector_sim::ChemicalDetector in the failures divergences model with cycleDef of pkg994_ChemicalDetector_sim::ChemicalDetector set to 1, and cycleDef of NormalForm set to 1 
  

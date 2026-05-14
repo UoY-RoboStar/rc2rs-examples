@@ -50,7 +50,7 @@ interface I_clone_normal_FinderM_Looking_t2_op_softwareOps_FinderM {
 }
 
 interface IctrEvars_FinderM {
-	var originF : boolean = false , foundF : boolean = false , switchOnF : boolean = false
+	var originF : boolean = true , foundF : boolean = true , switchOnF : boolean = true
 }
 
 interface I_clone_normal_FinderM_Delivering_entry_softwareOps_FinderM {

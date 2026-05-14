@@ -30,7 +30,7 @@ interface I_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_no
 }
 
 interface IctrEvars_BalanceSTM {
-	var gyroZF : boolean = false , gyroXF : boolean = false , rightMotorVelocityF : boolean = false , angleF : boolean = false , leftMotorVelocityF : boolean = false
+	var gyroZF : boolean = true , gyroXF : boolean = true , rightMotorVelocityF : boolean = true , angleF : boolean = true , leftMotorVelocityF : boolean = true
 }
 
 interface I_clone_clone_normal_BalanceSTM_CalculateAngle_entry_waitInterval_j_2_23_f_1_softwareOps_clone_normal_BalanceSTM_CalculateAngle_entry {
@@ -759,6 +759,7 @@ stm BalanceSTM {
 	transition t12 {
 		from WaitForNextIteration
 		to CalculateAngle
+		# loopTimer
 		condition since ( loopTimer ) >= loopTime
 		action $ disableInterrupts ( )
 	}

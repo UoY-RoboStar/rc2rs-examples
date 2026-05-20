@@ -1,0 +1,1768 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module aggregation_Movement
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i1|
+	              NID_MovementAndAvoidance|
+	              NID_Turning
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_n, set_n, setL_n, setR_n: core_nat
+	channel get_p, set_p, setL_p, setR_p: main_Position
+	channel get_turned, set_turned, setL_turned, setR_turned: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel neighbours__: NIDS.InOut.core_nat
+	channel neighbours: InOut.core_nat
+	channel obstacle__: NIDS.InOut.main_Position
+	channel obstacle: InOut.main_Position
+	
+	-- Declaring call and ret events for undefined operations
+	channel moveCall: core_real.core_real
+	
+	enterSS = {|
+	i1::enter,
+	MovementAndAvoidance::enter,
+	Turning::enter
+	|}
+	
+	enteredSS = 	{|
+	MovementAndAvoidance::entered,
+	Turning::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	neighbours,
+		obstacle
+	,	moveCall
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- Initial: i1
+	module i1
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = D__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: MovementAndAvoidance
+	module MovementAndAvoidance
+	
+	enterSS = 
+			{|			i1::enter,
+				Move::enter,
+				Avoid::enter
+			|}
+	enteredSS = 
+			{|			Move::entered,
+				Avoid::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i1|
+		              NID_Move|
+		              NID_Avoid
+		
+		channel internal__ : NIDS
+		channel neighbours__: NIDS.InOut.core_nat
+		channel obstacle__: NIDS.InOut.main_Position
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i1
+		module i1
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Move
+		module Move
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							const_aggregation_Movement_lv,
+							0
+						) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							const_aggregation_Movement_lv,
+							0
+						) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Avoid
+		module Avoid
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_p?p -> true&(if ((p==main_Position_left)) then (true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						)) else (true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							Neg(const_aggregation_Movement_av, core_real)
+						))));SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_p?p -> true&(if ((p==main_Position_left)) then (true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						)) else (true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							Neg(const_aggregation_Movement_av, core_real)
+						))));SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i1::enter,
+				 	Move::enter,
+				 	Avoid::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i1,obstacle__.NID_Move.in,internal__.NID_Avoid|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i1::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Move::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Avoid::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Move::interrupt <- x__ | x__ <- {|interrupt,obstacle__.NID_Move.in|}]]
+				 		 [[Avoid::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Avoid|}]]
+				 		 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__,setR_p |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setR_p
+				 		 			|}) |]
+				 		 ((i1::enter -> Transitions(id__,
+				 		 		    const_aggregation_Movement_lv,
+				 		 		    const_aggregation_Movement_av,
+				 		 		    const_aggregation_Movement_MB,
+				 		 		    const_aggregation_Movement_alpha))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		  [[set_p <- setR_p]]
+				 		 )
+				 		)
+				 		 [[setR_p <- set_p]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		neighbours__.x____ <- neighbours,
+				 		obstacle__.x____ <- obstacle
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_turned,setR_p,setR_n |} ]] 
+				  [[set_turned <- setL_turned,set_p <- setL_p,set_n <- setL_n]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_turned
+				 			,setL_p
+				 			,setL_n
+				 			,setR_turned
+				 			 			,setR_p
+				 			 			,setR_n
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_turned,setL_p,setL_n |} ]]
+				  [[set_turned <- setR_turned,set_p <- setR_p,set_n <- setR_n]]
+				 )
+				)[[setL_turned <- set_turned,setL_p <- set_p,setL_n <- set_n]]
+				 [[setR_turned <- set_turned,setR_p <- set_p,setR_n <- set_n]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i1::enter,
+				 	Move::enter,
+				 	Avoid::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i1,obstacle__.NID_Move.in,internal__.NID_Avoid|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i1::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Move::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Avoid::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Move::interrupt <- x__ | x__ <- {|interrupt,obstacle__.NID_Move.in|}]]
+				 		 [[Avoid::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Avoid|}]]
+				 		 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__,setR_p |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setR_p
+				 		 			|}) |]
+				 		 ((i1::enter -> Transitions(id__,
+				 		 		    const_aggregation_Movement_lv,
+				 		 		    const_aggregation_Movement_av,
+				 		 		    const_aggregation_Movement_MB,
+				 		 		    const_aggregation_Movement_alpha))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		  [[set_p <- setR_p]]
+				 		 )
+				 		)
+				 		 [[setR_p <- set_p]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		neighbours__.x____ <- neighbours,
+				 		obstacle__.x____ <- obstacle
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_turned,setR_p,setR_n |} ]] 
+				  [[set_turned <- setL_turned,set_p <- setL_p,set_n <- setL_n]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_turned
+				 			,setL_p
+				 			,setL_n
+				 			,setR_turned
+				 			 			,setR_p
+				 			 			,setR_n
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_turned,setL_p,setL_n |} ]]
+				  [[set_turned <- setR_turned,set_p <- setR_p,set_n <- setR_n]]
+				 )
+				)[[setL_turned <- set_turned,setL_p <- set_p,setL_n <- set_n]]
+				 [[setR_turned <- set_turned,setR_p <- set_p,setR_n <- set_n]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Move::enter -> SKIP))))
+				 	 [] dbisim((true)&(obstacle__!NID_Move.in?p:{p|p <- main_Position, true} -> share__choice(set_p!p -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Avoid::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_Avoid -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Move::enter -> SKIP)))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Turning
+	module Turning
+	
+	enterSS = 
+			{|			i1::enter,
+				j1::enter,
+				Turn180::enter,
+				RandomTurn::enter,
+				f1::enter
+			|}
+	enteredSS = 
+			{|			Turn180::entered,
+				RandomTurn::entered,
+				f1::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i1|
+		              NID_j1|
+		              NID_Turn180|
+		              NID_RandomTurn|
+		              NID_f1
+		
+		channel internal__ : NIDS
+		channel neighbours__: NIDS.InOut.core_nat
+		channel obstacle__: NIDS.InOut.main_Position
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i1
+		module i1
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j1
+		module j1
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Turn180
+		module Turn180
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						);SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						);SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: RandomTurn
+		module RandomTurn
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						);SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__move(
+							id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha,
+							0,
+							const_aggregation_Movement_av
+						);SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: f1
+		module f1
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			--	Rule: behaviours(Node)
+			D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+					
+					Entering 	= entered -> SKIP ; Active
+					Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+					Interrupted	= share__choice(exit -> exited -> Inactive)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) = D__(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&(share__choice(neighbours.in?n -> (SStop /\ set_n!n -> SKIP)));share__choice(true & (share__choice(set_turned!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i1::enter,
+				 	j1::enter,
+				 	Turn180::enter,
+				 	RandomTurn::enter,
+				 	f1::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i1,internal__.NID_j1,internal__.NID_j1,internal__.NID_Turn180,internal__.NID_RandomTurn|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i1::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   j1::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Turn180::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   RandomTurn::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   f1::D__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Turn180::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Turn180|}]]
+				 		 [[RandomTurn::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RandomTurn|}]]
+				 		 [[f1::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_n <- setL_n]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_n
+				 		|}) |]
+				 		 ((i1::enter -> Transitions(id__,
+				 		 		    const_aggregation_Movement_lv,
+				 		 		    const_aggregation_Movement_av,
+				 		 		    const_aggregation_Movement_MB,
+				 		 		    const_aggregation_Movement_alpha))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_n |} ]]
+				 		 )
+				 		)[[setL_n <- set_n]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		neighbours__.x____ <- neighbours,
+				 		obstacle__.x____ <- obstacle
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_turned,setR_p,setR_n |} ]] 
+				  [[set_turned <- setL_turned,set_p <- setL_p,set_n <- setL_n]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_turned
+				 			,setL_p
+				 			,setL_n
+				 			,setR_turned
+				 			 			,setR_p
+				 			 			,setR_n
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_turned,setL_p,setL_n |} ]]
+				  [[set_turned <- setR_turned,set_p <- setR_p,set_n <- setR_n]]
+				 )
+				)[[setL_turned <- set_turned,setL_p <- set_p,setL_n <- set_n]]
+				 [[setR_turned <- set_turned,setR_p <- set_p,setR_n <- set_n]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&(share__choice(neighbours.in?n -> (SStop /\ set_n!n -> SKIP)));share__choice(true & (share__choice(set_turned!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i1::enter,
+				 	j1::enter,
+				 	Turn180::enter,
+				 	RandomTurn::enter,
+				 	f1::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i1,internal__.NID_j1,internal__.NID_j1,internal__.NID_Turn180,internal__.NID_RandomTurn|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i1::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   j1::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   Turn180::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   RandomTurn::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   [| { share__, terminate } |] (
+				 		   f1::VS_O__(id__,
+				 		   		    const_aggregation_Movement_lv,
+				 		   		    const_aggregation_Movement_av,
+				 		   		    const_aggregation_Movement_MB,
+				 		   		    const_aggregation_Movement_alpha)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Turn180::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Turn180|}]]
+				 		 [[RandomTurn::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RandomTurn|}]]
+				 		 [[f1::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_n <- setL_n]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_n
+				 		|}) |]
+				 		 ((i1::enter -> Transitions(id__,
+				 		 		    const_aggregation_Movement_lv,
+				 		 		    const_aggregation_Movement_av,
+				 		 		    const_aggregation_Movement_MB,
+				 		 		    const_aggregation_Movement_alpha))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_n |} ]]
+				 		 )
+				 		)[[setL_n <- set_n]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		neighbours__.x____ <- neighbours,
+				 		obstacle__.x____ <- obstacle
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_turned,setR_p,setR_n |} ]] 
+				  [[set_turned <- setL_turned,set_p <- setL_p,set_n <- setL_n]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_turned
+				 			,setL_p
+				 			,setL_n
+				 			,setR_turned
+				 			 			,setR_p
+				 			 			,setR_n
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_turned,setL_p,setL_n |} ]]
+				  [[set_turned <- setR_turned,set_p <- setR_p,set_n <- setR_n]]
+				 )
+				)[[setL_turned <- set_turned,setL_p <- set_p,setL_n <- set_n]]
+				 [[setR_turned <- set_turned,setR_p <- set_p,setR_n <- set_n]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha) = ((let
+			Trans = share__choice(get_n?n -> (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; j1::enter -> SKIP))))
+				 	 [] dbisim(((n>const_aggregation_Movement_alpha))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; Turn180::enter -> SKIP))))
+				 	 [] dbisim(((n<=const_aggregation_Movement_alpha))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; RandomTurn::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_Turn180 -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_turned!true -> SKIP))) ; f1::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_RandomTurn -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_turned!true -> SKIP))) ; f1::enter -> SKIP)))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__move(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha,
+				param_l,
+				param_a) 	= moveCall.param_l.param_a -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_aggregation_Movement_lv,
+						    const_aggregation_Movement_av,
+						    const_aggregation_Movement_MB,
+						    const_aggregation_Movement_alpha) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = ((let
+		Trans = share__choice(get_turned?turned -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; MovementAndAvoidance::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_MovementAndAvoidance -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Turning::enter -> SKIP)))
+			 	 [] dbisim(((turned==true))&(internal__!NID_Turning -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; MovementAndAvoidance::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i1::enter,
+				MovementAndAvoidance::enter,
+				Turning::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i1,internal__.NID_MovementAndAvoidance,internal__.NID_Turning|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i1::D__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   [| { share__, terminate } |] (
+					   MovementAndAvoidance::D__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   [| { share__, terminate } |] (
+					   Turning::D__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   )
+					   )
+					 )
+					 [[MovementAndAvoidance::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_MovementAndAvoidance|}]]
+					 [[Turning::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Turning|}]]
+					 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_turned <- setL_turned]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_turned
+					|}) |]
+					 ((i1::enter -> Transitions(id__,
+					 		    const_aggregation_Movement_lv,
+					 		    const_aggregation_Movement_av,
+					 		    const_aggregation_Movement_MB,
+					 		    const_aggregation_Movement_alpha))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_turned |} ]]
+					 )
+					)[[setL_turned <- set_turned]]
+					)
+				)
+				 \ hideSet)
+				[[
+					neighbours__.x____ <- neighbours,
+					obstacle__.x____ <- obstacle
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((MachineBody(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((MachineBody(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		((
+			(Behaviour(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								Behaviour(id__,
+										    const_aggregation_Movement_lv,
+										    const_aggregation_Movement_av,
+										    const_aggregation_Movement_MB,
+										    const_aggregation_Movement_alpha)
+								[| {|get_turned,set_turned,terminate|} |]
+								Memory_turned(true)
+							)\{|get_turned,set_turned|}
+						)
+						[| {|get_p,set_p,terminate|} |]
+						Memory_p(main_Position_left)
+					)\{|get_p,set_p|}
+				)
+				[| {|get_n,set_n,terminate|} |]
+				Memory_n(0)
+			)\{|get_n,set_n|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i1::enter,
+				MovementAndAvoidance::enter,
+				Turning::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i1,internal__.NID_MovementAndAvoidance,internal__.NID_Turning|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i1::VS_O__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   [| { share__, terminate } |] (
+					   MovementAndAvoidance::VS_O__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   [| { share__, terminate } |] (
+					   Turning::VS_O__(id__,
+					   		    const_aggregation_Movement_lv,
+					   		    const_aggregation_Movement_av,
+					   		    const_aggregation_Movement_MB,
+					   		    const_aggregation_Movement_alpha)
+					   )
+					   )
+					 )
+					 [[MovementAndAvoidance::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_MovementAndAvoidance|}]]
+					 [[Turning::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Turning|}]]
+					 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_turned <- setL_turned]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_turned
+					|}) |]
+					 ((i1::enter -> Transitions(id__,
+					 		    const_aggregation_Movement_lv,
+					 		    const_aggregation_Movement_av,
+					 		    const_aggregation_Movement_MB,
+					 		    const_aggregation_Movement_alpha))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_turned |} ]]
+					 )
+					)[[setL_turned <- set_turned]]
+					)
+				)
+				 \ hideSet)
+				[[
+					neighbours__.x____ <- neighbours,
+					obstacle__.x____ <- obstacle
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_aggregation_Movement_lv,
+				    const_aggregation_Movement_av,
+				    const_aggregation_Movement_MB,
+				    const_aggregation_Movement_alpha))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_aggregation_Movement_lv,
+					    const_aggregation_Movement_av,
+					    const_aggregation_Movement_MB,
+					    const_aggregation_Movement_alpha))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								Behaviour_VS_O(id__,
+										    const_aggregation_Movement_lv,
+										    const_aggregation_Movement_av,
+										    const_aggregation_Movement_MB,
+										    const_aggregation_Movement_alpha)
+								[| {|get_turned,set_turned,terminate|} |]
+								Memory_turned(true)
+							)\{|get_turned,set_turned|}
+						)
+						[| {|get_p,set_p,terminate|} |]
+						Memory_p(main_Position_left)
+					)\{|get_p,set_p|}
+				)
+				[| {|get_n,set_n,terminate|} |]
+				Memory_n(0)
+			)\{|get_n,set_n|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_n(n) =
+		get_n!n -> Memory_n(n)
+		[]
+		set_n?x__ -> Memory_n(x__)
+		[]
+		terminate -> SKIP
+	Memory_p(p) =
+		get_p!p -> Memory_p(p)
+		[]
+		set_p?x__ -> Memory_p(x__)
+		[]
+		terminate -> SKIP
+	Memory_turned(turned) =
+		get_turned!turned -> Memory_turned(turned)
+		[]
+		set_turned?x__ -> Memory_turned(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = Memory_n(0)
+	[| { terminate } |] (
+	Memory_p(main_Position_left)
+	[| { terminate } |] (
+	Memory_turned(true)
+	)
+	)
+	
+	getsetLocalChannels = {|get_n,set_n,get_p,set_p,get_turned,set_turned|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = STM_VS_O(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha)
+	
+	D__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = STM(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) \ internal_events
+	O__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = sbisim(diamond(D__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha)))
+	VS__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = FVS__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha)
+	VS_O__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = sbisim(diamond(FVS__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha)))
+	HEXT__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = O__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = O__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule

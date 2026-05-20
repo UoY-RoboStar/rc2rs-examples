@@ -1,0 +1,103 @@
+package pkg223_main interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+operation tStop ( ) {
+	initial i
+	state sStop {
+	}
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	initial i0
+	final f
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp final f
+	initial i
+	junction j
+	transition trSelf {
+		from j
+		to j 
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	clock C
+}
+
+module AggregationSoftware {
+	connection ePuck on receive to ctrl_ref1 on receive ( _async ) [ mult ]
+	connection ePuck on broadcast to ctrl_ref1 on broadcast ( _async ) [ mult ]
+	connection ePuck on obstacle to ctrl_ref0 on obstacle ( _async )
+	connection ctrl_ref1 on robots to ctrl_ref0 on neighbours ( _async )
+	robotic platform ePuck {
+		provides pkg223_aggregation::MovingHw event obstacle : main::Position
+		event broadcast : main::ID
+		event receive : main::ID * main::ID
+	}
+
+	cref ctrl_ref0 = pkg223_::MovementC
+	cref ctrl_ref1 = pkg223_::CommunicationC
+}
+

@@ -1,0 +1,33 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg1096_AggregationSoftware_defs.csp"
+include "pkg1096_AggregationSoftware_waitInterval.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg1096_AggregationSoftware_OP_waitInterval
+P_pkg1096_AggregationSoftware_OP_waitInterval = let
+	id__ = 0
+	
+	param_m = 0
+	param_n = 0
+	
+	
+	
+within
+	pkg1096_AggregationSoftware::OP_waitInterval::O__(id__,
+				param_m,
+				param_n)
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_OP_waitInterval;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[deterministic]
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[divergence-free]

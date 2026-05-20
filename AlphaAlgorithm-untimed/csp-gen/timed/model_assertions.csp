@@ -1,0 +1,213 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:53
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "defs/file_communication_defs.csp"
+include "defs/Communication.csp"
+include "defs/state_timed_defs.csp"
+include "defs/core_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "defs/aggregation.csp"
+include "defs/file_movementC_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/core_timed_defs.csp"
+include "defs/main_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "defs/aggregation_defs.csp"
+include "defs/relation_toolkit_defs.csp"
+include "defs/file_communicationC_defs.csp"
+include "defs/Mathematics_defs.csp"
+include "defs/main.csp"
+
+channel r__
+
+nametype nat = {0..4}
+aggregation_Movement_alpha = 2 
+move_BOUND = 2
+nametype string = LSeq(Char,2)
+aggregation_Movement_av = 1
+aggregation_Movement_MB = 1
+nametype real = {0,1}
+nametype int = { -4..4}
+Communication_RC = 1
+Communication_id = 0 
+random() = 0
+nametype boolean = Bool
+nametype ID = {0,1}
+floor(x) = x 
+aggregation_Movement_lv = 1   
+
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+Spec1 = let
+Responds = (|~|x:ID @ AggregationSoftware_receive.in.(Communication_id,x) -> Responds) |~| SKIP
+Run = AggregationSoftware_broadcast.in?x:diff(ID,{Communication_id}) -> AggregationSoftware_receive.out!(x,Communication_id) -> Run |~| SKIP
+Main = AggregationSoftware_broadcast.out.Communication_id -> (Responds|||Run); Main
+within
+Main
+
+Impl1 = AggregationSoftware_O(0)\diff(Events,{|AggregationSoftware_receive,AggregationSoftware_broadcast|})
+
+Spec2 = let
+Moves = moveCall -> moveRet -> (Moves |~| SKIP)
+Run = |~|x:Position @ AggregationSoftware_obstacle.in.x -> Moves; Run
+within
+Moves; Run
+
+Impl2 = AggregationSoftware_O(0)\diff(Events,{|moveCall,moveRet,AggregationSoftware_obstacle|})
+
+-- a1 - deterministic
+assert let 
+	id__ = 0
+	
+	
+	
+within
+	Communication::D__(id__,
+			    const_Communication_id,
+			    const_Communication_RC) :[deterministic]
+
+-- a2 - divergence free
+assert let 
+	id__ = 0
+	
+	
+	
+within
+	Communication::D__(id__,
+			    const_Communication_id,
+			    const_Communication_RC) :[divergence free]
+
+-- a3 - timed deadlock free
+assert prioritise(let 
+	id__ = 0
+	
+	
+	
+within
+	Communication::D__(id__,
+			    const_Communication_id,
+			    const_Communication_RC)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- a4 - non deterministic
+assert not let 
+	id__ = 0
+	
+	
+	
+within
+	aggregation::Movement::D__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) :[deterministic]
+
+-- a5 - divergence free
+assert let 
+	id__ = 0
+	
+	
+	
+within
+	aggregation::Movement::D__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha) :[divergence free]
+
+-- a6 - timed deadlock free
+assert prioritise(let 
+	id__ = 0
+	
+	
+	
+within
+	aggregation::Movement::D__(id__,
+			    const_aggregation_Movement_lv,
+			    const_aggregation_Movement_av,
+			    const_aggregation_Movement_MB,
+			    const_aggregation_Movement_alpha)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- a7 - non deterministic
+assert not let 
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	main::AggregationSoftware::D__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) :[deterministic]
+
+-- a8 - divergence free
+assert let 
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	main::AggregationSoftware::D__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) :[divergence free]
+
+-- a9 - timed deadlock free
+assert prioritise(let 
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	main::AggregationSoftware::D__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- b1 - refinement
+assert Spec1 [F= Impl1
+
+-- b2 - refinement
+assert Spec2 [F= Impl2
+

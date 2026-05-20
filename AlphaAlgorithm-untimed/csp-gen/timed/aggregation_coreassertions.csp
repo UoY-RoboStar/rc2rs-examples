@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "aggregation.csp"
+
+-- generate aggregation_Movement
+P_aggregation_Movement = let
+	id__ = 0
+	
+	
+	
+within
+	aggregation::Movement::O__(
+		id__,
+		const_aggregation_Movement_lv,
+		const_aggregation_Movement_av,
+		const_aggregation_Movement_MB,
+		const_aggregation_Movement_alpha
+	)
+assert P_aggregation_Movement :[deadlock-free]	
+assert P_aggregation_Movement;RUN({r__}) :[deadlock-free]
+assert P_aggregation_Movement :[deterministic]
+assert P_aggregation_Movement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_aggregation_Movement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_aggregation_Movement
+
+
+

@@ -1,0 +1,41 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg1096__defs.csp"
+include "state_timed_defs.csp"
+include "pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t
+P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t = let
+	id__ = 0
+	
+	param_d = 0
+	
+	const_pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t_id = 0
+	
+	
+within
+	pkg1096_::OP_deadlineAction_normal_Communication_Receive_t3_op_t::O__(id__,
+				param_d,
+			    const_pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t_id)
+assert P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t :[deadlock-free]	
+assert P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t :[deterministic]
+assert P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_deadlineAction_normal_Communication_Receive_t3_op_t

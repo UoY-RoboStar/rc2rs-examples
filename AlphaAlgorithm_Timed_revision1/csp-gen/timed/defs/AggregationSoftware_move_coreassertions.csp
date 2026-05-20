@@ -1,0 +1,41 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "AggregationSoftware_move.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "AggregationSoftware_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate AggregationSoftware_OP_move
+P_AggregationSoftware_OP_move = let
+	id__ = 0
+	
+	param_l = 0
+	param_a = 0
+	
+	
+	
+within
+	AggregationSoftware::OP_move::O__(id__,
+				param_l,
+				param_a)
+assert P_AggregationSoftware_OP_move :[deadlock-free]	
+assert P_AggregationSoftware_OP_move;RUN({r__}) :[deadlock-free]
+assert P_AggregationSoftware_OP_move :[deterministic]
+assert P_AggregationSoftware_OP_move :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_AggregationSoftware_OP_move[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_AggregationSoftware_OP_move

@@ -1,0 +1,36 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "main_defs.csp"
+include "aggregation_defs.csp"
+include "state_defs.csp"
+include "aggregation_Movement.csp"
+include "Mathematics_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate aggregation_Movement
+P_aggregation_Movement = let
+	id__ = 0
+	
+	
+	
+within
+	aggregation_Movement::O__(
+		id__,
+		const_aggregation_Movement_lv,
+		const_aggregation_Movement_av,
+		const_aggregation_Movement_MB,
+		const_aggregation_Movement_alpha
+	)
+assert P_aggregation_Movement :[deadlock-free]	
+assert P_aggregation_Movement;RUN({r__}) :[deadlock-free]
+assert P_aggregation_Movement :[deterministic]
+assert P_aggregation_Movement :[divergence-free]

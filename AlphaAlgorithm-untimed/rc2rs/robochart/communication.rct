@@ -1,0 +1,240 @@
+package pkg223_ import sequence_toolkit::size import set_toolkit::union interface CommHw {
+	event broadcast : main::ID
+	event receive : main::ID * main::ID
+}
+
+interface Internal {
+	event robots : nat
+}
+
+interface req_normal_Communication_Receive_t2_op {
+	var x : main::ID * main::ID , neighs : Set( main::ID )
+}
+
+interface I_normal_Communication_Receive_t2_op {
+	normal_Communication_Receive_t2_op ( )
+}
+
+interface req_normal_Communication_Broadcast_t4_op {
+	var neighs : Set( main::ID )
+}
+
+interface I_normal_Communication_Broadcast_t4_op {
+	normal_Communication_Broadcast_t4_op ( )
+}
+
+interface req_normal_Communication_Receive_t5_op {
+	var neighs : Set( main::ID )
+}
+
+interface I_events_normal_Communication_Receive_t5_op {
+	event robots : nat
+}
+
+interface I_normal_Communication_Receive_t5_op {
+	normal_Communication_Receive_t5_op ( )
+}
+
+interface req_normal_Communication_Broadcast_entry {
+	const id : main::ID
+}
+
+interface I_events_normal_Communication_Broadcast_entry {
+	event broadcast : main::ID
+}
+
+interface I_normal_Communication_Broadcast_entry {
+	normal_Communication_Broadcast_entry ( )
+}
+
+interface req_normal_Communication_Receive_t3_op {
+	var y : main::ID
+	const id : main::ID
+}
+
+interface I_events_normal_Communication_Receive_t3_op {
+	event receive : main::ID * main::ID
+}
+
+interface I_normal_Communication_Receive_t3_op {
+	normal_Communication_Receive_t3_op ( )
+}
+
+interface I_clone_normal_Communication_Receive_t2_op {
+	clone_normal_Communication_Receive_t2_op ( )
+}
+
+interface I_clone_normal_Communication_Broadcast_t4_op {
+	clone_normal_Communication_Broadcast_t4_op ( )
+}
+
+interface I_clone_normal_Communication_Receive_t3_op {
+	clone_normal_Communication_Receive_t3_op ( )
+}
+
+interface I_clone_normal_Communication_Broadcast_entry {
+	clone_normal_Communication_Broadcast_entry ( )
+}
+
+interface I_clone_normal_Communication_Receive_t5_op {
+	clone_normal_Communication_Receive_t5_op ( )
+}
+
+stm Communication {
+	uses CommHw uses Internal requires I_normal_Communication_Receive_t2_op requires I_normal_Communication_Broadcast_t4_op requires I_normal_Communication_Receive_t5_op requires I_normal_Communication_Broadcast_entry requires I_normal_Communication_Receive_t3_op requires I_clone_normal_Communication_Receive_t2_op requires I_clone_normal_Communication_Broadcast_t4_op requires I_clone_normal_Communication_Receive_t3_op requires I_clone_normal_Communication_Broadcast_entry requires I_clone_normal_Communication_Receive_t5_op const id : main::ID
+	var x : main::ID * main::ID , y : main::ID
+	var neighs : Set( main::ID )
+	const RC : nat
+	initial i1
+	state Broadcast {
+		state EmptyCycle {
+		}
+		initial i
+		transition tBroadcast {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_Communication_Broadcast_entry ( )
+	}
+	state Receive {
+		initial i
+		state EmptyCycle {
+		}
+		transition tReceive {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t1 {
+		from i1
+		to Broadcast
+	}
+	transition t2 {
+		from Receive
+		to Receive
+		trigger receive ? x
+		condition x [ 1 ] == id
+		action clone_normal_Communication_Receive_t2_op ( )
+	}
+	transition t3 {
+		from Receive
+		to Receive
+		trigger broadcast ? y
+		condition y != id
+		action clone_normal_Communication_Receive_t3_op ( )
+	}
+	transition t4 {
+		from Broadcast
+		to Receive
+		# RCC
+		action clone_normal_Communication_Broadcast_t4_op ( )
+	}
+	transition t5 {
+		from Receive
+		to Broadcast
+		condition since ( RCC ) >= RC
+		action clone_normal_Communication_Receive_t5_op ( )
+	}
+	clock RCC
+}
+
+operation normal_Communication_Receive_t2_op ( ) {
+	requires req_normal_Communication_Receive_t2_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighs = union ( neighs , { x [ 2 ] } )
+	}
+}
+
+operation normal_Communication_Broadcast_t4_op ( ) {
+	requires req_normal_Communication_Broadcast_t4_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighs = { }
+	}
+}
+
+operation normal_Communication_Receive_t5_op ( ) {
+	uses I_events_normal_Communication_Receive_t5_op requires req_normal_Communication_Receive_t5_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action robots ! size ( neighs )
+	}
+}
+
+operation normal_Communication_Broadcast_entry ( ) {
+	uses I_events_normal_Communication_Broadcast_entry requires req_normal_Communication_Broadcast_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action broadcast ! id
+	}
+}
+
+operation normal_Communication_Receive_t3_op ( ) {
+	uses I_events_normal_Communication_Receive_t3_op requires req_normal_Communication_Receive_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action receive ! (| y , id |)
+	}
+}
+
+operation clone_normal_Communication_Receive_t2_op ( ) {
+	requires req_normal_Communication_Receive_t2_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighs = union ( neighs , { x [ 2 ] } )
+	}
+}
+
+operation clone_normal_Communication_Broadcast_t4_op ( ) {
+	requires req_normal_Communication_Broadcast_t4_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighs = { }
+	}
+}
+
+operation clone_normal_Communication_Receive_t3_op ( ) {
+	uses I_events_normal_Communication_Receive_t3_op requires req_normal_Communication_Receive_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action receive ! (| y , id |)
+	}
+}
+
+operation clone_normal_Communication_Broadcast_entry ( ) {
+	uses I_events_normal_Communication_Broadcast_entry requires req_normal_Communication_Broadcast_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action broadcast ! id
+	}
+}
+
+operation clone_normal_Communication_Receive_t5_op ( ) {
+	uses I_events_normal_Communication_Receive_t5_op requires req_normal_Communication_Receive_t5_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action robots ! size ( neighs )
+	}
+}
+

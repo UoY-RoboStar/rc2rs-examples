@@ -1,0 +1,22 @@
+package pkg223__sim 
+controller MovementC {
+	uses SensingHw uses ObstacleHw requires MovingHw 
+	sref stm_ref0 = pkg223_aggregation_sim::Movement 
+	opref MovementC_ref_clone_normal_Movement_Turning_RandomTurn_t5_op = pkg223_aggregation_sim::clone_normal_Movement_Turning_RandomTurn_t5_op
+	opref MovementC_ref_clone_normal_Movement_MovementAndAvoidance_Avoid_entry = pkg223_aggregation_sim::clone_normal_Movement_MovementAndAvoidance_Avoid_entry
+	opref MovementC_ref_clone_normal_Movement_Turning_RandomTurn_entry = pkg223_aggregation_sim::clone_normal_Movement_Turning_RandomTurn_entry
+	opref MovementC_ref_clone_normal_Movement_Turning_entry = pkg223_aggregation_sim::clone_normal_Movement_Turning_entry
+	opref MovementC_ref_clone_normal_Movement_i1_t1_op = pkg223_aggregation_sim::clone_normal_Movement_i1_t1_op
+	opref MovementC_ref_clone_normal_Movement_Turning_Turn180_t4_op = pkg223_aggregation_sim::clone_normal_Movement_Turning_Turn180_t4_op
+	opref MovementC_ref_clone_normal_Movement_Turning_Turn180_entry = pkg223_aggregation_sim::clone_normal_Movement_Turning_Turn180_entry
+	opref MovementC_ref_clone_waitOp_j_2_5_f = pkg223_aggregation_sim::clone_waitOp_j_2_5_f
+	opref MovementC_ref_clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2 = pkg223_aggregation_sim::clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2
+	opref MovementC_ref_clone_waitOp_j_2_4_f = pkg223_aggregation_sim::clone_waitOp_j_2_4_f
+	opref MovementC_ref_clone_waitOp_j_2_3_f = pkg223_aggregation_sim::clone_waitOp_j_2_3_f
+	opref MovementC_ref_clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f = pkg223_aggregation_sim::clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f
+    connection MovementC on neighbours to stm_ref0 on neighbours
+	connection MovementC on obstacle to stm_ref0 on obstacle
+	cycleDef cycle == 1
+}  
+
+           

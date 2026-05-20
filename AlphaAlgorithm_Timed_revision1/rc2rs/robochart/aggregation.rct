@@ -1,0 +1,605 @@
+package pkg1096_ import Mathematics::floor import Mathematics::random import AggregationSoftware::Position interface MovingHw {
+	move ( l : real , a : real )
+}
+
+interface MovingHwE {
+	event obstacle : Position
+}
+
+interface SensingHw {
+	event neighbours : nat
+}
+
+interface req_normal_Movement_Turning_entry {
+	var turned : boolean , n : nat
+}
+
+interface I_events_normal_Movement_Turning_entry {
+	event neighbours : nat
+}
+
+interface I_normal_Movement_Turning_entry {
+	normal_Movement_Turning_entry ( )
+}
+
+interface req_normal_Movement_Turning_Turn180_entry {
+	move ( l : real , a : real )
+	const av : real
+}
+
+interface I_normal_Movement_Turning_Turn180_entry {
+	normal_Movement_Turning_Turn180_entry ( )
+}
+
+interface req_normal_Movement_MovementAndAvoidance_t2_op {
+	clock MBC
+}
+
+interface I_normal_Movement_MovementAndAvoidance_t2_op {
+	normal_Movement_MovementAndAvoidance_t2_op ( )
+}
+
+interface req_normal_Movement_Turning_RandomTurn_entry {
+	move ( l : real , a : real )
+	const av : real
+}
+
+interface I_normal_Movement_Turning_RandomTurn_entry {
+	normal_Movement_Turning_RandomTurn_entry ( )
+}
+
+interface req_normal_Movement_Turning_RandomTurn_t5_op {
+	var turned : boolean
+}
+
+interface I_normal_Movement_Turning_RandomTurn_t5_op {
+	normal_Movement_Turning_RandomTurn_t5_op ( )
+}
+
+interface req_normal_Movement_Turning_Turn180_t4_op {
+	var turned : boolean
+}
+
+interface I_normal_Movement_Turning_Turn180_t4_op {
+	normal_Movement_Turning_Turn180_t4_op ( )
+}
+
+interface req_normal_Movement_MovementAndAvoidance_Avoid_entry {
+	move ( l : real , a : real )
+	var p : Position
+	const av : real
+}
+
+interface I_normal_Movement_MovementAndAvoidance_Avoid_entry {
+	normal_Movement_MovementAndAvoidance_Avoid_entry ( )
+}
+
+interface I_req_normal_Movement_Turning_entry_j_2_2_t_2_2 {
+	var turned : boolean
+}
+
+interface I_normal_Movement_Turning_entry_j_2_2_t_2_2_op {
+	normal_Movement_Turning_entry_j_2_2_t_2_2_op ( )
+}
+
+interface I_req_normal_Movement_Turning_entry_i_t {
+	var n : nat
+}
+
+interface I_events_normal_Movement_Turning_entry_i_t {
+	event neighbours : nat
+}
+
+interface I_normal_Movement_Turning_entry_i_t_op {
+	normal_Movement_Turning_entry_i_t_op ( )
+}
+
+interface I_clone_normal_Movement_Turning_entry {
+	clone_normal_Movement_Turning_entry ( )
+}
+
+interface I_clone_normal_Movement_Turning_Turn180_t4_op {
+	clone_normal_Movement_Turning_Turn180_t4_op ( )
+}
+
+interface I_clone_normal_Movement_Turning_RandomTurn_t5_op {
+	clone_normal_Movement_Turning_RandomTurn_t5_op ( )
+}
+
+interface I_clone_normal_Movement_MovementAndAvoidance_Avoid_entry {
+	clone_normal_Movement_MovementAndAvoidance_Avoid_entry ( )
+}
+
+interface I_clone_normal_Movement_MovementAndAvoidance_t2_op {
+	clone_normal_Movement_MovementAndAvoidance_t2_op ( )
+}
+
+interface I_clone_normal_Movement_Turning_Turn180_entry {
+	clone_normal_Movement_Turning_Turn180_entry ( )
+}
+
+interface I_clone_normal_Movement_Turning_RandomTurn_entry {
+	clone_normal_Movement_Turning_RandomTurn_entry ( )
+}
+
+interface I_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 {
+	clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 ( )
+}
+
+interface I_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 {
+	clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 ( i : nat )
+}
+
+interface I_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 {
+	clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 ( i : nat )
+}
+
+interface I_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 {
+	clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 ( )
+}
+
+interface I_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 {
+	clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 ( i : nat )
+}
+
+stm Movement {
+	uses MovingHwE uses SensingHw requires MovingHw requires I_clone_normal_Movement_Turning_entry requires I_clone_normal_Movement_Turning_Turn180_t4_op requires I_clone_normal_Movement_Turning_RandomTurn_t5_op requires I_clone_normal_Movement_MovementAndAvoidance_Avoid_entry requires I_clone_normal_Movement_MovementAndAvoidance_t2_op requires I_clone_normal_Movement_Turning_Turn180_entry requires I_clone_normal_Movement_Turning_RandomTurn_entry const lv : real , av : real , MB : real , alpha : nat
+	var n : nat , p : Position , turned : boolean
+	initial i1
+	state MovementAndAvoidance {
+		initial i1
+		state Move {
+			initial i
+			state EmptyCycle {
+			}
+			transition tMove {
+				from i
+				to EmptyCycle
+			}
+			entry move ( lv , 0 )
+		}
+		state Avoid {
+			initial i
+			state EmptyCycle {
+			}
+			transition tAvoid {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_Movement_MovementAndAvoidance_Avoid_entry ( )
+		}
+		transition t1 {
+			from i1
+			to Move
+		}
+		transition t2 {
+			from Move
+			to Avoid
+			trigger obstacle ? p
+			condition since ( MBC ) < ( MB - 360 / av )
+		}
+		transition t3 {
+			from Avoid
+			to Move
+		}
+	}
+	state Turning {
+		initial i1
+		junction j1
+		state Turn180 {
+			initial i
+			state EmptyCycle {
+			}
+			transition tTurn180 {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_Movement_Turning_Turn180_entry ( )
+		}
+		state RandomTurn {
+			state EmptyCycle {
+			}
+			initial i
+			transition tRandomTurn {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_Movement_Turning_RandomTurn_entry ( )
+		}
+		state EmptyCycle {
+		}
+		transition t1 {
+			from i1
+			to j1
+		}
+		transition t2 {
+			from j1
+			to Turn180
+			condition n < alpha
+		}
+		transition t3 {
+			from j1
+			to RandomTurn
+			condition n >= alpha
+		}
+		transition t4 {
+			from Turn180
+			to EmptyCycle
+			action clone_normal_Movement_Turning_Turn180_t4_op ( )
+		}
+		transition t5 {
+			from RandomTurn
+			to EmptyCycle
+			action clone_normal_Movement_Turning_RandomTurn_t5_op ( )
+		}
+		entry clone_normal_Movement_Turning_entry ( )
+	}
+	transition t1 {
+		from i1
+		to MovementAndAvoidance
+		# MBC
+	}
+	transition t2 {
+		from MovementAndAvoidance
+		to Turning
+		condition since ( MBC ) >= MB
+		action clone_normal_Movement_MovementAndAvoidance_t2_op ( )
+	}
+	transition t3 {
+		from Turning
+		to MovementAndAvoidance
+		condition turned == true
+	}
+	clock MBC
+}
+
+operation normal_Movement_Turning_entry ( ) {
+	uses I_events_normal_Movement_Turning_entry requires req_normal_Movement_Turning_entry requires I_normal_Movement_Turning_entry_j_2_2_t_2_2_op requires I_normal_Movement_Turning_entry_i_t_op final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action normal_Movement_Turning_entry_i_t_op ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action normal_Movement_Turning_entry_j_2_2_t_2_2_op ( )
+	}
+}
+
+operation normal_Movement_Turning_Turn180_entry ( ) {
+	requires req_normal_Movement_Turning_Turn180_entry requires pkg1096_AggregationSoftware::I_waitOp final f
+	initial i
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action move ( 0 , av )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action waitOp ( floor ( 180 / av ) )
+	}
+}
+
+operation normal_Movement_MovementAndAvoidance_t2_op ( ) {
+	requires req_normal_Movement_MovementAndAvoidance_t2_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # MBC
+	}
+}
+
+operation normal_Movement_Turning_RandomTurn_entry ( ) {
+	requires req_normal_Movement_Turning_RandomTurn_entry requires pkg1096_AggregationSoftware::I_waitOp final f
+	initial i
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action move ( 0 , av )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action waitOp ( floor ( random ( ) * 360 / av ) )
+	}
+}
+
+operation normal_Movement_Turning_RandomTurn_t5_op ( ) {
+	requires req_normal_Movement_Turning_RandomTurn_t5_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action turned = true
+	}
+}
+
+operation normal_Movement_Turning_Turn180_t4_op ( ) {
+	requires req_normal_Movement_Turning_Turn180_t4_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turned = true
+	}
+}
+
+operation normal_Movement_MovementAndAvoidance_Avoid_entry ( ) {
+	requires req_normal_Movement_MovementAndAvoidance_Avoid_entry requires pkg1096_AggregationSoftware::I_waitOp final f
+	initial i
+	junction j_2_5
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action waitOp ( floor ( random ( ) * 360 / av ) )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition ( p == Position :: left )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not ( p == Position :: left )
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_5
+		action move ( 0 , av )
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_5
+		action move ( 0 , - av )
+	}
+}
+
+operation normal_Movement_Turning_entry_j_2_2_t_2_2_op ( ) {
+	requires I_req_normal_Movement_Turning_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turned = false
+	}
+}
+
+operation normal_Movement_Turning_entry_i_t_op ( ) {
+	uses I_events_normal_Movement_Turning_entry_i_t requires I_req_normal_Movement_Turning_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighbours ? n
+	}
+}
+
+operation clone_normal_Movement_Turning_entry ( ) {
+	uses I_events_normal_Movement_Turning_entry requires req_normal_Movement_Turning_entry requires I_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 requires I_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 final f
+	initial i
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 ( )
+	}
+}
+
+operation clone_normal_Movement_Turning_Turn180_t4_op ( ) {
+	requires req_normal_Movement_Turning_Turn180_t4_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turned = true
+	}
+}
+
+operation clone_normal_Movement_Turning_RandomTurn_t5_op ( ) {
+	requires req_normal_Movement_Turning_RandomTurn_t5_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action turned = true
+	}
+}
+
+operation clone_normal_Movement_MovementAndAvoidance_Avoid_entry ( ) {
+	requires req_normal_Movement_MovementAndAvoidance_Avoid_entry requires I_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 final f
+	initial i
+	junction j_2_5
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 ( floor ( random ( ) * 360 / av ) )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition ( p == Position :: left )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not ( p == Position :: left )
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_5
+		action move ( 0 , av )
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_5
+		action move ( 0 , - av )
+	}
+}
+
+operation clone_normal_Movement_MovementAndAvoidance_t2_op ( ) {
+	requires req_normal_Movement_MovementAndAvoidance_t2_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # MBC
+	}
+}
+
+operation clone_normal_Movement_Turning_Turn180_entry ( ) {
+	requires req_normal_Movement_Turning_Turn180_entry requires I_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 final f
+	initial i
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action move ( 0 , av )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 ( floor ( 180 / av ) )
+	}
+}
+
+operation clone_normal_Movement_Turning_RandomTurn_entry ( ) {
+	requires req_normal_Movement_Turning_RandomTurn_entry requires I_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 final f
+	initial i
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action move ( 0 , av )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 ( floor ( random ( ) * 360 / av ) )
+	}
+}
+
+operation clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 ( ) {
+	requires I_req_normal_Movement_Turning_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turned = false
+	}
+}
+
+operation clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 ( i : nat
+) {
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	initial i0
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 ( i : nat
+) {
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	initial i0
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 ( ) {
+	uses I_events_normal_Movement_Turning_entry_i_t requires I_req_normal_Movement_Turning_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action neighbours ? n
+	}
+}
+
+operation clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 ( i : nat
+) {
+	state Waiting {
+		state EmptyCycle {
+		}
+		initial i
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	initial i0
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+

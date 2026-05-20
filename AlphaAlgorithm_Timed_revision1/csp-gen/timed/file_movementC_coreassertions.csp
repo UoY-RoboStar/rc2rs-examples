@@ -1,0 +1,65 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:46
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_movementC.csp"
+
+
+
+-- generate MovementC
+P_MovementC = let
+	id__ = 0
+	
+	
+	
+	const_MovementC_stm_ref0_lv = const_Movement_lv
+	const_MovementC_stm_ref0_av = const_Movement_av
+	const_MovementC_stm_ref0_MB = const_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_Movement_alpha
+		
+within
+	MovementC::O__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha)
+
+assert P_MovementC :[deadlock-free]	
+assert P_MovementC;RUN({r__}) :[deadlock-free]
+assert P_MovementC :[deterministic]
+assert P_MovementC :[divergence-free]
+
+-- generate MovementC_stm_ref0
+P_MovementC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	MovementC::stm_ref0::O__(
+		id__,
+		const_Movement_lv,
+		const_Movement_av,
+		const_Movement_MB,
+		const_Movement_alpha
+	)
+assert P_MovementC_stm_ref0 :[deadlock-free]	
+assert P_MovementC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_MovementC_stm_ref0 :[deterministic]
+assert P_MovementC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_MovementC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_MovementC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_MovementC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_MovementC
+

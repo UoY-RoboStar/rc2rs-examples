@@ -1,0 +1,1685 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module pkg223__Communication
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i1|
+	              NID_Broadcast|
+	              NID_Receive
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_x, set_x, setL_x, setR_x: {(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+	channel get_y, set_y, setL_y, setR_y: main_ID
+	channel get_neighs, set_neighs, setL_neighs, setR_neighs: Set(main_ID)
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel broadcast__: NIDS.InOut.main_ID
+	channel broadcast: InOut.main_ID
+	channel receive__: NIDS.InOut.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+	channel receive: InOut.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+	channel robots__: NIDS.InOut.core_nat
+	channel robots: InOut.core_nat
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_normal_Communication_Receive_t2_opCall
+	channel clone_normal_Communication_Receive_t5_opCall
+	channel normal_Communication_Receive_t3_opCall
+	channel clone_normal_Communication_Broadcast_entryCall
+	channel normal_Communication_Broadcast_t4_opCall
+	channel normal_Communication_Broadcast_entryCall
+	channel normal_Communication_Receive_t5_opCall
+	channel normal_Communication_Receive_t2_opCall
+	channel clone_normal_Communication_Receive_t3_opCall
+	channel clone_normal_Communication_Broadcast_t4_opCall
+	
+	enterSS = {|
+	i1::enter,
+	Broadcast::enter,
+	Receive::enter
+	|}
+	
+	enteredSS = 	{|
+	Broadcast::entered,
+	Receive::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	broadcast,
+		receive,
+		robots
+	,	clone_normal_Communication_Receive_t2_opCall,
+		clone_normal_Communication_Receive_t5_opCall,
+		normal_Communication_Receive_t3_opCall,
+		clone_normal_Communication_Broadcast_entryCall,
+		normal_Communication_Broadcast_t4_opCall,
+		normal_Communication_Broadcast_entryCall,
+		normal_Communication_Receive_t5_opCall,
+		normal_Communication_Receive_t2_opCall,
+		clone_normal_Communication_Receive_t3_opCall,
+		clone_normal_Communication_Broadcast_t4_opCall
+		|}
+	datatype ClockSet = 
+		CLID_RCC
+	
+	channel clockReset, clockResetL, clockResetR : ClockSet
+	
+	localClockResets = {|clockReset.CLID_RCC|}
+	
+	
+	channel get_CLID_Receive : core_clock_type 
+	channel get_CLID_RCC : core_clock_type 
+	channel get_CLID_Broadcast : core_clock_type 
+	--channel increment__
+	
+	CLID_Receive_clock_type(id__,
+			          const_pkg223__Communication_id,
+			          const_pkg223__Communication_RC) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_RCC_clock_type(id__,
+			          const_pkg223__Communication_id,
+			          const_pkg223__Communication_RC) = 
+		let
+			max = (clock_type_max(Union({
+	{},
+	({const_pkg223__Communication_RC|RC <- core_nat})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Broadcast_clock_type(id__,
+			          const_pkg223__Communication_id,
+			          const_pkg223__Communication_RC) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i1
+		module i1
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = D__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Broadcast
+		module Broadcast
+		
+		enterSS = 
+				{|			EmptyCycle::enter,
+					i::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_EmptyCycle|
+			              NID_i
+			
+			channel internal__ : NIDS
+			channel broadcast__: NIDS.InOut.main_ID
+			channel receive__: NIDS.InOut.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+			channel robots__: NIDS.InOut.core_nat
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg223__Communication_id,
+					          const_pkg223__Communication_RC) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg223__Communication_id,
+							          const_pkg223__Communication_RC) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Communication_Broadcast_entry(
+								id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   [| { share__, terminate } |] (
+						 				   i::D__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg223__Communication_id,
+						 				 		    const_pkg223__Communication_RC))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				broadcast__.x____ <- broadcast,
+						 				receive__.x____ <- receive,
+						 				robots__.x____ <- robots
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg223__Communication_id,
+						 				          const_pkg223__Communication_RC))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,clockResetR.CLID_RCC,setR_x |} ]] 
+						  [[set_y <- setL_y,set_neighs <- setL_neighs,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_y
+						 			,setL_neighs
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_neighs
+						 			 			,clockResetR.CLID_RCC
+						 			 			,setR_x
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_neighs <- setR_neighs,clockReset.CLID_RCC <- clockResetR.CLID_RCC,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,setL_neighs <- set_neighs,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_neighs <- set_neighs,clockResetR.CLID_RCC <- clockReset.CLID_RCC,setR_x <- set_x]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Communication_Broadcast_entry(
+								id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   [| { share__, terminate } |] (
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg223__Communication_id,
+						 				 		    const_pkg223__Communication_RC))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				broadcast__.x____ <- broadcast,
+						 				receive__.x____ <- receive,
+						 				robots__.x____ <- robots
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg223__Communication_id,
+						 				          const_pkg223__Communication_RC))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,clockResetR.CLID_RCC,setR_x |} ]] 
+						  [[set_y <- setL_y,set_neighs <- setL_neighs,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_y
+						 			,setL_neighs
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_neighs
+						 			 			,clockResetR.CLID_RCC
+						 			 			,setR_x
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_neighs <- setR_neighs,clockReset.CLID_RCC <- clockResetR.CLID_RCC,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,setL_neighs <- set_neighs,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_neighs <- set_neighs,clockResetR.CLID_RCC <- clockReset.CLID_RCC,setR_x <- set_x]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)),
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC))
+				
+				StateClocks(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Receive
+		module Receive
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			channel broadcast__: NIDS.InOut.main_ID
+			channel receive__: NIDS.InOut.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+			channel robots__: NIDS.InOut.core_nat
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pkg223__Communication_id,
+					          const_pkg223__Communication_RC) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pkg223__Communication_id,
+							          const_pkg223__Communication_RC) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg223__Communication_id,
+						 				 		    const_pkg223__Communication_RC))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				broadcast__.x____ <- broadcast,
+						 				receive__.x____ <- receive,
+						 				robots__.x____ <- robots
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg223__Communication_id,
+						 				          const_pkg223__Communication_RC))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,clockResetR.CLID_RCC,setR_x |} ]] 
+						  [[set_y <- setL_y,set_neighs <- setL_neighs,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_y
+						 			,setL_neighs
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_neighs
+						 			 			,clockResetR.CLID_RCC
+						 			 			,setR_x
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_neighs <- setR_neighs,clockReset.CLID_RCC <- clockResetR.CLID_RCC,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,setL_neighs <- set_neighs,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_neighs <- set_neighs,clockResetR.CLID_RCC <- clockReset.CLID_RCC,setR_x <- set_x]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,
+						 				   		    const_pkg223__Communication_id,
+						 				   		    const_pkg223__Communication_RC)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,
+						 				 		    const_pkg223__Communication_id,
+						 				 		    const_pkg223__Communication_RC))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				broadcast__.x____ <- broadcast,
+						 				receive__.x____ <- receive,
+						 				robots__.x____ <- robots
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pkg223__Communication_id,
+						 				          const_pkg223__Communication_RC))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,clockResetR.CLID_RCC,setR_x |} ]] 
+						  [[set_y <- setL_y,set_neighs <- setL_neighs,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_y
+						 			,setL_neighs
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_neighs
+						 			 			,clockResetR.CLID_RCC
+						 			 			,setR_x
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_neighs <- setR_neighs,clockReset.CLID_RCC <- clockResetR.CLID_RCC,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,setL_neighs <- set_neighs,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_neighs <- set_neighs,clockResetR.CLID_RCC <- clockReset.CLID_RCC,setR_x <- set_x]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC)),
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC))
+				
+				StateClocks(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_Communication_Receive_t2_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(clone_normal_Communication_Receive_t2_opCall,0)
+		CALL__clone_normal_Communication_Receive_t5_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(clone_normal_Communication_Receive_t5_opCall,0)
+		CALL__normal_Communication_Receive_t3_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(normal_Communication_Receive_t3_opCall,0)
+		CALL__clone_normal_Communication_Broadcast_entry(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(clone_normal_Communication_Broadcast_entryCall,0)
+		CALL__normal_Communication_Broadcast_t4_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(normal_Communication_Broadcast_t4_opCall,0)
+		CALL__normal_Communication_Broadcast_entry(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(normal_Communication_Broadcast_entryCall,0)
+		CALL__normal_Communication_Receive_t5_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(normal_Communication_Receive_t5_opCall,0)
+		CALL__normal_Communication_Receive_t2_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(normal_Communication_Receive_t2_opCall,0)
+		CALL__clone_normal_Communication_Receive_t3_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(clone_normal_Communication_Receive_t3_opCall,0)
+		CALL__clone_normal_Communication_Broadcast_t4_op(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = EDeadline(clone_normal_Communication_Broadcast_t4_opCall,0)
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_pkg223__Communication_id,
+					    const_pkg223__Communication_RC))
+		)\sharedVarHide
+		
+		STM_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__,
+							    const_pkg223__Communication_id,
+							    const_pkg223__Communication_RC) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_pkg223__Communication_id,
+					    const_pkg223__Communication_RC))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = ((let
+			Trans = share__choice(get_y?y -> get_CLID_RCC?RCC:CLID_RCC_clock_type(id__,
+					          const_pkg223__Communication_id,
+					          const_pkg223__Communication_RC) -> get_x?x -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Broadcast::enter -> SKIP))))
+				 [] dbisim((receive__!NID_Receive.in?x:{x|x <- {(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}, (tuple2_1(x)==const_pkg223__Communication_id)} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Communication_Receive_t2_op(
+				 			id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC
+				 		) ; Receive::enter -> SKIP)))
+				 [] dbisim((broadcast__!NID_Receive.in?y:{y|y <- main_ID, (y!=const_pkg223__Communication_id)} -> share__choice(set_y!y -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Communication_Receive_t3_op(
+				 			id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC
+				 		) ; Receive::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Broadcast -> SKIP ; (share__choice(clockReset.CLID_RCC -> SKIP) ; share__choice(SKIP))
+				 ; share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Communication_Broadcast_t4_op(
+				 			id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC
+				 		) ; Receive::enter -> SKIP)))
+				 [] dbisim(((RCC>=const_pkg223__Communication_RC))&(internal__!NID_Receive -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Communication_Receive_t5_op(
+				 			id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC
+				 		) ; Broadcast::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i1::enter,
+					Broadcast::enter,
+					Receive::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i1,receive__.NID_Receive.in,broadcast__.NID_Receive.in,internal__.NID_Broadcast,internal__.NID_Receive|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i1::D__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   [| { share__, terminate } |] (
+						   Broadcast::D__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   [| { share__, terminate } |] (
+						   Receive::D__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   )
+						   )
+						 )
+						 [[Broadcast::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Broadcast|}]]
+						 [[Receive::interrupt <- x__ | x__ <- {|interrupt,receive__.NID_Receive.in,broadcast__.NID_Receive.in,internal__.NID_Receive|}]]
+						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_x |} ]] 
+						  [[set_y <- setL_y,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_y
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_x
+						 			|}) |]
+						 ((i1::enter -> Transitions(id__,
+						 		    const_pkg223__Communication_id,
+						 		    const_pkg223__Communication_RC))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_x <- set_x]]
+						)
+					)
+					 \ hideSet)
+					[[
+						broadcast__.x____ <- broadcast,
+						receive__.x____ <- receive,
+						robots__.x____ <- robots
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg223__Communication_id,
+				 		          const_pkg223__Communication_RC)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
+			 within
+				(MachineBody(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody(id__,
+										    const_pkg223__Communication_id,
+										    const_pkg223__Communication_RC)
+								[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+								dbisim(Clock_CLID_Broadcast(id__,0,
+										          const_pkg223__Communication_id,
+										          const_pkg223__Communication_RC))
+							)\{|get_CLID_Broadcast|}
+						)
+						[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+						dbisim(Clock_CLID_Receive(id__,0,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC))
+					)\{|get_CLID_Receive|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			((let
+				getsetLocalChannels = {|get_x,set_x,
+				get_y,set_y,
+				get_neighs,set_neighs|}
+				clockSync = {|get_CLID_RCC,clockReset.CLID_RCC|}
+			within
+				(Behaviour(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC) [| {terminate} |] Clocks(id__,
+				 		          const_pkg223__Communication_id,
+				 		          const_pkg223__Communication_RC))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											IteratedBehaviour(id__,
+													    const_pkg223__Communication_id,
+													    const_pkg223__Communication_RC)
+											[| {|get_CLID_RCC,clockReset.CLID_RCC,terminate|} |]
+											dbisim(Clock_CLID_RCC(id__,0,
+													          const_pkg223__Communication_id,
+													          const_pkg223__Communication_RC))
+										)\{|get_CLID_RCC,clockReset.CLID_RCC|}
+									)
+									[| {|get_neighs,set_neighs,terminate|} |]
+									Memory_neighs({})
+								)\{|get_neighs,set_neighs|}
+							)
+							[| {|get_y,set_y,terminate|} |]
+							Memory_y(0)
+						)\{|get_y,set_y|}
+					)
+					[| {|get_x,set_x,terminate|} |]
+					Memory_x((0,0))
+				)\{|get_x,set_x|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i1::enter,
+					Broadcast::enter,
+					Receive::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i1,receive__.NID_Receive.in,broadcast__.NID_Receive.in,internal__.NID_Broadcast,internal__.NID_Receive|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i1::VS_O__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   [| { share__, terminate } |] (
+						   Broadcast::VS_O__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   [| { share__, terminate } |] (
+						   Receive::VS_O__(id__,
+						   		    const_pkg223__Communication_id,
+						   		    const_pkg223__Communication_RC)
+						   )
+						   )
+						 )
+						 [[Broadcast::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Broadcast|}]]
+						 [[Receive::interrupt <- x__ | x__ <- {|interrupt,receive__.NID_Receive.in,broadcast__.NID_Receive.in,internal__.NID_Receive|}]]
+						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_x |} ]] 
+						  [[set_y <- setL_y,clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_y
+						 			,clockResetL.CLID_RCC
+						 			,setL_x
+						 			,setR_y
+						 			 			,setR_x
+						 			|}) |]
+						 ((i1::enter -> Transitions(id__,
+						 		    const_pkg223__Communication_id,
+						 		    const_pkg223__Communication_RC))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_y,clockResetL.CLID_RCC,setL_x |} ]]
+						  [[set_y <- setR_y,set_x <- setR_x]]
+						 )
+						)[[setL_y <- set_y,clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+						 [[setR_y <- set_y,setR_x <- set_x]]
+						)
+					)
+					 \ hideSet)
+					[[
+						broadcast__.x____ <- broadcast,
+						receive__.x____ <- receive,
+						robots__.x____ <- robots
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pkg223__Communication_id,
+				 		          const_pkg223__Communication_RC)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody_VS_O(id__,
+										    const_pkg223__Communication_id,
+										    const_pkg223__Communication_RC)
+								[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+								dbisim(Clock_CLID_Broadcast(id__,0,
+										          const_pkg223__Communication_id,
+										          const_pkg223__Communication_RC))
+							)\{|get_CLID_Broadcast|}
+						)
+						[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+						dbisim(Clock_CLID_Receive(id__,0,
+								          const_pkg223__Communication_id,
+								          const_pkg223__Communication_RC))
+					)\{|get_CLID_Receive|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = 
+			dbisim((let
+				getsetLocalChannels = {|get_x,set_x,
+				get_y,set_y,
+				get_neighs,set_neighs|}
+				clockSync = {|get_CLID_RCC,clockReset.CLID_RCC|}
+			within
+				(Behaviour_VS_O(id__,
+						    const_pkg223__Communication_id,
+						    const_pkg223__Communication_RC) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_pkg223__Communication_id,
+				 		    const_pkg223__Communication_RC) [| {terminate} |] Clocks(id__,
+				 		          const_pkg223__Communication_id,
+				 		          const_pkg223__Communication_RC))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											IteratedBehaviour_VS_O(id__,
+													    const_pkg223__Communication_id,
+													    const_pkg223__Communication_RC)
+											[| {|get_CLID_RCC,clockReset.CLID_RCC,terminate|} |]
+											dbisim(Clock_CLID_RCC(id__,0,
+													          const_pkg223__Communication_id,
+													          const_pkg223__Communication_RC))
+										)\{|get_CLID_RCC,clockReset.CLID_RCC|}
+									)
+									[| {|get_neighs,set_neighs,terminate|} |]
+									Memory_neighs({})
+								)\{|get_neighs,set_neighs|}
+							)
+							[| {|get_y,set_y,terminate|} |]
+							Memory_y(0)
+						)\{|get_y,set_y|}
+					)
+					[| {|get_x,set_x,terminate|} |]
+					Memory_x((0,0))
+				)\{|get_x,set_x|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_x(x) =
+			get_x!x -> Memory_x(x)
+			[]
+			set_x?x__ -> Memory_x(x__)
+			[]
+			terminate -> SKIP
+		Memory_y(y) =
+			get_y!y -> Memory_y(y)
+			[]
+			set_y?x__ -> Memory_y(x__)
+			[]
+			terminate -> SKIP
+		Memory_neighs(neighs) =
+			get_neighs!neighs -> Memory_neighs(neighs)
+			[]
+			set_neighs?x__ -> Memory_neighs(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = Memory_x((0,0))
+		[| { terminate } |] (
+		Memory_y(0)
+		[| { terminate } |] (
+		Memory_neighs({})
+		)
+		)
+		
+		getsetLocalChannels = {|get_x,set_x,get_y,set_y,get_neighs,set_neighs|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = STM_VS_O(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) \ localClockResets
+		D__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = timed_priority(STM(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) \ union(internal_events,localClockResets))
+		O__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = dbisim(D__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC))
+		VS__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = FVS__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC)
+		VS_O__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = dbisim(FVS__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC))
+		HEXT__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = O__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = dbisim(timed_priority(STM(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) \ internal_events))
+		HUP__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = timed_priority(O__(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) [|{share__}|] SKIP)
+		
+		-- Clocks
+		Clock_CLID_RCC(id__,x__,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC) = 
+			TimeOut_1(
+				clockReset.CLID_RCC -> Clock_CLID_RCC(id__,0,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				get_CLID_RCC!x__ -> Clock_CLID_RCC(id__,x__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				terminate -> SKIP,Clock_CLID_RCC(id__,clock_type_plus(x__,1,CLID_RCC_clock_type(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)),
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC))
+		
+		Clocks(id__,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC) = dbisim(Clock_CLID_RCC(id__,0,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC))
+		
+		clockSync = {|get_CLID_RCC,clockReset.CLID_RCC|}
+		
+		Clock_CLID_Receive(id__,x__,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC) = 
+			TimeOut_1(
+				Receive::entered -> Clock_CLID_Receive(id__,0,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				get_CLID_Receive!x__ -> Clock_CLID_Receive(id__,x__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				terminate -> SKIP,Clock_CLID_Receive(id__,clock_type_plus(x__,1,CLID_Receive_clock_type(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)),
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC))
+		Clock_CLID_Broadcast(id__,x__,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC) = 
+			TimeOut_1(
+				Broadcast::entered -> Clock_CLID_Broadcast(id__,0,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				get_CLID_Broadcast!x__ -> Clock_CLID_Broadcast(id__,x__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)
+				[]
+				terminate -> SKIP,Clock_CLID_Broadcast(id__,clock_type_plus(x__,1,CLID_Broadcast_clock_type(id__,
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC)),
+						          const_pkg223__Communication_id,
+						          const_pkg223__Communication_RC))
+		
+		StateClocks(id__,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC) = dbisim(Clock_CLID_Receive(id__,0,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Broadcast(id__,0,
+				          const_pkg223__Communication_id,
+				          const_pkg223__Communication_RC))
+		)
+		
+		stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,
+				    const_pkg223__Communication_id,
+				    const_pkg223__Communication_RC) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule

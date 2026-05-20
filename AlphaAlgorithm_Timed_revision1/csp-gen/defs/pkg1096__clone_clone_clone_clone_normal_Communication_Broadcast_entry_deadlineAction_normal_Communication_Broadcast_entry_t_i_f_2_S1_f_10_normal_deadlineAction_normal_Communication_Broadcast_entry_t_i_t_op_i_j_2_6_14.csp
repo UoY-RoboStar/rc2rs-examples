@@ -1,0 +1,346 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+-- compileSelfContainedOperation
+module OP_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_f|
+	              NID_i
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel broadcast__: NIDS.InOut.AggregationSoftware_ID
+	channel broadcast: InOut.AggregationSoftware_ID
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	f::enter,
+	i::enter
+	|}
+	
+	enteredSS = 	{|
+	f::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	broadcast
+		, share__
+		|}
+	
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- Final state: f
+	module f
+	
+	exports
+	
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+		--	Rule: behaviours(Node)
+		D__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+				
+				Entering 	= entered -> SKIP ; Active
+				Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+				Interrupted	= share__choice(exit -> exited -> Inactive)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = D__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i
+	module i
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = D__(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) \ {terminate}
+	
+	STM_VS_O(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) \ {terminate}
+	
+	-- Transitions
+	Transitions(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = ((let
+		Trans = (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((true&(share__choice(broadcast.out!const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id -> SKIP)) ; f::enter -> SKIP))))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				f::enter,
+				i::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   f::D__(id__,
+					   		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+					   [| { share__, terminate } |] (
+					   i::D__(id__,
+					   		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+					   )
+					 )
+					 [[f::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					|}) |]
+					 ((i::enter -> Transitions(id__,
+					 		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					 )
+					)
+					)
+				)
+				 \ hideSet)
+				[[
+					broadcast__.x____ <- broadcast
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		dbisim((MachineBody(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)\ enteredSS)
+		)
+	
+	
+	Stateful(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		((
+			(Behaviour(id__,
+					    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				f::enter,
+				i::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   f::VS_O__(id__,
+					   		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+					   [| { share__, terminate } |] (
+					   i::VS_O__(id__,
+					   		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+					   )
+					 )
+					 [[f::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					|}) |]
+					 ((i::enter -> Transitions(id__,
+					 		    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					 )
+					)
+					)
+				)
+				 \ hideSet)
+				[[
+					broadcast__.x____ <- broadcast
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id))
+		)
+	
+	
+	Stateful_VS_O(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = terminate -> SKIP
+	
+	getsetLocalChannels = {||}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = STM_VS_O(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+	
+	D__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = STM(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) \ internal_events
+	O__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = sbisim(diamond(D__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)))
+	VS__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = FVS__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)
+	VS_O__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = sbisim(diamond(FVS__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id)))
+	HEXT__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = O__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) = O__(id__,
+			    const_pkg1096__clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_i_t_op_i_j_2_6_14_id) [|{share__}|] SKIP
+			endmodule

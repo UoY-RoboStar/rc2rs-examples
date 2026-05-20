@@ -1,0 +1,178 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg1096_AggregationSoftware.csp"
+
+
+-- generate pkg1096_AggregationSoftware_OP_tStop
+P_pkg1096_AggregationSoftware_OP_tStop = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_AggregationSoftware::OP_tStop::O__(id__)
+assert P_pkg1096_AggregationSoftware_OP_tStop :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_OP_tStop;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_OP_tStop :[deterministic]
+assert P_pkg1096_AggregationSoftware_OP_tStop :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_OP_tStop[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_OP_tStop
+-- generate pkg1096_AggregationSoftware_OP_deadlineCheck
+P_pkg1096_AggregationSoftware_OP_deadlineCheck = let
+	id__ = 0
+	
+	param_d = 0
+	
+	
+	
+within
+	pkg1096_AggregationSoftware::OP_deadlineCheck::O__(id__,
+				param_d)
+assert P_pkg1096_AggregationSoftware_OP_deadlineCheck :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_OP_deadlineCheck;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_OP_deadlineCheck :[deterministic]
+assert P_pkg1096_AggregationSoftware_OP_deadlineCheck :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_OP_deadlineCheck[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_OP_deadlineCheck
+-- generate pkg1096_AggregationSoftware_OP_waitOp
+P_pkg1096_AggregationSoftware_OP_waitOp = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg1096_AggregationSoftware::OP_waitOp::O__(id__,
+				param_i)
+assert P_pkg1096_AggregationSoftware_OP_waitOp :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_OP_waitOp;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_OP_waitOp :[deterministic]
+assert P_pkg1096_AggregationSoftware_OP_waitOp :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_OP_waitOp[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_OP_waitOp
+-- generate pkg1096_AggregationSoftware_OP_waitInterval
+P_pkg1096_AggregationSoftware_OP_waitInterval = let
+	id__ = 0
+	
+	param_m = 0
+	param_n = 0
+	
+	
+	
+within
+	pkg1096_AggregationSoftware::OP_waitInterval::O__(id__,
+				param_m,
+				param_n)
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_OP_waitInterval;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[deterministic]
+assert P_pkg1096_AggregationSoftware_OP_waitInterval :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_OP_waitInterval[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_OP_waitInterval
+
+
+-- generate pkg1096_AggregationSoftware_AggregationSoftware
+P_pkg1096_AggregationSoftware_AggregationSoftware = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__MovementC_stm_ref0_lv = const_pkg1096__Movement_lv
+	const_pkg1096__MovementC_stm_ref0_av = const_pkg1096__Movement_av
+	const_pkg1096__MovementC_stm_ref0_MB = const_pkg1096__Movement_MB
+	const_pkg1096__MovementC_stm_ref0_alpha = const_pkg1096__Movement_alpha
+	const_pkg1096__CommunicationC_stm_ref0_id = const_pkg1096__Communication_id
+	const_pkg1096__CommunicationC_stm_ref0_RC = const_pkg1096__Communication_RC
+		
+	
+within
+	pkg1096_AggregationSoftware::AggregationSoftware::O__(id__,
+			    const_pkg1096__MovementC_stm_ref0_lv,
+			    const_pkg1096__MovementC_stm_ref0_av,
+			    const_pkg1096__MovementC_stm_ref0_MB,
+			    const_pkg1096__MovementC_stm_ref0_alpha,
+			    const_pkg1096__CommunicationC_stm_ref0_id,
+			    const_pkg1096__CommunicationC_stm_ref0_RC)
+assert P_pkg1096_AggregationSoftware_AggregationSoftware :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_AggregationSoftware;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware :[deterministic]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware :[divergence-free]
+
+-- generate pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0
+P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__MovementC_stm_ref0_lv = const_pkg1096__Movement_lv
+	const_pkg1096__MovementC_stm_ref0_av = const_pkg1096__Movement_av
+	const_pkg1096__MovementC_stm_ref0_MB = const_pkg1096__Movement_MB
+	const_pkg1096__MovementC_stm_ref0_alpha = const_pkg1096__Movement_alpha
+		
+within
+	pkg1096_AggregationSoftware::AggregationSoftware::ctrl_ref0::O__(id__,
+			    const_pkg1096__MovementC_stm_ref0_lv,
+			    const_pkg1096__MovementC_stm_ref0_av,
+			    const_pkg1096__MovementC_stm_ref0_MB,
+			    const_pkg1096__MovementC_stm_ref0_alpha)
+
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0 :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0 :[deterministic]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref0
+-- generate pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1
+P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1 = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__CommunicationC_stm_ref0_id = const_pkg1096__Communication_id
+	const_pkg1096__CommunicationC_stm_ref0_RC = const_pkg1096__Communication_RC
+		
+within
+	pkg1096_AggregationSoftware::AggregationSoftware::ctrl_ref1::O__(id__,
+			    const_pkg1096__CommunicationC_stm_ref0_id,
+			    const_pkg1096__CommunicationC_stm_ref0_RC)
+
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1 :[deadlock-free]	
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1;RUN({r__}) :[deadlock-free]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1 :[deterministic]
+assert P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_AggregationSoftware_ctrl_ref1
+-- timed deadlock free
+assert prioritise(P_pkg1096_AggregationSoftware_AggregationSoftware[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096_AggregationSoftware_AggregationSoftware

@@ -1,0 +1,42 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:54
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg223_aggregation_defs.csp"
+include "pkg223_aggregation_Movement.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg223_aggregation_Movement
+P_pkg223_aggregation_Movement = let
+	id__ = 0
+	
+	
+	
+within
+	pkg223_aggregation_Movement::O__(
+		id__,
+		const_pkg223_aggregation_Movement_lv,
+		const_pkg223_aggregation_Movement_av,
+		const_pkg223_aggregation_Movement_MB,
+		const_pkg223_aggregation_Movement_alpha
+	)
+assert P_pkg223_aggregation_Movement :[deadlock-free]	
+assert P_pkg223_aggregation_Movement;RUN({r__}) :[deadlock-free]
+assert P_pkg223_aggregation_Movement :[deterministic]
+assert P_pkg223_aggregation_Movement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg223_aggregation_Movement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223_aggregation_Movement

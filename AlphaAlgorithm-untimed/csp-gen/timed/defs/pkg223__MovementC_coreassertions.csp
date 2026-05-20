@@ -1,0 +1,70 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg223__MovementC.csp"
+include "pkg223__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg223__MovementC
+P_pkg223__MovementC = let
+	id__ = 0
+	
+	
+	
+	const_pkg223__MovementC_stm_ref0_lv = const_pkg223_aggregation_Movement_lv
+	const_pkg223__MovementC_stm_ref0_av = const_pkg223_aggregation_Movement_av
+	const_pkg223__MovementC_stm_ref0_MB = const_pkg223_aggregation_Movement_MB
+	const_pkg223__MovementC_stm_ref0_alpha = const_pkg223_aggregation_Movement_alpha
+		
+within
+	pkg223__MovementC::O__(id__,
+			    const_pkg223__MovementC_stm_ref0_lv,
+			    const_pkg223__MovementC_stm_ref0_av,
+			    const_pkg223__MovementC_stm_ref0_MB,
+			    const_pkg223__MovementC_stm_ref0_alpha)
+
+assert P_pkg223__MovementC :[deadlock-free]	
+assert P_pkg223__MovementC;RUN({r__}) :[deadlock-free]
+assert P_pkg223__MovementC :[deterministic]
+assert P_pkg223__MovementC :[divergence-free]
+
+-- generate pkg223__MovementC_stm_ref0
+P_pkg223__MovementC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg223__MovementC::stm_ref0::O__(
+		id__,
+		const_pkg223_aggregation_Movement_lv,
+		const_pkg223_aggregation_Movement_av,
+		const_pkg223_aggregation_Movement_MB,
+		const_pkg223_aggregation_Movement_alpha
+	)
+assert P_pkg223__MovementC_stm_ref0 :[deadlock-free]	
+assert P_pkg223__MovementC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg223__MovementC_stm_ref0 :[deterministic]
+assert P_pkg223__MovementC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg223__MovementC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223__MovementC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg223__MovementC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223__MovementC

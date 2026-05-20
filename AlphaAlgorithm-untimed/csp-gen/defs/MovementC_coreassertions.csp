@@ -1,0 +1,60 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "main_defs.csp"
+include "aggregation_defs.csp"
+include "MovementC.csp"
+include "state_defs.csp"
+include "file_movementC_defs.csp"
+include "Mathematics_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate MovementC
+P_MovementC = let
+	id__ = 0
+	
+	
+	
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	MovementC::O__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha)
+
+assert P_MovementC :[deadlock-free]	
+assert P_MovementC;RUN({r__}) :[deadlock-free]
+assert P_MovementC :[deterministic]
+assert P_MovementC :[divergence-free]
+
+-- generate MovementC_stm_ref0
+P_MovementC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	MovementC::stm_ref0::O__(
+		id__,
+		const_aggregation_Movement_lv,
+		const_aggregation_Movement_av,
+		const_aggregation_Movement_MB,
+		const_aggregation_Movement_alpha
+	)
+assert P_MovementC_stm_ref0 :[deadlock-free]	
+assert P_MovementC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_MovementC_stm_ref0 :[deterministic]
+assert P_MovementC_stm_ref0 :[divergence-free]

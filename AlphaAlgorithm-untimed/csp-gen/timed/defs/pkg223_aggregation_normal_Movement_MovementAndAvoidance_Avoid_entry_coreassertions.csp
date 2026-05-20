@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:54
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg223_aggregation_normal_Movement_MovementAndAvoidance_Avoid_entry.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg223_aggregation_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry
+P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry = let
+	id__ = 0
+	
+	
+	const_pkg223_aggregation_normal_Movement_MovementAndAvoidance_Avoid_entry_av = 0
+	
+	
+within
+	pkg223_aggregation::OP_normal_Movement_MovementAndAvoidance_Avoid_entry::O__(id__,
+			    const_pkg223_aggregation_normal_Movement_MovementAndAvoidance_Avoid_entry_av)
+assert P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[deadlock-free]	
+assert P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[deterministic]
+assert P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223_aggregation_OP_normal_Movement_MovementAndAvoidance_Avoid_entry

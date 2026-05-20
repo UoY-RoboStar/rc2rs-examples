@@ -1,0 +1,57 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 17-05-2026 11:35:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pkg1096__MovementC.csp"
+include "pkg1096__defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pkg1096__MovementC
+P_pkg1096__MovementC = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__MovementC_stm_ref0_lv = const_pkg1096__Movement_lv
+	const_pkg1096__MovementC_stm_ref0_av = const_pkg1096__Movement_av
+	const_pkg1096__MovementC_stm_ref0_MB = const_pkg1096__Movement_MB
+	const_pkg1096__MovementC_stm_ref0_alpha = const_pkg1096__Movement_alpha
+		
+within
+	pkg1096__MovementC::O__(id__,
+			    const_pkg1096__MovementC_stm_ref0_lv,
+			    const_pkg1096__MovementC_stm_ref0_av,
+			    const_pkg1096__MovementC_stm_ref0_MB,
+			    const_pkg1096__MovementC_stm_ref0_alpha)
+
+assert P_pkg1096__MovementC :[deadlock-free]	
+assert P_pkg1096__MovementC;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__MovementC :[deterministic]
+assert P_pkg1096__MovementC :[divergence-free]
+
+-- generate pkg1096__MovementC_stm_ref0
+P_pkg1096__MovementC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1096__MovementC::stm_ref0::O__(
+		id__,
+		const_pkg1096__Movement_lv,
+		const_pkg1096__Movement_av,
+		const_pkg1096__Movement_MB,
+		const_pkg1096__Movement_alpha
+	)
+assert P_pkg1096__MovementC_stm_ref0 :[deadlock-free]	
+assert P_pkg1096__MovementC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__MovementC_stm_ref0 :[deterministic]
+assert P_pkg1096__MovementC_stm_ref0 :[divergence-free]

@@ -1,0 +1,64 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pkg223__defs.csp"
+include "pkg223__CommunicationC.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg223__CommunicationC
+P_pkg223__CommunicationC = let
+	id__ = 0
+	
+	
+	
+	const_pkg223__CommunicationC_stm_ref0_id = const_pkg223__Communication_id
+	const_pkg223__CommunicationC_stm_ref0_RC = const_pkg223__Communication_RC
+		
+within
+	pkg223__CommunicationC::O__(id__,
+			    const_pkg223__CommunicationC_stm_ref0_id,
+			    const_pkg223__CommunicationC_stm_ref0_RC)
+
+assert P_pkg223__CommunicationC :[deadlock-free]	
+assert P_pkg223__CommunicationC;RUN({r__}) :[deadlock-free]
+assert P_pkg223__CommunicationC :[deterministic]
+assert P_pkg223__CommunicationC :[divergence-free]
+
+-- generate pkg223__CommunicationC_stm_ref0
+P_pkg223__CommunicationC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg223__CommunicationC::stm_ref0::O__(
+		id__,
+		const_pkg223__Communication_id,
+		const_pkg223__Communication_RC
+	)
+assert P_pkg223__CommunicationC_stm_ref0 :[deadlock-free]	
+assert P_pkg223__CommunicationC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg223__CommunicationC_stm_ref0 :[deterministic]
+assert P_pkg223__CommunicationC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg223__CommunicationC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223__CommunicationC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg223__CommunicationC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223__CommunicationC

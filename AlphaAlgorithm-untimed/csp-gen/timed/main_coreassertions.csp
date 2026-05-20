@@ -1,0 +1,98 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:54
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "main.csp"
+
+
+
+
+-- generate main_AggregationSoftware
+P_main_AggregationSoftware = let
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+	
+within
+	main::AggregationSoftware::O__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC)
+assert P_main_AggregationSoftware :[deadlock-free]	
+assert P_main_AggregationSoftware;RUN({r__}) :[deadlock-free]
+assert P_main_AggregationSoftware :[deterministic]
+assert P_main_AggregationSoftware :[divergence-free]
+
+-- generate main_AggregationSoftware_ctrl_ref0
+P_main_AggregationSoftware_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	main::AggregationSoftware::ctrl_ref0::O__(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha)
+
+assert P_main_AggregationSoftware_ctrl_ref0 :[deadlock-free]	
+assert P_main_AggregationSoftware_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_main_AggregationSoftware_ctrl_ref0 :[deterministic]
+assert P_main_AggregationSoftware_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_main_AggregationSoftware_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_AggregationSoftware_ctrl_ref0
+-- generate main_AggregationSoftware_ctrl_ref1
+P_main_AggregationSoftware_ctrl_ref1 = let
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+		
+within
+	main::AggregationSoftware::ctrl_ref1::O__(id__,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC)
+
+assert P_main_AggregationSoftware_ctrl_ref1 :[deadlock-free]	
+assert P_main_AggregationSoftware_ctrl_ref1;RUN({r__}) :[deadlock-free]
+assert P_main_AggregationSoftware_ctrl_ref1 :[deterministic]
+assert P_main_AggregationSoftware_ctrl_ref1 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_main_AggregationSoftware_ctrl_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_AggregationSoftware_ctrl_ref1
+-- timed deadlock free
+assert prioritise(P_main_AggregationSoftware[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_AggregationSoftware

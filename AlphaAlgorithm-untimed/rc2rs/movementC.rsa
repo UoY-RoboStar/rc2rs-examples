@@ -1,0 +1,22 @@
+simulation NormalFormMovementC of pkg223_::MovementC{
+	cycleDef cycle==1 
+}
+ 
+ /*
+  * Schedulability verification
+  */
+assertion A1: NormalFormMovementC is schedulable 
+  
+
+ /*
+  * The RoboSim model is deadlock free
+  */
+assertion A2: pkg223__sim::MovementC is deadlock-free 
+  
+ 
+ /*
+  * Conformance verification
+  */
+assertion A3: pkg223__sim::MovementC refines NormalFormMovementC in the failures divergences model with cycleDef of pkg223__sim::MovementC set to 1, and cycleDef of NormalFormMovementC set to 1 
+assertion A4: NormalFormMovementC refines pkg223__sim::MovementC in the failures divergences model with cycleDef of pkg223__sim::MovementC set to 1, and cycleDef of NormalFormMovementC set to 1 
+ 

@@ -1,0 +1,67 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 16-05-2026 09:08:54
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_communicationC_defs.csp"
+include "core_timed_defs.csp"
+include "CommunicationC.csp"
+include "core_defs.csp"
+include "main_defs.csp"
+include "aggregation_defs.csp"
+include "state_timed_defs.csp"
+include "Mathematics_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate CommunicationC
+P_CommunicationC = let
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+		
+within
+	CommunicationC::O__(id__,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC)
+
+assert P_CommunicationC :[deadlock-free]	
+assert P_CommunicationC;RUN({r__}) :[deadlock-free]
+assert P_CommunicationC :[deterministic]
+assert P_CommunicationC :[divergence-free]
+
+-- generate CommunicationC_stm_ref0
+P_CommunicationC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	CommunicationC::stm_ref0::O__(
+		id__,
+		const_Communication_id,
+		const_Communication_RC
+	)
+assert P_CommunicationC_stm_ref0 :[deadlock-free]	
+assert P_CommunicationC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_CommunicationC_stm_ref0 :[deterministic]
+assert P_CommunicationC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_CommunicationC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_CommunicationC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_CommunicationC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_CommunicationC

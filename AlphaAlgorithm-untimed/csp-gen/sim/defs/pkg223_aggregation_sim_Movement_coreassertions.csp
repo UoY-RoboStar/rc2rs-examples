@@ -1,0 +1,40 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 16-05-2026 09:08:54
+--
+
+include "pkg223_aggregation_sim_Movement.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg223_aggregation_sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg223_aggregation_sim_Movement
+P_pkg223_aggregation_sim_Movement = let
+	cycle_pkg223_aggregation_sim_Movement_Movement = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg223_aggregation_sim_Movement::O__(
+		id__,
+		const_pkg223_aggregation_sim_Movement_lv,
+		const_pkg223_aggregation_sim_Movement_av,
+		const_pkg223_aggregation_sim_Movement_MB,
+		const_pkg223_aggregation_sim_Movement_alpha
+	)
+assert P_pkg223_aggregation_sim_Movement :[deadlock-free]	
+assert P_pkg223_aggregation_sim_Movement;RUN({r__}) :[deadlock-free]
+assert P_pkg223_aggregation_sim_Movement :[deterministic]
+assert P_pkg223_aggregation_sim_Movement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg223_aggregation_sim_Movement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg223_aggregation_sim_Movement

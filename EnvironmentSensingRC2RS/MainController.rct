@@ -1,0 +1,18 @@
+controller MainController {
+	
+
+	
+	
+	event turn : real
+	event stop
+	
+
+	
+	event s : Seq( real )
+	event resume
+sref stm_ref0 = SourceAnalysis
+	connection MainController on s to stm_ref0 on s
+	connection stm_ref0 on turn to MainController on turn
+	connection stm_ref0 on stop to MainController on stop
+	connection stm_ref0 on resume to MainController on resume
+}

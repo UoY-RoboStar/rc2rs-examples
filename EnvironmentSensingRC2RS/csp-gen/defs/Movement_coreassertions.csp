@@ -1,0 +1,35 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:55
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "Movement.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "file_Movement_defs.csp"
+include "EnvironmentalSensing_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate Movement
+P_Movement = let
+	id__ = 0
+	
+	
+	
+within
+	Movement::O__(
+		id__,
+		const_Movement_lv,
+		const_Movement_evadeTime,
+		const_Movement_stuckDist,
+		const_Movement_outPeriod
+	)
+assert P_Movement :[deadlock-free]	
+assert P_Movement;RUN({r__}) :[deadlock-free]
+assert P_Movement :[deterministic]
+assert P_Movement :[divergence-free]

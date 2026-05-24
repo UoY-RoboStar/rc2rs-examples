@@ -1,0 +1,22 @@
+simulation NormalForm of pkg1126_EnvironmentalSensing::EnvironmentalSensing{
+	cycleDef cycle==1
+}
+ 
+ /*
+  * Schedulability verification
+  */
+assertion A1: NormalForm is schedulable 
+  
+
+ /*
+  * The RoboSim model is deadlock-free.
+  */
+assertion A2: pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing is deadlock-free 
+  
+ 
+ /*
+  * Conformance verification
+  */
+assertion A3: pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing refines NormalForm in the failures divergences model with cycleDef of pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing set to 1, and cycleDef of NormalForm set to 1 
+assertion A4: NormalForm refines pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing in the failures divergences model with cycleDef of pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing set to 1, and cycleDef of NormalForm set to 1 
+ 

@@ -1,0 +1,52 @@
+-- declaring controller events
+channel MainController_turn: InOut.real
+channel MainController_stop: InOut
+channel MainController_s: InOut.LSeq(real,2)
+channel MainController_resume: InOut
+
+-- declaring controller variables
+
+
+
+-- declaring controller memory
+
+Memory_MainController(id) = SKIP
+
+-- delcaring controller termination channel
+
+channel MainController_terminate
+
+MainController(id) = (SourceAnalysis(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+	[|union({||},
+	{||})|]
+	Memory_MainController(id)
+)\union({||},
+{||})
+[|{|MainController_terminate|}|>SKIP
+
+-- VS version
+MainController_VS(id) = (SourceAnalysis_VS(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+	[|union({||},
+	{||})|]
+	Memory_MainController(id)
+)\union({||},
+{||})
+[|{|MainController_terminate|}|>SKIP
+
+-- O version (optimised) THESE TWO PROCESSES SHOULD BE KEPT IN SYNC WITH THE ABOVE TWO
+MainController_O(id) = sbisim(diamond((SourceAnalysis_O(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+	[|union({||},
+	{||})|]
+	Memory_MainController(id)
+)\union({||},
+{||})
+[|{|MainController_terminate|}|>SKIP))
+
+-- VS_O version
+MainController_VS_O(id) = sbisim(diamond((SourceAnalysis_VS_O(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+	[|union({||},
+	{||})|]
+	Memory_MainController(id)
+)\union({||},
+{||})
+[|{|MainController_terminate|}|>SKIP))

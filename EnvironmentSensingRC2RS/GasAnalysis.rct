@@ -1,0 +1,74 @@
+
+
+
+stm SourceAnalysis {
+	
+	var gs : Seq( real )
+			event s : Seq( real ) //Seq can be treated as vector
+	event resume
+	
+	
+	const thr : real
+	
+	event turn : real
+	event stop
+initial i1
+	state NoSource {
+	}
+	state Analysis {
+	}
+	state SourceDetected {
+	}
+	transition t1 {
+		from i1
+		to NoSource
+	}
+	transition t2 {
+		from NoSource
+		to Analysis
+		trigger s ? gs
+	}
+	transition t3 {
+		from Analysis
+		to NoSource
+		
+		condition analysis ( gs ) == Status::noSource
+		action 
+	send resume
+	}
+	transition t4 {
+		from Analysis
+		to SourceDetected
+		
+		condition analysis ( gs ) == Status::sourceD
+	}
+	final j1
+	state Reading {
+	}
+	transition t8 {
+		from SourceDetected
+		to j1
+	
+		condition gt ( intensity (gs), thr )
+		action 
+	send stop
+	}
+	transition t9a {
+		from SourceDetected
+		to Reading
+		
+		condition 
+		
+		
+		not gt ( intensity ( gs ) , thr )
+		action 
+	
+	
+	send turn ! location ( gs )
+	}
+	transition t0 {
+		from Reading
+		to Analysis
+		trigger s ? gs
+	}
+}

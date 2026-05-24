@@ -1,0 +1,524 @@
+Timed(OneStep) {
+
+-- channel SourceAnalysis_enteredV, SourceAnalysis_exitV : SourceAnalysis_SIDS
+
+-- declare clocks
+SourceAnalysis_Clocks = {}
+channel SourceAnalysis_clockReset -- no clocks declared
+
+-- declare deadlines
+channel SourceAnalysis_deadline : SourceAnalysis_TIDS.Signal
+
+-- compile waiting conditions
+
+SourceAnalysis_WC_enablerSet = {"dummy"}
+
+channel SourceAnalysis_WC : SourceAnalysis_WC_enablerSet.Bool
+
+SourceAnalysis_WCset = {  }
+
+SourceAnalysis_WCsync = {||}
+
+SourceAnalysis_WCresets = {| | x <- SourceAnalysis_SIDS |}
+
+
+
+SourceAnalysis_WaitingConditions = || (alpha, P) : SourceAnalysis_WCset @ [alpha] wbisim(P)
+
+CS_SourceAnalysis_NoSource_sync = {|
+	SourceAnalysis_enter.y.x, 
+	SourceAnalysis_entered.y.x, 
+	SourceAnalysis_exit.y.x, 
+	SourceAnalysis_exited.y.x,
+	SourceAnalysis_enter.x.y, 
+	SourceAnalysis_entered.x.y, 
+	SourceAnalysis_exit.x.y, 
+	SourceAnalysis_exited.x.y |
+	x <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"},
+	y <- {"SourceAnalysis_NoSource"}
+|}
+
+
+
+SourceAnalysis_NoSource_int_int = {||}
+
+
+SourceAnalysis_NoSource_int_triggers = {||}
+		   
+
+S_SourceAnalysis_NoSource(id) = let
+	T_SourceAnalysis_t2(id)	= SourceAnalysis_s__!"SourceAnalysis_t2".in?gs -> set_SourceAnalysis_gs!gs ->  (SourceAnalysis_exit!"SourceAnalysis_NoSource"!"SourceAnalysis_NoSource" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_NoSource"!"SourceAnalysis_NoSource" -> SKIP;
+						SourceAnalysis_enter!"SourceAnalysis_NoSource"!"SourceAnalysis_Analysis" -> SourceAnalysis_entered!"SourceAnalysis_NoSource"!"SourceAnalysis_Analysis" ->
+						S_SourceAnalysis_NoSource(id)
+	)
+
+	S_SourceAnalysis_NoSource_execute(id,o__) = 
+	SKIP; 
+	SourceAnalysis_entered!o__!"SourceAnalysis_NoSource" ->
+	   (SKIP
+	   													; STOP /\ (
+	   														    T_SourceAnalysis_t2(id)
+	   														    []
+	   														    SourceAnalysis_internal__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"}) ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_NoSource" -> SKIP);
+	   														      	S_SourceAnalysis_NoSource(id)
+	   														    [] SourceAnalysis_s__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_NoSource" -> SKIP);
+	   														      	S_SourceAnalysis_NoSource(id)
+	   														    [] SourceAnalysis_resume__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_NoSource" -> SKIP);
+	   														      	S_SourceAnalysis_NoSource(id)
+	   														    [] SourceAnalysis_turn__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_NoSource" -> SKIP);
+	   														      	S_SourceAnalysis_NoSource(id)
+	   														    [] SourceAnalysis_stop__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_NoSource" -> SKIP);
+	   														      	S_SourceAnalysis_NoSource(id)
+	   														    )
+	   													)
+within
+SourceAnalysis_enter?x:diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource"})!"SourceAnalysis_NoSource" -> ( 
+	S_SourceAnalysis_NoSource_execute(id,x)) 
+CS_SourceAnalysis_Analysis_sync = {|
+	SourceAnalysis_enter.y.x, 
+	SourceAnalysis_entered.y.x, 
+	SourceAnalysis_exit.y.x, 
+	SourceAnalysis_exited.y.x,
+	SourceAnalysis_enter.x.y, 
+	SourceAnalysis_entered.x.y, 
+	SourceAnalysis_exit.x.y, 
+	SourceAnalysis_exited.x.y |
+	x <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"},
+	y <- {"SourceAnalysis_Analysis"}
+|}
+
+
+
+SourceAnalysis_Analysis_int_int = {||}
+
+
+SourceAnalysis_Analysis_int_triggers = {||}
+		   
+
+S_SourceAnalysis_Analysis(id) = let
+	T_SourceAnalysis_t3(id)	= SourceAnalysis_internal__!"SourceAnalysis_t3" ->  SourceAnalysis_exit!"SourceAnalysis_Analysis"!"SourceAnalysis_Analysis" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_Analysis"!"SourceAnalysis_Analysis" -> SKIP;
+						SourceAnalysis_resume.out -> SKIP;SourceAnalysis_enter!"SourceAnalysis_Analysis"!"SourceAnalysis_NoSource" -> SourceAnalysis_entered!"SourceAnalysis_Analysis"!"SourceAnalysis_NoSource" ->
+						S_SourceAnalysis_Analysis(id)
+	T_SourceAnalysis_t4(id)	= SourceAnalysis_internal__!"SourceAnalysis_t4" ->  SourceAnalysis_exit!"SourceAnalysis_Analysis"!"SourceAnalysis_Analysis" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_Analysis"!"SourceAnalysis_Analysis" -> SKIP;
+						SourceAnalysis_enter!"SourceAnalysis_Analysis"!"SourceAnalysis_SourceDetected" -> SourceAnalysis_entered!"SourceAnalysis_Analysis"!"SourceAnalysis_SourceDetected" ->
+						S_SourceAnalysis_Analysis(id)
+
+	S_SourceAnalysis_Analysis_execute(id,o__) = 
+	SKIP; 
+	SourceAnalysis_entered!o__!"SourceAnalysis_Analysis" ->
+	   (SKIP
+	   													; STOP /\ (
+	   														    T_SourceAnalysis_t3(id)[]
+	   														    T_SourceAnalysis_t4(id)
+	   														    []
+	   														    SourceAnalysis_internal__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"}) ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Analysis" -> SKIP);
+	   														      	S_SourceAnalysis_Analysis(id)
+	   														    [] SourceAnalysis_s__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Analysis" -> SKIP);
+	   														      	S_SourceAnalysis_Analysis(id)
+	   														    [] SourceAnalysis_resume__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Analysis" -> SKIP);
+	   														      	S_SourceAnalysis_Analysis(id)
+	   														    [] SourceAnalysis_turn__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Analysis" -> SKIP);
+	   														      	S_SourceAnalysis_Analysis(id)
+	   														    [] SourceAnalysis_stop__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t2","SourceAnalysis_t0"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Analysis" -> SKIP);
+	   														      	S_SourceAnalysis_Analysis(id)
+	   														    )
+	   													)
+within
+SourceAnalysis_enter?x:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Analysis"})!"SourceAnalysis_Analysis" -> ( 
+	S_SourceAnalysis_Analysis_execute(id,x)) 
+CS_SourceAnalysis_SourceDetected_sync = {|
+	SourceAnalysis_enter.y.x, 
+	SourceAnalysis_entered.y.x, 
+	SourceAnalysis_exit.y.x, 
+	SourceAnalysis_exited.y.x,
+	SourceAnalysis_enter.x.y, 
+	SourceAnalysis_entered.x.y, 
+	SourceAnalysis_exit.x.y, 
+	SourceAnalysis_exited.x.y |
+	x <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"},
+	y <- {"SourceAnalysis_SourceDetected"}
+|}
+
+
+
+SourceAnalysis_SourceDetected_int_int = {||}
+
+
+SourceAnalysis_SourceDetected_int_triggers = {||}
+		   
+
+S_SourceAnalysis_SourceDetected(id) = let
+	T_SourceAnalysis_t8(id)	= SourceAnalysis_internal__!"SourceAnalysis_t8" ->  SourceAnalysis_exit!"SourceAnalysis_SourceDetected"!"SourceAnalysis_SourceDetected" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_SourceDetected"!"SourceAnalysis_SourceDetected" -> SKIP;
+						SourceAnalysis_stop.out -> SKIP;SourceAnalysis_enter!"SourceAnalysis_SourceDetected"!"SourceAnalysis_j1" -> SourceAnalysis_entered!"SourceAnalysis_SourceDetected"!"SourceAnalysis_j1" ->
+						S_SourceAnalysis_SourceDetected(id)
+	T_SourceAnalysis_t9a(id)	= SourceAnalysis_internal__!"SourceAnalysis_t9a" ->  SourceAnalysis_exit!"SourceAnalysis_SourceDetected"!"SourceAnalysis_SourceDetected" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_SourceDetected"!"SourceAnalysis_SourceDetected" -> SKIP;
+						get_SourceAnalysis_gs?gs -> SourceAnalysis_turn.out!location(gs) -> SKIP;SourceAnalysis_enter!"SourceAnalysis_SourceDetected"!"SourceAnalysis_Reading" -> SourceAnalysis_entered!"SourceAnalysis_SourceDetected"!"SourceAnalysis_Reading" ->
+						S_SourceAnalysis_SourceDetected(id)
+
+	S_SourceAnalysis_SourceDetected_execute(id,o__) = 
+	SKIP; 
+	SourceAnalysis_entered!o__!"SourceAnalysis_SourceDetected" ->
+	   (SKIP
+	   													; STOP /\ (
+	   														    T_SourceAnalysis_t8(id)[]
+	   														    T_SourceAnalysis_t9a(id)
+	   														    []
+	   														    SourceAnalysis_internal__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"}) ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_SourceDetected" -> SKIP);
+	   														      	S_SourceAnalysis_SourceDetected(id)
+	   														    [] SourceAnalysis_s__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_SourceDetected" -> SKIP);
+	   														      	S_SourceAnalysis_SourceDetected(id)
+	   														    [] SourceAnalysis_resume__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_SourceDetected" -> SKIP);
+	   														      	S_SourceAnalysis_SourceDetected(id)
+	   														    [] SourceAnalysis_turn__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_SourceDetected" -> SKIP);
+	   														      	S_SourceAnalysis_SourceDetected(id)
+	   														    [] SourceAnalysis_stop__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_SourceDetected" -> SKIP);
+	   														      	S_SourceAnalysis_SourceDetected(id)
+	   														    )
+	   													)
+within
+SourceAnalysis_enter?x:diff(SourceAnalysis_SIDS,{"SourceAnalysis_SourceDetected"})!"SourceAnalysis_SourceDetected" -> ( 
+	S_SourceAnalysis_SourceDetected_execute(id,x)) 
+CS_SourceAnalysis_j1_sync = {|
+	SourceAnalysis_enter.y.x, 
+	SourceAnalysis_entered.y.x, 
+	SourceAnalysis_exit.y.x, 
+	SourceAnalysis_exited.y.x,
+	SourceAnalysis_enter.x.y, 
+	SourceAnalysis_entered.x.y, 
+	SourceAnalysis_exit.x.y, 
+	SourceAnalysis_exited.x.y |
+	x <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"},
+	y <- {"SourceAnalysis_j1"}
+|}
+
+
+
+SourceAnalysis_j1_int_int = {||}
+
+
+SourceAnalysis_j1_int_triggers = {||}
+		   
+
+S_SourceAnalysis_j1(id) = let
+
+	S_SourceAnalysis_j1_execute(id,o__) = 
+	SKIP; 
+	SourceAnalysis_entered!o__!"SourceAnalysis_j1" ->
+	   SourceAnalysis_terminate -> SKIP
+	   within
+SourceAnalysis_enter?x:diff(SourceAnalysis_SIDS,{"SourceAnalysis_j1"})!"SourceAnalysis_j1" -> ( 
+	S_SourceAnalysis_j1_execute(id,x)) 
+CS_SourceAnalysis_Reading_sync = {|
+	SourceAnalysis_enter.y.x, 
+	SourceAnalysis_entered.y.x, 
+	SourceAnalysis_exit.y.x, 
+	SourceAnalysis_exited.y.x,
+	SourceAnalysis_enter.x.y, 
+	SourceAnalysis_entered.x.y, 
+	SourceAnalysis_exit.x.y, 
+	SourceAnalysis_exited.x.y |
+	x <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"},
+	y <- {"SourceAnalysis_Reading"}
+|}
+
+
+
+SourceAnalysis_Reading_int_int = {||}
+
+
+SourceAnalysis_Reading_int_triggers = {||}
+		   
+
+S_SourceAnalysis_Reading(id) = let
+	T_SourceAnalysis_t0(id)	= SourceAnalysis_s__!"SourceAnalysis_t0".in?gs -> set_SourceAnalysis_gs!gs ->  (SourceAnalysis_exit!"SourceAnalysis_Reading"!"SourceAnalysis_Reading" -> SKIP;
+						SKIP;SourceAnalysis_exited!"SourceAnalysis_Reading"!"SourceAnalysis_Reading" -> SKIP;
+						SourceAnalysis_enter!"SourceAnalysis_Reading"!"SourceAnalysis_Analysis" -> SourceAnalysis_entered!"SourceAnalysis_Reading"!"SourceAnalysis_Analysis" ->
+						S_SourceAnalysis_Reading(id)
+	)
+
+	S_SourceAnalysis_Reading_execute(id,o__) = 
+	SKIP; 
+	SourceAnalysis_entered!o__!"SourceAnalysis_Reading" ->
+	   (SKIP
+	   													; STOP /\ (
+	   														    T_SourceAnalysis_t0(id)
+	   														    []
+	   														    SourceAnalysis_internal__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"}) ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Reading" -> SKIP);
+	   														      	S_SourceAnalysis_Reading(id)
+	   														    [] SourceAnalysis_s__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Reading" -> SKIP);
+	   														      	S_SourceAnalysis_Reading(id)
+	   														    [] SourceAnalysis_resume__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Reading" -> SKIP);
+	   														      	S_SourceAnalysis_Reading(id)
+	   														    [] SourceAnalysis_turn__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__?x__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Reading" -> SKIP);
+	   														      	S_SourceAnalysis_Reading(id)
+	   														    [] SourceAnalysis_stop__?x:diff(SourceAnalysis_TIDS,{"__NULLTRANSITION__","SourceAnalysis_t3","SourceAnalysis_t8","SourceAnalysis_t4","SourceAnalysis_t9a","SourceAnalysis_t0","SourceAnalysis_t2"})?d__ ->
+	   														      SourceAnalysis_exit?y:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> (
+	   														      	SKIP;
+	   														      	SourceAnalysis_exited!y!"SourceAnalysis_Reading" -> SKIP);
+	   														      	S_SourceAnalysis_Reading(id)
+	   														    )
+	   													)
+within
+SourceAnalysis_enter?x:diff(SourceAnalysis_SIDS,{"SourceAnalysis_Reading"})!"SourceAnalysis_Reading" -> ( 
+	S_SourceAnalysis_Reading_execute(id,x)) 
+
+I_SourceAnalysis_i1(id) = T_SourceAnalysis_t1(id)
+
+SourceAnalysis_int_int = {|
+	SourceAnalysis_s__."SourceAnalysis_t1",
+	SourceAnalysis_resume__."SourceAnalysis_t1",
+	SourceAnalysis_turn__."SourceAnalysis_t1",
+	SourceAnalysis_stop__."SourceAnalysis_t1",
+SourceAnalysis_internal__."SourceAnalysis_t1",
+	SourceAnalysis_s__."SourceAnalysis_t2",
+	SourceAnalysis_resume__."SourceAnalysis_t2",
+	SourceAnalysis_turn__."SourceAnalysis_t2",
+	SourceAnalysis_stop__."SourceAnalysis_t2",
+SourceAnalysis_internal__."SourceAnalysis_t2",
+	SourceAnalysis_s__."SourceAnalysis_t3",
+	SourceAnalysis_resume__."SourceAnalysis_t3",
+	SourceAnalysis_turn__."SourceAnalysis_t3",
+	SourceAnalysis_stop__."SourceAnalysis_t3",
+SourceAnalysis_internal__."SourceAnalysis_t3",
+	SourceAnalysis_s__."SourceAnalysis_t4",
+	SourceAnalysis_resume__."SourceAnalysis_t4",
+	SourceAnalysis_turn__."SourceAnalysis_t4",
+	SourceAnalysis_stop__."SourceAnalysis_t4",
+SourceAnalysis_internal__."SourceAnalysis_t4",
+	SourceAnalysis_s__."SourceAnalysis_t8",
+	SourceAnalysis_resume__."SourceAnalysis_t8",
+	SourceAnalysis_turn__."SourceAnalysis_t8",
+	SourceAnalysis_stop__."SourceAnalysis_t8",
+SourceAnalysis_internal__."SourceAnalysis_t8",
+	SourceAnalysis_s__."SourceAnalysis_t9a",
+	SourceAnalysis_resume__."SourceAnalysis_t9a",
+	SourceAnalysis_turn__."SourceAnalysis_t9a",
+	SourceAnalysis_stop__."SourceAnalysis_t9a",
+SourceAnalysis_internal__."SourceAnalysis_t9a",
+	SourceAnalysis_s__."SourceAnalysis_t0",
+	SourceAnalysis_resume__."SourceAnalysis_t0",
+	SourceAnalysis_turn__."SourceAnalysis_t0",
+	SourceAnalysis_stop__."SourceAnalysis_t0",
+SourceAnalysis_internal__."SourceAnalysis_t0"
+|}
+
+
+T_SourceAnalysis_t1(id)	= SourceAnalysis_internal__!"SourceAnalysis_t1" -> SourceAnalysis_enter!"SourceAnalysis"!"SourceAnalysis_NoSource" -> SourceAnalysis_entered!"SourceAnalysis"!"SourceAnalysis_NoSource" ->
+SKIP
+
+S_SourceAnalysis_NoSource_R(id) = S_SourceAnalysis_NoSource(id)
+ 		[|diff(SourceAnalysis_int_int,SourceAnalysis_NoSource_triggers)|]
+ 		SKIP
+ 		
+S_SourceAnalysis_Analysis_R(id) = S_SourceAnalysis_Analysis(id)
+ 		[|diff(SourceAnalysis_int_int,SourceAnalysis_Analysis_triggers)|]
+ 		SKIP
+ 		
+S_SourceAnalysis_SourceDetected_R(id) = S_SourceAnalysis_SourceDetected(id)
+ 		[|diff(SourceAnalysis_int_int,SourceAnalysis_SourceDetected_triggers)|]
+ 		SKIP
+ 		
+S_SourceAnalysis_j1_R(id) = S_SourceAnalysis_j1(id)
+ 		[|diff(SourceAnalysis_int_int,SourceAnalysis_j1_triggers)|]
+ 		SKIP
+ 		
+S_SourceAnalysis_Reading_R(id) = S_SourceAnalysis_Reading(id)
+ 		[|diff(SourceAnalysis_int_int,SourceAnalysis_Reading_triggers)|]
+ 		SKIP
+ 		
+STM_SourceAnalysis(id) = (I_SourceAnalysis_i1(id)
+[|{|SourceAnalysis_enter.x.y,
+		SourceAnalysis_entered.x.y,
+		SourceAnalysis_exit.x.y,
+		SourceAnalysis_exited.x.y |
+		x <- diff(SourceAnalysis_SIDS,{"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"}),
+		y <- {"SourceAnalysis_NoSource","SourceAnalysis_Analysis","SourceAnalysis_SourceDetected","SourceAnalysis_j1","SourceAnalysis_Reading"}
+|}|]
+(S_SourceAnalysis_NoSource_R(id)
+  [|inter(CS_SourceAnalysis_NoSource_sync,union(union(union(CS_SourceAnalysis_Analysis_sync,CS_SourceAnalysis_SourceDetected_sync),CS_SourceAnalysis_j1_sync),CS_SourceAnalysis_Reading_sync))|]
+ (S_SourceAnalysis_Analysis_R(id)
+   [|inter(CS_SourceAnalysis_Analysis_sync,union(union(CS_SourceAnalysis_SourceDetected_sync,CS_SourceAnalysis_j1_sync),CS_SourceAnalysis_Reading_sync))|]
+  (S_SourceAnalysis_SourceDetected_R(id)
+    [|inter(CS_SourceAnalysis_SourceDetected_sync,union(CS_SourceAnalysis_j1_sync,CS_SourceAnalysis_Reading_sync))|]
+   (S_SourceAnalysis_j1_R(id)
+     [|inter(CS_SourceAnalysis_j1_sync,CS_SourceAnalysis_Reading_sync)|]
+    S_SourceAnalysis_Reading_R(id))
+   )
+  )
+ )
+ 	)
+-- memory process
+channel getWC_SourceAnalysis : SourceAnalysis_WC_enablerSet.Bool
+
+channel getV_SourceAnalysis_gs: LSeq(real,2)
+
+Memory_SourceAnalysis_gs(gs) = (
+get_SourceAnalysis_gs!gs -> Memory_SourceAnalysis_gs(gs)
+[]
+getV_SourceAnalysis_gs!gs -> Memory_SourceAnalysis_gs(gs)
+[]
+set_SourceAnalysis_gs?x__ -> Memory_SourceAnalysis_gs(x__)
+[]
+SourceAnalysis_s__!"SourceAnalysis_t2".in?gs -> Memory_SourceAnalysis_gs(gs)
+[]
+SourceAnalysis_s__!"SourceAnalysis_t0".in?gs -> Memory_SourceAnalysis_gs(gs)
+)
+
+
+MemoryTransitions_SourceAnalysis(id) = (getV_SourceAnalysis_gs?gs ->
+(SourceAnalysis_internal__!"SourceAnalysis_t1" -> MemoryTransitions_SourceAnalysis(id)
+[]
+SourceAnalysis_s__!"SourceAnalysis_t2".in?gs -> MemoryTransitions_SourceAnalysis(id)
+[]
+((analysis(gs)==noSource))&(SourceAnalysis_internal__!"SourceAnalysis_t3" -> MemoryTransitions_SourceAnalysis(id))
+[]
+((analysis(gs)==sourceD))&(SourceAnalysis_internal__!"SourceAnalysis_t4" -> MemoryTransitions_SourceAnalysis(id))
+[]
+(gt(intensity(gs),SourceAnalysis_thr))&(SourceAnalysis_internal__!"SourceAnalysis_t8" -> MemoryTransitions_SourceAnalysis(id))
+[]
+((not (gt(intensity(gs),SourceAnalysis_thr))))&(SourceAnalysis_internal__!"SourceAnalysis_t9a" -> MemoryTransitions_SourceAnalysis(id))
+[]
+SourceAnalysis_s__!"SourceAnalysis_t0".in?gs -> MemoryTransitions_SourceAnalysis(id)
+[]
+set_SourceAnalysis_gs?x__ -> MemoryTransitions_SourceAnalysis(id)))
+
+
+MemoryVariablesProcesses_SourceAnalysis = {(Memory_SourceAnalysis_gs(<>),{|getV_SourceAnalysis_gs,SourceAnalysis_s__."SourceAnalysis_t0",set_SourceAnalysis_gs,SourceAnalysis_s__."SourceAnalysis_t2",get_SourceAnalysis_gs|})}
+
+MemoryVariables_SourceAnalysis = ||| (P, alpha) : MemoryVariablesProcesses_SourceAnalysis @ P
+MemoryVariablesSyncSet_SourceAnalysis = {|getV_SourceAnalysis_gs,
+SourceAnalysis_s__."SourceAnalysis_t0",
+set_SourceAnalysis_gs,
+SourceAnalysis_s__."SourceAnalysis_t2"|}
+MemoryVariablesHideSet_SourceAnalysis = {|getV_SourceAnalysis_gs,
+getWC_SourceAnalysis|}
+
+MemoryN_SourceAnalysis(id) = (wbisim(MemoryVariables_SourceAnalysis) [| MemoryVariablesSyncSet_SourceAnalysis |] wbisim(MemoryTransitions_SourceAnalysis(id))) \ MemoryVariablesHideSet_SourceAnalysis
+
+Memory_SourceAnalysis(id, gs) = (
+get_SourceAnalysis_gs!gs -> Memory_SourceAnalysis(id, gs)
+[]
+set_SourceAnalysis_gs?x__ -> Memory_SourceAnalysis(id, x__)
+[]
+SourceAnalysis_internal__!"SourceAnalysis_t1" -> Memory_SourceAnalysis(id, gs)[]
+SourceAnalysis_s__!"SourceAnalysis_t2".in?gs -> Memory_SourceAnalysis(id, gs)[]
+((analysis(gs)==noSource))&(SourceAnalysis_internal__!"SourceAnalysis_t3" -> Memory_SourceAnalysis(id, gs))[]
+((analysis(gs)==sourceD))&(SourceAnalysis_internal__!"SourceAnalysis_t4" -> Memory_SourceAnalysis(id, gs))[]
+(gt(intensity(gs),SourceAnalysis_thr))&(SourceAnalysis_internal__!"SourceAnalysis_t8" -> Memory_SourceAnalysis(id, gs))[]
+((not (gt(intensity(gs),SourceAnalysis_thr))))&(SourceAnalysis_internal__!"SourceAnalysis_t9a" -> Memory_SourceAnalysis(id, gs))[]
+SourceAnalysis_s__!"SourceAnalysis_t0".in?gs -> Memory_SourceAnalysis(id, gs)
+)
+
+MemoryO_SourceAnalysis(id) = Memory_SourceAnalysis(id, <>)
+
+-- main process
+SourceAnalysis_aux(id) = prioritise(timed_priority(((wbisim(STM_SourceAnalysis(id))
+	[|Union({
+		{|get_SourceAnalysis_gs,set_SourceAnalysis_gs|},
+		{|SourceAnalysis_internal__."SourceAnalysis_t1",
+		SourceAnalysis_s__."SourceAnalysis_t2",
+		SourceAnalysis_internal__."SourceAnalysis_t3",
+		SourceAnalysis_internal__."SourceAnalysis_t4",
+		SourceAnalysis_internal__."SourceAnalysis_t8",
+		SourceAnalysis_internal__."SourceAnalysis_t9a",
+		SourceAnalysis_s__."SourceAnalysis_t0"|}
+		,
+		{|SourceAnalysis_deadline|},
+		SourceAnalysis_WCresets
+	})|]
+	(wbisim(MemoryN_SourceAnalysis(id)) [| union({|SourceAnalysis_WC|},SourceAnalysis_WCsync) |] SourceAnalysis_WaitingConditions)\{|SourceAnalysis_WC|}
+)[[SourceAnalysis_s__.x <- SourceAnalysis_s, SourceAnalysis_resume__.x <- SourceAnalysis_resume, SourceAnalysis_turn__.x <- SourceAnalysis_turn, SourceAnalysis_stop__.x <- SourceAnalysis_stop| x<-SourceAnalysis_TIDS]]\union(union({|get_SourceAnalysis_gs,set_SourceAnalysis_gs|},
+{||}),{|SourceAnalysis_deadline|}))
+[|{|SourceAnalysis_terminate|}|>SKIP\{|SourceAnalysis_internal__|}),<union(SourceAnalysis_internal_events,{|SourceAnalysis_clockReset|}),{SourceAnalysis_terminate},{tock}>)
+
+SourceAnalysis_internal_(id) = prioritise(timed_priority(((wbisim(STM_SourceAnalysis(id))
+	[|Union({
+	{|get_SourceAnalysis_gs,set_SourceAnalysis_gs|},
+	{|SourceAnalysis_internal__."SourceAnalysis_t1",
+	SourceAnalysis_s__."SourceAnalysis_t2",
+	SourceAnalysis_internal__."SourceAnalysis_t3",
+	SourceAnalysis_internal__."SourceAnalysis_t4",
+	SourceAnalysis_internal__."SourceAnalysis_t8",
+	SourceAnalysis_internal__."SourceAnalysis_t9a",
+	SourceAnalysis_s__."SourceAnalysis_t0"|}
+	,
+	{|SourceAnalysis_deadline|},
+	SourceAnalysis_WCresets
+	})|]
+	(wbisim(MemoryN_SourceAnalysis(id)) [| union({|SourceAnalysis_WC|},SourceAnalysis_WCsync) |] SourceAnalysis_WaitingConditions)\{|SourceAnalysis_WC|}
+)\union(union({|get_SourceAnalysis_gs,set_SourceAnalysis_gs|},
+{||}),{|SourceAnalysis_deadline|}))
+[|{|SourceAnalysis_terminate|}|>SKIP),<union(SourceAnalysis_internal_events,{|SourceAnalysis_internal__,SourceAnalysis_clockReset|}),{SourceAnalysis_terminate},{tock}>)
+
+-- With no internal events visible
+SourceAnalysis(id) = timed_priority(SourceAnalysis_aux(id) \ union(SourceAnalysis_internal_events,{|SourceAnalysis_clockReset|}))
+-- With enter/entered/exit/exited events visible
+SourceAnalysis_FVS(id) = timed_priority(SourceAnalysis_aux(id) \ {|SourceAnalysis_clockReset|})
+-- With enterV/enteredV/exitV/exitedV events visible
+SourceAnalysis_VS(id) = ShowV_SourceAnalysis(timed_priority(SourceAnalysis_aux(id) \ {|SourceAnalysis_clockReset|}))
+-- With clock resets visible
+SourceAnalysis_FVS_C(id) = SourceAnalysis_aux(id)
+}
+

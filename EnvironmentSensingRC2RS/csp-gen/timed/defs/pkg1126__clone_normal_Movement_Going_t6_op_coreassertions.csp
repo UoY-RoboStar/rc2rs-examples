@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg1126__defs.csp"
+include "state_timed_defs.csp"
+include "pkg1126__clone_normal_Movement_Going_t6_op.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg1126__OP_clone_normal_Movement_Going_t6_op
+P_pkg1126__OP_clone_normal_Movement_Going_t6_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1126_::OP_clone_normal_Movement_Going_t6_op::O__(id__)
+assert P_pkg1126__OP_clone_normal_Movement_Going_t6_op :[deadlock-free]	
+assert P_pkg1126__OP_clone_normal_Movement_Going_t6_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1126__OP_clone_normal_Movement_Going_t6_op :[deterministic]
+assert P_pkg1126__OP_clone_normal_Movement_Going_t6_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1126__OP_clone_normal_Movement_Going_t6_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1126__OP_clone_normal_Movement_Going_t6_op

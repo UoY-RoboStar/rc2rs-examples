@@ -1,0 +1,62 @@
+-- declaring robotic platform events
+channel EnvironmentalSensing_flag: InOut
+channel EnvironmentalSensing_s: InOut.LSeq(real,2)
+channel EnvironmentalSensing_obstacle: InOut.Loc
+channel EnvironmentalSensing_odometer: InOut.real
+
+-- declaring robotic platform variables
+
+
+-- declaring controller memory
+
+Memory_EnvironmentalSensing_SensingVehicle(id) = SKIP
+
+-- declaring module termination channel
+
+channel EnvironmentalSensing_terminate
+
+
+EnvironmentalSensing(id) = 	(((MicroController(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|}
+-- visible state equivalent
+
+EnvironmentalSensing_VS(id) = 	(((MicroController_VS(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController_VS(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|}
+	
+
+-- O version (optimised)
+EnvironmentalSensing_O(id) = sbisim(diamond(	(((MicroController_O(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController_O(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|}))
+
+-- visible state optimised equivalent
+
+EnvironmentalSensing_VS_O(id) = sbisim(diamond(	(((MicroController_VS_O(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController_VS_O(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|}))

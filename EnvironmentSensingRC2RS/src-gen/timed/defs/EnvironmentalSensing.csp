@@ -1,0 +1,30 @@
+Timed(OneStep) {
+	
+-- declaring module memory
+
+EnvironmentalSensing_visibleMemoryEvents = {||}
+		
+Memory_EnvironmentalSensing_SensingVehicle(id) = SKIP
+
+EnvironmentalSensing(id) = prioritise((	((MicroController(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|},<EnvironmentalSensing_visibleMemoryEvents,{tock}>)
+	
+-- visible state equivalent
+
+EnvironmentalSensing_VS(id) = prioritise((	((MicroController_VS(id)[[MicroController_terminate <- EnvironmentalSensing_terminate, MicroController_stop.in <- MainController_stop.out, MicroController_stop.out <- MainController_stop.in, MicroController_obstacle <- EnvironmentalSensing_obstacle, MicroController_flag <- EnvironmentalSensing_flag, MicroController_resume.in <- MainController_resume.out, MicroController_resume.out <- MainController_resume.in, MicroController_odometer <- EnvironmentalSensing_odometer, MicroController_turn.in <- MainController_turn.out, MicroController_turn.out <- MainController_turn.in]]
+	[|{|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|}|]
+	MainController_VS(id)[[MainController_terminate <- EnvironmentalSensing_terminate, MainController_s <- EnvironmentalSensing_s]]
+	)\diff({|EnvironmentalSensing_terminate, MainController_stop, MainController_resume, MainController_turn|},{|EnvironmentalSensing_terminate|})
+	[|union({||},
+	{||})|]
+	Memory_EnvironmentalSensing_SensingVehicle(id)
+	)\union({||},{||})
+	[|{|EnvironmentalSensing_terminate|}|>SKIP)\{|EnvironmentalSensing_terminate|},<EnvironmentalSensing_visibleMemoryEvents,{tock}>)
+}	

@@ -1,0 +1,48 @@
+ExternalEvents_Movement = {|Movement_obstacle,reverseCall,Movement_odometer,changeDirectionRet,Movement_flag,Movement_stop,moveForwardCall,stopCall,moveForwardRet,stopRet,Movement_resume,Movement_turn,changeDirectionCall,moveTowardsCall,moveTowardsRet,reverseRet|}
+
+assert T_Movement(0) :[deterministic]
+assert T_Movement(0) :[divergence-free]
+assert T_Movement(0) ; RUN({tock}) :[deadlock-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Movement)      [F= prioritise((T_Movement(0) ; RUN({tock})) |\ union(ExternalEvents_Movement,{tock}),<{},{tock}>)
+
+-- zeno freedom
+assert T_Movement(0) |\ union(ExternalEvents_Movement,{tock})  :[divergence-free]
+
+-- every state is reachable
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+assert not STOP [T= ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV|}
+
+-- states can be reached infinitely often
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_Exploring"|} [T= RUN({|Movement_enteredV."Movement_Exploring"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_Going"|} [T= RUN({|Movement_enteredV."Movement_Going"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_Found"|} [T= RUN({|Movement_enteredV."Movement_Found"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_j1"|} [T= RUN({|Movement_enteredV."Movement_j1"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_Avoiding"|} [T= RUN({|Movement_enteredV."Movement_Avoiding"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_TryingAgain"|} [T= RUN({|Movement_enteredV."Movement_TryingAgain"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_AvoidingAgain"|} [T= RUN({|Movement_enteredV."Movement_AvoidingAgain"|})
+assert ShowEnteredV_Movement(T_Movement_VS(0)) |\ {|Movement_enteredV."Movement_GettingOut"|} [T= RUN({|Movement_enteredV."Movement_GettingOut"|})
+
+-- timed model is a refinement
+assert sbisim(diamond(Movement(0))) [F= T_Movement(0) \ {tock}
+assert sbisim(diamond(Movement_VS(0))) [T= T_Movement_VS(0) \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Movement(0) \ {tock} [T= sbisim(diamond(Movement(0)))
+assert T_Movement_VS(0) \ {tock} [T= sbisim(diamond(Movement_VS(0)))
+
+-- memory models consistency check
+assert timed::MemoryN_Movement(0) [FD= timed::MemoryO_Movement(0)
+assert timed::MemoryO_Movement(0) [FD= timed::MemoryN_Movement(0)
+
+-- clocks used after reset
+Movement_clock_T_trans = {|Movement_turn__."Movement_t7",Movement_turn__."Movement_t14",Movement_stop__."Movement_t16",Movement_stop__."Movement_t18",Movement_resume__."Movement_t19",Movement_resume__."Movement_t20"|}
+Movement_clock_T = CHAOS(diff(Events,Movement_clock_T_trans)) [| {| timed::Movement_clockReset."T" |} |> CHAOS(Events)
+assert Movement_clock_T [T= timed::Movement_internal_(0)

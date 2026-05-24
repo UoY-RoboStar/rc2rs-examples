@@ -1,0 +1,39 @@
+ExternalEvents_MicroController = {|MicroController_turn,reverseCall,changeDirectionRet,moveForwardCall,MicroController_resume,stopCall,moveForwardRet,stopRet,MicroController_obstacle,changeDirectionCall,MicroController_odometer,MicroController_flag,MicroController_stop,moveTowardsCall,moveTowardsRet,reverseRet|}
+
+assert T_MicroController(0) :[deterministic]
+assert T_MicroController(0) :[divergence-free]
+assert T_MicroController(0) ; RUN({tock}) :[deadlock-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_MicroController)      [F= prioritise((T_MicroController(0) ; RUN({tock})) |\ union(ExternalEvents_MicroController,{tock}),<{},{tock}>)
+
+-- zeno freedom
+assert T_MicroController(0) |\ union(ExternalEvents_MicroController,{tock})  :[divergence-free]
+
+-- every state is reachable in this controller
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Exploring"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Going"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Found"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_j1"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Avoiding"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_TryingAgain"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_AvoidingAgain"|}
+assert not STOP [T= ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_GettingOut"|}
+
+-- every state can be reached infinitely often
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Exploring"|} [T= RUN({|Movement_enteredV."Movement_Exploring"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Going"|} [T= RUN({|Movement_enteredV."Movement_Going"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Found"|} [T= RUN({|Movement_enteredV."Movement_Found"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_j1"|} [T= RUN({|Movement_enteredV."Movement_j1"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_Avoiding"|} [T= RUN({|Movement_enteredV."Movement_Avoiding"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_TryingAgain"|} [T= RUN({|Movement_enteredV."Movement_TryingAgain"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_AvoidingAgain"|} [T= RUN({|Movement_enteredV."Movement_AvoidingAgain"|}) 
+assert ShowEnteredV_Movement(T_MicroController_VS(0)) |\ {|Movement_enteredV."Movement_GettingOut"|} [T= RUN({|Movement_enteredV."Movement_GettingOut"|}) 
+
+-- timed model is a refinement
+assert sbisim(diamond(MicroController(0))) [F= T_MicroController(0) \ {tock}
+assert sbisim(diamond(MicroController_VS(0))) [T= T_MicroController_VS(0) \ {tock}
+
+-- do time constraints constrain traces?
+assert T_MicroController(0) \ {tock} [T= sbisim(diamond(MicroController(0)))
+assert T_MicroController_VS(0) \ {tock} [T= sbisim(diamond(MicroController_VS(0)))

@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg1126__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg1126__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1
+P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1126_::OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1::O__(id__)
+assert P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 :[deadlock-free]	
+assert P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1;RUN({r__}) :[deadlock-free]
+assert P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 :[deterministic]
+assert P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1126__OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1

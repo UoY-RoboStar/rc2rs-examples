@@ -1,0 +1,76 @@
+include "defs/timed_definitions.csp"
+include "../defs/Module_defs.csp"
+include "../instantiations.csp"
+include "../defs/robochart_defs.csp"
+
+-- untimed definitions
+
+include "../defs/MainController_defs.csp"
+include "../defs/stop.csp"
+include "../defs/MainController.csp"
+include "../defs/changeDirection.csp"
+include "../defs/MicroController.csp"
+include "../defs/EnvironmentalSensing.csp"
+include "../defs/Chemical_defs.csp"
+include "../defs/Movement_defs.csp"
+include "../defs/core_defs.csp"
+include "../defs/SourceAnalysis.csp"
+include "../defs/moveForward.csp"
+include "../defs/MicroController_defs.csp"
+include "../defs/moveTowards.csp"
+include "../defs/reverse.csp"
+include "../defs/Movement.csp"
+include "../defs/GasAnalysis_defs.csp"
+channel moveTowardsCall, moveTowardsRet
+channel changeDirectionCall, changeDirectionRet
+channel moveForwardCall, moveForwardRet
+channel stopCall, stopRet
+channel reverseCall, reverseRet
+
+module timed
+exports
+
+-- timed definitions
+
+include "defs/reverse.csp"
+include "defs/MicroController.csp"
+include "defs/SourceAnalysis.csp"
+include "defs/changeDirection.csp"
+include "defs/MainController.csp"
+include "defs/EnvironmentalSensing.csp"
+include "defs/stop.csp"
+include "defs/Movement.csp"
+include "defs/moveForward.csp"
+include "defs/moveTowards.csp"
+endmodule
+
+transparent diamond
+transparent sbisim
+transparent wbisim
+transparent chase
+
+channel r__
+
+-- declare timed names of all controllers, modules and state-machines
+-- and include assertions
+
+T_EnvironmentalSensing = timed::EnvironmentalSensing
+T_EnvironmentalSensing_VS = timed::EnvironmentalSensing_VS
+
+T_Movement = timed::Movement
+T_Movement_VS = timed::Movement_VS
+
+T_SourceAnalysis = timed::SourceAnalysis
+T_SourceAnalysis_VS = timed::SourceAnalysis_VS
+
+T_MicroController = timed::MicroController
+T_MicroController_VS = timed::MicroController_VS
+
+T_MainController = timed::MainController
+T_MainController_VS = timed::MainController_VS
+
+T_moveTowards = timed::moveTowards
+T_changeDirection = timed::changeDirection
+T_moveForward = timed::moveForward
+T_stop = timed::stop
+T_reverse = timed::reverse

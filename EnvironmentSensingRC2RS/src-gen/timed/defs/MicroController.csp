@@ -1,0 +1,24 @@
+Timed(OneStep) {
+	
+-- declaring controller memory
+
+MicroController_visibleMemoryEvents = {||}
+		
+Memory_MicroController(id) = SKIP
+	
+MicroController(id) = prioritise(wbisim(Movement(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+			[|union({||},
+			{||})|]
+			Memory_MicroController(id)
+			)\union({||},
+			{||})
+			[|{|MicroController_terminate|}|>SKIP,<MicroController_visibleMemoryEvents,{MicroController_terminate},{tock}>)
+-- VS version
+MicroController_VS(id) = prioritise(wbisim(Movement_VS(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+			[|union({||},
+			{||})|]
+			Memory_MicroController(id)
+			)\union({||},
+			{||})
+			[|{|MicroController_terminate|}|>SKIP,<MicroController_visibleMemoryEvents,{MicroController_terminate},{tock}>)
+}

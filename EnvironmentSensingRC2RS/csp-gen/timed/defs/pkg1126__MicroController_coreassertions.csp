@@ -1,0 +1,70 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg1126__MicroController.csp"
+include "pkg1126__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg1126__MicroController
+P_pkg1126__MicroController = let
+	id__ = 0
+	
+	
+	
+	const_pkg1126__MicroController_stm_ref0_lv = const_pkg1126__Movement_lv
+	const_pkg1126__MicroController_stm_ref0_evadeTime = const_pkg1126__Movement_evadeTime
+	const_pkg1126__MicroController_stm_ref0_stuckDist = const_pkg1126__Movement_stuckDist
+	const_pkg1126__MicroController_stm_ref0_outPeriod = const_pkg1126__Movement_outPeriod
+		
+within
+	pkg1126__MicroController::O__(id__,
+			    const_pkg1126__MicroController_stm_ref0_lv,
+			    const_pkg1126__MicroController_stm_ref0_evadeTime,
+			    const_pkg1126__MicroController_stm_ref0_stuckDist,
+			    const_pkg1126__MicroController_stm_ref0_outPeriod)
+
+assert P_pkg1126__MicroController :[deadlock-free]	
+assert P_pkg1126__MicroController;RUN({r__}) :[deadlock-free]
+assert P_pkg1126__MicroController :[deterministic]
+assert P_pkg1126__MicroController :[divergence-free]
+
+-- generate pkg1126__MicroController_stm_ref0
+P_pkg1126__MicroController_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1126__MicroController::stm_ref0::O__(
+		id__,
+		const_pkg1126__Movement_lv,
+		const_pkg1126__Movement_evadeTime,
+		const_pkg1126__Movement_stuckDist,
+		const_pkg1126__Movement_outPeriod
+	)
+assert P_pkg1126__MicroController_stm_ref0 :[deadlock-free]	
+assert P_pkg1126__MicroController_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg1126__MicroController_stm_ref0 :[deterministic]
+assert P_pkg1126__MicroController_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1126__MicroController_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1126__MicroController_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg1126__MicroController[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1126__MicroController

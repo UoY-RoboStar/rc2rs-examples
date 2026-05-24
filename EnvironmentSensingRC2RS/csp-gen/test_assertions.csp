@@ -1,0 +1,62 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:54
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+
+	include "defs/file_Movement_defs.csp"
+	include "defs/robochart_defs.csp"
+	include "defs/state_defs.csp"
+	include "defs/core_defs.csp"
+	include "defs/file_GasAnalysis_defs.csp"
+	include "defs/file_MicroController_defs.csp"
+	include "defs/file_Chemical_defs.csp"
+	include "defs/file_MainController_defs.csp"
+	
+	channel r__
+	
+	include "defs/Chemical_defs.csp"
+	
+	moveForward_BOUND = 2
+	Movement_evadeTime = 1
+	nametype string = LSeq(Char,2)
+	Movement_lv = 1
+	Movement_stuckDist = 1
+	SourceAnalysis_thr = 1
+	Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+	nametype nat = {0..2}
+	stop_BOUND = 2
+	Movement_outPeriod = 1
+	nametype real = {0..2}
+	reverse_BOUND = 2
+	gt(i1,i2) = i1 > i2
+	nametype int = { -2..2}
+	Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+	Neg(e1,T) = if member(-e1,T) then -e1 else e1
+	nametype boolean = Bool
+	Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+	Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+	moveTowards_BOUND = 2
+	changeDirection_BOUND = 2
+	Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+	
+	intensity(<>) = 0
+	intensity(<(i)>^xs) = let
+	n = intensity(xs)
+	within if (n > i) then n else i
+	
+	location(gs) = 0
+	
+	-- let
+	--	find(<>,_) = 0
+	--	find(<(i)>^xs,n) = if (i == intensity(gs)) then n else find(xs,n+1)
+	-- within
+	--	if (length(gs) > 0) then (360/length(gs))*find(gs,0) else 0
+	
+	analysis(gs) = if (intensity(gs) > 0) then sourceD else noSource
+	
+	

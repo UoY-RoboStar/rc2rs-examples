@@ -1,0 +1,54 @@
+-- declaring controller events
+channel MicroController_turn: InOut.real
+channel MicroController_obstacle: InOut.Loc
+channel MicroController_flag: InOut
+channel MicroController_stop: InOut
+channel MicroController_resume: InOut
+channel MicroController_odometer: InOut.real
+
+-- declaring controller variables
+
+
+
+-- declaring controller memory
+
+Memory_MicroController(id) = SKIP
+
+-- delcaring controller termination channel
+
+channel MicroController_terminate
+
+MicroController(id) = (Movement(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+	[|union({||},
+	{||})|]
+	Memory_MicroController(id)
+)\union({||},
+{||})
+[|{|MicroController_terminate|}|>SKIP
+
+-- VS version
+MicroController_VS(id) = (Movement_VS(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+	[|union({||},
+	{||})|]
+	Memory_MicroController(id)
+)\union({||},
+{||})
+[|{|MicroController_terminate|}|>SKIP
+
+-- O version (optimised) THESE TWO PROCESSES SHOULD BE KEPT IN SYNC WITH THE ABOVE TWO
+MicroController_O(id) = sbisim(diamond((Movement_O(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+	[|union({||},
+	{||})|]
+	Memory_MicroController(id)
+)\union({||},
+{||})
+[|{|MicroController_terminate|}|>SKIP))
+
+-- VS_O version
+MicroController_VS_O(id) = sbisim(diamond((Movement_VS_O(id)[[Movement_terminate <- MicroController_terminate, Movement_turn <- MicroController_turn, Movement_obstacle <- MicroController_obstacle, Movement_flag <- MicroController_flag, Movement_resume <- MicroController_resume, Movement_odometer <- MicroController_odometer, Movement_stop <- MicroController_stop]]
+	[|union({||},
+	{||})|]
+	Memory_MicroController(id)
+)\union({||},
+{||})
+[|{|MicroController_terminate|}|>SKIP))

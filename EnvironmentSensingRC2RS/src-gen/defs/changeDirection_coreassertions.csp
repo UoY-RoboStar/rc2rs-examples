@@ -1,0 +1,6 @@
+assert changeDirection_O(0, left) :[deadlock-free]	
+assert changeDirection_O(0, left);RUN({r__}) :[deadlock-free]
+assert changeDirection_O(0, left) :[deterministic]
+assert changeDirection_O(0, left) :[divergence-free]
+	
+chase_changeDirection = chase(changeDirection_O(0, left))

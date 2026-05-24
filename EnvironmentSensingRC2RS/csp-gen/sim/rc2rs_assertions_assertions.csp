@@ -1,0 +1,176 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 24-05-2026 15:25:30
+--
+
+include "defs/state_timed_defs.csp"
+include "../timed/defs/file_Chemical_defs.csp"
+include "../timed/defs/pkg1126__defs.csp"
+include "defs/core_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "sims/defs/NormalForm_defs.csp"
+include "defs/pkg1126__sim_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "defs/robochart_defs.csp"
+include "../timed/defs/pkg1126_EnvironmentalSensing_defs.csp"
+include "defs/pkg1126_EnvironmentalSensing_sim_defs.csp"
+include "defs/core_timed_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "instantiations.csp"
+include "defs/pkg1126_EnvironmentalSensing_sim.csp"
+include "defs/relation_toolkit_defs.csp"
+include "../timed/defs/pkg1126_EnvironmentalSensing.csp"
+
+channel r__
+
+transparent chase
+
+-- A1 - schedulable
+assert let 
+	cycle_NormalForm_NormalForm = 1
+	id__ = 0
+	
+	
+	
+	const_pkg1126__MicroController_stm_ref0_lv = const_pkg1126__Movement_lv
+	const_pkg1126__MicroController_stm_ref0_evadeTime = const_pkg1126__Movement_evadeTime
+	const_pkg1126__MicroController_stm_ref0_stuckDist = const_pkg1126__Movement_stuckDist
+	const_pkg1126__MicroController_stm_ref0_outPeriod = const_pkg1126__Movement_outPeriod
+	const_pkg1126__MainController_stm_ref0_thr = const_pkg1126__SourceAnalysis_thr
+		
+within
+	NormalForm::TLF(id__,cycle_NormalForm_NormalForm,
+			    const_pkg1126__MicroController_stm_ref0_lv,
+			    const_pkg1126__MicroController_stm_ref0_evadeTime,
+			    const_pkg1126__MicroController_stm_ref0_stuckDist,
+			    const_pkg1126__MicroController_stm_ref0_outPeriod,
+			    const_pkg1126__MainController_stm_ref0_thr):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A2 - timed deadlock free
+assert prioritise(let 
+	cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing = 1
+	id__ = 0
+	
+	
+	
+	const_pkg1126__sim_MicroController_stm_ref0_lv = const_pkg1126__sim_Movement_lv
+	const_pkg1126__sim_MicroController_stm_ref0_evadeTime = const_pkg1126__sim_Movement_evadeTime
+	const_pkg1126__sim_MicroController_stm_ref0_stuckDist = const_pkg1126__sim_Movement_stuckDist
+	const_pkg1126__sim_MicroController_stm_ref0_outPeriod = const_pkg1126__sim_Movement_outPeriod
+	const_pkg1126__sim_MainController_stm_ref0_thr = const_pkg1126__sim_SourceAnalysis_thr
+		
+within
+	pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::D__(id__,cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing,
+			    const_pkg1126__sim_MicroController_stm_ref0_lv,
+			    const_pkg1126__sim_MicroController_stm_ref0_evadeTime,
+			    const_pkg1126__sim_MicroController_stm_ref0_stuckDist,
+			    const_pkg1126__sim_MicroController_stm_ref0_outPeriod,
+			    const_pkg1126__sim_MainController_stm_ref0_thr)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
+
+-- A3 - refinement
+assert let
+	rename_in_NormalForm(NormalForm::i_odometer.x__.y__) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_odometer.x__.y__
+	rename_in_NormalForm(NormalForm::i_s.x__.y__) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_s.x__.y__
+	rename_in_NormalForm(NormalForm::i_obstacle.x__.y__) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_obstacle.x__.y__
+	rename_out_NormalForm(NormalForm::o_changeDirection.l) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_changeDirection.l
+	rename_out_NormalForm(NormalForm::o_moveTowards.a) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_moveTowards.a
+	rename_out_NormalForm(NormalForm::o_moveForward) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_moveForward
+	rename_out_NormalForm(NormalForm::o_stop) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_stop
+	rename_out_NormalForm(NormalForm::o_flag) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_flag
+	rename_out_NormalForm(NormalForm::o_reverse) = pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_reverse
+within
+	prioritise(let 
+		cycle_NormalForm_NormalForm = 1
+		id__ = 0
+		
+		
+		
+		const_pkg1126__MicroController_stm_ref0_lv = const_pkg1126__Movement_lv
+		const_pkg1126__MicroController_stm_ref0_evadeTime = const_pkg1126__Movement_evadeTime
+		const_pkg1126__MicroController_stm_ref0_stuckDist = const_pkg1126__Movement_stuckDist
+		const_pkg1126__MicroController_stm_ref0_outPeriod = const_pkg1126__Movement_outPeriod
+		const_pkg1126__MainController_stm_ref0_thr = const_pkg1126__SourceAnalysis_thr
+			
+	within
+		NormalForm::D__(id__,cycle_NormalForm_NormalForm,
+				    const_pkg1126__MicroController_stm_ref0_lv,
+				    const_pkg1126__MicroController_stm_ref0_evadeTime,
+				    const_pkg1126__MicroController_stm_ref0_stuckDist,
+				    const_pkg1126__MicroController_stm_ref0_outPeriod,
+				    const_pkg1126__MainController_stm_ref0_thr),<{},{tock}>)
+	[[ NormalForm::registerRead.x__ <- pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::registerRead.rename_in_NormalForm(x__) | x__ <- NormalForm::RegisterInputs ]]
+	[[ NormalForm::registerWrite.x__ <- pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::registerWrite.rename_out_NormalForm(x__) | x__ <- NormalForm::RegisterOutputs ]]
+ [FD= let 
+	cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing = 1
+	id__ = 0
+	
+	
+	
+	const_pkg1126__sim_MicroController_stm_ref0_lv = const_pkg1126__sim_Movement_lv
+	const_pkg1126__sim_MicroController_stm_ref0_evadeTime = const_pkg1126__sim_Movement_evadeTime
+	const_pkg1126__sim_MicroController_stm_ref0_stuckDist = const_pkg1126__sim_Movement_stuckDist
+	const_pkg1126__sim_MicroController_stm_ref0_outPeriod = const_pkg1126__sim_Movement_outPeriod
+	const_pkg1126__sim_MainController_stm_ref0_thr = const_pkg1126__sim_SourceAnalysis_thr
+		
+within
+	pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::D__(id__,cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing,
+			    const_pkg1126__sim_MicroController_stm_ref0_lv,
+			    const_pkg1126__sim_MicroController_stm_ref0_evadeTime,
+			    const_pkg1126__sim_MicroController_stm_ref0_stuckDist,
+			    const_pkg1126__sim_MicroController_stm_ref0_outPeriod,
+			    const_pkg1126__sim_MainController_stm_ref0_thr) :[tau priority]: {tock}
+
+-- A4 - refinement
+assert let
+	rename_in_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_odometer.x__.y__) = NormalForm::i_odometer.x__.y__
+	rename_in_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_s.x__.y__) = NormalForm::i_s.x__.y__
+	rename_in_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::i_obstacle.x__.y__) = NormalForm::i_obstacle.x__.y__
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_flag) = NormalForm::o_flag
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_stop) = NormalForm::o_stop
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_moveForward) = NormalForm::o_moveForward
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_reverse) = NormalForm::o_reverse
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_moveTowards.a) = NormalForm::o_moveTowards.a
+	rename_out_EnvironmentalSensing(pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::o_changeDirection.l) = NormalForm::o_changeDirection.l
+within
+	prioritise(let 
+		cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing = 1
+		id__ = 0
+		
+		
+		
+		const_pkg1126__sim_MicroController_stm_ref0_lv = const_pkg1126__sim_Movement_lv
+		const_pkg1126__sim_MicroController_stm_ref0_evadeTime = const_pkg1126__sim_Movement_evadeTime
+		const_pkg1126__sim_MicroController_stm_ref0_stuckDist = const_pkg1126__sim_Movement_stuckDist
+		const_pkg1126__sim_MicroController_stm_ref0_outPeriod = const_pkg1126__sim_Movement_outPeriod
+		const_pkg1126__sim_MainController_stm_ref0_thr = const_pkg1126__sim_SourceAnalysis_thr
+			
+	within
+		pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::D__(id__,cycle_pkg1126_EnvironmentalSensing_sim_EnvironmentalSensing_EnvironmentalSensing,
+				    const_pkg1126__sim_MicroController_stm_ref0_lv,
+				    const_pkg1126__sim_MicroController_stm_ref0_evadeTime,
+				    const_pkg1126__sim_MicroController_stm_ref0_stuckDist,
+				    const_pkg1126__sim_MicroController_stm_ref0_outPeriod,
+				    const_pkg1126__sim_MainController_stm_ref0_thr),<{},{tock}>)
+	[[ pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::registerRead.x__ <- NormalForm::registerRead.rename_in_EnvironmentalSensing(x__) | x__ <- pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::RegisterInputs ]]
+	[[ pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::registerWrite.x__ <- NormalForm::registerWrite.rename_out_EnvironmentalSensing(x__) | x__ <- pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing::RegisterOutputs ]]
+ [FD= let 
+	cycle_NormalForm_NormalForm = 1
+	id__ = 0
+	
+	
+	
+	const_pkg1126__MicroController_stm_ref0_lv = const_pkg1126__Movement_lv
+	const_pkg1126__MicroController_stm_ref0_evadeTime = const_pkg1126__Movement_evadeTime
+	const_pkg1126__MicroController_stm_ref0_stuckDist = const_pkg1126__Movement_stuckDist
+	const_pkg1126__MicroController_stm_ref0_outPeriod = const_pkg1126__Movement_outPeriod
+	const_pkg1126__MainController_stm_ref0_thr = const_pkg1126__SourceAnalysis_thr
+		
+within
+	NormalForm::D__(id__,cycle_NormalForm_NormalForm,
+			    const_pkg1126__MicroController_stm_ref0_lv,
+			    const_pkg1126__MicroController_stm_ref0_evadeTime,
+			    const_pkg1126__MicroController_stm_ref0_stuckDist,
+			    const_pkg1126__MicroController_stm_ref0_outPeriod,
+			    const_pkg1126__MainController_stm_ref0_thr) :[tau priority]: {tock}
+

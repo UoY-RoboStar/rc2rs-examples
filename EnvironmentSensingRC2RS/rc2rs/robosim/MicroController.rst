@@ -1,0 +1,26 @@
+package pkg1126__sim controller MicroController {
+	requires pkg1126_EnvironmentalSensing::Operations event turn : real
+	event obstacle : Loc
+	event flag
+	event stop
+	event resume
+	event odometer : real
+	opref MicroController_ref_clone_normal_Movement_AvoidingAgain_t13_op = pkg1126__sim::clone_normal_Movement_AvoidingAgain_t13_op
+	opref MicroController_ref_clone_normal_Movement_AvoidingAgain_t12_op = pkg1126__sim::clone_normal_Movement_AvoidingAgain_t12_op
+	opref MicroController_ref_clone_normal_Movement_Avoiding_entry = pkg1126__sim::clone_normal_Movement_Avoiding_entry
+	opref MicroController_ref_clone_normal_Movement_Found_entry = pkg1126__sim::clone_normal_Movement_Found_entry
+	opref MicroController_ref_clone_normal_Movement_Exploring_t21_op = pkg1126__sim::clone_normal_Movement_Exploring_t21_op
+	opref MicroController_ref_clone_normal_Movement_Going_t6_op = pkg1126__sim::clone_normal_Movement_Going_t6_op
+	opref MicroController_ref_clone_normal_Movement_TryingAgain_t11_op = pkg1126__sim::clone_normal_Movement_TryingAgain_t11_op
+	opref MicroController_ref_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 = pkg1126__sim::clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1
+	opref MicroController_ref_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 = pkg1126__sim::clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2
+	sref stm_ref0 = pkg1126__sim::Movement
+	connection MicroController on turn to stm_ref0 on turn
+	connection MicroController on obstacle to stm_ref0 on obstacle
+	connection stm_ref0 on flag to MicroController on flag
+	connection MicroController on resume to stm_ref0 on resume
+	connection MicroController on odometer to stm_ref0 on odometer
+	connection MicroController on stop to stm_ref0 on stop
+	cycleDef cycle == 1
+}
+

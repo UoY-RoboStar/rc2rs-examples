@@ -1,0 +1,33 @@
+ExternalEvents_MainController = {|MainController_stop,MainController_turn,MainController_resume,MainController_s|}
+
+assert T_MainController(0) :[deterministic]
+assert T_MainController(0) :[divergence-free]
+assert T_MainController(0) ; RUN({tock}) :[deadlock-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_MainController)      [F= prioritise((T_MainController(0) ; RUN({tock})) |\ union(ExternalEvents_MainController,{tock}),<{},{tock}>)
+
+-- zeno freedom
+assert T_MainController(0) |\ union(ExternalEvents_MainController,{tock})  :[divergence-free]
+
+-- every state is reachable in this controller
+assert not STOP [T= ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_NoSource"|}
+assert not STOP [T= ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_Analysis"|}
+assert not STOP [T= ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_SourceDetected"|}
+assert not STOP [T= ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_j1"|}
+assert not STOP [T= ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_Reading"|}
+
+-- every state can be reached infinitely often
+assert ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_NoSource"|} [T= RUN({|SourceAnalysis_enteredV."SourceAnalysis_NoSource"|}) 
+assert ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_Analysis"|} [T= RUN({|SourceAnalysis_enteredV."SourceAnalysis_Analysis"|}) 
+assert ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_SourceDetected"|} [T= RUN({|SourceAnalysis_enteredV."SourceAnalysis_SourceDetected"|}) 
+assert ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_j1"|} [T= RUN({|SourceAnalysis_enteredV."SourceAnalysis_j1"|}) 
+assert ShowEnteredV_SourceAnalysis(T_MainController_VS(0)) |\ {|SourceAnalysis_enteredV."SourceAnalysis_Reading"|} [T= RUN({|SourceAnalysis_enteredV."SourceAnalysis_Reading"|}) 
+
+-- timed model is a refinement
+assert sbisim(diamond(MainController(0))) [F= T_MainController(0) \ {tock}
+assert sbisim(diamond(MainController_VS(0))) [T= T_MainController_VS(0) \ {tock}
+
+-- do time constraints constrain traces?
+assert T_MainController(0) \ {tock} [T= sbisim(diamond(MainController(0)))
+assert T_MainController_VS(0) \ {tock} [T= sbisim(diamond(MainController_VS(0)))

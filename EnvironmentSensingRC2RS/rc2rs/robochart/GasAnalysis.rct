@@ -1,0 +1,185 @@
+package pkg1126_ 
+interface I_events_normal_SourceAnalysis_Analysis_t3_op {
+	event resume
+}
+
+interface I_normal_SourceAnalysis_Analysis_t3_op {
+	normal_SourceAnalysis_Analysis_t3_op ( )
+}
+
+interface I_events_normal_SourceAnalysis_SourceDetected_t8_op {
+	event stop
+}
+
+interface I_normal_SourceAnalysis_SourceDetected_t8_op {
+	normal_SourceAnalysis_SourceDetected_t8_op ( )
+}
+
+interface req_normal_SourceAnalysis_SourceDetected_t9a_op {
+	var gs : Seq( real )
+}
+
+interface I_events_normal_SourceAnalysis_SourceDetected_t9a_op {
+	event turn : real
+}
+
+interface I_normal_SourceAnalysis_SourceDetected_t9a_op {
+	normal_SourceAnalysis_SourceDetected_t9a_op ( )
+}
+
+interface I_clone_normal_SourceAnalysis_SourceDetected_t8_op {
+	clone_normal_SourceAnalysis_SourceDetected_t8_op ( )
+}
+
+interface I_clone_normal_SourceAnalysis_Analysis_t3_op {
+	clone_normal_SourceAnalysis_Analysis_t3_op ( )
+}
+
+interface I_clone_normal_SourceAnalysis_SourceDetected_t9a_op {
+	clone_normal_SourceAnalysis_SourceDetected_t9a_op ( )
+}
+
+stm SourceAnalysis {
+	requires I_clone_normal_SourceAnalysis_SourceDetected_t8_op requires I_clone_normal_SourceAnalysis_Analysis_t3_op requires I_clone_normal_SourceAnalysis_SourceDetected_t9a_op var gs : Seq( real )
+	const thr : real
+	event s : Seq( real )
+	event resume
+	event turn : real
+	event stop
+	initial i1
+	state NoSource {
+		state EmptyCycle {
+		}
+		initial i
+		transition tNoSource {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Analysis {
+		initial i
+		state EmptyCycle {
+		}
+		transition tAnalysis {
+			from i
+			to EmptyCycle
+		}
+	}
+	state SourceDetected {
+		initial i
+		state EmptyCycle {
+		}
+		transition tSourceDetected {
+			from i
+			to EmptyCycle
+		}
+	}
+	final j1
+	state Reading {
+		initial i
+		state EmptyCycle {
+		}
+		transition tReading {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t1 {
+		from i1
+		to NoSource
+	}
+	transition t2 {
+		from NoSource
+		to Analysis
+		trigger s ? gs
+	}
+	transition t3 {
+		from Analysis
+		to NoSource
+		condition analysis ( gs ) == Status :: noSource
+		action clone_normal_SourceAnalysis_Analysis_t3_op ( )
+	}
+	transition t4 {
+		from Analysis
+		to SourceDetected
+		condition analysis ( gs ) == Status :: sourceD
+	}
+	transition t8 {
+		from SourceDetected
+		to j1
+		condition gt ( intensity ( gs ) , thr )
+		action clone_normal_SourceAnalysis_SourceDetected_t8_op ( )
+	}
+	transition t9a {
+		from SourceDetected
+		to Reading
+		condition not gt ( intensity ( gs ) , thr )
+		action clone_normal_SourceAnalysis_SourceDetected_t9a_op ( )
+	}
+	transition t0 {
+		from Reading
+		to Analysis
+		trigger s ? gs
+	}
+}
+
+operation normal_SourceAnalysis_Analysis_t3_op ( ) {
+	uses I_events_normal_SourceAnalysis_Analysis_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action resume
+	}
+}
+
+operation normal_SourceAnalysis_SourceDetected_t8_op ( ) {
+	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action stop
+	}
+}
+
+operation normal_SourceAnalysis_SourceDetected_t9a_op ( ) {
+	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turn ! location ( gs )
+	}
+}
+
+operation clone_normal_SourceAnalysis_SourceDetected_t8_op ( ) {
+	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action stop
+	}
+}
+
+operation clone_normal_SourceAnalysis_Analysis_t3_op ( ) {
+	uses I_events_normal_SourceAnalysis_Analysis_t3_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action resume
+	}
+}
+
+operation clone_normal_SourceAnalysis_SourceDetected_t9a_op ( ) {
+	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action turn ! location ( gs )
+	}
+}
+

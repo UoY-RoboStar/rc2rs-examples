@@ -1,0 +1,34 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_GasAnalysis.csp"
+
+-- generate SourceAnalysis
+P_SourceAnalysis = let
+	id__ = 0
+	
+	
+	
+within
+	SourceAnalysis::O__(
+		id__,
+		const_SourceAnalysis_thr
+	)
+assert P_SourceAnalysis :[deadlock-free]	
+assert P_SourceAnalysis;RUN({r__}) :[deadlock-free]
+assert P_SourceAnalysis :[deterministic]
+assert P_SourceAnalysis :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_SourceAnalysis[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_SourceAnalysis
+
+
+

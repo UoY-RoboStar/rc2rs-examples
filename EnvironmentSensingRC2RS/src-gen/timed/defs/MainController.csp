@@ -1,0 +1,24 @@
+Timed(OneStep) {
+	
+-- declaring controller memory
+
+MainController_visibleMemoryEvents = {||}
+		
+Memory_MainController(id) = SKIP
+	
+MainController(id) = prioritise(wbisim(SourceAnalysis(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+			[|union({||},
+			{||})|]
+			Memory_MainController(id)
+			)\union({||},
+			{||})
+			[|{|MainController_terminate|}|>SKIP,<MainController_visibleMemoryEvents,{MainController_terminate},{tock}>)
+-- VS version
+MainController_VS(id) = prioritise(wbisim(SourceAnalysis_VS(id)[[SourceAnalysis_terminate <- MainController_terminate, SourceAnalysis_s <- MainController_s, SourceAnalysis_turn <- MainController_turn, SourceAnalysis_stop <- MainController_stop, SourceAnalysis_resume <- MainController_resume]]
+			[|union({||},
+			{||})|]
+			Memory_MainController(id)
+			)\union({||},
+			{||})
+			[|{|MainController_terminate|}|>SKIP,<MainController_visibleMemoryEvents,{MainController_terminate},{tock}>)
+}

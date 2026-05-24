@@ -1,0 +1,94 @@
+
+--
+-- RoboChart generator version 3.0.0.202601080915
+-- Automatically generated on 24-05-2026 15:33:56
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "EnvironmentalSensing.csp"
+
+
+
+
+-- generate EnvironmentalSensing_EnvironmentalSensing
+P_EnvironmentalSensing_EnvironmentalSensing = let
+	id__ = 0
+	
+	
+	
+	const_MainController_stm_ref0_thr = const_SourceAnalysis_thr
+	const_MicroController_stm_ref0_lv = const_Movement_lv
+	const_MicroController_stm_ref0_evadeTime = const_Movement_evadeTime
+	const_MicroController_stm_ref0_stuckDist = const_Movement_stuckDist
+	const_MicroController_stm_ref0_outPeriod = const_Movement_outPeriod
+		
+	
+within
+	EnvironmentalSensing::EnvironmentalSensing::O__(id__,
+			    const_MicroController_stm_ref0_lv,
+			    const_MicroController_stm_ref0_evadeTime,
+			    const_MicroController_stm_ref0_stuckDist,
+			    const_MicroController_stm_ref0_outPeriod,
+			    const_MainController_stm_ref0_thr)
+assert P_EnvironmentalSensing_EnvironmentalSensing :[deadlock-free]	
+assert P_EnvironmentalSensing_EnvironmentalSensing;RUN({r__}) :[deadlock-free]
+assert P_EnvironmentalSensing_EnvironmentalSensing :[deterministic]
+assert P_EnvironmentalSensing_EnvironmentalSensing :[divergence-free]
+
+-- generate EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0
+P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+	const_MicroController_stm_ref0_lv = const_Movement_lv
+	const_MicroController_stm_ref0_evadeTime = const_Movement_evadeTime
+	const_MicroController_stm_ref0_stuckDist = const_Movement_stuckDist
+	const_MicroController_stm_ref0_outPeriod = const_Movement_outPeriod
+		
+within
+	EnvironmentalSensing::EnvironmentalSensing::ctrl_ref0::O__(id__,
+			    const_MicroController_stm_ref0_lv,
+			    const_MicroController_stm_ref0_evadeTime,
+			    const_MicroController_stm_ref0_stuckDist,
+			    const_MicroController_stm_ref0_outPeriod)
+
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0 :[deadlock-free]	
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0 :[deterministic]
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref0
+-- generate EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1
+P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1 = let
+	id__ = 0
+	
+	
+	
+	const_MainController_stm_ref0_thr = const_SourceAnalysis_thr
+		
+within
+	EnvironmentalSensing::EnvironmentalSensing::ctrl_ref1::O__(id__,
+			    const_MainController_stm_ref0_thr)
+
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1 :[deadlock-free]	
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1;RUN({r__}) :[deadlock-free]
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1 :[deterministic]
+assert P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_EnvironmentalSensing_EnvironmentalSensing_ctrl_ref1
+-- timed deadlock free
+assert prioritise(P_EnvironmentalSensing_EnvironmentalSensing[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_EnvironmentalSensing_EnvironmentalSensing

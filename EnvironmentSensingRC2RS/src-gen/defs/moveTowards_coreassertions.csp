@@ -1,0 +1,6 @@
+assert moveTowards_O(0, 0) :[deadlock-free]	
+assert moveTowards_O(0, 0);RUN({r__}) :[deadlock-free]
+assert moveTowards_O(0, 0) :[deterministic]
+assert moveTowards_O(0, 0) :[divergence-free]
+	
+chase_moveTowards = chase(moveTowards_O(0, 0))

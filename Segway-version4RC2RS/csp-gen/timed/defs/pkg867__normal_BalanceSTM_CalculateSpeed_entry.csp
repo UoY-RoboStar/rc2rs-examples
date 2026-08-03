@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -56,11 +56,11 @@ exports
 	channel leftMotorVelocity: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall: core_nat
-	channel SpeedPIDCall: core_real
-	channel normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall
-	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call: core_nat
 	channel waitIntervalCall: core_nat.core_nat
+	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call: core_nat
+	channel normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall
+	channel SpeedPIDCall: core_real
+	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -95,11 +95,11 @@ exports
 		set_EXT_speedOutput, set_speedOutput
 	,	rightMotorVelocity,
 		leftMotorVelocity
-	,	deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall,
-		SpeedPIDCall,
-		normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall,
+	,	waitIntervalCall,
 		deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call,
-		waitIntervalCall
+		normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall,
+		SpeedPIDCall,
+		deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall
 		, share__
 		|}
 	
@@ -296,21 +296,21 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall.param_d,0)
-		CALL__SpeedPID(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-					param_newError) = EDeadline(SpeedPIDCall.param_newError,0)
-		CALL__normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget) = EDeadline(normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall,0)
-		CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call.param_d,0)
 		CALL__waitInterval(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 					param_m,
 					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
+		CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call.param_d,0)
+		CALL__normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget) = EDeadline(normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall,0)
+		CALL__SpeedPID(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+					param_newError) = EDeadline(SpeedPIDCall.param_newError,0)
+		CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall.param_d,0)
 		
 		-- END of Operation calls --
 	

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 14-05-2026 19:42:45
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 01-08-2026 20:37:15
 --
 
 module pkg994__sim_MainController
@@ -17,9 +17,9 @@ exports
 	
 	-- inputs, evars, rvars and outputs as calculated internally
 	-- outputs = {
-	--	(MainController::resume,stm_ref0::resume),
 	--	(MainController::turn,stm_ref0::turn),
-	--	(MainController::stop,stm_ref0::stop)
+	--	(MainController::stop,stm_ref0::stop),
+	--	(MainController::resume,stm_ref0::resume)
 	--	 }
 	-- inputs = {
 	--	(MainController::gas,stm_ref0::gas)
@@ -30,16 +30,16 @@ exports
 	-- declaring registerRead/Write datatypes
 	datatype RegisterDataInput = i_gas.Bool.LSeq(Chemical_GasSensor,2)
 	
-	datatype RegisterDataOutput = o_stop
+	datatype RegisterDataOutput = o_gas.LSeq(Chemical_GasSensor,2)
 		| o_resume
 		| o_turn.Chemical_Angle
-		| o_gas.LSeq(Chemical_GasSensor,2)
+		| o_stop
 	
 	
 	nametype RegisterOutputs = {|
-	o_resume,
 	o_turn,
-	o_stop|}
+	o_stop,
+	o_resume|}
 		
 	nametype RegisterInputs = {|
 	i_gas|}
@@ -123,32 +123,12 @@ exports
 		localClockResets = {||}
 		
 		
-		channel get_CLID_GasDetected : core_clock_type 
-		channel get_CLID_j1 : core_clock_type 
 		channel get_CLID_Analysis : core_clock_type 
+		channel get_CLID_GasDetected : core_clock_type 
 		channel get_CLID_NoGas : core_clock_type 
+		channel get_CLID_j1 : core_clock_type 
 		channel get_CLID_Reading : core_clock_type 
 		--channel increment__
-		
-		CLID_GasDetected_clock_type(id__,
-				          const_pkg994__sim_GasAnalysis_thr) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_j1_clock_type(id__,
-				          const_pkg994__sim_GasAnalysis_thr) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
 		CLID_Analysis_clock_type(id__,
 				          const_pkg994__sim_GasAnalysis_thr) = 
@@ -160,7 +140,27 @@ exports
 		within
 			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
+		CLID_GasDetected_clock_type(id__,
+				          const_pkg994__sim_GasAnalysis_thr) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
 		CLID_NoGas_clock_type(id__,
+				          const_pkg994__sim_GasAnalysis_thr) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_j1_clock_type(id__,
 				          const_pkg994__sim_GasAnalysis_thr) = 
 			let
 				max = (clock_type_max(Union({
@@ -191,14 +191,14 @@ exports
 		datatype RegisterDataInput = i_gas.Bool.LSeq(Chemical_GasSensor,2)
 		
 		
-		datatype RegisterDataOutput = o_stop
-			| o_resume
+		datatype RegisterDataOutput = o_resume
+			| o_stop
 			| o_turn.Chemical_Angle
 		
 		
 		nametype RegisterOutputs = {|
-		o_stop,
 		o_resume,
+		o_stop,
 		o_turn|}
 			
 		nametype RegisterInputs = {|
@@ -1877,17 +1877,6 @@ exports
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
 			
-			CALL__clone_normal_GasAnalysis_GasDetected_t9a_op(id__,
-					    const_pkg994__sim_GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t9a_op::O__(id__))
-			[[
-				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gs <- get_gs,
-				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gs <- set_gs,
-				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gasF <- get_gasF,
-				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gasF <- set_gasF
-			]]
-			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.x___ <- OP_clone_normal_GasAnalysis_GasDetected_t9a_op_registerWrite(OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.x___) | x___ <- OP_clone_normal_GasAnalysis_GasDetected_t9a_op::RegisterDataOutput ]]
-			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::startexec <- startexec ]]
-			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::endexec <- endexec ]]
 			CALL__clone_normal_GasAnalysis_GasDetected_t8_op(id__,
 					    const_pkg994__sim_GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t8_op::O__(id__))
 			[[
@@ -1906,16 +1895,27 @@ exports
 			[[ OP_clone_normal_GasAnalysis_Analysis_t3_op::registerWrite.x___ <- OP_clone_normal_GasAnalysis_Analysis_t3_op_registerWrite(OP_clone_normal_GasAnalysis_Analysis_t3_op::registerWrite.x___) | x___ <- OP_clone_normal_GasAnalysis_Analysis_t3_op::RegisterDataOutput ]]
 			[[ OP_clone_normal_GasAnalysis_Analysis_t3_op::startexec <- startexec ]]
 			[[ OP_clone_normal_GasAnalysis_Analysis_t3_op::endexec <- endexec ]]
+			CALL__clone_normal_GasAnalysis_GasDetected_t9a_op(id__,
+					    const_pkg994__sim_GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t9a_op::O__(id__))
+			[[
+				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gs <- get_gs,
+				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gs <- set_gs,
+				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gasF <- get_gasF,
+				OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gasF <- set_gasF
+			]]
+			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.x___ <- OP_clone_normal_GasAnalysis_GasDetected_t9a_op_registerWrite(OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.x___) | x___ <- OP_clone_normal_GasAnalysis_GasDetected_t9a_op::RegisterDataOutput ]]
+			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::startexec <- startexec ]]
+			[[ OP_clone_normal_GasAnalysis_GasDetected_t9a_op::endexec <- endexec ]]
 			-- END of Operation calls --
 		
-			datatype SOutputEvents = SOutput_stop
-				| SOutput_resume
+			datatype SOutputEvents = SOutput_resume
+				| SOutput_stop
 				| SOutput_turn
 			
 			cycle(cycle_pkg994__sim_GasAnalysis_GasAnalysis) =
 				let
-					project(o_stop) = SOutput_stop
 					project(o_resume) = SOutput_resume
+					project(o_stop) = SOutput_stop
 					project(o_turn.x__) = SOutput_turn
 			
 					Cycle =
@@ -2128,7 +2128,7 @@ exports
 			Behaviour(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 					    const_pkg994__sim_GasAnalysis_thr) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_GasDetected,GasDetected::entered,get_CLID_Analysis,Analysis::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
+					stateClockSync = {|get_CLID_Analysis,Analysis::entered,get_CLID_GasDetected,GasDetected::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
 				 within
 					(MachineBody(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 							    const_pkg994__sim_GasAnalysis_thr) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -2139,7 +2139,7 @@ exports
 			IteratedBehaviour(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 					    const_pkg994__sim_GasAnalysis_thr) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_GasDetected,GasDetected::entered,get_CLID_Analysis,Analysis::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
+					stateClockSync = {|get_CLID_Analysis,Analysis::entered,get_CLID_GasDetected,GasDetected::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
 				 within
 					(dbisim(
 						sbisim(
@@ -2161,15 +2161,15 @@ exports
 													          const_pkg994__sim_GasAnalysis_thr))
 										)\{|get_CLID_NoGas|}
 									)
-									[| {|get_CLID_Analysis,Analysis::entered,terminate|} |]
-									dbisim(Clock_CLID_Analysis(id__,0,
+									[| {|get_CLID_GasDetected,GasDetected::entered,terminate|} |]
+									dbisim(Clock_CLID_GasDetected(id__,0,
 											          const_pkg994__sim_GasAnalysis_thr))
-								)\{|get_CLID_Analysis|}
+								)\{|get_CLID_GasDetected|}
 							)
-							[| {|get_CLID_GasDetected,GasDetected::entered,terminate|} |]
-							dbisim(Clock_CLID_GasDetected(id__,0,
+							[| {|get_CLID_Analysis,Analysis::entered,terminate|} |]
+							dbisim(Clock_CLID_Analysis(id__,0,
 									          const_pkg994__sim_GasAnalysis_thr))
-						)\{|get_CLID_GasDetected|}
+						)\{|get_CLID_Analysis|}
 					)
 					) \ union(stateClockSync,enteredSS)
 				)
@@ -2300,7 +2300,7 @@ exports
 			Behaviour_VS_O(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 					    const_pkg994__sim_GasAnalysis_thr) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_GasDetected,GasDetected::entered,get_CLID_Analysis,Analysis::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
+					stateClockSync = {|get_CLID_Analysis,Analysis::entered,get_CLID_GasDetected,GasDetected::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
 				 within
 					(MachineBody_VS_O(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 							    const_pkg994__sim_GasAnalysis_thr) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -2311,7 +2311,7 @@ exports
 			IteratedBehaviour_VS_O(id__,cycle_pkg994__sim_GasAnalysis_GasAnalysis,
 					    const_pkg994__sim_GasAnalysis_thr) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_GasDetected,GasDetected::entered,get_CLID_Analysis,Analysis::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
+					stateClockSync = {|get_CLID_Analysis,Analysis::entered,get_CLID_GasDetected,GasDetected::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
 				 within
 					(dbisim(
 						sbisim(
@@ -2333,15 +2333,15 @@ exports
 													          const_pkg994__sim_GasAnalysis_thr))
 										)\{|get_CLID_NoGas|}
 									)
-									[| {|get_CLID_Analysis,Analysis::entered,terminate|} |]
-									dbisim(Clock_CLID_Analysis(id__,0,
+									[| {|get_CLID_GasDetected,GasDetected::entered,terminate|} |]
+									dbisim(Clock_CLID_GasDetected(id__,0,
 											          const_pkg994__sim_GasAnalysis_thr))
-								)\{|get_CLID_Analysis|}
+								)\{|get_CLID_GasDetected|}
 							)
-							[| {|get_CLID_GasDetected,GasDetected::entered,terminate|} |]
-							dbisim(Clock_CLID_GasDetected(id__,0,
+							[| {|get_CLID_Analysis,Analysis::entered,terminate|} |]
+							dbisim(Clock_CLID_Analysis(id__,0,
 									          const_pkg994__sim_GasAnalysis_thr))
-						)\{|get_CLID_GasDetected|}
+						)\{|get_CLID_Analysis|}
 					)
 					) \ diff(union(stateClockSync,enteredSS),enteredSS)
 				)
@@ -2441,18 +2441,6 @@ exports
 			
 			clockSync = {||}
 			
-			Clock_CLID_GasDetected(id__,x__,
-					          const_pkg994__sim_GasAnalysis_thr) = 
-				TimeOut_1(
-					GasDetected::entered -> Clock_CLID_GasDetected(id__,0,
-							          const_pkg994__sim_GasAnalysis_thr)
-					[]
-					get_CLID_GasDetected!x__ -> Clock_CLID_GasDetected(id__,x__,
-							          const_pkg994__sim_GasAnalysis_thr)
-					[]
-					terminate -> SKIP,Clock_CLID_GasDetected(id__,clock_type_plus(x__,1,CLID_GasDetected_clock_type(id__,
-							          const_pkg994__sim_GasAnalysis_thr)),
-							          const_pkg994__sim_GasAnalysis_thr))
 			Clock_CLID_Analysis(id__,x__,
 					          const_pkg994__sim_GasAnalysis_thr) = 
 				TimeOut_1(
@@ -2463,6 +2451,18 @@ exports
 							          const_pkg994__sim_GasAnalysis_thr)
 					[]
 					terminate -> SKIP,Clock_CLID_Analysis(id__,clock_type_plus(x__,1,CLID_Analysis_clock_type(id__,
+							          const_pkg994__sim_GasAnalysis_thr)),
+							          const_pkg994__sim_GasAnalysis_thr))
+			Clock_CLID_GasDetected(id__,x__,
+					          const_pkg994__sim_GasAnalysis_thr) = 
+				TimeOut_1(
+					GasDetected::entered -> Clock_CLID_GasDetected(id__,0,
+							          const_pkg994__sim_GasAnalysis_thr)
+					[]
+					get_CLID_GasDetected!x__ -> Clock_CLID_GasDetected(id__,x__,
+							          const_pkg994__sim_GasAnalysis_thr)
+					[]
+					terminate -> SKIP,Clock_CLID_GasDetected(id__,clock_type_plus(x__,1,CLID_GasDetected_clock_type(id__,
 							          const_pkg994__sim_GasAnalysis_thr)),
 							          const_pkg994__sim_GasAnalysis_thr))
 			Clock_CLID_NoGas(id__,x__,
@@ -2491,10 +2491,10 @@ exports
 							          const_pkg994__sim_GasAnalysis_thr))
 			
 			StateClocks(id__,
-					          const_pkg994__sim_GasAnalysis_thr) = dbisim(Clock_CLID_GasDetected(id__,0,
+					          const_pkg994__sim_GasAnalysis_thr) = dbisim(Clock_CLID_Analysis(id__,0,
 					          const_pkg994__sim_GasAnalysis_thr))
 			[| { terminate } |] (
-			dbisim(Clock_CLID_Analysis(id__,0,
+			dbisim(Clock_CLID_GasDetected(id__,0,
 					          const_pkg994__sim_GasAnalysis_thr))
 			[| { terminate } |] (
 			dbisim(Clock_CLID_NoGas(id__,0,
@@ -2506,11 +2506,11 @@ exports
 			)
 			)
 			
-			stateClockSync = {|get_CLID_GasDetected,GasDetected::entered,get_CLID_Analysis,Analysis::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
+			stateClockSync = {|get_CLID_Analysis,Analysis::entered,get_CLID_GasDetected,GasDetected::entered,get_CLID_NoGas,NoGas::entered,get_CLID_Reading,Reading::entered|}
 			
-			OP_clone_normal_GasAnalysis_GasDetected_t9a_op_registerWrite(OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.OP_clone_normal_GasAnalysis_GasDetected_t9a_op::o_turn.x__) = registerWrite.o_turn.x__
 			OP_clone_normal_GasAnalysis_GasDetected_t8_op_registerWrite(OP_clone_normal_GasAnalysis_GasDetected_t8_op::registerWrite.OP_clone_normal_GasAnalysis_GasDetected_t8_op::o_stop) = registerWrite.o_stop
 			OP_clone_normal_GasAnalysis_Analysis_t3_op_registerWrite(OP_clone_normal_GasAnalysis_Analysis_t3_op::registerWrite.OP_clone_normal_GasAnalysis_Analysis_t3_op::o_resume) = registerWrite.o_resume
+			OP_clone_normal_GasAnalysis_GasDetected_t9a_op_registerWrite(OP_clone_normal_GasAnalysis_GasDetected_t9a_op::registerWrite.OP_clone_normal_GasAnalysis_GasDetected_t9a_op::o_turn.x__) = registerWrite.o_turn.x__
 			
 			-- Shared memory
 			-- Shared memory variables
@@ -3677,9 +3677,9 @@ exports
 	
 	Timed(OneStep) {
 	-- (Rule 8) cycleController(...) : CSPProcess
-	datatype SOutputEvents = SOutput_resume
-		| SOutput_turn
+	datatype SOutputEvents = SOutput_turn
 		| SOutput_stop
+		| SOutput_resume
 	
 	DVarsEvents = {}
 	
@@ -3689,18 +3689,18 @@ exports
 			    const_pkg994__sim_MainController_stm_ref0_thr) =
 	let
 				
-		project_stm_ref0(stm_ref0::o_resume) = SOutput_resume
 		project_stm_ref0(stm_ref0::o_turn.x__) = SOutput_turn
 		project_stm_ref0(stm_ref0::o_stop) = SOutput_stop
+		project_stm_ref0(stm_ref0::o_resume) = SOutput_resume
 	
-		connected_stm_ref0(stm_ref0::o_resume) = true
 		connected_stm_ref0(stm_ref0::o_turn.x__) = true
 		connected_stm_ref0(stm_ref0::o_stop) = true
+		connected_stm_ref0(stm_ref0::o_resume) = true
 		connected_stm_ref0(_) = false
 	
-		lift_stm_ref0(stm_ref0::o_resume) = o_resume
 		lift_stm_ref0(stm_ref0::o_turn.x__) = o_turn.x__
 		lift_stm_ref0(stm_ref0::o_stop) = o_stop
+		lift_stm_ref0(stm_ref0::o_resume) = o_resume
 		
 		CycleController =
 			Deadline(

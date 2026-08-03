@@ -1,0 +1,283 @@
+Timed(OneStep) {
+
+-- channel Head_HeadS_enteredV, Head_HeadS_exitV : Head_HeadS_SIDS
+
+-- declare clocks
+Head_HeadS_Clocks = {}
+channel Head_HeadS_clockReset -- no clocks declared
+
+-- declare deadlines
+channel Head_HeadS_deadline : Head_HeadS_TIDS.Signal
+
+-- compile waiting conditions
+
+Head_HeadS_WC_enablerSet = {"dummy"}
+
+channel Head_HeadS_WC : Head_HeadS_WC_enablerSet.Bool
+
+Head_HeadS_WCset = {  }
+
+Head_HeadS_WCsync = {||}
+
+Head_HeadS_WCresets = {||}
+
+
+
+Head_HeadS_WaitingConditions = || (alpha, P) : Head_HeadS_WCset @ [alpha] wbisim(P)
+
+CS_Head_HeadS_Walking_sync = {|
+	Head_HeadS_enter.y.x, 
+	Head_HeadS_entered.y.x, 
+	Head_HeadS_exit.y.x, 
+	Head_HeadS_exited.y.x,
+	Head_HeadS_enter.x.y, 
+	Head_HeadS_entered.x.y, 
+	Head_HeadS_exit.x.y, 
+	Head_HeadS_exited.x.y |
+	x <- {"Head_HeadS_Walking","Head_HeadS_Stopped","Head_HeadS_Turning"},
+	y <- {"Head_HeadS_Walking"}
+|}
+
+
+
+S_Head_HeadS_Walking = let
+	T_Head_HeadS_t5	= Head_HeadS_wallDetected__!"Head_HeadS_t5" ->  ((
+					(Head_HeadS_stopSiren -> SKIP;Head_HeadS_enter!"Head_HeadS_Walking"!"Head_HeadS_Stopped" -> Head_HeadS_entered!"Head_HeadS_Walking"!"Head_HeadS_Stopped" ->
+					S_Head_HeadS_Walking
+					)[]
+					(Head_HeadS_enter!"Head_HeadS_Walking"!"Head_HeadS_Turning" -> Head_HeadS_entered!"Head_HeadS_Walking"!"Head_HeadS_Turning" ->
+					S_Head_HeadS_Walking
+					)
+					))
+	
+
+	S_Head_HeadS_Walking_execute(o__) = 
+	SKIP; 
+	Head_HeadS_entered!o__!"Head_HeadS_Walking" ->
+	   (
+	   										; STOP /\ (
+	   											    T_Head_HeadS_t5
+	   											    []
+	   											    Head_HeadS_internal__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t5"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Walking"})!"Head_HeadS_Walking" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Walking" -> SKIP);
+	   											      	S_Head_HeadS_Walking
+	   											    [] Head_HeadS_startSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t5"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Walking"})!"Head_HeadS_Walking" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Walking" -> SKIP);
+	   											      	S_Head_HeadS_Walking
+	   											    [] Head_HeadS_wallDetected__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t5"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Walking"})!"Head_HeadS_Walking" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Walking" -> SKIP);
+	   											      	S_Head_HeadS_Walking
+	   											    [] Head_HeadS_stopSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t5"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Walking"})!"Head_HeadS_Walking" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Walking" -> SKIP);
+	   											      	S_Head_HeadS_Walking
+	   											    )
+	   										)
+within
+Head_HeadS_enter?x:diff(Head_HeadS_SIDS,{"Head_HeadS_Walking"})!"Head_HeadS_Walking" -> ( 
+	S_Head_HeadS_Walking_execute(x)) 
+CS_Head_HeadS_Stopped_sync = {|
+	Head_HeadS_enter.y.x, 
+	Head_HeadS_entered.y.x, 
+	Head_HeadS_exit.y.x, 
+	Head_HeadS_exited.y.x,
+	Head_HeadS_enter.x.y, 
+	Head_HeadS_entered.x.y, 
+	Head_HeadS_exit.x.y, 
+	Head_HeadS_exited.x.y |
+	x <- {"Head_HeadS_Walking","Head_HeadS_Stopped","Head_HeadS_Turning"},
+	y <- {"Head_HeadS_Stopped"}
+|}
+
+
+
+S_Head_HeadS_Stopped = let
+	
+
+	S_Head_HeadS_Stopped_execute(o__) = 
+	SKIP; 
+	Head_HeadS_entered!o__!"Head_HeadS_Stopped" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    Head_HeadS_internal__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Stopped"})!"Head_HeadS_Stopped" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Stopped" -> SKIP);
+	   											      	S_Head_HeadS_Stopped
+	   											    [] Head_HeadS_startSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Stopped"})!"Head_HeadS_Stopped" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Stopped" -> SKIP);
+	   											      	S_Head_HeadS_Stopped
+	   											    [] Head_HeadS_wallDetected__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Stopped"})!"Head_HeadS_Stopped" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Stopped" -> SKIP);
+	   											      	S_Head_HeadS_Stopped
+	   											    [] Head_HeadS_stopSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Stopped"})!"Head_HeadS_Stopped" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Stopped" -> SKIP);
+	   											      	S_Head_HeadS_Stopped
+	   											    )
+	   										)
+within
+Head_HeadS_enter?x:diff(Head_HeadS_SIDS,{"Head_HeadS_Stopped"})!"Head_HeadS_Stopped" -> ( 
+	S_Head_HeadS_Stopped_execute(x)) 
+CS_Head_HeadS_Turning_sync = {|
+	Head_HeadS_enter.y.x, 
+	Head_HeadS_entered.y.x, 
+	Head_HeadS_exit.y.x, 
+	Head_HeadS_exited.y.x,
+	Head_HeadS_enter.x.y, 
+	Head_HeadS_entered.x.y, 
+	Head_HeadS_exit.x.y, 
+	Head_HeadS_exited.x.y |
+	x <- {"Head_HeadS_Walking","Head_HeadS_Stopped","Head_HeadS_Turning"},
+	y <- {"Head_HeadS_Turning"}
+|}
+
+
+
+S_Head_HeadS_Turning = let
+	T_Head_HeadS_t8	= Head_HeadS_internal__!"Head_HeadS_t8" ->  (
+					(Head_HeadS_startSiren -> SKIP;(
+									(Head_HeadS_enter!"Head_HeadS_Turning"!"Head_HeadS_Walking" -> Head_HeadS_entered!"Head_HeadS_Turning"!"Head_HeadS_Walking" ->
+									S_Head_HeadS_Turning
+									)
+									))[]
+					((
+									(Head_HeadS_enter!"Head_HeadS_Turning"!"Head_HeadS_Walking" -> Head_HeadS_entered!"Head_HeadS_Turning"!"Head_HeadS_Walking" ->
+									S_Head_HeadS_Turning
+									)
+									))
+					)
+	
+
+	S_Head_HeadS_Turning_execute(o__) = 
+	Deadline(turnCall -> turnRet -> SKIP,0); 
+	Head_HeadS_entered!o__!"Head_HeadS_Turning" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Head_HeadS_t8
+	   											    []
+	   											    Head_HeadS_internal__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t8"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Turning"})!"Head_HeadS_Turning" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Turning" -> SKIP);
+	   											      	S_Head_HeadS_Turning
+	   											    [] Head_HeadS_startSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t8"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Turning"})!"Head_HeadS_Turning" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Turning" -> SKIP);
+	   											      	S_Head_HeadS_Turning
+	   											    [] Head_HeadS_wallDetected__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t8"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Turning"})!"Head_HeadS_Turning" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Turning" -> SKIP);
+	   											      	S_Head_HeadS_Turning
+	   											    [] Head_HeadS_stopSiren__?x:diff(Head_HeadS_TIDS,{"__NULLTRANSITION__","Head_HeadS_t8"}) ->
+	   											      Head_HeadS_exit?y:diff(Head_HeadS_SIDS,{"Head_HeadS_Turning"})!"Head_HeadS_Turning" -> (
+	   											      	Head_HeadS_exited!y!"Head_HeadS_Turning" -> SKIP);
+	   											      	S_Head_HeadS_Turning
+	   											    )
+	   										)
+within
+Head_HeadS_enter?x:diff(Head_HeadS_SIDS,{"Head_HeadS_Turning"})!"Head_HeadS_Turning" -> ( 
+	S_Head_HeadS_Turning_execute(x)) 
+
+I_Head_HeadS_i0 = T_Head_HeadS_t0
+
+Head_HeadS_int_int = {|
+	Head_HeadS_startSiren__."Head_HeadS_t5",
+	Head_HeadS_wallDetected__."Head_HeadS_t5",
+	Head_HeadS_stopSiren__."Head_HeadS_t5",
+Head_HeadS_internal__."Head_HeadS_t5",
+	Head_HeadS_startSiren__."Head_HeadS_t8",
+	Head_HeadS_wallDetected__."Head_HeadS_t8",
+	Head_HeadS_stopSiren__."Head_HeadS_t8",
+Head_HeadS_internal__."Head_HeadS_t8"
+|}
+
+
+T_Head_HeadS_t0	= (
+				(Head_HeadS_startSiren -> SKIP;(
+								(Head_HeadS_enter!"Head_HeadS"!"Head_HeadS_Walking" -> Head_HeadS_entered!"Head_HeadS"!"Head_HeadS_Walking" ->
+								SKIP
+								)
+								))[]
+				((
+								(Head_HeadS_enter!"Head_HeadS"!"Head_HeadS_Walking" -> Head_HeadS_entered!"Head_HeadS"!"Head_HeadS_Walking" ->
+								SKIP
+								)
+								))
+				)
+
+S_Head_HeadS_Walking_R = S_Head_HeadS_Walking
+ 		[|diff(Head_HeadS_int_int,Head_HeadS_Walking_triggers)|]
+ 		SKIP
+ 		
+S_Head_HeadS_Stopped_R = S_Head_HeadS_Stopped
+ 		[|diff(Head_HeadS_int_int,Head_HeadS_Stopped_triggers)|]
+ 		SKIP
+ 		
+S_Head_HeadS_Turning_R = S_Head_HeadS_Turning
+ 		[|diff(Head_HeadS_int_int,Head_HeadS_Turning_triggers)|]
+ 		SKIP
+ 		
+STM_Head_HeadS = ShowEvents_Head_HeadS(I_Head_HeadS_i0
+[|{|Head_HeadS_enter.x.y,
+		Head_HeadS_entered.x.y,
+		Head_HeadS_exit.x.y,
+		Head_HeadS_exited.x.y |
+		x <- diff(Head_HeadS_SIDS,{"Head_HeadS_Walking","Head_HeadS_Stopped","Head_HeadS_Turning"}),
+		y <- {"Head_HeadS_Walking","Head_HeadS_Stopped","Head_HeadS_Turning"}
+|}|]
+ShowEvents_Head_HeadS(S_Head_HeadS_Walking_R
+  [|inter(CS_Head_HeadS_Walking_sync,union(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync))|]
+ ShowEvents_Head_HeadS(S_Head_HeadS_Stopped_R
+   [|inter(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync)|]
+  S_Head_HeadS_Turning_R,inter(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync))\inter(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync)
+ ,inter(CS_Head_HeadS_Walking_sync,union(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync)))\inter(CS_Head_HeadS_Walking_sync,union(CS_Head_HeadS_Stopped_sync,CS_Head_HeadS_Turning_sync))
+ 	,{|Head_HeadS_enter,Head_HeadS_entered,
+ 	Head_HeadS_exit,Head_HeadS_exited|})\{|Head_HeadS_enter,Head_HeadS_entered,
+  Head_HeadS_exit,Head_HeadS_exited|}
+-- memory process
+channel getWC_Head_HeadS : Head_HeadS_WC_enablerSet.Bool
+
+
+MemoryTransitions_Head_HeadS = ((Head_HeadS_wallDetected__!"Head_HeadS_t5" -> MemoryTransitions_Head_HeadS
+[]
+Head_HeadS_internal__!"Head_HeadS_t8" -> MemoryTransitions_Head_HeadS))
+
+
+MemoryVariablesProcesses_Head_HeadS = {}
+
+MemoryVariables_Head_HeadS = ||| (P, alpha) : MemoryVariablesProcesses_Head_HeadS @ P
+MemoryVariablesSyncSet_Head_HeadS = {||}
+MemoryVariablesHideSet_Head_HeadS = {||}
+
+MemoryN_Head_HeadS = (wbisim(MemoryVariables_Head_HeadS) [| MemoryVariablesSyncSet_Head_HeadS |] wbisim(MemoryTransitions_Head_HeadS)) \ MemoryVariablesHideSet_Head_HeadS
+
+Memory_Head_HeadS = (
+Head_HeadS_wallDetected__!"Head_HeadS_t5" -> Memory_Head_HeadS
+[]
+Head_HeadS_internal__!"Head_HeadS_t8" -> Memory_Head_HeadS
+)
+
+MemoryO_Head_HeadS = Memory_Head_HeadS
+
+-- main process
+Head_HeadS_aux = prioritise(timed_priority(((wbisim(STM_Head_HeadS)
+	[|Union({
+		{||},
+		{|Head_HeadS_wallDetected__."Head_HeadS_t5",
+		Head_HeadS_internal__."Head_HeadS_t8"|}
+		,
+		{|Head_HeadS_deadline|},
+		Head_HeadS_WCresets
+	})|]
+	(wbisim(MemoryN_Head_HeadS) [| union({|Head_HeadS_WC|},Head_HeadS_WCsync) |] Head_HeadS_WaitingConditions)\{|Head_HeadS_WC|}
+)[[Head_HeadS_startSiren__.x <- Head_HeadS_startSiren, Head_HeadS_wallDetected__.x <- Head_HeadS_wallDetected, Head_HeadS_stopSiren__.x <- Head_HeadS_stopSiren| x<-Head_HeadS_TIDS]]\union({||},{|Head_HeadS_deadline,Head_HeadS_clockReset|}))
+[|{|Head_HeadS_terminate|}|>SKIP\{|Head_HeadS_terminate, Head_HeadS_internal__|}),<{|Head_HeadS_enteredV,Head_HeadS_enterV,Head_HeadS_exitV,Head_HeadS_exitedV|},{tock}>)
+
+Head_HeadS = timed_priority(Head_HeadS_aux \ {|Head_HeadS_enteredV, Head_HeadS_enterV, Head_HeadS_exitV, Head_HeadS_exitedV|})
+Head_HeadS_VS = Head_HeadS_aux
+}
+

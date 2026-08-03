@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:58:34
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 24-06-2026 14:28:42
 --
 
 -- compileSelfContainedOperation
@@ -38,8 +38,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel clone_waitOp_j_2_4_fCall: core_nat
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	i::enter,
@@ -99,8 +99,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
 				,registerWrite
-	,	moveCall,
-		clone_waitOp_j_2_4_fCall
+	,	clone_waitOp_j_2_4_fCall,
+		moveCall
 		, share__
 		|}
 	
@@ -200,13 +200,13 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_waitOp_j_2_4_f(id__,
+				    const_pkg224_SimFW_sim_clone_normal_SMovement_Turning_entry_av,
+					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_sim_clone_normal_SMovement_Turning_entry_av,
 					param_lv,
 					param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
-		CALL__clone_waitOp_j_2_4_f(id__,
-				    const_pkg224_SimFW_sim_clone_normal_SMovement_Turning_entry_av,
-					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
 		
 		-- END of Operation calls --
 	

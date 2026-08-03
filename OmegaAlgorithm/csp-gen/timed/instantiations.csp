@@ -1,0 +1,81 @@
+-- generate --
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{}))..calc_type_max(Union({}))})
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS
+
+-- generate const_Turn_angularSpeed1
+const_Turn_angularSpeed1 = 0
+
+-- generate const_Turn_rotate
+const_Turn_rotate = 0
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_UpdateAvoidanceRadius_avoidanceRadius2
+const_UpdateAvoidanceRadius_avoidanceRadius2 = 0
+
+-- BASIC TYPES
+
+-- generate const_UpdateAvoidanceRadius_avoidanceRadius1
+const_UpdateAvoidanceRadius_avoidanceRadius1 = 0
+
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{Plus(degreeTurned, Mult(angularSpeed, angularSpeed1, { -2..2}), { -2..2})|angularSpeed1 <- { -2..2},degreeTurned <- { -2..2},angularSpeed <- { -2..2}},{0},{0},{avoidanceRadius2|avoidanceRadius2 <- { -2..2}},{avoidanceRadius1|avoidanceRadius1 <- { -2..2}},{i|i <- { -2..2}},{0},{0},{j|j <- { -2..2}},{0},{j|j <- { -2..2}},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{MoveForwardVal|MoveForwardVal <- { -2..2}},{Neg(rotate, { -2..2})|rotate <- { -2..2}},{rotate|rotate <- { -2..2}}}))..calc_type_max(Union({{Plus(degreeTurned, Mult(angularSpeed, angularSpeed1, { -2..2}), { -2..2})|angularSpeed1 <- { -2..2},degreeTurned <- { -2..2},angularSpeed <- { -2..2}},{0},{0},{avoidanceRadius2|avoidanceRadius2 <- { -2..2}},{avoidanceRadius1|avoidanceRadius1 <- { -2..2}},{i|i <- { -2..2}},{0},{0},{j|j <- { -2..2}},{0},{j|j <- { -2..2}},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{MoveForwardVal|MoveForwardVal <- { -2..2}},{Neg(rotate, { -2..2})|rotate <- { -2..2}},{rotate|rotate <- { -2..2}}}))}) 
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{}))..calc_type_max(Union({}))})
+
+-- generate -- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal
+const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal = 0
+
+-- OPERATION CONSTANTS
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+

@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 16-05-2026 09:08:55
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 12:31:02
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -116,23 +116,10 @@
 			localClockResets = {|clockReset.CLID_MBC|}
 			
 			
-			channel get_CLID_Turning : core_clock_type 
 			channel get_CLID_MBC : core_clock_type 
+			channel get_CLID_Turning : core_clock_type 
 			channel get_CLID_MovementAndAvoidance : core_clock_type 
 			--channel increment__
-			
-			CLID_Turning_clock_type(id__,
-					          const_aggregation_Movement_lv,
-					          const_aggregation_Movement_av,
-					          const_aggregation_Movement_MB,
-					          const_aggregation_Movement_alpha) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_MBC_clock_type(id__,
 					          const_aggregation_Movement_lv,
@@ -143,6 +130,19 @@
 					max = (clock_type_max(Union({
 			{},
 			({const_aggregation_Movement_MB|MB <- core_real})
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Turning_clock_type(id__,
+					          const_aggregation_Movement_lv,
+					          const_aggregation_Movement_av,
+					          const_aggregation_Movement_MB,
+					          const_aggregation_Movement_alpha) = 
+				let
+					max = (clock_type_max(Union({
+			{}
 			}))+1)
 				ctype = {0..max}
 			within
@@ -234,11 +234,11 @@
 					channel neighbours__: NIDS.InOut.core_nat
 					channel obstacle__: NIDS.InOut.main_Position
 					
-					channel get_CLID_Move : core_clock_type 
 					channel get_CLID_Avoid : core_clock_type 
+					channel get_CLID_Move : core_clock_type 
 					--channel increment__
 					
-					CLID_Move_clock_type(id__,
+					CLID_Avoid_clock_type(id__,
 							          const_aggregation_Movement_lv,
 							          const_aggregation_Movement_av,
 							          const_aggregation_Movement_MB,
@@ -250,7 +250,7 @@
 					within
 						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 					
-					CLID_Avoid_clock_type(id__,
+					CLID_Move_clock_type(id__,
 							          const_aggregation_Movement_lv,
 							          const_aggregation_Movement_av,
 							          const_aggregation_Movement_MB,
@@ -628,42 +628,42 @@
 								 						| x____ <- NIDS
 								 					]]
 								 				)
-								 				[| {|get_CLID_Avoid,Avoid::entered,terminate|} |]
-								 				dbisim(Clock_CLID_Avoid(id__,0,
+								 				[| {|get_CLID_Move,Move::entered,terminate|} |]
+								 				dbisim(Clock_CLID_Move(id__,0,
 								 						          const_aggregation_Movement_lv,
 								 						          const_aggregation_Movement_av,
 								 						          const_aggregation_Movement_MB,
 								 						          const_aggregation_Movement_alpha))
-								 			)\{|get_CLID_Avoid|}
+								 			)\{|get_CLID_Move|}
 								 		)
-								 		[| {|get_CLID_Move,Move::entered,terminate|} |]
-								 		dbisim(Clock_CLID_Move(id__,0,
+								 		[| {|get_CLID_Avoid,Avoid::entered,terminate|} |]
+								 		dbisim(Clock_CLID_Avoid(id__,0,
 								 				          const_aggregation_Movement_lv,
 								 				          const_aggregation_Movement_av,
 								 				          const_aggregation_Movement_MB,
 								 				          const_aggregation_Movement_alpha))
-								 	)\{|get_CLID_Move|}
+								 	)\{|get_CLID_Avoid|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_turned,clockResetR.CLID_MBC,setR_p,setR_n |} ]] 
-								  [[set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_p <- setL_p,set_n <- setL_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_turned,clockResetR.CLID_MBC,setR_n |} ]] 
+								  [[set_p <- setL_p,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_n <- setL_n]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_p
 								 			,setL_turned
 								 			,clockResetL.CLID_MBC
-								 			,setL_p
 								 			,setL_n
-								 			,setR_turned
+								 			,setR_p
+								 			 			,setR_turned
 								 			 			,clockResetR.CLID_MBC
-								 			 			,setR_p
 								 			 			,setR_n
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_turned,clockResetL.CLID_MBC,setL_p,setL_n |} ]]
-								  [[set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_p <- setR_p,set_n <- setR_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_turned,clockResetL.CLID_MBC,setL_n |} ]]
+								  [[set_p <- setR_p,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_n <- setR_n]]
 								 )
-								)[[setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_p <- set_p,setL_n <- set_n]]
-								 [[setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_p <- set_p,setR_n <- set_n]]
+								)[[setL_p <- set_p,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_n <- set_n]]
+								 [[setR_p <- set_p,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_n <- set_n]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -760,42 +760,42 @@
 								 						| x____ <- NIDS
 								 					]]
 								 				)
-								 				[| {|get_CLID_Avoid,Avoid::entered,terminate|} |]
-								 				dbisim(Clock_CLID_Avoid(id__,0,
+								 				[| {|get_CLID_Move,Move::entered,terminate|} |]
+								 				dbisim(Clock_CLID_Move(id__,0,
 								 						          const_aggregation_Movement_lv,
 								 						          const_aggregation_Movement_av,
 								 						          const_aggregation_Movement_MB,
 								 						          const_aggregation_Movement_alpha))
-								 			)\{|get_CLID_Avoid|}
+								 			)\{|get_CLID_Move|}
 								 		)
-								 		[| {|get_CLID_Move,Move::entered,terminate|} |]
-								 		dbisim(Clock_CLID_Move(id__,0,
+								 		[| {|get_CLID_Avoid,Avoid::entered,terminate|} |]
+								 		dbisim(Clock_CLID_Avoid(id__,0,
 								 				          const_aggregation_Movement_lv,
 								 				          const_aggregation_Movement_av,
 								 				          const_aggregation_Movement_MB,
 								 				          const_aggregation_Movement_alpha))
-								 	)\{|get_CLID_Move|}
+								 	)\{|get_CLID_Avoid|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_turned,clockResetR.CLID_MBC,setR_p,setR_n |} ]] 
-								  [[set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_p <- setL_p,set_n <- setL_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_turned,clockResetR.CLID_MBC,setR_n |} ]] 
+								  [[set_p <- setL_p,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_n <- setL_n]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_p
 								 			,setL_turned
 								 			,clockResetL.CLID_MBC
-								 			,setL_p
 								 			,setL_n
-								 			,setR_turned
+								 			,setR_p
+								 			 			,setR_turned
 								 			 			,clockResetR.CLID_MBC
-								 			 			,setR_p
 								 			 			,setR_n
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_turned,clockResetL.CLID_MBC,setL_p,setL_n |} ]]
-								  [[set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_p <- setR_p,set_n <- setR_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_turned,clockResetL.CLID_MBC,setL_n |} ]]
+								  [[set_p <- setR_p,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_n <- setR_n]]
 								 )
-								)[[setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_p <- set_p,setL_n <- set_n]]
-								 [[setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_p <- set_p,setR_n <- set_n]]
+								)[[setL_p <- set_p,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_n <- set_n]]
+								 [[setR_p <- set_p,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_n <- set_n]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -826,33 +826,6 @@
 						
 						
 						-- Clocks
-						Clock_CLID_Move(id__,x__,
-								          const_aggregation_Movement_lv,
-								          const_aggregation_Movement_av,
-								          const_aggregation_Movement_MB,
-								          const_aggregation_Movement_alpha) = 
-							TimeOut_1(
-								Move::entered -> Clock_CLID_Move(id__,0,
-										          const_aggregation_Movement_lv,
-										          const_aggregation_Movement_av,
-										          const_aggregation_Movement_MB,
-										          const_aggregation_Movement_alpha)
-								[]
-								get_CLID_Move!x__ -> Clock_CLID_Move(id__,x__,
-										          const_aggregation_Movement_lv,
-										          const_aggregation_Movement_av,
-										          const_aggregation_Movement_MB,
-										          const_aggregation_Movement_alpha)
-								[]
-								terminate -> SKIP,Clock_CLID_Move(id__,clock_type_plus(x__,1,CLID_Move_clock_type(id__,
-										          const_aggregation_Movement_lv,
-										          const_aggregation_Movement_av,
-										          const_aggregation_Movement_MB,
-										          const_aggregation_Movement_alpha)),
-										          const_aggregation_Movement_lv,
-										          const_aggregation_Movement_av,
-										          const_aggregation_Movement_MB,
-										          const_aggregation_Movement_alpha))
 						Clock_CLID_Avoid(id__,x__,
 								          const_aggregation_Movement_lv,
 								          const_aggregation_Movement_av,
@@ -880,25 +853,52 @@
 										          const_aggregation_Movement_av,
 										          const_aggregation_Movement_MB,
 										          const_aggregation_Movement_alpha))
+						Clock_CLID_Move(id__,x__,
+								          const_aggregation_Movement_lv,
+								          const_aggregation_Movement_av,
+								          const_aggregation_Movement_MB,
+								          const_aggregation_Movement_alpha) = 
+							TimeOut_1(
+								Move::entered -> Clock_CLID_Move(id__,0,
+										          const_aggregation_Movement_lv,
+										          const_aggregation_Movement_av,
+										          const_aggregation_Movement_MB,
+										          const_aggregation_Movement_alpha)
+								[]
+								get_CLID_Move!x__ -> Clock_CLID_Move(id__,x__,
+										          const_aggregation_Movement_lv,
+										          const_aggregation_Movement_av,
+										          const_aggregation_Movement_MB,
+										          const_aggregation_Movement_alpha)
+								[]
+								terminate -> SKIP,Clock_CLID_Move(id__,clock_type_plus(x__,1,CLID_Move_clock_type(id__,
+										          const_aggregation_Movement_lv,
+										          const_aggregation_Movement_av,
+										          const_aggregation_Movement_MB,
+										          const_aggregation_Movement_alpha)),
+										          const_aggregation_Movement_lv,
+										          const_aggregation_Movement_av,
+										          const_aggregation_Movement_MB,
+										          const_aggregation_Movement_alpha))
 						
 						StateClocks(id__,
 								          const_aggregation_Movement_lv,
 								          const_aggregation_Movement_av,
 								          const_aggregation_Movement_MB,
-								          const_aggregation_Movement_alpha) = dbisim(Clock_CLID_Move(id__,0,
+								          const_aggregation_Movement_alpha) = dbisim(Clock_CLID_Avoid(id__,0,
 								          const_aggregation_Movement_lv,
 								          const_aggregation_Movement_av,
 								          const_aggregation_Movement_MB,
 								          const_aggregation_Movement_alpha))
 						[| { terminate } |] (
-						dbisim(Clock_CLID_Avoid(id__,0,
+						dbisim(Clock_CLID_Move(id__,0,
 								          const_aggregation_Movement_lv,
 								          const_aggregation_Movement_av,
 								          const_aggregation_Movement_MB,
 								          const_aggregation_Movement_alpha))
 						)
 						
-						stateClockSync = {|get_CLID_Move,Move::entered,get_CLID_Avoid,Avoid::entered|}
+						stateClockSync = {|get_CLID_Avoid,Avoid::entered,get_CLID_Move,Move::entered|}
 					}
 				
 				endmodule
@@ -1430,25 +1430,25 @@
 								 	)\{|get_CLID_Turn180|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_turned,clockResetR.CLID_MBC,setR_p,setR_n |} ]] 
-								  [[set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_p <- setL_p,set_n <- setL_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_turned,clockResetR.CLID_MBC,setR_n |} ]] 
+								  [[set_p <- setL_p,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_n <- setL_n]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_p
 								 			,setL_turned
 								 			,clockResetL.CLID_MBC
-								 			,setL_p
 								 			,setL_n
-								 			,setR_turned
+								 			,setR_p
+								 			 			,setR_turned
 								 			 			,clockResetR.CLID_MBC
-								 			 			,setR_p
 								 			 			,setR_n
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_turned,clockResetL.CLID_MBC,setL_p,setL_n |} ]]
-								  [[set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_p <- setR_p,set_n <- setR_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_turned,clockResetL.CLID_MBC,setL_n |} ]]
+								  [[set_p <- setR_p,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_n <- setR_n]]
 								 )
-								)[[setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_p <- set_p,setL_n <- set_n]]
-								 [[setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_p <- set_p,setR_n <- set_n]]
+								)[[setL_p <- set_p,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_n <- set_n]]
+								 [[setR_p <- set_p,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_n <- set_n]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1579,25 +1579,25 @@
 								 	)\{|get_CLID_Turn180|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_turned,clockResetR.CLID_MBC,setR_p,setR_n |} ]] 
-								  [[set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_p <- setL_p,set_n <- setL_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_turned,clockResetR.CLID_MBC,setR_n |} ]] 
+								  [[set_p <- setL_p,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_n <- setL_n]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_p
 								 			,setL_turned
 								 			,clockResetL.CLID_MBC
-								 			,setL_p
 								 			,setL_n
-								 			,setR_turned
+								 			,setR_p
+								 			 			,setR_turned
 								 			 			,clockResetR.CLID_MBC
-								 			 			,setR_p
 								 			 			,setR_n
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_turned,clockResetL.CLID_MBC,setL_p,setL_n |} ]]
-								  [[set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_p <- setR_p,set_n <- setR_n]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_turned,clockResetL.CLID_MBC,setL_n |} ]]
+								  [[set_p <- setR_p,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_n <- setR_n]]
 								 )
-								)[[setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_p <- set_p,setL_n <- set_n]]
-								 [[setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_p <- set_p,setR_n <- set_n]]
+								)[[setL_p <- set_p,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_n <- set_n]]
+								 [[setR_p <- set_p,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_n <- set_n]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

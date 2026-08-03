@@ -1,0 +1,22 @@
+ExternalEvents_Head = {|Head_stopSiren,Head_liftFootRight,turnRet,Head_stepDoneLeft,Head_stepDoneRight,Head_liftFootLeft,turnCall,Head_startSiren,Head_wallDetected|}
+
+assert T_Head :[deterministic]
+assert T_Head :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Head)      [F= T_Head |\ union(ExternalEvents_Head,{tock})
+
+-- zeno freedom
+assert T_Head |\ union(ExternalEvents_Head,{tock})  :[divergence-free]
+
+-- every state is reachable in this controller
+
+-- every state is can be reached infinitely often
+
+-- timed model is a refinement
+assert sbisim(diamond(Head)) [F= T_Head \ {tock}
+assert sbisim(diamond(Head_VS)) [T= T_Head_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Head \ {tock} [T= sbisim(diamond(Head))
+assert T_Head_VS \ {tock} [T= sbisim(diamond(Head_VS))

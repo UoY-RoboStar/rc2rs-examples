@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 module pkg867__sim_BalanceSTM
@@ -61,18 +61,18 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel disableInterruptsCall
+	channel setLeftMotorSpeedCall: core_real
+	channel clone_normal_BalanceSTM_j1_t5_opCall
+	channel clone_normal_BalanceSTM_SetMotors_entryCall
 	channel clone_normal_BalanceSTM_Initialisation_entryCall
 	channel clone_normal_BalanceSTM_CalculateRotation_entryCall
-	channel setLeftMotorSpeedCall: core_real
-	channel disableInterruptsCall
 	channel clone_normal_BalanceSTM_StopMotors_entryCall
-	channel clone_normal_BalanceSTM_SetMotors_entryCall
-	channel clone_normal_BalanceSTM_j1_t5_opCall
-	channel clone_normal_BalanceSTM_CalculateAngle_entryCall
-	channel enableInterruptsCall
 	channel clone_normal_BalanceSTM_CalculateAngle_t3_opCall
-	channel clone_normal_BalanceSTM_CalculateSpeed_entryCall
+	channel enableInterruptsCall
+	channel clone_normal_BalanceSTM_CalculateAngle_entryCall
 	channel setRightMotorSpeedCall: core_real
+	channel clone_normal_BalanceSTM_CalculateSpeed_entryCall
 	
 	enterSS = {|
 	i0::enter,
@@ -112,17 +112,35 @@ exports
 	localClockResets = {|clockReset.CLID_loopTimer|}
 	
 	
-	channel get_CLID_CalculateRotation : core_clock_type 
-	channel get_CLID_SetMotors : core_clock_type 
-	channel get_CLID_loopTimer : core_clock_type 
 	channel get_CLID_CalculateSpeed : core_clock_type 
-	channel get_CLID_StopMotors : core_clock_type 
-	channel get_CLID_Initialisation : core_clock_type 
-	channel get_CLID_WaitForNextIteration : core_clock_type 
 	channel get_CLID_CalculateAngle : core_clock_type 
+	channel get_CLID_SetMotors : core_clock_type 
+	channel get_CLID_StopMotors : core_clock_type 
+	channel get_CLID_loopTimer : core_clock_type 
+	channel get_CLID_Initialisation : core_clock_type 
+	channel get_CLID_CalculateRotation : core_clock_type 
+	channel get_CLID_WaitForNextIteration : core_clock_type 
 	--channel increment__
 	
-	CLID_CalculateRotation_clock_type(id__,
+	CLID_CalculateSpeed_clock_type(id__,
+			          const_pkg867__sim_BalanceSTM_maxAngle,
+			          const_pkg867__sim_BalanceSTM_loopTime,
+			          const_pkg867__sim_BalanceSTM_startupDelay,
+			          const_pkg867__sim_BalanceSTM_speedUpdate,
+			          const_pkg867__sim_BalanceSTM_rotationUpdate,
+			          const_pkg867__sim_BalanceSTM_angleBudget,
+			          const_pkg867__sim_BalanceSTM_speedBudget,
+			          const_pkg867__sim_BalanceSTM_rotationBudget,
+			          const_pkg867__sim_BalanceSTM_motorBudget) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CalculateAngle_clock_type(id__,
 			          const_pkg867__sim_BalanceSTM_maxAngle,
 			          const_pkg867__sim_BalanceSTM_loopTime,
 			          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -141,6 +159,24 @@ exports
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_SetMotors_clock_type(id__,
+			          const_pkg867__sim_BalanceSTM_maxAngle,
+			          const_pkg867__sim_BalanceSTM_loopTime,
+			          const_pkg867__sim_BalanceSTM_startupDelay,
+			          const_pkg867__sim_BalanceSTM_speedUpdate,
+			          const_pkg867__sim_BalanceSTM_rotationUpdate,
+			          const_pkg867__sim_BalanceSTM_angleBudget,
+			          const_pkg867__sim_BalanceSTM_speedBudget,
+			          const_pkg867__sim_BalanceSTM_rotationBudget,
+			          const_pkg867__sim_BalanceSTM_motorBudget) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_StopMotors_clock_type(id__,
 			          const_pkg867__sim_BalanceSTM_maxAngle,
 			          const_pkg867__sim_BalanceSTM_loopTime,
 			          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -178,43 +214,25 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_CalculateSpeed_clock_type(id__,
-			          const_pkg867__sim_BalanceSTM_maxAngle,
-			          const_pkg867__sim_BalanceSTM_loopTime,
-			          const_pkg867__sim_BalanceSTM_startupDelay,
-			          const_pkg867__sim_BalanceSTM_speedUpdate,
-			          const_pkg867__sim_BalanceSTM_rotationUpdate,
-			          const_pkg867__sim_BalanceSTM_angleBudget,
-			          const_pkg867__sim_BalanceSTM_speedBudget,
-			          const_pkg867__sim_BalanceSTM_rotationBudget,
-			          const_pkg867__sim_BalanceSTM_motorBudget) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_StopMotors_clock_type(id__,
-			          const_pkg867__sim_BalanceSTM_maxAngle,
-			          const_pkg867__sim_BalanceSTM_loopTime,
-			          const_pkg867__sim_BalanceSTM_startupDelay,
-			          const_pkg867__sim_BalanceSTM_speedUpdate,
-			          const_pkg867__sim_BalanceSTM_rotationUpdate,
-			          const_pkg867__sim_BalanceSTM_angleBudget,
-			          const_pkg867__sim_BalanceSTM_speedBudget,
-			          const_pkg867__sim_BalanceSTM_rotationBudget,
-			          const_pkg867__sim_BalanceSTM_motorBudget) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
 	CLID_Initialisation_clock_type(id__,
+			          const_pkg867__sim_BalanceSTM_maxAngle,
+			          const_pkg867__sim_BalanceSTM_loopTime,
+			          const_pkg867__sim_BalanceSTM_startupDelay,
+			          const_pkg867__sim_BalanceSTM_speedUpdate,
+			          const_pkg867__sim_BalanceSTM_rotationUpdate,
+			          const_pkg867__sim_BalanceSTM_angleBudget,
+			          const_pkg867__sim_BalanceSTM_speedBudget,
+			          const_pkg867__sim_BalanceSTM_rotationBudget,
+			          const_pkg867__sim_BalanceSTM_motorBudget) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CalculateRotation_clock_type(id__,
 			          const_pkg867__sim_BalanceSTM_maxAngle,
 			          const_pkg867__sim_BalanceSTM_loopTime,
 			          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -250,24 +268,6 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_CalculateAngle_clock_type(id__,
-			          const_pkg867__sim_BalanceSTM_maxAngle,
-			          const_pkg867__sim_BalanceSTM_loopTime,
-			          const_pkg867__sim_BalanceSTM_startupDelay,
-			          const_pkg867__sim_BalanceSTM_speedUpdate,
-			          const_pkg867__sim_BalanceSTM_rotationUpdate,
-			          const_pkg867__sim_BalanceSTM_angleBudget,
-			          const_pkg867__sim_BalanceSTM_speedBudget,
-			          const_pkg867__sim_BalanceSTM_rotationBudget,
-			          const_pkg867__sim_BalanceSTM_motorBudget) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
 	
 	
 	-- RoboSim-specific declarations
@@ -276,33 +276,33 @@ exports
 	channel startexec, startexec_action
 	
 	-- declaring registerRead/Write datatypes
-	datatype RegisterDataInput = i_rightMotorVelocity.Bool.core_real
-		| i_gyroX.Bool.core_real
-		| i_leftMotorVelocity.Bool.core_real
-		| i_gyroY.Bool.core_real
-		| i_gyroZ.Bool.core_real
+	datatype RegisterDataInput = i_gyroZ.Bool.core_real
 		| i_angle.Bool.core_real
+		| i_leftMotorVelocity.Bool.core_real
+		| i_gyroX.Bool.core_real
+		| i_gyroY.Bool.core_real
+		| i_rightMotorVelocity.Bool.core_real
 	
 	
-	datatype RegisterDataOutput = o_disableInterrupts
+	datatype RegisterDataOutput = o_setRightMotorSpeed.core_real
 		| o_enableInterrupts
+		| o_disableInterrupts
 		| o_setLeftMotorSpeed.core_real
-		| o_setRightMotorSpeed.core_real
 	
 	
 	nametype RegisterOutputs = {|
-	o_disableInterrupts,
+	o_setRightMotorSpeed,
 	o_enableInterrupts,
-	o_setLeftMotorSpeed,
-	o_setRightMotorSpeed|}
+	o_disableInterrupts,
+	o_setLeftMotorSpeed|}
 		
 	nametype RegisterInputs = {|
-	i_rightMotorVelocity,
-	i_gyroX,
-	i_leftMotorVelocity,
-	i_gyroY,
 	i_gyroZ,
-	i_angle|}
+	i_angle,
+	i_leftMotorVelocity,
+	i_gyroX,
+	i_gyroY,
+	i_rightMotorVelocity|}
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
@@ -319,18 +319,18 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 				,registerWrite
-	,	clone_normal_BalanceSTM_Initialisation_entryCall,
-		clone_normal_BalanceSTM_CalculateRotation_entryCall,
+	,	disableInterruptsCall,
 		setLeftMotorSpeedCall,
-		disableInterruptsCall,
-		clone_normal_BalanceSTM_StopMotors_entryCall,
-		clone_normal_BalanceSTM_SetMotors_entryCall,
 		clone_normal_BalanceSTM_j1_t5_opCall,
-		clone_normal_BalanceSTM_CalculateAngle_entryCall,
-		enableInterruptsCall,
+		clone_normal_BalanceSTM_SetMotors_entryCall,
+		clone_normal_BalanceSTM_Initialisation_entryCall,
+		clone_normal_BalanceSTM_CalculateRotation_entryCall,
+		clone_normal_BalanceSTM_StopMotors_entryCall,
 		clone_normal_BalanceSTM_CalculateAngle_t3_opCall,
-		clone_normal_BalanceSTM_CalculateSpeed_entryCall,
-		setRightMotorSpeedCall
+		enableInterruptsCall,
+		clone_normal_BalanceSTM_CalculateAngle_entryCall,
+		setRightMotorSpeedCall,
+		clone_normal_BalanceSTM_CalculateSpeed_entryCall
 		|}
 
 		-- Nodes --
@@ -727,53 +727,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -899,53 +899,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1396,53 +1396,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1559,53 +1559,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2066,53 +2066,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2238,53 +2238,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2794,53 +2794,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2966,53 +2966,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3572,53 +3572,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3744,53 +3744,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4300,53 +4300,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4472,53 +4472,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4978,53 +4978,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5150,53 +5150,53 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_currGyroY,setR_gyroXF,setR_speedCount,clockResetR.CLID_loopTimer,setR_currGyroX,setR_rotationOutput,setR_currAngle,setR_currLeftVel,setR_speedOutput,setR_rotationCount,setR_leftMotorVelocityF,setR_currRightVel,setR_angleOutput,setR_rightMotorVelocityF,setR_speedIntegral,setR_angleF,setR_currGyroZ |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_currGyroY <- setL_currGyroY,set_gyroXF <- setL_gyroXF,set_speedCount <- setL_speedCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_currGyroX <- setL_currGyroX,set_rotationOutput <- setL_rotationOutput,set_currAngle <- setL_currAngle,set_currLeftVel <- setL_currLeftVel,set_speedOutput <- setL_speedOutput,set_rotationCount <- setL_rotationCount,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_currRightVel <- setL_currRightVel,set_angleOutput <- setL_angleOutput,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedIntegral <- setL_speedIntegral,set_angleF <- setL_angleF,set_currGyroZ <- setL_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currAngle,setR_currGyroY,clockResetR.CLID_loopTimer,setR_speedOutput,setR_currLeftVel,setR_angleF,setR_currRightVel,setR_rotationOutput,setR_leftMotorVelocityF,setR_rightMotorVelocityF,setR_speedCount,setR_currGyroX,setR_rotationCount,setR_gyroXF,setR_currGyroZ,setR_speedIntegral,setR_angleOutput,setR_gyroZF |} ]] 
+						  [[set_currAngle <- setL_currAngle,set_currGyroY <- setL_currGyroY,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_angleF <- setL_angleF,set_currRightVel <- setL_currRightVel,set_rotationOutput <- setL_rotationOutput,set_leftMotorVelocityF <- setL_leftMotorVelocityF,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_speedCount <- setL_speedCount,set_currGyroX <- setL_currGyroX,set_rotationCount <- setL_rotationCount,set_gyroXF <- setL_gyroXF,set_currGyroZ <- setL_currGyroZ,set_speedIntegral <- setL_speedIntegral,set_angleOutput <- setL_angleOutput,set_gyroZF <- setL_gyroZF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
-						 			,setL_currGyroY
-						 			,setL_gyroXF
-						 			,setL_speedCount
-						 			,clockResetL.CLID_loopTimer
-						 			,setL_currGyroX
-						 			,setL_rotationOutput
 						 			,setL_currAngle
-						 			,setL_currLeftVel
+						 			,setL_currGyroY
+						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedOutput
-						 			,setL_rotationCount
-						 			,setL_leftMotorVelocityF
-						 			,setL_currRightVel
-						 			,setL_angleOutput
-						 			,setL_rightMotorVelocityF
-						 			,setL_speedIntegral
+						 			,setL_currLeftVel
 						 			,setL_angleF
+						 			,setL_currRightVel
+						 			,setL_rotationOutput
+						 			,setL_leftMotorVelocityF
+						 			,setL_rightMotorVelocityF
+						 			,setL_speedCount
+						 			,setL_currGyroX
+						 			,setL_rotationCount
+						 			,setL_gyroXF
 						 			,setL_currGyroZ
-						 			,setR_gyroZF
+						 			,setL_speedIntegral
+						 			,setL_angleOutput
+						 			,setL_gyroZF
+						 			,setR_currAngle
 						 			 			,setR_currGyroY
-						 			 			,setR_gyroXF
-						 			 			,setR_speedCount
 						 			 			,clockResetR.CLID_loopTimer
-						 			 			,setR_currGyroX
-						 			 			,setR_rotationOutput
-						 			 			,setR_currAngle
-						 			 			,setR_currLeftVel
 						 			 			,setR_speedOutput
-						 			 			,setR_rotationCount
-						 			 			,setR_leftMotorVelocityF
-						 			 			,setR_currRightVel
-						 			 			,setR_angleOutput
-						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_speedIntegral
+						 			 			,setR_currLeftVel
 						 			 			,setR_angleF
+						 			 			,setR_currRightVel
+						 			 			,setR_rotationOutput
+						 			 			,setR_leftMotorVelocityF
+						 			 			,setR_rightMotorVelocityF
+						 			 			,setR_speedCount
+						 			 			,setR_currGyroX
+						 			 			,setR_rotationCount
+						 			 			,setR_gyroXF
 						 			 			,setR_currGyroZ
+						 			 			,setR_speedIntegral
+						 			 			,setR_angleOutput
+						 			 			,setR_gyroZF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_currGyroY,setL_gyroXF,setL_speedCount,clockResetL.CLID_loopTimer,setL_currGyroX,setL_rotationOutput,setL_currAngle,setL_currLeftVel,setL_speedOutput,setL_rotationCount,setL_leftMotorVelocityF,setL_currRightVel,setL_angleOutput,setL_rightMotorVelocityF,setL_speedIntegral,setL_angleF,setL_currGyroZ |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_currGyroY <- setR_currGyroY,set_gyroXF <- setR_gyroXF,set_speedCount <- setR_speedCount,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_currGyroX <- setR_currGyroX,set_rotationOutput <- setR_rotationOutput,set_currAngle <- setR_currAngle,set_currLeftVel <- setR_currLeftVel,set_speedOutput <- setR_speedOutput,set_rotationCount <- setR_rotationCount,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_currRightVel <- setR_currRightVel,set_angleOutput <- setR_angleOutput,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedIntegral <- setR_speedIntegral,set_angleF <- setR_angleF,set_currGyroZ <- setR_currGyroZ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_currGyroY,clockResetL.CLID_loopTimer,setL_speedOutput,setL_currLeftVel,setL_angleF,setL_currRightVel,setL_rotationOutput,setL_leftMotorVelocityF,setL_rightMotorVelocityF,setL_speedCount,setL_currGyroX,setL_rotationCount,setL_gyroXF,setL_currGyroZ,setL_speedIntegral,setL_angleOutput,setL_gyroZF |} ]]
+						  [[set_currAngle <- setR_currAngle,set_currGyroY <- setR_currGyroY,clockReset.CLID_loopTimer <- clockResetR.CLID_loopTimer,set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_angleF <- setR_angleF,set_currRightVel <- setR_currRightVel,set_rotationOutput <- setR_rotationOutput,set_leftMotorVelocityF <- setR_leftMotorVelocityF,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_speedCount <- setR_speedCount,set_currGyroX <- setR_currGyroX,set_rotationCount <- setR_rotationCount,set_gyroXF <- setR_gyroXF,set_currGyroZ <- setR_currGyroZ,set_speedIntegral <- setR_speedIntegral,set_angleOutput <- setR_angleOutput,set_gyroZF <- setR_gyroZF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_currGyroY <- set_currGyroY,setL_gyroXF <- set_gyroXF,setL_speedCount <- set_speedCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_currGyroX <- set_currGyroX,setL_rotationOutput <- set_rotationOutput,setL_currAngle <- set_currAngle,setL_currLeftVel <- set_currLeftVel,setL_speedOutput <- set_speedOutput,setL_rotationCount <- set_rotationCount,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_currRightVel <- set_currRightVel,setL_angleOutput <- set_angleOutput,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedIntegral <- set_speedIntegral,setL_angleF <- set_angleF,setL_currGyroZ <- set_currGyroZ]]
-						 [[setR_gyroZF <- set_gyroZF,setR_currGyroY <- set_currGyroY,setR_gyroXF <- set_gyroXF,setR_speedCount <- set_speedCount,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_currGyroX <- set_currGyroX,setR_rotationOutput <- set_rotationOutput,setR_currAngle <- set_currAngle,setR_currLeftVel <- set_currLeftVel,setR_speedOutput <- set_speedOutput,setR_rotationCount <- set_rotationCount,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_currRightVel <- set_currRightVel,setR_angleOutput <- set_angleOutput,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedIntegral <- set_speedIntegral,setR_angleF <- set_angleF,setR_currGyroZ <- set_currGyroZ]]
+						)[[setL_currAngle <- set_currAngle,setL_currGyroY <- set_currGyroY,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_angleF <- set_angleF,setL_currRightVel <- set_currRightVel,setL_rotationOutput <- set_rotationOutput,setL_leftMotorVelocityF <- set_leftMotorVelocityF,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_speedCount <- set_speedCount,setL_currGyroX <- set_currGyroX,setL_rotationCount <- set_rotationCount,setL_gyroXF <- set_gyroXF,setL_currGyroZ <- set_currGyroZ,setL_speedIntegral <- set_speedIntegral,setL_angleOutput <- set_angleOutput,setL_gyroZF <- set_gyroZF]]
+						 [[setR_currAngle <- set_currAngle,setR_currGyroY <- set_currGyroY,clockResetR.CLID_loopTimer <- clockReset.CLID_loopTimer,setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_angleF <- set_angleF,setR_currRightVel <- set_currRightVel,setR_rotationOutput <- set_rotationOutput,setR_leftMotorVelocityF <- set_leftMotorVelocityF,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_speedCount <- set_speedCount,setR_currGyroX <- set_currGyroX,setR_rotationCount <- set_rotationCount,setR_gyroXF <- set_gyroXF,setR_currGyroZ <- set_currGyroZ,setR_speedIntegral <- set_speedIntegral,setR_angleOutput <- set_angleOutput,setR_gyroZF <- set_gyroZF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5325,6 +5325,47 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__disableInterrupts(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(registerWrite.o_disableInterrupts,0)
+		CALL__setLeftMotorSpeed(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget,
+					param_speed) = EDeadline(registerWrite.o_setLeftMotorSpeed.param_speed,0)
+		CALL__clone_normal_BalanceSTM_j1_t5_op(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_j1_t5_opCall,0)
+		CALL__clone_normal_BalanceSTM_SetMotors_entry(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_SetMotors_entryCall,0)
 		CALL__clone_normal_BalanceSTM_Initialisation_entry(id__,
 				    const_pkg867__sim_BalanceSTM_maxAngle,
 				    const_pkg867__sim_BalanceSTM_loopTime,
@@ -5345,27 +5386,6 @@ exports
 				    const_pkg867__sim_BalanceSTM_speedBudget,
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateRotation_entryCall,0)
-		CALL__setLeftMotorSpeed(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget,
-					param_speed) = EDeadline(registerWrite.o_setLeftMotorSpeed.param_speed,0)
-		CALL__disableInterrupts(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(registerWrite.o_disableInterrupts,0)
 		CALL__clone_normal_BalanceSTM_StopMotors_entry(id__,
 				    const_pkg867__sim_BalanceSTM_maxAngle,
 				    const_pkg867__sim_BalanceSTM_loopTime,
@@ -5376,46 +5396,6 @@ exports
 				    const_pkg867__sim_BalanceSTM_speedBudget,
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_StopMotors_entryCall,0)
-		CALL__clone_normal_BalanceSTM_SetMotors_entry(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_SetMotors_entryCall,0)
-		CALL__clone_normal_BalanceSTM_j1_t5_op(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_j1_t5_opCall,0)
-		CALL__clone_normal_BalanceSTM_CalculateAngle_entry(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateAngle_entryCall,0)
-		CALL__enableInterrupts(id__,
-				    const_pkg867__sim_BalanceSTM_maxAngle,
-				    const_pkg867__sim_BalanceSTM_loopTime,
-				    const_pkg867__sim_BalanceSTM_startupDelay,
-				    const_pkg867__sim_BalanceSTM_speedUpdate,
-				    const_pkg867__sim_BalanceSTM_rotationUpdate,
-				    const_pkg867__sim_BalanceSTM_angleBudget,
-				    const_pkg867__sim_BalanceSTM_speedBudget,
-				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(registerWrite.o_enableInterrupts,0)
 		CALL__clone_normal_BalanceSTM_CalculateAngle_t3_op(id__,
 				    const_pkg867__sim_BalanceSTM_maxAngle,
 				    const_pkg867__sim_BalanceSTM_loopTime,
@@ -5426,7 +5406,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_speedBudget,
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateAngle_t3_opCall,0)
-		CALL__clone_normal_BalanceSTM_CalculateSpeed_entry(id__,
+		CALL__enableInterrupts(id__,
 				    const_pkg867__sim_BalanceSTM_maxAngle,
 				    const_pkg867__sim_BalanceSTM_loopTime,
 				    const_pkg867__sim_BalanceSTM_startupDelay,
@@ -5435,7 +5415,17 @@ exports
 				    const_pkg867__sim_BalanceSTM_angleBudget,
 				    const_pkg867__sim_BalanceSTM_speedBudget,
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
-				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateSpeed_entryCall,0)
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(registerWrite.o_enableInterrupts,0)
+		CALL__clone_normal_BalanceSTM_CalculateAngle_entry(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateAngle_entryCall,0)
 		CALL__setRightMotorSpeed(id__,
 				    const_pkg867__sim_BalanceSTM_maxAngle,
 				    const_pkg867__sim_BalanceSTM_loopTime,
@@ -5447,29 +5437,39 @@ exports
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget,
 					param_speed) = EDeadline(registerWrite.o_setRightMotorSpeed.param_speed,0)
+		CALL__clone_normal_BalanceSTM_CalculateSpeed_entry(id__,
+				    const_pkg867__sim_BalanceSTM_maxAngle,
+				    const_pkg867__sim_BalanceSTM_loopTime,
+				    const_pkg867__sim_BalanceSTM_startupDelay,
+				    const_pkg867__sim_BalanceSTM_speedUpdate,
+				    const_pkg867__sim_BalanceSTM_rotationUpdate,
+				    const_pkg867__sim_BalanceSTM_angleBudget,
+				    const_pkg867__sim_BalanceSTM_speedBudget,
+				    const_pkg867__sim_BalanceSTM_rotationBudget,
+				    const_pkg867__sim_BalanceSTM_motorBudget) = EDeadline(clone_normal_BalanceSTM_CalculateSpeed_entryCall,0)
 		
 		-- END of Operation calls --
 	
-		datatype SOutputEvents = SOutput_disableInterrupts
+		datatype SOutputEvents = SOutput_setRightMotorSpeed
 			| SOutput_enableInterrupts
+			| SOutput_disableInterrupts
 			| SOutput_setLeftMotorSpeed
-			| SOutput_setRightMotorSpeed
 		
 		cycle(cycle_pkg867__sim_BalanceSTM_BalanceSTM) =
 			let
-				project(o_disableInterrupts) = SOutput_disableInterrupts
-				project(o_enableInterrupts) = SOutput_enableInterrupts
-				project(o_setLeftMotorSpeed.x__) = SOutput_setLeftMotorSpeed
 				project(o_setRightMotorSpeed.x__) = SOutput_setRightMotorSpeed
+				project(o_enableInterrupts) = SOutput_enableInterrupts
+				project(o_disableInterrupts) = SOutput_disableInterrupts
+				project(o_setLeftMotorSpeed.x__) = SOutput_setLeftMotorSpeed
 		
 				Cycle =
 					Deadline(
-						(registerRead.i_rightMotorVelocity?x__ -> SKIP
-							||| registerRead.i_gyroX?x__ -> SKIP
+						(registerRead.i_gyroZ?x__ -> SKIP
+							||| registerRead.i_angle?x__ -> SKIP
 							||| registerRead.i_leftMotorVelocity?x__ -> SKIP
+							||| registerRead.i_gyroX?x__ -> SKIP
 							||| registerRead.i_gyroY?x__ -> SKIP
-							||| registerRead.i_gyroZ?x__ -> SKIP
-							||| registerRead.i_angle?x__ -> SKIP);
+							||| registerRead.i_rightMotorVelocity?x__ -> SKIP);
 						startexec -> CollectOutputs(SOutputEvents),0);
 					TimeOut_1(terminate -> SKIP,WAIT(cycle_pkg867__sim_BalanceSTM_BalanceSTM-1);Cycle)
 				
@@ -5591,7 +5591,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_speedBudget,
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = ((let
-			Trans = share__choice(get_rotationCount?rotationCount -> get_CLID_loopTimer?loopTimer:CLID_loopTimer_clock_type(id__,
+			Trans = share__choice(get_currAngle?currAngle -> get_CLID_loopTimer?loopTimer:CLID_loopTimer_clock_type(id__,
 					          const_pkg867__sim_BalanceSTM_maxAngle,
 					          const_pkg867__sim_BalanceSTM_loopTime,
 					          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -5600,7 +5600,7 @@ exports
 					          const_pkg867__sim_BalanceSTM_angleBudget,
 					          const_pkg867__sim_BalanceSTM_speedBudget,
 					          const_pkg867__sim_BalanceSTM_rotationBudget,
-					          const_pkg867__sim_BalanceSTM_motorBudget) -> get_speedCount?speedCount -> get_currAngle?currAngle -> TimeOut_1(
+					          const_pkg867__sim_BalanceSTM_motorBudget) -> get_speedCount?speedCount -> get_rotationCount?rotationCount -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Initialisation::enter -> SKIP))))
 				 [] dbisim((true)&(internal__!NID_Initialisation -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -5895,13 +5895,13 @@ exports
 						 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2,internal__.NID_j2|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_rotationCount <- setL_rotationCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedCount <- setL_speedCount,set_currAngle <- setL_currAngle]]
+						  [[set_currAngle <- setL_currAngle,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedCount <- setL_speedCount,set_rotationCount <- setL_rotationCount]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_rotationCount
+						 			,setL_currAngle
 						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedCount
-						 			,setL_currAngle
+						 			,setL_rotationCount
 						|}) |]
 						 ((i0::enter -> Transitions(id__,cycle_pkg867__sim_BalanceSTM_BalanceSTM,
 						 		    const_pkg867__sim_BalanceSTM_maxAngle,
@@ -5913,9 +5913,9 @@ exports
 						 		    const_pkg867__sim_BalanceSTM_speedBudget,
 						 		    const_pkg867__sim_BalanceSTM_rotationBudget,
 						 		    const_pkg867__sim_BalanceSTM_motorBudget))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_rotationCount,clockResetL.CLID_loopTimer,setL_speedCount,setL_currAngle |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,clockResetL.CLID_loopTimer,setL_speedCount,setL_rotationCount |} ]]
 						 )
-						)[[setL_rotationCount <- set_rotationCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedCount <- set_speedCount,setL_currAngle <- set_currAngle]]
+						)[[setL_currAngle <- set_currAngle,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedCount <- set_speedCount,setL_rotationCount <- set_rotationCount]]
 						)
 					)
 					 \ hideSet)
@@ -5951,7 +5951,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered,get_CLID_CalculateAngle,CalculateAngle::entered|}
+				stateClockSync = {|get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_CalculateAngle,CalculateAngle::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered|}
 			 within
 				(MachineBody(id__,cycle_pkg867__sim_BalanceSTM_BalanceSTM,
 						    const_pkg867__sim_BalanceSTM_maxAngle,
@@ -5986,7 +5986,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered,get_CLID_CalculateAngle,CalculateAngle::entered|}
+				stateClockSync = {|get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_CalculateAngle,CalculateAngle::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -6012,8 +6012,8 @@ exports
 																				    const_pkg867__sim_BalanceSTM_speedBudget,
 																				    const_pkg867__sim_BalanceSTM_rotationBudget,
 																				    const_pkg867__sim_BalanceSTM_motorBudget)
-																		[| {|get_CLID_CalculateAngle,CalculateAngle::entered,terminate|} |]
-																		dbisim(Clock_CLID_CalculateAngle(id__,0,
+																		[| {|get_CLID_WaitForNextIteration,WaitForNextIteration::entered,terminate|} |]
+																		dbisim(Clock_CLID_WaitForNextIteration(id__,0,
 																				          const_pkg867__sim_BalanceSTM_maxAngle,
 																				          const_pkg867__sim_BalanceSTM_loopTime,
 																				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6023,10 +6023,10 @@ exports
 																				          const_pkg867__sim_BalanceSTM_speedBudget,
 																				          const_pkg867__sim_BalanceSTM_rotationBudget,
 																				          const_pkg867__sim_BalanceSTM_motorBudget))
-																	)\{|get_CLID_CalculateAngle|}
+																	)\{|get_CLID_WaitForNextIteration|}
 																)
-																[| {|get_CLID_WaitForNextIteration,WaitForNextIteration::entered,terminate|} |]
-																dbisim(Clock_CLID_WaitForNextIteration(id__,0,
+																[| {|get_CLID_CalculateRotation,CalculateRotation::entered,terminate|} |]
+																dbisim(Clock_CLID_CalculateRotation(id__,0,
 																		          const_pkg867__sim_BalanceSTM_maxAngle,
 																		          const_pkg867__sim_BalanceSTM_loopTime,
 																		          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6036,7 +6036,7 @@ exports
 																		          const_pkg867__sim_BalanceSTM_speedBudget,
 																		          const_pkg867__sim_BalanceSTM_rotationBudget,
 																		          const_pkg867__sim_BalanceSTM_motorBudget))
-															)\{|get_CLID_WaitForNextIteration|}
+															)\{|get_CLID_CalculateRotation|}
 														)
 														[| {|get_CLID_Initialisation,Initialisation::entered,terminate|} |]
 														dbisim(Clock_CLID_Initialisation(id__,0,
@@ -6064,8 +6064,8 @@ exports
 														          const_pkg867__sim_BalanceSTM_motorBudget))
 											)\{|get_CLID_StopMotors|}
 										)
-										[| {|get_CLID_CalculateSpeed,CalculateSpeed::entered,terminate|} |]
-										dbisim(Clock_CLID_CalculateSpeed(id__,0,
+										[| {|get_CLID_SetMotors,SetMotors::entered,terminate|} |]
+										dbisim(Clock_CLID_SetMotors(id__,0,
 												          const_pkg867__sim_BalanceSTM_maxAngle,
 												          const_pkg867__sim_BalanceSTM_loopTime,
 												          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6075,10 +6075,10 @@ exports
 												          const_pkg867__sim_BalanceSTM_speedBudget,
 												          const_pkg867__sim_BalanceSTM_rotationBudget,
 												          const_pkg867__sim_BalanceSTM_motorBudget))
-									)\{|get_CLID_CalculateSpeed|}
+									)\{|get_CLID_SetMotors|}
 								)
-								[| {|get_CLID_SetMotors,SetMotors::entered,terminate|} |]
-								dbisim(Clock_CLID_SetMotors(id__,0,
+								[| {|get_CLID_CalculateAngle,CalculateAngle::entered,terminate|} |]
+								dbisim(Clock_CLID_CalculateAngle(id__,0,
 										          const_pkg867__sim_BalanceSTM_maxAngle,
 										          const_pkg867__sim_BalanceSTM_loopTime,
 										          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6088,10 +6088,10 @@ exports
 										          const_pkg867__sim_BalanceSTM_speedBudget,
 										          const_pkg867__sim_BalanceSTM_rotationBudget,
 										          const_pkg867__sim_BalanceSTM_motorBudget))
-							)\{|get_CLID_SetMotors|}
+							)\{|get_CLID_CalculateAngle|}
 						)
-						[| {|get_CLID_CalculateRotation,CalculateRotation::entered,terminate|} |]
-						dbisim(Clock_CLID_CalculateRotation(id__,0,
+						[| {|get_CLID_CalculateSpeed,CalculateSpeed::entered,terminate|} |]
+						dbisim(Clock_CLID_CalculateSpeed(id__,0,
 								          const_pkg867__sim_BalanceSTM_maxAngle,
 								          const_pkg867__sim_BalanceSTM_loopTime,
 								          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6101,7 +6101,7 @@ exports
 								          const_pkg867__sim_BalanceSTM_speedBudget,
 								          const_pkg867__sim_BalanceSTM_rotationBudget,
 								          const_pkg867__sim_BalanceSTM_motorBudget))
-					)\{|get_CLID_CalculateRotation|}
+					)\{|get_CLID_CalculateSpeed|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -6241,23 +6241,23 @@ exports
 																																						)\{|get_CLID_loopTimer,clockReset.CLID_loopTimer|}
 																																					)
 																																					[| {|get_leftMotorVelocityF,set_leftMotorVelocityF,terminate|} |]
-																																					Memory_leftMotorVelocityF(false)
+																																					Memory_leftMotorVelocityF(true)
 																																				)\{|get_leftMotorVelocityF,set_leftMotorVelocityF|}
 																																			)
 																																			[| {|get_angleF,set_angleF,terminate|} |]
-																																			Memory_angleF(false)
+																																			Memory_angleF(true)
 																																		)\{|get_angleF,set_angleF|}
 																																	)
 																																	[| {|get_rightMotorVelocityF,set_rightMotorVelocityF,terminate|} |]
-																																	Memory_rightMotorVelocityF(false)
+																																	Memory_rightMotorVelocityF(true)
 																																)\{|get_rightMotorVelocityF,set_rightMotorVelocityF|}
 																															)
 																															[| {|get_gyroXF,set_gyroXF,terminate|} |]
-																															Memory_gyroXF(false)
+																															Memory_gyroXF(true)
 																														)\{|get_gyroXF,set_gyroXF|}
 																													)
 																													[| {|get_gyroZF,set_gyroZF,terminate|} |]
-																													Memory_gyroZF(false)
+																													Memory_gyroZF(true)
 																												)\{|get_gyroZF,set_gyroZF|}
 																											)
 																											[| {|get_rotationOutput,set_rotationOutput,terminate|} |]
@@ -6510,13 +6510,13 @@ exports
 						 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2,internal__.NID_j2|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_rotationCount <- setL_rotationCount,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedCount <- setL_speedCount,set_currAngle <- setL_currAngle]]
+						  [[set_currAngle <- setL_currAngle,clockReset.CLID_loopTimer <- clockResetL.CLID_loopTimer,set_speedCount <- setL_speedCount,set_rotationCount <- setL_rotationCount]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_rotationCount
+						 			,setL_currAngle
 						 			,clockResetL.CLID_loopTimer
 						 			,setL_speedCount
-						 			,setL_currAngle
+						 			,setL_rotationCount
 						|}) |]
 						 ((i0::enter -> Transitions(id__,cycle_pkg867__sim_BalanceSTM_BalanceSTM,
 						 		    const_pkg867__sim_BalanceSTM_maxAngle,
@@ -6528,9 +6528,9 @@ exports
 						 		    const_pkg867__sim_BalanceSTM_speedBudget,
 						 		    const_pkg867__sim_BalanceSTM_rotationBudget,
 						 		    const_pkg867__sim_BalanceSTM_motorBudget))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_rotationCount,clockResetL.CLID_loopTimer,setL_speedCount,setL_currAngle |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,clockResetL.CLID_loopTimer,setL_speedCount,setL_rotationCount |} ]]
 						 )
-						)[[setL_rotationCount <- set_rotationCount,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedCount <- set_speedCount,setL_currAngle <- set_currAngle]]
+						)[[setL_currAngle <- set_currAngle,clockResetL.CLID_loopTimer <- clockReset.CLID_loopTimer,setL_speedCount <- set_speedCount,setL_rotationCount <- set_rotationCount]]
 						)
 					)
 					 \ hideSet)
@@ -6566,7 +6566,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered,get_CLID_CalculateAngle,CalculateAngle::entered|}
+				stateClockSync = {|get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_CalculateAngle,CalculateAngle::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered|}
 			 within
 				(MachineBody_VS_O(id__,cycle_pkg867__sim_BalanceSTM_BalanceSTM,
 						    const_pkg867__sim_BalanceSTM_maxAngle,
@@ -6601,7 +6601,7 @@ exports
 				    const_pkg867__sim_BalanceSTM_rotationBudget,
 				    const_pkg867__sim_BalanceSTM_motorBudget) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered,get_CLID_CalculateAngle,CalculateAngle::entered|}
+				stateClockSync = {|get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_CalculateAngle,CalculateAngle::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -6627,8 +6627,8 @@ exports
 																				    const_pkg867__sim_BalanceSTM_speedBudget,
 																				    const_pkg867__sim_BalanceSTM_rotationBudget,
 																				    const_pkg867__sim_BalanceSTM_motorBudget)
-																		[| {|get_CLID_CalculateAngle,CalculateAngle::entered,terminate|} |]
-																		dbisim(Clock_CLID_CalculateAngle(id__,0,
+																		[| {|get_CLID_WaitForNextIteration,WaitForNextIteration::entered,terminate|} |]
+																		dbisim(Clock_CLID_WaitForNextIteration(id__,0,
 																				          const_pkg867__sim_BalanceSTM_maxAngle,
 																				          const_pkg867__sim_BalanceSTM_loopTime,
 																				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6638,10 +6638,10 @@ exports
 																				          const_pkg867__sim_BalanceSTM_speedBudget,
 																				          const_pkg867__sim_BalanceSTM_rotationBudget,
 																				          const_pkg867__sim_BalanceSTM_motorBudget))
-																	)\{|get_CLID_CalculateAngle|}
+																	)\{|get_CLID_WaitForNextIteration|}
 																)
-																[| {|get_CLID_WaitForNextIteration,WaitForNextIteration::entered,terminate|} |]
-																dbisim(Clock_CLID_WaitForNextIteration(id__,0,
+																[| {|get_CLID_CalculateRotation,CalculateRotation::entered,terminate|} |]
+																dbisim(Clock_CLID_CalculateRotation(id__,0,
 																		          const_pkg867__sim_BalanceSTM_maxAngle,
 																		          const_pkg867__sim_BalanceSTM_loopTime,
 																		          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6651,7 +6651,7 @@ exports
 																		          const_pkg867__sim_BalanceSTM_speedBudget,
 																		          const_pkg867__sim_BalanceSTM_rotationBudget,
 																		          const_pkg867__sim_BalanceSTM_motorBudget))
-															)\{|get_CLID_WaitForNextIteration|}
+															)\{|get_CLID_CalculateRotation|}
 														)
 														[| {|get_CLID_Initialisation,Initialisation::entered,terminate|} |]
 														dbisim(Clock_CLID_Initialisation(id__,0,
@@ -6679,8 +6679,8 @@ exports
 														          const_pkg867__sim_BalanceSTM_motorBudget))
 											)\{|get_CLID_StopMotors|}
 										)
-										[| {|get_CLID_CalculateSpeed,CalculateSpeed::entered,terminate|} |]
-										dbisim(Clock_CLID_CalculateSpeed(id__,0,
+										[| {|get_CLID_SetMotors,SetMotors::entered,terminate|} |]
+										dbisim(Clock_CLID_SetMotors(id__,0,
 												          const_pkg867__sim_BalanceSTM_maxAngle,
 												          const_pkg867__sim_BalanceSTM_loopTime,
 												          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6690,10 +6690,10 @@ exports
 												          const_pkg867__sim_BalanceSTM_speedBudget,
 												          const_pkg867__sim_BalanceSTM_rotationBudget,
 												          const_pkg867__sim_BalanceSTM_motorBudget))
-									)\{|get_CLID_CalculateSpeed|}
+									)\{|get_CLID_SetMotors|}
 								)
-								[| {|get_CLID_SetMotors,SetMotors::entered,terminate|} |]
-								dbisim(Clock_CLID_SetMotors(id__,0,
+								[| {|get_CLID_CalculateAngle,CalculateAngle::entered,terminate|} |]
+								dbisim(Clock_CLID_CalculateAngle(id__,0,
 										          const_pkg867__sim_BalanceSTM_maxAngle,
 										          const_pkg867__sim_BalanceSTM_loopTime,
 										          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6703,10 +6703,10 @@ exports
 										          const_pkg867__sim_BalanceSTM_speedBudget,
 										          const_pkg867__sim_BalanceSTM_rotationBudget,
 										          const_pkg867__sim_BalanceSTM_motorBudget))
-							)\{|get_CLID_SetMotors|}
+							)\{|get_CLID_CalculateAngle|}
 						)
-						[| {|get_CLID_CalculateRotation,CalculateRotation::entered,terminate|} |]
-						dbisim(Clock_CLID_CalculateRotation(id__,0,
+						[| {|get_CLID_CalculateSpeed,CalculateSpeed::entered,terminate|} |]
+						dbisim(Clock_CLID_CalculateSpeed(id__,0,
 								          const_pkg867__sim_BalanceSTM_maxAngle,
 								          const_pkg867__sim_BalanceSTM_loopTime,
 								          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -6716,7 +6716,7 @@ exports
 								          const_pkg867__sim_BalanceSTM_speedBudget,
 								          const_pkg867__sim_BalanceSTM_rotationBudget,
 								          const_pkg867__sim_BalanceSTM_motorBudget))
-					)\{|get_CLID_CalculateRotation|}
+					)\{|get_CLID_CalculateSpeed|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -6856,23 +6856,23 @@ exports
 																																						)\{|get_CLID_loopTimer,clockReset.CLID_loopTimer|}
 																																					)
 																																					[| {|get_leftMotorVelocityF,set_leftMotorVelocityF,terminate|} |]
-																																					Memory_leftMotorVelocityF(false)
+																																					Memory_leftMotorVelocityF(true)
 																																				)\{|get_leftMotorVelocityF,set_leftMotorVelocityF|}
 																																			)
 																																			[| {|get_angleF,set_angleF,terminate|} |]
-																																			Memory_angleF(false)
+																																			Memory_angleF(true)
 																																		)\{|get_angleF,set_angleF|}
 																																	)
 																																	[| {|get_rightMotorVelocityF,set_rightMotorVelocityF,terminate|} |]
-																																	Memory_rightMotorVelocityF(false)
+																																	Memory_rightMotorVelocityF(true)
 																																)\{|get_rightMotorVelocityF,set_rightMotorVelocityF|}
 																															)
 																															[| {|get_gyroXF,set_gyroXF,terminate|} |]
-																															Memory_gyroXF(false)
+																															Memory_gyroXF(true)
 																														)\{|get_gyroXF,set_gyroXF|}
 																													)
 																													[| {|get_gyroZF,set_gyroZF,terminate|} |]
-																													Memory_gyroZF(false)
+																													Memory_gyroZF(true)
 																												)\{|get_gyroZF,set_gyroZF|}
 																											)
 																											[| {|get_rotationOutput,set_rotationOutput,terminate|} |]
@@ -7066,15 +7066,15 @@ exports
 		[| { terminate } |] (
 		Memory_rotationOutput(0)
 		[| { terminate } |] (
-		Memory_gyroZF(false)
+		Memory_gyroZF(true)
 		[| { terminate } |] (
-		Memory_gyroXF(false)
+		Memory_gyroXF(true)
 		[| { terminate } |] (
-		Memory_rightMotorVelocityF(false)
+		Memory_rightMotorVelocityF(true)
 		[| { terminate } |] (
-		Memory_angleF(false)
+		Memory_angleF(true)
 		[| { terminate } |] (
-		Memory_leftMotorVelocityF(false)
+		Memory_leftMotorVelocityF(true)
 		)
 		)
 		)
@@ -7324,7 +7324,7 @@ exports
 		
 		clockSync = {|get_CLID_loopTimer,clockReset.CLID_loopTimer|}
 		
-		Clock_CLID_CalculateRotation(id__,x__,
+		Clock_CLID_CalculateSpeed(id__,x__,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
 				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7335,7 +7335,7 @@ exports
 				          const_pkg867__sim_BalanceSTM_rotationBudget,
 				          const_pkg867__sim_BalanceSTM_motorBudget) = 
 			TimeOut_1(
-				CalculateRotation::entered -> Clock_CLID_CalculateRotation(id__,0,
+				CalculateSpeed::entered -> Clock_CLID_CalculateSpeed(id__,0,
 						          const_pkg867__sim_BalanceSTM_maxAngle,
 						          const_pkg867__sim_BalanceSTM_loopTime,
 						          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7346,7 +7346,7 @@ exports
 						          const_pkg867__sim_BalanceSTM_rotationBudget,
 						          const_pkg867__sim_BalanceSTM_motorBudget)
 				[]
-				get_CLID_CalculateRotation!x__ -> Clock_CLID_CalculateRotation(id__,x__,
+				get_CLID_CalculateSpeed!x__ -> Clock_CLID_CalculateSpeed(id__,x__,
 						          const_pkg867__sim_BalanceSTM_maxAngle,
 						          const_pkg867__sim_BalanceSTM_loopTime,
 						          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7357,7 +7357,59 @@ exports
 						          const_pkg867__sim_BalanceSTM_rotationBudget,
 						          const_pkg867__sim_BalanceSTM_motorBudget)
 				[]
-				terminate -> SKIP,Clock_CLID_CalculateRotation(id__,clock_type_plus(x__,1,CLID_CalculateRotation_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_CalculateSpeed(id__,clock_type_plus(x__,1,CLID_CalculateSpeed_clock_type(id__,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)),
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget))
+		Clock_CLID_CalculateAngle(id__,x__,
+				          const_pkg867__sim_BalanceSTM_maxAngle,
+				          const_pkg867__sim_BalanceSTM_loopTime,
+				          const_pkg867__sim_BalanceSTM_startupDelay,
+				          const_pkg867__sim_BalanceSTM_speedUpdate,
+				          const_pkg867__sim_BalanceSTM_rotationUpdate,
+				          const_pkg867__sim_BalanceSTM_angleBudget,
+				          const_pkg867__sim_BalanceSTM_speedBudget,
+				          const_pkg867__sim_BalanceSTM_rotationBudget,
+				          const_pkg867__sim_BalanceSTM_motorBudget) = 
+			TimeOut_1(
+				CalculateAngle::entered -> Clock_CLID_CalculateAngle(id__,0,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)
+				[]
+				get_CLID_CalculateAngle!x__ -> Clock_CLID_CalculateAngle(id__,x__,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)
+				[]
+				terminate -> SKIP,Clock_CLID_CalculateAngle(id__,clock_type_plus(x__,1,CLID_CalculateAngle_clock_type(id__,
 						          const_pkg867__sim_BalanceSTM_maxAngle,
 						          const_pkg867__sim_BalanceSTM_loopTime,
 						          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7410,58 +7462,6 @@ exports
 						          const_pkg867__sim_BalanceSTM_motorBudget)
 				[]
 				terminate -> SKIP,Clock_CLID_SetMotors(id__,clock_type_plus(x__,1,CLID_SetMotors_clock_type(id__,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)),
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget))
-		Clock_CLID_CalculateSpeed(id__,x__,
-				          const_pkg867__sim_BalanceSTM_maxAngle,
-				          const_pkg867__sim_BalanceSTM_loopTime,
-				          const_pkg867__sim_BalanceSTM_startupDelay,
-				          const_pkg867__sim_BalanceSTM_speedUpdate,
-				          const_pkg867__sim_BalanceSTM_rotationUpdate,
-				          const_pkg867__sim_BalanceSTM_angleBudget,
-				          const_pkg867__sim_BalanceSTM_speedBudget,
-				          const_pkg867__sim_BalanceSTM_rotationBudget,
-				          const_pkg867__sim_BalanceSTM_motorBudget) = 
-			TimeOut_1(
-				CalculateSpeed::entered -> Clock_CLID_CalculateSpeed(id__,0,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)
-				[]
-				get_CLID_CalculateSpeed!x__ -> Clock_CLID_CalculateSpeed(id__,x__,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)
-				[]
-				terminate -> SKIP,Clock_CLID_CalculateSpeed(id__,clock_type_plus(x__,1,CLID_CalculateSpeed_clock_type(id__,
 						          const_pkg867__sim_BalanceSTM_maxAngle,
 						          const_pkg867__sim_BalanceSTM_loopTime,
 						          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7584,6 +7584,58 @@ exports
 						          const_pkg867__sim_BalanceSTM_speedBudget,
 						          const_pkg867__sim_BalanceSTM_rotationBudget,
 						          const_pkg867__sim_BalanceSTM_motorBudget))
+		Clock_CLID_CalculateRotation(id__,x__,
+				          const_pkg867__sim_BalanceSTM_maxAngle,
+				          const_pkg867__sim_BalanceSTM_loopTime,
+				          const_pkg867__sim_BalanceSTM_startupDelay,
+				          const_pkg867__sim_BalanceSTM_speedUpdate,
+				          const_pkg867__sim_BalanceSTM_rotationUpdate,
+				          const_pkg867__sim_BalanceSTM_angleBudget,
+				          const_pkg867__sim_BalanceSTM_speedBudget,
+				          const_pkg867__sim_BalanceSTM_rotationBudget,
+				          const_pkg867__sim_BalanceSTM_motorBudget) = 
+			TimeOut_1(
+				CalculateRotation::entered -> Clock_CLID_CalculateRotation(id__,0,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)
+				[]
+				get_CLID_CalculateRotation!x__ -> Clock_CLID_CalculateRotation(id__,x__,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)
+				[]
+				terminate -> SKIP,Clock_CLID_CalculateRotation(id__,clock_type_plus(x__,1,CLID_CalculateRotation_clock_type(id__,
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget)),
+						          const_pkg867__sim_BalanceSTM_maxAngle,
+						          const_pkg867__sim_BalanceSTM_loopTime,
+						          const_pkg867__sim_BalanceSTM_startupDelay,
+						          const_pkg867__sim_BalanceSTM_speedUpdate,
+						          const_pkg867__sim_BalanceSTM_rotationUpdate,
+						          const_pkg867__sim_BalanceSTM_angleBudget,
+						          const_pkg867__sim_BalanceSTM_speedBudget,
+						          const_pkg867__sim_BalanceSTM_rotationBudget,
+						          const_pkg867__sim_BalanceSTM_motorBudget))
 		Clock_CLID_WaitForNextIteration(id__,x__,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
@@ -7636,58 +7688,6 @@ exports
 						          const_pkg867__sim_BalanceSTM_speedBudget,
 						          const_pkg867__sim_BalanceSTM_rotationBudget,
 						          const_pkg867__sim_BalanceSTM_motorBudget))
-		Clock_CLID_CalculateAngle(id__,x__,
-				          const_pkg867__sim_BalanceSTM_maxAngle,
-				          const_pkg867__sim_BalanceSTM_loopTime,
-				          const_pkg867__sim_BalanceSTM_startupDelay,
-				          const_pkg867__sim_BalanceSTM_speedUpdate,
-				          const_pkg867__sim_BalanceSTM_rotationUpdate,
-				          const_pkg867__sim_BalanceSTM_angleBudget,
-				          const_pkg867__sim_BalanceSTM_speedBudget,
-				          const_pkg867__sim_BalanceSTM_rotationBudget,
-				          const_pkg867__sim_BalanceSTM_motorBudget) = 
-			TimeOut_1(
-				CalculateAngle::entered -> Clock_CLID_CalculateAngle(id__,0,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)
-				[]
-				get_CLID_CalculateAngle!x__ -> Clock_CLID_CalculateAngle(id__,x__,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)
-				[]
-				terminate -> SKIP,Clock_CLID_CalculateAngle(id__,clock_type_plus(x__,1,CLID_CalculateAngle_clock_type(id__,
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget)),
-						          const_pkg867__sim_BalanceSTM_maxAngle,
-						          const_pkg867__sim_BalanceSTM_loopTime,
-						          const_pkg867__sim_BalanceSTM_startupDelay,
-						          const_pkg867__sim_BalanceSTM_speedUpdate,
-						          const_pkg867__sim_BalanceSTM_rotationUpdate,
-						          const_pkg867__sim_BalanceSTM_angleBudget,
-						          const_pkg867__sim_BalanceSTM_speedBudget,
-						          const_pkg867__sim_BalanceSTM_rotationBudget,
-						          const_pkg867__sim_BalanceSTM_motorBudget))
 		
 		StateClocks(id__,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
@@ -7698,7 +7698,18 @@ exports
 				          const_pkg867__sim_BalanceSTM_angleBudget,
 				          const_pkg867__sim_BalanceSTM_speedBudget,
 				          const_pkg867__sim_BalanceSTM_rotationBudget,
-				          const_pkg867__sim_BalanceSTM_motorBudget) = dbisim(Clock_CLID_CalculateRotation(id__,0,
+				          const_pkg867__sim_BalanceSTM_motorBudget) = dbisim(Clock_CLID_CalculateSpeed(id__,0,
+				          const_pkg867__sim_BalanceSTM_maxAngle,
+				          const_pkg867__sim_BalanceSTM_loopTime,
+				          const_pkg867__sim_BalanceSTM_startupDelay,
+				          const_pkg867__sim_BalanceSTM_speedUpdate,
+				          const_pkg867__sim_BalanceSTM_rotationUpdate,
+				          const_pkg867__sim_BalanceSTM_angleBudget,
+				          const_pkg867__sim_BalanceSTM_speedBudget,
+				          const_pkg867__sim_BalanceSTM_rotationBudget,
+				          const_pkg867__sim_BalanceSTM_motorBudget))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CalculateAngle(id__,0,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
 				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7710,17 +7721,6 @@ exports
 				          const_pkg867__sim_BalanceSTM_motorBudget))
 		[| { terminate } |] (
 		dbisim(Clock_CLID_SetMotors(id__,0,
-				          const_pkg867__sim_BalanceSTM_maxAngle,
-				          const_pkg867__sim_BalanceSTM_loopTime,
-				          const_pkg867__sim_BalanceSTM_startupDelay,
-				          const_pkg867__sim_BalanceSTM_speedUpdate,
-				          const_pkg867__sim_BalanceSTM_rotationUpdate,
-				          const_pkg867__sim_BalanceSTM_angleBudget,
-				          const_pkg867__sim_BalanceSTM_speedBudget,
-				          const_pkg867__sim_BalanceSTM_rotationBudget,
-				          const_pkg867__sim_BalanceSTM_motorBudget))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_CalculateSpeed(id__,0,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
 				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7753,7 +7753,7 @@ exports
 				          const_pkg867__sim_BalanceSTM_rotationBudget,
 				          const_pkg867__sim_BalanceSTM_motorBudget))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_WaitForNextIteration(id__,0,
+		dbisim(Clock_CLID_CalculateRotation(id__,0,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
 				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7764,7 +7764,7 @@ exports
 				          const_pkg867__sim_BalanceSTM_rotationBudget,
 				          const_pkg867__sim_BalanceSTM_motorBudget))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_CalculateAngle(id__,0,
+		dbisim(Clock_CLID_WaitForNextIteration(id__,0,
 				          const_pkg867__sim_BalanceSTM_maxAngle,
 				          const_pkg867__sim_BalanceSTM_loopTime,
 				          const_pkg867__sim_BalanceSTM_startupDelay,
@@ -7781,7 +7781,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered,get_CLID_CalculateAngle,CalculateAngle::entered|}
+		stateClockSync = {|get_CLID_CalculateSpeed,CalculateSpeed::entered,get_CLID_CalculateAngle,CalculateAngle::entered,get_CLID_SetMotors,SetMotors::entered,get_CLID_StopMotors,StopMotors::entered,get_CLID_Initialisation,Initialisation::entered,get_CLID_CalculateRotation,CalculateRotation::entered,get_CLID_WaitForNextIteration,WaitForNextIteration::entered|}
 		
 		
 		-- Shared memory

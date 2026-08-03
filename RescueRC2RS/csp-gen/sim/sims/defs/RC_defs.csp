@@ -8,59 +8,59 @@ exports
 	
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
-	InputEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in|}
-	OutputEvents = {|main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
-	ExternalEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in
-					   ,main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
+	InputEvents = {|main::Rescue::origin.in,main::Rescue::found.in,main::Rescue::switchOn.in|}
+	OutputEvents = {|main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out,main::Rescue::moveCall|}
+	ExternalEvents = {|main::Rescue::origin.in,main::Rescue::found.in,main::Rescue::switchOn.in
+					   ,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out,main::Rescue::moveCall|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
-	datatype RegisterDataInput = i_found.Bool
-		| i_origin.Bool
+	datatype RegisterDataInput = i_origin.Bool
+		| i_found.Bool
 		| i_switchOn.Bool
 	
-	datatype RegisterDataOutput = o_move.core_nat
-		| o_takeoff
+	datatype RegisterDataOutput = o_takeoff
 		| o_turnBack
 		| o_land
+		| o_move.core_nat
 	
 	
 	nametype RegisterOutputs = {|
-	o_move,
 	o_takeoff,
 	o_turnBack,
-	o_land|}
+	o_land,
+	o_move|}
 	
 	nametype RegisterInputs = {|
-	i_found,
 	i_origin,
+	i_found,
 	i_switchOn|}
 	
-	datatype COutputEvents = COutput_move
-		| COutput_takeoff
+	datatype COutputEvents = COutput_takeoff
 		| COutput_turnBack
 		| COutput_land
+		| COutput_move
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
 	
 	A1 =
 	let
-		A1_found = registerRead.i_found?b__ ->
-								if b__ then (main::Rescue::found.in -> A1_found [] A1_found)
-									   else A1_found
 		A1_origin = registerRead.i_origin?b__ ->
 								if b__ then (main::Rescue::origin.in -> A1_origin [] A1_origin)
 									   else A1_origin
+		A1_found = registerRead.i_found?b__ ->
+								if b__ then (main::Rescue::found.in -> A1_found [] A1_found)
+									   else A1_found
 		A1_switchOn = registerRead.i_switchOn?b__ ->
 								if b__ then (main::Rescue::switchOn.in -> A1_switchOn [] A1_switchOn)
 									   else A1_switchOn
 		
 														
 	within
-			     	A1_found
-			     	 |||
 			     	A1_origin
+			     	 |||
+			     	A1_found
 			     	 |||
 			     	A1_switchOn
 							
@@ -68,10 +68,10 @@ exports
 	
 	TA2(cycle_RC_RC) = let
 			
-			read(COutput_move) = main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
 			read(COutput_takeoff) = main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
 			read(COutput_turnBack) = main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
 			read(COutput_land) = main::Rescue::land.out -> registerWrite.o_land -> SKIP
+			read(COutput_move) = main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))
@@ -81,9 +81,9 @@ exports
 		  	A2(COutputEvents)
 					
 	TA3(cycle_RC_RC) = let
-			A3 = ((registerRead.i_found?x__ -> SKIP)
+			A3 = ((registerRead.i_origin?x__ -> SKIP)
 				|||
-			(registerRead.i_origin?x__ -> SKIP)
+			(registerRead.i_found?x__ -> SKIP)
 				|||
 			(registerRead.i_switchOn?x__ -> SKIP));
 				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))

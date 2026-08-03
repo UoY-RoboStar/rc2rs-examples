@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 17:43:09
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg_taxi_sim_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_taxi_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1
+P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_taxi_sim::OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1::O__(id__,
+			    const_pre_pkg_taxi_sim_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1_avoidanceRadius1,
+			    const_pre_pkg_taxi_sim_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1_avoidanceRadius2)
+assert P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1 :[deadlock-free]	
+assert P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1 :[deterministic]
+assert P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_taxi_sim_OP_clone_clone_normal_SwarmTaxisFSM_Forward_entry_UpdateAvoidanceRadius_j_3_8_j_2_10_1

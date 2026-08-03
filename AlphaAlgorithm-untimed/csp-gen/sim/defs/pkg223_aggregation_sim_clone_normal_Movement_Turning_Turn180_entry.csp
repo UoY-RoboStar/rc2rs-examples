@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 16-05-2026 09:08:54
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 12:31:02
 --
 
 -- compileSelfContainedOperation
@@ -32,16 +32,16 @@ exports
 	channel get_neighboursF, set_neighboursF, setL_neighboursF, setR_neighboursF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_neighboursF: core_boolean
 	channel set_EXT_obstacleF: core_boolean
+	channel set_EXT_neighboursF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel clone_waitOp_j_2_4_fCall: core_nat
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	i::enter,
@@ -56,8 +56,8 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_neighboursF,
-		set_EXT_obstacleF
+		set_EXT_obstacleF,
+		set_EXT_neighboursF
 	|}
 	
 	
@@ -102,8 +102,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
 				,registerWrite
-	,	moveCall,
-		clone_waitOp_j_2_4_fCall
+	,	clone_waitOp_j_2_4_fCall,
+		moveCall
 		, share__
 		|}
 	
@@ -203,13 +203,13 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_waitOp_j_2_4_f(id__,
+				    const_pkg223_aggregation_sim_clone_normal_Movement_Turning_Turn180_entry_av,
+					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg223_aggregation_sim_clone_normal_Movement_Turning_Turn180_entry_av,
 					param_l,
 					param_a) = EDeadline(registerWrite.o_move.param_l.param_a,0)
-		CALL__clone_waitOp_j_2_4_f(id__,
-				    const_pkg223_aggregation_sim_clone_normal_Movement_Turning_Turn180_entry_av,
-					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
 		
 		-- END of Operation calls --
 	

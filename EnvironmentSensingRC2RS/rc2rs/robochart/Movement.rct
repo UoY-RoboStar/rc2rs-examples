@@ -1,5 +1,34 @@
-package pkg1126_ interface req_normal_Movement_Found_entry {
-	stop ( )
+package pre_pkg_MovementPkg interface req_normal_Movement_Avoiding_entry {
+	changeDirection ( l : Loc )
+	var l : Loc , d0 : real
+}
+
+interface I_events_normal_Movement_Avoiding_entry {
+	event odometer : real
+}
+
+interface I_normal_Movement_Avoiding_entry {
+	normal_Movement_Avoiding_entry ( )
+}
+
+interface req_normal_Movement_AvoidingAgain_t12_op {
+	clock T
+}
+
+interface I_normal_Movement_AvoidingAgain_t12_op {
+	normal_Movement_AvoidingAgain_t12_op ( )
+}
+
+interface req_normal_Movement_AvoidingAgain_t13_op {
+	clock T
+}
+
+interface I_normal_Movement_AvoidingAgain_t13_op {
+	normal_Movement_AvoidingAgain_t13_op ( )
+}
+
+interface req_normal_Movement_Found_entry {
+	stopOp ( )
 }
 
 interface I_events_normal_Movement_Found_entry {
@@ -20,35 +49,6 @@ interface I_events_normal_Movement_TryingAgain_t11_op {
 
 interface I_normal_Movement_TryingAgain_t11_op {
 	normal_Movement_TryingAgain_t11_op ( )
-}
-
-interface req_normal_Movement_AvoidingAgain_t12_op {
-	clock T
-}
-
-interface I_normal_Movement_AvoidingAgain_t12_op {
-	normal_Movement_AvoidingAgain_t12_op ( )
-}
-
-interface req_normal_Movement_AvoidingAgain_t13_op {
-	clock T
-}
-
-interface I_normal_Movement_AvoidingAgain_t13_op {
-	normal_Movement_AvoidingAgain_t13_op ( )
-}
-
-interface req_normal_Movement_Avoiding_entry {
-	changeDirection ( l : Loc )
-	var l : Loc , d0 : real
-}
-
-interface I_events_normal_Movement_Avoiding_entry {
-	event odometer : real
-}
-
-interface I_normal_Movement_Avoiding_entry {
-	normal_Movement_Avoiding_entry ( )
 }
 
 interface req_normal_Movement_Exploring_t21_op {
@@ -87,28 +87,28 @@ interface I_normal_Movement_Avoiding_entry_i_t_op {
 	normal_Movement_Avoiding_entry_i_t_op ( )
 }
 
-interface I_clone_normal_Movement_AvoidingAgain_t13_op {
-	clone_normal_Movement_AvoidingAgain_t13_op ( )
-}
-
 interface I_clone_normal_Movement_AvoidingAgain_t12_op {
 	clone_normal_Movement_AvoidingAgain_t12_op ( )
-}
-
-interface I_clone_normal_Movement_Avoiding_entry {
-	clone_normal_Movement_Avoiding_entry ( )
-}
-
-interface I_clone_normal_Movement_Found_entry {
-	clone_normal_Movement_Found_entry ( )
 }
 
 interface I_clone_normal_Movement_Exploring_t21_op {
 	clone_normal_Movement_Exploring_t21_op ( )
 }
 
+interface I_clone_normal_Movement_Avoiding_entry {
+	clone_normal_Movement_Avoiding_entry ( )
+}
+
 interface I_clone_normal_Movement_Going_t6_op {
 	clone_normal_Movement_Going_t6_op ( )
+}
+
+interface I_clone_normal_Movement_Found_entry {
+	clone_normal_Movement_Found_entry ( )
+}
+
+interface I_clone_normal_Movement_AvoidingAgain_t13_op {
+	clone_normal_Movement_AvoidingAgain_t13_op ( )
 }
 
 interface I_clone_normal_Movement_TryingAgain_t11_op {
@@ -124,7 +124,7 @@ interface I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_
 }
 
 stm Movement {
-	requires pkg1126_EnvironmentalSensing::Operations requires I_clone_normal_Movement_AvoidingAgain_t13_op requires I_clone_normal_Movement_AvoidingAgain_t12_op requires I_clone_normal_Movement_Avoiding_entry requires I_clone_normal_Movement_Found_entry requires I_clone_normal_Movement_Exploring_t21_op requires I_clone_normal_Movement_Going_t6_op requires I_clone_normal_Movement_TryingAgain_t11_op const lv : real , evadeTime : int , stuckDist : real , outPeriod : int
+	requires pre_pkg_main::Operations requires I_clone_normal_Movement_AvoidingAgain_t12_op requires I_clone_normal_Movement_Exploring_t21_op requires I_clone_normal_Movement_Avoiding_entry requires I_clone_normal_Movement_Going_t6_op requires I_clone_normal_Movement_Found_entry requires I_clone_normal_Movement_AvoidingAgain_t13_op requires I_clone_normal_Movement_TryingAgain_t11_op const lv : real , evadeTime : int , stuckDist : real , outPeriod : int
 	var a : real , d0 : real , d1 : real
 	var l : Loc
 	event obstacle : Loc
@@ -135,9 +135,9 @@ stm Movement {
 	event flag
 	initial i1
 	state Exploring {
-		initial i
 		state EmptyCycle {
 		}
+		initial i
 		transition tExploring {
 			from i
 			to EmptyCycle
@@ -145,9 +145,9 @@ stm Movement {
 		entry moveForward ( )
 	}
 	state Going {
-		initial i
 		state EmptyCycle {
 		}
+		initial i
 		transition tGoing {
 			from i
 			to EmptyCycle
@@ -166,9 +166,9 @@ stm Movement {
 	}
 	final j1
 	state Avoiding {
+		initial i
 		state EmptyCycle {
 		}
-		initial i
 		transition tAvoiding {
 			from i
 			to EmptyCycle
@@ -186,18 +186,18 @@ stm Movement {
 		entry moveTowards ( a )
 	}
 	state AvoidingAgain {
-		initial i
 		state EmptyCycle {
 		}
+		initial i
 		transition tAvoidingAgain {
 			from i
 			to EmptyCycle
 		}
 	}
 	state GettingOut {
+		initial i
 		state EmptyCycle {
 		}
-		initial i
 		transition tGettingOut {
 			from i
 			to EmptyCycle
@@ -331,52 +331,6 @@ stm Movement {
 	clock T
 }
 
-operation normal_Movement_Found_entry ( ) {
-	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_normal_Movement_Found_entry_j_2_3_t_2_3_op final f
-	initial i
-	junction j_2_3
-	transition t {
-		from i
-		to j_2_3
-		action stop ( )
-	}
-	transition t_2_3 {
-		from j_2_3
-		to f
-		action normal_Movement_Found_entry_j_2_3_t_2_3_op ( )
-	}
-}
-
-operation normal_Movement_TryingAgain_t11_op ( ) {
-	uses I_events_normal_Movement_TryingAgain_t11_op requires req_normal_Movement_TryingAgain_t11_op initial i
-	final f
-	transition t {
-		from i
-		to f
-		action odometer ? d1
-	}
-}
-
-operation normal_Movement_AvoidingAgain_t12_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t12_op initial i
-	final f
-	transition t {
-		from i
-		to f
-		action # T
-	}
-}
-
-operation normal_Movement_AvoidingAgain_t13_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t13_op initial i
-	final f
-	transition t {
-		from i
-		to f
-		action # T
-	}
-}
-
 operation normal_Movement_Avoiding_entry ( ) {
 	uses I_events_normal_Movement_Avoiding_entry requires req_normal_Movement_Avoiding_entry requires I_normal_Movement_Avoiding_entry_i_t_op final f
 	initial i
@@ -393,9 +347,55 @@ operation normal_Movement_Avoiding_entry ( ) {
 	}
 }
 
-operation normal_Movement_Exploring_t21_op ( ) {
-	requires req_normal_Movement_Exploring_t21_op initial i
+operation normal_Movement_AvoidingAgain_t12_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t12_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # T
+	}
+}
+
+operation normal_Movement_AvoidingAgain_t13_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t13_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # T
+	}
+}
+
+operation normal_Movement_Found_entry ( ) {
+	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_normal_Movement_Found_entry_j_2_3_t_2_3_op initial i
 	final f
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action stopOp ( )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action normal_Movement_Found_entry_j_2_3_t_2_3_op ( )
+	}
+}
+
+operation normal_Movement_TryingAgain_t11_op ( ) {
+	uses I_events_normal_Movement_TryingAgain_t11_op requires req_normal_Movement_TryingAgain_t11_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action odometer ? d1
+	}
+}
+
+operation normal_Movement_Exploring_t21_op ( ) {
+	requires req_normal_Movement_Exploring_t21_op final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -404,8 +404,8 @@ operation normal_Movement_Exploring_t21_op ( ) {
 }
 
 operation normal_Movement_Going_t6_op ( ) {
-	requires req_normal_Movement_Going_t6_op initial i
-	final f
+	requires req_normal_Movement_Going_t6_op final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -433,9 +433,9 @@ operation normal_Movement_Avoiding_entry_i_t_op ( ) {
 	}
 }
 
-operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t13_op initial i
-	final f
+operation clone_normal_Movement_AvoidingAgain_t12_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t12_op final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -443,9 +443,9 @@ operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
 	}
 }
 
-operation clone_normal_Movement_AvoidingAgain_t12_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t12_op initial i
-	final f
+operation clone_normal_Movement_Exploring_t21_op ( ) {
+	requires req_normal_Movement_Exploring_t21_op final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -469,14 +469,24 @@ operation clone_normal_Movement_Avoiding_entry ( ) {
 	}
 }
 
-operation clone_normal_Movement_Found_entry ( ) {
-	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 final f
+operation clone_normal_Movement_Going_t6_op ( ) {
+	requires req_normal_Movement_Going_t6_op final f
 	initial i
+	transition t {
+		from i
+		to f
+		action # T
+	}
+}
+
+operation clone_normal_Movement_Found_entry ( ) {
+	uses I_events_normal_Movement_Found_entry requires req_normal_Movement_Found_entry requires I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 initial i
+	final f
 	junction j_2_3
 	transition t {
 		from i
 		to j_2_3
-		action stop ( )
+		action stopOp ( )
 	}
 	transition t_2_3 {
 		from j_2_3
@@ -485,19 +495,9 @@ operation clone_normal_Movement_Found_entry ( ) {
 	}
 }
 
-operation clone_normal_Movement_Exploring_t21_op ( ) {
-	requires req_normal_Movement_Exploring_t21_op initial i
-	final f
-	transition t {
-		from i
-		to f
-		action # T
-	}
-}
-
-operation clone_normal_Movement_Going_t6_op ( ) {
-	requires req_normal_Movement_Going_t6_op initial i
-	final f
+operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t13_op final f
+	initial i
 	transition t {
 		from i
 		to f
@@ -506,8 +506,8 @@ operation clone_normal_Movement_Going_t6_op ( ) {
 }
 
 operation clone_normal_Movement_TryingAgain_t11_op ( ) {
-	uses I_events_normal_Movement_TryingAgain_t11_op requires req_normal_Movement_TryingAgain_t11_op initial i
-	final f
+	uses I_events_normal_Movement_TryingAgain_t11_op requires req_normal_Movement_TryingAgain_t11_op final f
+	initial i
 	transition t {
 		from i
 		to f

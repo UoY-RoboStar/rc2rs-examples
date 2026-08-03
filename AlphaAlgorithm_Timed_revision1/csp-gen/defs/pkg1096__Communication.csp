@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 17-05-2026 11:35:47
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 28-07-2026 17:27:40
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -47,8 +47,8 @@ exports
 	channel robots: InOut.core_nat
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_Communication_Broadcast_entryCall
 	channel clone_normal_Communication_Broadcast_t4_opCall
+	channel clone_normal_Communication_Broadcast_entryCall
 	channel clone_normal_Communication_Receive_t5_opCall
 	channel clone_normal_Communication_Receive_t2_opCall
 	channel clone_normal_Communication_Receive_t3_opCall
@@ -75,8 +75,8 @@ exports
 	,	broadcast,
 		receive,
 		robots
-	,	clone_normal_Communication_Broadcast_entryCall,
-		clone_normal_Communication_Broadcast_t4_opCall,
+	,	clone_normal_Communication_Broadcast_t4_opCall,
+		clone_normal_Communication_Broadcast_entryCall,
 		clone_normal_Communication_Receive_t5_opCall,
 		clone_normal_Communication_Receive_t2_opCall,
 		clone_normal_Communication_Receive_t3_opCall
@@ -325,23 +325,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_neighs,setR_y |} ]] 
-				  [[set_x <- setL_x,set_neighs <- setL_neighs,set_y <- setL_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_x,setR_y |} ]] 
+				  [[set_neighs <- setL_neighs,set_x <- setL_x,set_y <- setL_y]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_x
 				 			,setL_neighs
+				 			,setL_x
 				 			,setL_y
-				 			,setR_x
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_x
 				 			 			,setR_y
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_x,setL_neighs,setL_y |} ]]
-				  [[set_x <- setR_x,set_neighs <- setR_neighs,set_y <- setR_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_x,setL_y |} ]]
+				  [[set_neighs <- setR_neighs,set_x <- setR_x,set_y <- setR_y]]
 				 )
-				)[[setL_x <- set_x,setL_neighs <- set_neighs,setL_y <- set_y]]
-				 [[setR_x <- set_x,setR_neighs <- set_neighs,setR_y <- set_y]]
+				)[[setL_neighs <- set_neighs,setL_x <- set_x,setL_y <- set_y]]
+				 [[setR_neighs <- set_neighs,setR_x <- set_x,setR_y <- set_y]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -420,23 +420,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_neighs,setR_y |} ]] 
-				  [[set_x <- setL_x,set_neighs <- setL_neighs,set_y <- setL_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_x,setR_y |} ]] 
+				  [[set_neighs <- setL_neighs,set_x <- setL_x,set_y <- setL_y]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_x
 				 			,setL_neighs
+				 			,setL_x
 				 			,setL_y
-				 			,setR_x
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_x
 				 			 			,setR_y
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_x,setL_neighs,setL_y |} ]]
-				  [[set_x <- setR_x,set_neighs <- setR_neighs,set_y <- setR_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_x,setL_y |} ]]
+				  [[set_neighs <- setR_neighs,set_x <- setR_x,set_y <- setR_y]]
 				 )
-				)[[setL_x <- set_x,setL_neighs <- set_neighs,setL_y <- set_y]]
-				 [[setR_x <- set_x,setR_neighs <- set_neighs,setR_y <- set_y]]
+				)[[setL_neighs <- set_neighs,setL_x <- set_x,setL_y <- set_y]]
+				 [[setR_neighs <- set_neighs,setR_x <- set_x,setR_y <- set_y]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -673,23 +673,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_neighs,setR_y |} ]] 
-				  [[set_x <- setL_x,set_neighs <- setL_neighs,set_y <- setL_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_x,setR_y |} ]] 
+				  [[set_neighs <- setL_neighs,set_x <- setL_x,set_y <- setL_y]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_x
 				 			,setL_neighs
+				 			,setL_x
 				 			,setL_y
-				 			,setR_x
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_x
 				 			 			,setR_y
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_x,setL_neighs,setL_y |} ]]
-				  [[set_x <- setR_x,set_neighs <- setR_neighs,set_y <- setR_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_x,setL_y |} ]]
+				  [[set_neighs <- setR_neighs,set_x <- setR_x,set_y <- setR_y]]
 				 )
-				)[[setL_x <- set_x,setL_neighs <- set_neighs,setL_y <- set_y]]
-				 [[setR_x <- set_x,setR_neighs <- set_neighs,setR_y <- set_y]]
+				)[[setL_neighs <- set_neighs,setL_x <- set_x,setL_y <- set_y]]
+				 [[setR_neighs <- set_neighs,setR_x <- set_x,setR_y <- set_y]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -764,23 +764,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_neighs,setR_y |} ]] 
-				  [[set_x <- setL_x,set_neighs <- setL_neighs,set_y <- setL_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_x,setR_y |} ]] 
+				  [[set_neighs <- setL_neighs,set_x <- setL_x,set_y <- setL_y]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_x
 				 			,setL_neighs
+				 			,setL_x
 				 			,setL_y
-				 			,setR_x
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_x
 				 			 			,setR_y
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_x,setL_neighs,setL_y |} ]]
-				  [[set_x <- setR_x,set_neighs <- setR_neighs,set_y <- setR_y]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_x,setL_y |} ]]
+				  [[set_neighs <- setR_neighs,set_x <- setR_x,set_y <- setR_y]]
 				 )
-				)[[setL_x <- set_x,setL_neighs <- set_neighs,setL_y <- set_y]]
-				 [[setR_x <- set_x,setR_neighs <- set_neighs,setR_y <- set_y]]
+				)[[setL_neighs <- set_neighs,setL_x <- set_x,setL_y <- set_y]]
+				 [[setR_neighs <- set_neighs,setR_x <- set_x,setR_y <- set_y]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -817,12 +817,12 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__clone_normal_Communication_Broadcast_entry(id__,
-			    const_pkg1096__Communication_id,
-			    const_pkg1096__Communication_RC) 	= clone_normal_Communication_Broadcast_entryCall -> SKIP
 	CALL__clone_normal_Communication_Broadcast_t4_op(id__,
 			    const_pkg1096__Communication_id,
 			    const_pkg1096__Communication_RC) 	= clone_normal_Communication_Broadcast_t4_opCall -> SKIP
+	CALL__clone_normal_Communication_Broadcast_entry(id__,
+			    const_pkg1096__Communication_id,
+			    const_pkg1096__Communication_RC) 	= clone_normal_Communication_Broadcast_entryCall -> SKIP
 	CALL__clone_normal_Communication_Receive_t5_op(id__,
 			    const_pkg1096__Communication_id,
 			    const_pkg1096__Communication_RC) 	= clone_normal_Communication_Receive_t5_opCall -> SKIP

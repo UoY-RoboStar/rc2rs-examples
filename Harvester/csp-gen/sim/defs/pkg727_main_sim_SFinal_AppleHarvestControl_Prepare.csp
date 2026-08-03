@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -36,10 +36,10 @@ exports
 	channel get_inact_AppleHarvestControl_Prepare, set_inact_AppleHarvestControl_Prepare, setL_inact_AppleHarvestControl_Prepare, setR_inact_AppleHarvestControl_Prepare: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_inact_AppleHarvestControl_Prepare: core_boolean
+	channel set_EXT_endIKSolverF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
+	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_exec_ds_AppleHarvestControl_Prepare: core_boolean
 	channel set_EXT_exec_ms_AppleHarvestControl_Prepare: core_boolean
 	
@@ -63,10 +63,10 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
 		set_EXT_inact_AppleHarvestControl_Prepare,
+		set_EXT_endIKSolverF,
 		set_EXT_endGoHomeF,
+		set_EXT_takePicF,
 		set_EXT_exec_ds_AppleHarvestControl_Prepare,
 		set_EXT_exec_ms_AppleHarvestControl_Prepare
 	|}
@@ -77,11 +77,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_S1 : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_S1 : core_clock_type 
 	--channel increment__
 	
-	CLID_S1_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -90,7 +90,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_S1_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}

@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 01-08-2026 20:29:03
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -1962,19 +1962,10 @@
 			localClockResets = {|clockReset.CLID_C|}
 			
 			
-			channel get_CLID_f : core_clock_type 
 			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_C : core_clock_type 
+			channel get_CLID_f : core_clock_type 
 			--channel increment__
-			
-			CLID_f_clock_type(id__) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_Waiting_clock_type(id__) = 
 				let
@@ -1989,6 +1980,15 @@
 				let
 					max = (clock_type_max(Union({
 			({param_i|param_i <- core_nat})
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_f_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			{}
 			}))+1)
 				ctype = {0..max}
 			within
@@ -2767,24 +2767,24 @@
 			localClockResets = {|clockReset.CLID_C|}
 			
 			
-			channel get_CLID_C : core_clock_type 
 			channel get_CLID_f : core_clock_type 
+			channel get_CLID_C : core_clock_type 
 			--channel increment__
+			
+			CLID_f_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_C_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			({param_m|param_m <- core_nat}),
 			({param_n|param_n <- core_nat})
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_f_clock_type(id__) = 
-				let
-					max = (clock_type_max(Union({
-			{}
 			}))+1)
 				ctype = {0..max}
 			within
@@ -4369,23 +4369,13 @@
 			
 			
 			channel get_CLID_NoGas : core_clock_type 
-			channel get_CLID_j1 : core_clock_type 
 			channel get_CLID_GasDetected : core_clock_type 
 			channel get_CLID_Reading : core_clock_type 
 			channel get_CLID_Analysis : core_clock_type 
+			channel get_CLID_j1 : core_clock_type 
 			--channel increment__
 			
 			CLID_NoGas_clock_type(id__,
-					          const_pkg994__GasAnalysis_thr) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_j1_clock_type(id__,
 					          const_pkg994__GasAnalysis_thr) = 
 				let
 					max = (clock_type_max(Union({
@@ -4416,6 +4406,16 @@
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_Analysis_clock_type(id__,
+					          const_pkg994__GasAnalysis_thr) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_j1_clock_type(id__,
 					          const_pkg994__GasAnalysis_thr) = 
 				let
 					max = (clock_type_max(Union({
@@ -6050,6 +6050,11 @@
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
 				
+				CALL__clone_normal_GasAnalysis_GasDetected_t8_op(id__,
+						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t8_op::O__(id__))
+				[[
+					OP_clone_normal_GasAnalysis_GasDetected_t8_op::stop <- stop
+				]]
 				CALL__clone_normal_GasAnalysis_GasDetected_t9a_op(id__,
 						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t9a_op::O__(id__))
 				[[
@@ -6058,11 +6063,6 @@
 				[[
 					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gs <- get_gs,
 					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gs <- set_gs
-				]]
-				CALL__clone_normal_GasAnalysis_GasDetected_t8_op(id__,
-						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t8_op::O__(id__))
-				[[
-					OP_clone_normal_GasAnalysis_GasDetected_t8_op::stop <- stop
 				]]
 				CALL__clone_normal_GasAnalysis_Analysis_t3_op(id__,
 						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_Analysis_t3_op::O__(id__))

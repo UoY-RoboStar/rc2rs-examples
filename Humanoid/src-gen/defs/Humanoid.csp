@@ -1,0 +1,45 @@
+-- declaring robotic platform events
+channel outOfBalanceLeft:Vector
+channel outOfBalanceRight:Vector
+channel wallDetected
+
+Humanoid = let
+	Buffer0(<v>) = Head_startSiren -> Buffer0(<1>) [] Siren_stopSiren -> Buffer0(<>)
+	Buffer0(<>) = Head_startSiren -> Buffer0(<1>)
+	Buffer1(<v>) = Head_stopSiren -> Buffer1(<1>) [] Siren_startSiren -> Buffer1(<>)
+	Buffer1(<>) = Head_stopSiren -> Buffer1(<1>)
+within
+	((Buffer0(<>)|||Buffer1(<>))
+	[|{|Siren_stopSiren,Head_startSiren,Siren_startSiren,Head_stopSiren|}|]
+	(Head[[Head_liftFootLeft <- Foot_liftFoot,Head_liftFootRight <- Foot_liftFoot,Head_stepDoneRight <- Foot_stepDone,Head_stepDoneLeft <- Foot_stepDone,Head_wallDetected <- wallDetected]]
+	  [|{|Foot_stepDone,Foot_liftFoot|}|]
+	  (Foot[[Foot_liftFoot <- Head_liftFootLeft,Foot_stepDone <- Head_stepDoneLeft,Foot_leanOut <- Foot_leanIn,Foot_leanIn <- Foot_leanOut,Foot_stepDownOut <- Foot_stepDownIn,Foot_stepDownIn <- Foot_stepDownOut,Foot_outOfBalance <- outOfBalanceLeft]]
+	    [|{|Foot_stepDownIn,Foot_stepDownOut,Foot_leanOut,Head_stepDoneLeft,Foot_leanIn,Head_liftFootLeft|}|]
+	    (Foot[[Foot_liftFoot <- Head_liftFootRight,Foot_stepDone <- Head_stepDoneRight,Foot_leanIn <- Foot_leanOut,Foot_leanOut <- Foot_leanIn,Foot_stepDownIn <- Foot_stepDownOut,Foot_stepDownOut <- Foot_stepDownIn,Foot_outOfBalance <- outOfBalanceRight]]
+	      [|{|Foot_stepDownOut,Foot_stepDownIn,Head_stepDoneRight,Foot_leanOut,Head_liftFootRight,Foot_leanIn|}|]
+	      Siren) \ {|Foot_stepDownOut,Foot_stepDownIn,Head_stepDoneRight,Foot_leanOut,Head_liftFootRight,Foot_leanIn|}
+	    ) \ {|Foot_stepDownIn,Foot_stepDownOut,Foot_leanOut,Head_stepDoneLeft,Foot_leanIn,Head_liftFootLeft|}
+	  ) \ {|Foot_stepDone,Foot_liftFoot|}
+	)\{|Siren_stopSiren,Head_startSiren,Siren_startSiren,Head_stopSiren|}
+	
+-- visible state equivalent
+
+Humanoid_VS = let
+	Buffer0(<v>) = Head_startSiren -> Buffer0(<1>) [] Siren_stopSiren -> Buffer0(<>)
+	Buffer0(<>) = Head_startSiren -> Buffer0(<1>)
+	Buffer1(<v>) = Head_stopSiren -> Buffer1(<1>) [] Siren_startSiren -> Buffer1(<>)
+	Buffer1(<>) = Head_stopSiren -> Buffer1(<1>)
+within
+	((Buffer0(<>)|||Buffer1(<>))
+	[|{|Siren_stopSiren,Head_startSiren,Siren_startSiren,Head_stopSiren|}|]
+	(Head_VS[[Head_liftFootLeft <- Foot_liftFoot,Head_liftFootRight <- Foot_liftFoot,Head_stepDoneRight <- Foot_stepDone,Head_stepDoneLeft <- Foot_stepDone,Head_wallDetected <- wallDetected]]
+	  [|{|Foot_stepDone,Foot_liftFoot|}|]
+	  (Foot_VS[[Foot_liftFoot <- Head_liftFootLeft,Foot_stepDone <- Head_stepDoneLeft,Foot_leanOut <- Foot_leanIn,Foot_leanIn <- Foot_leanOut,Foot_stepDownOut <- Foot_stepDownIn,Foot_stepDownIn <- Foot_stepDownOut,Foot_outOfBalance <- outOfBalanceLeft]]
+	    [|{|Foot_stepDownIn,Foot_stepDownOut,Foot_leanOut,Head_stepDoneLeft,Foot_leanIn,Head_liftFootLeft|}|]
+	    (Foot_VS[[Foot_liftFoot <- Head_liftFootRight,Foot_stepDone <- Head_stepDoneRight,Foot_leanIn <- Foot_leanOut,Foot_leanOut <- Foot_leanIn,Foot_stepDownIn <- Foot_stepDownOut,Foot_stepDownOut <- Foot_stepDownIn,Foot_outOfBalance <- outOfBalanceRight]]
+	      [|{|Foot_stepDownOut,Foot_stepDownIn,Head_stepDoneRight,Foot_leanOut,Head_liftFootRight,Foot_leanIn|}|]
+	      Siren_VS) \ {|Foot_stepDownOut,Foot_stepDownIn,Head_stepDoneRight,Foot_leanOut,Head_liftFootRight,Foot_leanIn|}
+	    ) \ {|Foot_stepDownIn,Foot_stepDownOut,Foot_leanOut,Head_stepDoneLeft,Foot_leanIn,Head_liftFootLeft|}
+	  ) \ {|Foot_stepDone,Foot_liftFoot|}
+	)\{|Siren_stopSiren,Head_startSiren,Siren_startSiren,Head_stopSiren|}
+	

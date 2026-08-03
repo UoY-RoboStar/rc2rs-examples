@@ -1,0 +1,32 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 13:39:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "state_defs.csp"
+include "__defs.csp"
+include "step.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate OP_step
+P_OP_step = let
+	id__ = 0
+	
+	param_d = (0,0,0)
+	
+	
+	
+within
+	OP_step::O__(id__,
+				param_d,
+			    const_step_c)
+assert P_OP_step :[deadlock-free]	
+assert P_OP_step;RUN({r__}) :[deadlock-free]
+assert P_OP_step :[deterministic]
+assert P_OP_step :[divergence-free]

@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 15:11:45
+--
+
+include "pre_pkg_head_sim_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_head_sim_HeadS.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_head_sim_HeadS
+P_pre_pkg_head_sim_HeadS = let
+	cycle_pre_pkg_head_sim_HeadS_HeadS = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg_head_sim_HeadS::O__(
+		id__
+	)
+assert P_pre_pkg_head_sim_HeadS :[deadlock-free]	
+assert P_pre_pkg_head_sim_HeadS;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_head_sim_HeadS :[deterministic]
+assert P_pre_pkg_head_sim_HeadS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_head_sim_HeadS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_head_sim_HeadS

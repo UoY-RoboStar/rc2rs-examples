@@ -1,0 +1,156 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 20-07-2026 13:09:19
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_taxi.csp"
+
+
+-- generate OP_Turn
+P_OP_Turn = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_Turn::O__(id__,
+			    const_Turn_angularSpeed1,
+			    const_Turn_rotate)
+assert P_OP_Turn :[deadlock-free]	
+assert P_OP_Turn;RUN({r__}) :[deadlock-free]
+assert P_OP_Turn :[deterministic]
+assert P_OP_Turn :[divergence-free]
+-- generate OP_UpdateAvoidanceRadius
+P_OP_UpdateAvoidanceRadius = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_UpdateAvoidanceRadius::O__(id__,
+			    const_UpdateAvoidanceRadius_avoidanceRadius1,
+			    const_UpdateAvoidanceRadius_avoidanceRadius2)
+assert P_OP_UpdateAvoidanceRadius :[deadlock-free]	
+assert P_OP_UpdateAvoidanceRadius;RUN({r__}) :[deadlock-free]
+assert P_OP_UpdateAvoidanceRadius :[deterministic]
+assert P_OP_UpdateAvoidanceRadius :[divergence-free]
+-- generate OP_MoveForward
+P_OP_MoveForward = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	OP_MoveForward::O__(id__,
+				param_i)
+assert P_OP_MoveForward :[deadlock-free]	
+assert P_OP_MoveForward;RUN({r__}) :[deadlock-free]
+assert P_OP_MoveForward :[deterministic]
+assert P_OP_MoveForward :[divergence-free]
+-- generate OP_RotateClockwise
+P_OP_RotateClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	OP_RotateClockwise::O__(id__,
+				param_j)
+assert P_OP_RotateClockwise :[deadlock-free]	
+assert P_OP_RotateClockwise;RUN({r__}) :[deadlock-free]
+assert P_OP_RotateClockwise :[deterministic]
+assert P_OP_RotateClockwise :[divergence-free]
+-- generate OP_RotateAntiClockwise
+P_OP_RotateAntiClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	OP_RotateAntiClockwise::O__(id__,
+				param_j)
+assert P_OP_RotateAntiClockwise :[deadlock-free]	
+assert P_OP_RotateAntiClockwise;RUN({r__}) :[deadlock-free]
+assert P_OP_RotateAntiClockwise :[deterministic]
+assert P_OP_RotateAntiClockwise :[divergence-free]
+
+
+-- generate ModTaxi
+P_ModTaxi = let
+	id__ = 0
+	
+	
+	
+		
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1 = const_UpdateAvoidanceRadius_avoidanceRadius1
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2 = const_UpdateAvoidanceRadius_avoidanceRadius2
+	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1 = const_Turn_angularSpeed1
+	const_ModTaxi_ctrlTaxi_op_ref0_rotate = const_Turn_rotate
+	
+within
+	ModTaxi::O__(id__,
+			    const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_rotate,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2)
+assert P_ModTaxi :[deadlock-free]	
+assert P_ModTaxi;RUN({r__}) :[deadlock-free]
+assert P_ModTaxi :[deterministic]
+assert P_ModTaxi :[divergence-free]
+
+-- generate ModTaxi_ctrlTaxi
+P_ModTaxi_ctrlTaxi = let
+	id__ = 0
+	
+	
+	
+		
+	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1 = const_Turn_angularSpeed1
+	const_ModTaxi_ctrlTaxi_op_ref0_rotate = const_Turn_rotate
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1 = const_UpdateAvoidanceRadius_avoidanceRadius1
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2 = const_UpdateAvoidanceRadius_avoidanceRadius2
+within
+	ModTaxi::ctrlTaxi::O__(id__,
+			    const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_rotate,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2)
+
+assert P_ModTaxi_ctrlTaxi :[deadlock-free]	
+assert P_ModTaxi_ctrlTaxi;RUN({r__}) :[deadlock-free]
+assert P_ModTaxi_ctrlTaxi :[deterministic]
+assert P_ModTaxi_ctrlTaxi :[divergence-free]
+
+-- generate ModTaxi_ctrlTaxi_SwarmTaxisFSM
+P_ModTaxi_ctrlTaxi_SwarmTaxisFSM = let
+	id__ = 0
+	
+	
+	
+within
+	ModTaxi::ctrlTaxi::SwarmTaxisFSM::O__(
+		id__,
+		const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal,
+		const_UpdateAvoidanceRadius_avoidanceRadius1,
+		const_UpdateAvoidanceRadius_avoidanceRadius2,
+		const_Turn_angularSpeed1,
+		const_Turn_rotate
+	)
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[deadlock-free]	
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM;RUN({r__}) :[deadlock-free]
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[deterministic]
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[divergence-free]

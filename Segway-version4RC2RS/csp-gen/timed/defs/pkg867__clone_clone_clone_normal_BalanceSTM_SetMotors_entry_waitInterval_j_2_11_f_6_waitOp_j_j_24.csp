@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -70,11 +70,20 @@ exports
 	
 	
 	channel get_CLID_Waiting : core_clock_type 
-	channel get_CLID_C : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	--channel increment__
 	
 	CLID_Waiting_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -87,15 +96,6 @@ exports
 		let
 			max = (clock_type_max(Union({
 	({param_i|param_i <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_f_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	{}
 	}))+1)
 		ctype = {0..max}
 	within

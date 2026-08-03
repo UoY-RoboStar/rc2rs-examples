@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 -- compileSelfContainedOperation
@@ -70,11 +70,22 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
+	channel get_CLID_C : core_clock_type 
 	channel get_CLID_S2 : core_clock_type 
 	channel get_CLID_S1 : core_clock_type 
 	channel get_CLID_sStop : core_clock_type 
-	channel get_CLID_C : core_clock_type 
 	--channel increment__
+	
+	CLID_C_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	({Minus(1, 1, core_int)}),
+	{},
+	({Minus(1, 1, core_int)})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_S2_clock_type(id__) = 
 		let
@@ -98,17 +109,6 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_C_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	({Minus(1, 1, core_int)}),
-	{},
-	({Minus(1, 1, core_int)})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -435,7 +435,7 @@ exports
 		-- Transitions
 		Transitions(id__,
 					param_d) = ((let
-			Trans = share__choice(get_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9?exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 -> get_CLID_C?C:CLID_C_clock_type(id__) -> TimeOut_1(
+			Trans = share__choice(get_CLID_C?C:CLID_C_clock_type(id__) -> get_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9?exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(clockReset.CLID_C -> SKIP))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; S1::enter -> SKIP))))
 				 [] dbisim(((C<=Minus(1, 1, core_int)))&(internal__!NID_S1 -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -518,17 +518,17 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockReset.CLID_C <- clockResetL.CLID_C]]
+						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9
 						 			,clockResetL.CLID_C
+						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9
 						|}) |]
 						 ((i::enter -> Transitions(id__,
 						 			param_d))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockResetL.CLID_C |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 |} ]]
 						 )
-						)[[setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockResetL.CLID_C <- clockReset.CLID_C]]
+						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9]]
 						)
 					)
 					 \ hideSet)
@@ -619,17 +619,17 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockReset.CLID_C <- clockResetL.CLID_C]]
+						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9
 						 			,clockResetL.CLID_C
+						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9
 						|}) |]
 						 ((i::enter -> Transitions(id__,
 						 			param_d))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockResetL.CLID_C |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 |} ]]
 						 )
-						)[[setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9,clockResetL.CLID_C <- clockReset.CLID_C]]
+						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateAngle_entry_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14_j_4_14_j_3_19_9]]
 						)
 					)
 					 \ hideSet)

@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:58:32
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 24-06-2026 14:28:48
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -45,8 +45,8 @@ exports
 	channel normal_SMovement_Turning_entryCall
 	channel stopCall
 	channel normal_SMovement_Moving_t2_opCall
-	channel clone_normal_SMovement_Moving_t2_opCall
 	channel moveCall: core_real.core_real
+	channel clone_normal_SMovement_Moving_t2_opCall
 	channel clone_normal_SMovement_Moving_entryCall
 	
 	enterSS = {|
@@ -74,8 +74,8 @@ exports
 		normal_SMovement_Turning_entryCall,
 		stopCall,
 		normal_SMovement_Moving_t2_opCall,
-		clone_normal_SMovement_Moving_t2_opCall,
 		moveCall,
+		clone_normal_SMovement_Moving_t2_opCall,
 		clone_normal_SMovement_Moving_entryCall
 		|}
 	datatype ClockSet = 
@@ -86,22 +86,10 @@ exports
 	localClockResets = {|clockReset.CLID_MBC|}
 	
 	
-	channel get_CLID_MBC : core_clock_type 
 	channel get_CLID_Moving : core_clock_type 
+	channel get_CLID_MBC : core_clock_type 
 	channel get_CLID_Turning : core_clock_type 
 	--channel increment__
-	
-	CLID_MBC_clock_type(id__,
-			          const_pkg224_SimFW_SMovement_lv,
-			          const_pkg224_SimFW_SMovement_PI,
-			          const_pkg224_SimFW_SMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|av <- core_real,PI <- core_real})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Moving_clock_type(id__,
 			          const_pkg224_SimFW_SMovement_lv,
@@ -110,6 +98,18 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_MBC_clock_type(id__,
+			          const_pkg224_SimFW_SMovement_lv,
+			          const_pkg224_SimFW_SMovement_PI,
+			          const_pkg224_SimFW_SMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|PI <- core_real,av <- core_real})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -1072,16 +1072,16 @@ exports
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,
 				    const_pkg224_SimFW_SMovement_av) = EDeadline(normal_SMovement_Moving_t2_opCall,0)
-		CALL__clone_normal_SMovement_Moving_t2_op(id__,
-				    const_pkg224_SimFW_SMovement_lv,
-				    const_pkg224_SimFW_SMovement_PI,
-				    const_pkg224_SimFW_SMovement_av) = EDeadline(clone_normal_SMovement_Moving_t2_opCall,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,
 				    const_pkg224_SimFW_SMovement_av,
 					param_lv,
 					param_av) = EDeadline(moveCall.param_lv.param_av,0)
+		CALL__clone_normal_SMovement_Moving_t2_op(id__,
+				    const_pkg224_SimFW_SMovement_lv,
+				    const_pkg224_SimFW_SMovement_PI,
+				    const_pkg224_SimFW_SMovement_av) = EDeadline(clone_normal_SMovement_Moving_t2_opCall,0)
 		CALL__clone_normal_SMovement_Moving_entry(id__,
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,

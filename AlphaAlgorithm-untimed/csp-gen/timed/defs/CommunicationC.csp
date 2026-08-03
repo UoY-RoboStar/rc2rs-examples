@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 16-05-2026 09:08:54
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 12:31:03
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -115,21 +115,10 @@
 			localClockResets = {|clockReset.CLID_RCC|}
 			
 			
-			channel get_CLID_Broadcast : core_clock_type 
 			channel get_CLID_RCC : core_clock_type 
 			channel get_CLID_Receive : core_clock_type 
+			channel get_CLID_Broadcast : core_clock_type 
 			--channel increment__
-			
-			CLID_Broadcast_clock_type(id__,
-					          const_Communication_id,
-					          const_Communication_RC) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_RCC_clock_type(id__,
 					          const_Communication_id,
@@ -144,6 +133,17 @@
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_Receive_clock_type(id__,
+					          const_Communication_id,
+					          const_Communication_RC) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Broadcast_clock_type(id__,
 					          const_Communication_id,
 					          const_Communication_RC) = 
 				let
@@ -412,12 +412,12 @@
 				Transitions(id__,
 						    const_Communication_id,
 						    const_Communication_RC) = ((let
-					Trans = share__choice(get_y?y -> get_x?x -> get_CLID_RCC?RCC:CLID_RCC_clock_type(id__,
+					Trans = share__choice(get_CLID_RCC?RCC:CLID_RCC_clock_type(id__,
 							          const_Communication_id,
-							          const_Communication_RC) -> TimeOut_1(
+							          const_Communication_RC) -> get_y?y -> get_x?x -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Broadcast::enter -> SKIP))))
-						 [] dbisim((receive__!NID_Receive.in?x:{x|x <- {(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}, (tuple2_1(x)==const_Communication_id)} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_x?x -> share__choice(get_neighs?neighs -> true & (share__choice(set_neighs!set_toolkit_union(neighs,{tuple2_2(x)}) -> SKIP))))) ; Receive::enter -> SKIP)))
+						 [] dbisim((receive__!NID_Receive.in?x:{x|x <- {(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}, (tuple2_1(x)==const_Communication_id)} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_neighs?neighs -> share__choice(get_x?x -> true & (share__choice(set_neighs!set_toolkit_union(neighs,{tuple2_2(x)}) -> SKIP))))) ; Receive::enter -> SKIP)))
 						 [] dbisim((broadcast__!NID_Receive.in?y:{y|y <- main_ID, (y!=const_Communication_id)} -> share__choice(set_y!y -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_y?y -> true&(share__choice(receive.out!(y,const_Communication_id) -> SKIP))) ; Receive::enter -> SKIP)))
 						 [] dbisim((true)&(internal__!NID_Broadcast -> SKIP ; (share__choice(clockReset.CLID_RCC -> SKIP) ; share__choice(SKIP))
 						 ; share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_neighs!{} -> SKIP))) ; Receive::enter -> SKIP)))
@@ -483,22 +483,22 @@
 								 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_x |} ]] 
-								  [[set_y <- setL_y,set_x <- setL_x,clockReset.CLID_RCC <- clockResetL.CLID_RCC]]
+								  [[clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_y <- setL_y,set_x <- setL_x]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,clockResetL.CLID_RCC
 								 			,setL_y
 								 			,setL_x
-								 			,clockResetL.CLID_RCC
 								 			,setR_y
 								 			 			,setR_x
 								 			|}) |]
 								 ((i1::enter -> Transitions(id__,
 								 		    const_Communication_id,
 								 		    const_Communication_RC))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_x,clockResetL.CLID_RCC |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_RCC,setL_y,setL_x |} ]]
 								  [[set_y <- setR_y,set_x <- setR_x]]
 								 )
-								)[[setL_y <- set_y,setL_x <- set_x,clockResetL.CLID_RCC <- clockReset.CLID_RCC]]
+								)[[clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_y <- set_y,setL_x <- set_x]]
 								 [[setR_y <- set_y,setR_x <- set_x]]
 								)
 							)
@@ -524,7 +524,7 @@
 						    const_Communication_id,
 						    const_Communication_RC) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+						stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 					 within
 						(MachineBody(id__,
 								    const_Communication_id,
@@ -538,7 +538,7 @@
 						    const_Communication_id,
 						    const_Communication_RC) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+						stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -547,17 +547,17 @@
 										MachineBody(id__,
 												    const_Communication_id,
 												    const_Communication_RC)
-										[| {|get_CLID_Receive,Receive::entered,terminate|} |]
-										dbisim(Clock_CLID_Receive(id__,0,
+										[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+										dbisim(Clock_CLID_Broadcast(id__,0,
 												          const_Communication_id,
 												          const_Communication_RC))
-									)\{|get_CLID_Receive|}
+									)\{|get_CLID_Broadcast|}
 								)
-								[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
-								dbisim(Clock_CLID_Broadcast(id__,0,
+								[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+								dbisim(Clock_CLID_Receive(id__,0,
 										          const_Communication_id,
 										          const_Communication_RC))
-							)\{|get_CLID_Broadcast|}
+							)\{|get_CLID_Receive|}
 						)
 						) \ union(stateClockSync,enteredSS)
 					)
@@ -665,22 +665,22 @@
 								 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_x |} ]] 
-								  [[set_y <- setL_y,set_x <- setL_x,clockReset.CLID_RCC <- clockResetL.CLID_RCC]]
+								  [[clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_y <- setL_y,set_x <- setL_x]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,clockResetL.CLID_RCC
 								 			,setL_y
 								 			,setL_x
-								 			,clockResetL.CLID_RCC
 								 			,setR_y
 								 			 			,setR_x
 								 			|}) |]
 								 ((i1::enter -> Transitions(id__,
 								 		    const_Communication_id,
 								 		    const_Communication_RC))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_x,clockResetL.CLID_RCC |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_RCC,setL_y,setL_x |} ]]
 								  [[set_y <- setR_y,set_x <- setR_x]]
 								 )
-								)[[setL_y <- set_y,setL_x <- set_x,clockResetL.CLID_RCC <- clockReset.CLID_RCC]]
+								)[[clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_y <- set_y,setL_x <- set_x]]
 								 [[setR_y <- set_y,setR_x <- set_x]]
 								)
 							)
@@ -706,7 +706,7 @@
 						    const_Communication_id,
 						    const_Communication_RC) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+						stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 					 within
 						(MachineBody_VS_O(id__,
 								    const_Communication_id,
@@ -720,7 +720,7 @@
 						    const_Communication_id,
 						    const_Communication_RC) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+						stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -729,17 +729,17 @@
 										MachineBody_VS_O(id__,
 												    const_Communication_id,
 												    const_Communication_RC)
-										[| {|get_CLID_Receive,Receive::entered,terminate|} |]
-										dbisim(Clock_CLID_Receive(id__,0,
+										[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+										dbisim(Clock_CLID_Broadcast(id__,0,
 												          const_Communication_id,
 												          const_Communication_RC))
-									)\{|get_CLID_Receive|}
+									)\{|get_CLID_Broadcast|}
 								)
-								[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
-								dbisim(Clock_CLID_Broadcast(id__,0,
+								[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+								dbisim(Clock_CLID_Receive(id__,0,
 										          const_Communication_id,
 										          const_Communication_RC))
-							)\{|get_CLID_Broadcast|}
+							)\{|get_CLID_Receive|}
 						)
 						) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -906,23 +906,6 @@
 				
 				clockSync = {|get_CLID_RCC,clockReset.CLID_RCC|}
 				
-				Clock_CLID_Broadcast(id__,x__,
-						          const_Communication_id,
-						          const_Communication_RC) = 
-					TimeOut_1(
-						Broadcast::entered -> Clock_CLID_Broadcast(id__,0,
-								          const_Communication_id,
-								          const_Communication_RC)
-						[]
-						get_CLID_Broadcast!x__ -> Clock_CLID_Broadcast(id__,x__,
-								          const_Communication_id,
-								          const_Communication_RC)
-						[]
-						terminate -> SKIP,Clock_CLID_Broadcast(id__,clock_type_plus(x__,1,CLID_Broadcast_clock_type(id__,
-								          const_Communication_id,
-								          const_Communication_RC)),
-								          const_Communication_id,
-								          const_Communication_RC))
 				Clock_CLID_Receive(id__,x__,
 						          const_Communication_id,
 						          const_Communication_RC) = 
@@ -940,19 +923,36 @@
 								          const_Communication_RC)),
 								          const_Communication_id,
 								          const_Communication_RC))
+				Clock_CLID_Broadcast(id__,x__,
+						          const_Communication_id,
+						          const_Communication_RC) = 
+					TimeOut_1(
+						Broadcast::entered -> Clock_CLID_Broadcast(id__,0,
+								          const_Communication_id,
+								          const_Communication_RC)
+						[]
+						get_CLID_Broadcast!x__ -> Clock_CLID_Broadcast(id__,x__,
+								          const_Communication_id,
+								          const_Communication_RC)
+						[]
+						terminate -> SKIP,Clock_CLID_Broadcast(id__,clock_type_plus(x__,1,CLID_Broadcast_clock_type(id__,
+								          const_Communication_id,
+								          const_Communication_RC)),
+								          const_Communication_id,
+								          const_Communication_RC))
 				
 				StateClocks(id__,
 						          const_Communication_id,
-						          const_Communication_RC) = dbisim(Clock_CLID_Broadcast(id__,0,
+						          const_Communication_RC) = dbisim(Clock_CLID_Receive(id__,0,
 						          const_Communication_id,
 						          const_Communication_RC))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_Receive(id__,0,
+				dbisim(Clock_CLID_Broadcast(id__,0,
 						          const_Communication_id,
 						          const_Communication_RC))
 				)
 				
-				stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+				stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 				
 				-- Shared memory
 				-- Shared memory variables

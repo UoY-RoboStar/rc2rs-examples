@@ -339,7 +339,7 @@ operation clone_normal_Movement_MovementAndAvoidance_Avoid_entry ( ) {
 	transition t_2_5 {
 		from j_2_5
 		to f
-		action clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 ( floor ( random ( ) * 360 / av ) )
+		action clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 ( 1 )
 	}
 	input context { }
 	output context { requires req_normal_Movement_MovementAndAvoidance_Avoid_entry_platformOps_clone_normal_Movement_MovementAndAvoidance_Avoid_entry }
@@ -369,7 +369,7 @@ operation clone_normal_Movement_Turning_Turn180_entry ( ) {
 	transition t_2_4 {
 		from j_2_4
 		to f
-		action clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 ( floor ( 180 / av ) )
+		action clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 ( 1 )
 	}
 	input context { }
 	output context { requires req_normal_Movement_Turning_Turn180_entry_platformOps_clone_normal_Movement_Turning_Turn180_entry }
@@ -387,7 +387,7 @@ operation clone_normal_Movement_Turning_RandomTurn_entry ( ) {
 	transition t_2_3 {
 		from j_2_3
 		to f
-		action clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 ( floor ( random ( ) * 360 / av ) )
+		action clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 ( 1 )
 	}
 	input context { }
 	output context { requires req_normal_Movement_Turning_RandomTurn_entry_platformOps_clone_normal_Movement_Turning_RandomTurn_entry }

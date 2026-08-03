@@ -1,14 +1,37 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 17-05-2026 11:35:47
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 28-07-2026 17:27:40
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
 --
 
-include "pkg1096_.csp"
+include "pkg1096_csp"
 
+-- generate pkg1096__Movement
+P_pkg1096__Movement = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1096_::Movement::O__(
+		id__,
+		const_pkg1096__Movement_lv,
+		const_pkg1096__Movement_av,
+		const_pkg1096__Movement_MB,
+		const_pkg1096__Movement_alpha
+	)
+assert P_pkg1096__Movement :[deadlock-free]	
+assert P_pkg1096__Movement;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__Movement :[deterministic]
+assert P_pkg1096__Movement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__Movement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__Movement
 -- generate pkg1096__Communication
 P_pkg1096__Communication = let
 	id__ = 0
@@ -31,6 +54,402 @@ assert prioritise(P_pkg1096__Communication[[tock<-tock,tock<-tock']],<diff(Event
 -- timelock free
 assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__Communication
 
+-- generate pkg1096__OP_normal_Movement_Turning_entry
+P_pkg1096__OP_normal_Movement_Turning_entry = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_entry::O__(id__)
+assert P_pkg1096__OP_normal_Movement_Turning_entry :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_entry :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_entry
+-- generate pkg1096__OP_normal_Movement_Turning_Turn180_entry
+P_pkg1096__OP_normal_Movement_Turning_Turn180_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__normal_Movement_Turning_Turn180_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_Turn180_entry::O__(id__,
+			    const_pkg1096__normal_Movement_Turning_Turn180_entry_av)
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_entry :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_entry :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_Turn180_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_Turn180_entry
+-- generate pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op
+P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_MovementAndAvoidance_t2_op::O__(id__)
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op :[deterministic]
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_MovementAndAvoidance_t2_op
+-- generate pkg1096__OP_normal_Movement_Turning_RandomTurn_entry
+P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__normal_Movement_Turning_RandomTurn_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_RandomTurn_entry::O__(id__,
+			    const_pkg1096__normal_Movement_Turning_RandomTurn_entry_av)
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_RandomTurn_entry
+-- generate pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op
+P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_RandomTurn_t5_op::O__(id__)
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_RandomTurn_t5_op
+-- generate pkg1096__OP_normal_Movement_Turning_Turn180_t4_op
+P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_Turn180_t4_op::O__(id__)
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_Turn180_t4_op
+-- generate pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry
+P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__normal_Movement_MovementAndAvoidance_Avoid_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_normal_Movement_MovementAndAvoidance_Avoid_entry::O__(id__,
+			    const_pkg1096__normal_Movement_MovementAndAvoidance_Avoid_entry_av)
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[deterministic]
+assert P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_MovementAndAvoidance_Avoid_entry
+-- generate pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op
+P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op::O__(id__)
+assert P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_entry_j_2_2_t_2_2_op
+-- generate pkg1096__OP_normal_Movement_Turning_entry_i_t_op
+P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_normal_Movement_Turning_entry_i_t_op::O__(id__)
+assert P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op :[deadlock-free]	
+assert P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op :[deterministic]
+assert P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_normal_Movement_Turning_entry_i_t_op
+-- generate pkg1096__OP_clone_normal_Movement_Turning_entry
+P_pkg1096__OP_clone_normal_Movement_Turning_entry = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_Turning_entry::O__(id__)
+assert P_pkg1096__OP_clone_normal_Movement_Turning_entry :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_Turning_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_entry :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_Turning_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_Turning_entry
+-- generate pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op
+P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_Turning_Turn180_t4_op::O__(id__)
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_t4_op
+-- generate pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op
+P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_Turning_RandomTurn_t5_op::O__(id__)
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_t5_op
+-- generate pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry
+P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__clone_normal_Movement_MovementAndAvoidance_Avoid_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry::O__(id__,
+			    const_pkg1096__clone_normal_Movement_MovementAndAvoidance_Avoid_entry_av)
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_Avoid_entry
+-- generate pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op
+P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_MovementAndAvoidance_t2_op::O__(id__)
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_MovementAndAvoidance_t2_op
+-- generate pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry
+P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__clone_normal_Movement_Turning_Turn180_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_Turning_Turn180_entry::O__(id__,
+			    const_pkg1096__clone_normal_Movement_Turning_Turn180_entry_av)
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_Turning_Turn180_entry
+-- generate pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry
+P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry = let
+	id__ = 0
+	
+	
+	const_pkg1096__clone_normal_Movement_Turning_RandomTurn_entry_av = 0
+	
+	
+within
+	pkg1096_::OP_clone_normal_Movement_Turning_RandomTurn_entry::O__(id__,
+			    const_pkg1096__clone_normal_Movement_Turning_RandomTurn_entry_av)
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry :[deadlock-free]	
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry :[deterministic]
+assert P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_normal_Movement_Turning_RandomTurn_entry
+-- generate pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1
+P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1::O__(id__)
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 :[deadlock-free]	
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 :[deterministic]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f_1
+-- generate pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3
+P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg1096_::OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3::O__(id__,
+				param_i)
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 :[deadlock-free]	
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 :[deterministic]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_normal_Movement_Turning_RandomTurn_entry_waitOp_j_2_3_f_3
+-- generate pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4
+P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg1096_::OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4::O__(id__,
+				param_i)
+assert P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 :[deadlock-free]	
+assert P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 :[deterministic]
+assert P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_normal_Movement_MovementAndAvoidance_Avoid_entry_waitOp_j_2_5_f_4
+-- generate pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5
+P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pkg1096_::OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5::O__(id__)
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 :[deadlock-free]	
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 :[deterministic]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_normal_Movement_Turning_entry_normal_Movement_Turning_entry_i_t_op_i_j_2_2_5
+-- generate pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6
+P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	pkg1096_::OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6::O__(id__,
+				param_i)
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 :[deadlock-free]	
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 :[deterministic]
+assert P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_normal_Movement_Turning_Turn180_entry_waitOp_j_2_4_f_6
 -- generate pkg1096__OP_normal_Communication_Broadcast_entry
 P_pkg1096__OP_normal_Communication_Broadcast_entry = let
 	id__ = 0
@@ -580,4 +999,100 @@ assert prioritise(P_pkg1096__OP_clone_clone_clone_clone_normal_Communication_Bro
 -- timelock free
 assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__OP_clone_clone_clone_clone_normal_Communication_Broadcast_entry_deadlineAction_normal_Communication_Broadcast_entry_t_i_f_2_S1_f_10_normal_deadlineAction_normal_Communication_Broadcast_entry_t_j_2_6_t_2_6_op_j_2_6_f_15
 
+-- generate pkg1096__CommunicationC
+P_pkg1096__CommunicationC = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__CommunicationC_stm_ref0_id = const_pkg1096__Communication_id
+	const_pkg1096__CommunicationC_stm_ref0_RC = const_pkg1096__Communication_RC
+		
+within
+	pkg1096_::CommunicationC::O__(id__,
+			    const_pkg1096__CommunicationC_stm_ref0_id,
+			    const_pkg1096__CommunicationC_stm_ref0_RC)
+
+assert P_pkg1096__CommunicationC :[deadlock-free]	
+assert P_pkg1096__CommunicationC;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__CommunicationC :[deterministic]
+assert P_pkg1096__CommunicationC :[divergence-free]
+
+-- generate pkg1096__CommunicationC_stm_ref0
+P_pkg1096__CommunicationC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1096_::CommunicationC::stm_ref0::O__(
+		id__,
+		const_pkg1096__Communication_id,
+		const_pkg1096__Communication_RC
+	)
+assert P_pkg1096__CommunicationC_stm_ref0 :[deadlock-free]	
+assert P_pkg1096__CommunicationC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__CommunicationC_stm_ref0 :[deterministic]
+assert P_pkg1096__CommunicationC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__CommunicationC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__CommunicationC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg1096__CommunicationC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__CommunicationC
+-- generate pkg1096__MovementC
+P_pkg1096__MovementC = let
+	id__ = 0
+	
+	
+	
+	const_pkg1096__MovementC_stm_ref0_lv = const_pkg1096__Movement_lv
+	const_pkg1096__MovementC_stm_ref0_av = const_pkg1096__Movement_av
+	const_pkg1096__MovementC_stm_ref0_MB = const_pkg1096__Movement_MB
+	const_pkg1096__MovementC_stm_ref0_alpha = const_pkg1096__Movement_alpha
+		
+within
+	pkg1096_::MovementC::O__(id__,
+			    const_pkg1096__MovementC_stm_ref0_lv,
+			    const_pkg1096__MovementC_stm_ref0_av,
+			    const_pkg1096__MovementC_stm_ref0_MB,
+			    const_pkg1096__MovementC_stm_ref0_alpha)
+
+assert P_pkg1096__MovementC :[deadlock-free]	
+assert P_pkg1096__MovementC;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__MovementC :[deterministic]
+assert P_pkg1096__MovementC :[divergence-free]
+
+-- generate pkg1096__MovementC_stm_ref0
+P_pkg1096__MovementC_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1096_::MovementC::stm_ref0::O__(
+		id__,
+		const_pkg1096__Movement_lv,
+		const_pkg1096__Movement_av,
+		const_pkg1096__Movement_MB,
+		const_pkg1096__Movement_alpha
+	)
+assert P_pkg1096__MovementC_stm_ref0 :[deadlock-free]	
+assert P_pkg1096__MovementC_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__MovementC_stm_ref0 :[deterministic]
+assert P_pkg1096__MovementC_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__MovementC_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__MovementC_stm_ref0
+-- timed deadlock free
+assert prioritise(P_pkg1096__MovementC[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__MovementC
 

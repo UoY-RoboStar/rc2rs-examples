@@ -1,0 +1,179 @@
+channel step_internal__: step_TIDS
+
+ShowEvents_step(P,E) = P[[ step_entered.x.y <- step_enteredV.y | step_entered.x.y <- E]]
+							 [[	step_enter.x.y <- step_enterV.y | step_enter.x.y <- E]]
+							 [[ step_exit.x.y <- step_exitV.y | step_exit.x.y <- E]]
+							 [[ step_exited.x.y <- step_exitedV.y | step_exited.x.y <- E ]]
+
+channel step_enteredV, step_enterV, step_exitV, step_exitedV : step_SIDS
+channel step_enter, step_entered: step_SIDS.step_SIDS
+channel step_exit,step_exited: step_SIDS.step_SIDS
+
+
+-- declaring identifiers of state and final states
+step_SIDS = {
+	"step",
+	"step_F1",
+	"step_Waiting"
+}
+
+-- declaring identifiers of transitions
+step_TIDS = {
+	"__NULLTRANSITION__",
+	"step_t5"
+}
+
+-- declaring state machine events
+channel step_leanOut__:step_TIDS
+channel step_leanOut
+channel step_stepDownIn__:step_TIDS
+channel step_stepDownIn
+channel step_stepDone__:step_TIDS
+channel step_stepDone
+
+channel step_terminate
+
+-- declaring all states
+CS_step_F1_sync = {|
+	step_enter.y.x, 
+	step_entered.y.x, 
+	step_exit.y.x, 
+	step_exited.y.x,
+	step_enter.x.y, 
+	step_entered.x.y, 
+	step_exit.x.y, 
+	step_exited.x.y |
+	x <- {"step_F1","step_Waiting"},
+	y <- {"step_F1"}
+|}
+
+
+
+step_F1_triggers = {||}
+		   
+S_step_F1(d) = let
+	
+
+	S_step_F1_execute(o__,d) = 
+	SKIP; 
+	step_entered!o__!"step_F1" ->
+	   step_terminate -> SKIP
+	   within
+step_enter?x:diff(step_SIDS,{"step_F1"})!"step_F1" -> ( 
+	S_step_F1_execute(x,d)) 
+CS_step_Waiting_sync = {|
+	step_enter.y.x, 
+	step_entered.y.x, 
+	step_exit.y.x, 
+	step_exited.y.x,
+	step_enter.x.y, 
+	step_entered.x.y, 
+	step_exit.x.y, 
+	step_exited.x.y |
+	x <- {"step_F1","step_Waiting"},
+	y <- {"step_Waiting"}
+|}
+
+
+
+step_Waiting_triggers = {|
+	step_stepDownIn__."step_t5"
+|}
+		   
+S_step_Waiting(d) = let
+	T_step_t5(d)	= step_stepDownIn__!"step_t5" ->  (step_stepDone -> SKIP;(
+					(movezCall -> movezRet -> SKIP;step_enter!"step_Waiting"!"step_F1" -> step_entered!"step_Waiting"!"step_F1" ->
+					S_step_Waiting(d)
+					)
+					))
+	
+
+	S_step_Waiting_execute(o__,d) = 
+	SKIP; 
+	step_entered!o__!"step_Waiting" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_step_t5(d)
+	   											    []
+	   											    step_internal__?x:diff(step_TIDS,{"__NULLTRANSITION__","step_t5"}) ->
+	   											      step_exit?y:diff(step_SIDS,{"step_Waiting"})!"step_Waiting" -> (
+	   											      	step_exited!y!"step_Waiting" -> SKIP);
+	   											      	S_step_Waiting(d)
+	   											    [] step_leanOut__?x:diff(step_TIDS,{"__NULLTRANSITION__","step_t5"}) ->
+	   											      step_exit?y:diff(step_SIDS,{"step_Waiting"})!"step_Waiting" -> (
+	   											      	step_exited!y!"step_Waiting" -> SKIP);
+	   											      	S_step_Waiting(d)
+	   											    [] step_stepDownIn__?x:diff(step_TIDS,{"__NULLTRANSITION__","step_t5"}) ->
+	   											      step_exit?y:diff(step_SIDS,{"step_Waiting"})!"step_Waiting" -> (
+	   											      	step_exited!y!"step_Waiting" -> SKIP);
+	   											      	S_step_Waiting(d)
+	   											    [] step_stepDone__?x:diff(step_TIDS,{"__NULLTRANSITION__","step_t5"}) ->
+	   											      step_exit?y:diff(step_SIDS,{"step_Waiting"})!"step_Waiting" -> (
+	   											      	step_exited!y!"step_Waiting" -> SKIP);
+	   											      	S_step_Waiting(d)
+	   											    )
+	   										)
+within
+step_enter?x:diff(step_SIDS,{"step_Waiting"})!"step_Waiting" -> ( 
+	S_step_Waiting_execute(x,d)) 
+
+I_step_I1(d) = T_step_t1(d)
+
+
+
+step_int_int = {|
+	step_leanOut__."step_t5",
+	step_stepDownIn__."step_t5",
+	step_stepDone__."step_t5",
+step_internal__."step_t5"
+|}
+
+
+T_step_t1(d)	= movexCall -> movexRet -> SKIP;(
+				(moveyCall -> moveyRet -> SKIP;(
+								(movezCall -> movezRet -> SKIP;(
+												(step_leanOut -> SKIP;step_enter!"step"!"step_Waiting" -> step_entered!"step"!"step_Waiting" ->
+												SKIP
+												)
+												))
+								))
+				)
+
+S_step_F1_R(d) = S_step_F1(d)
+ 		[|diff(step_int_int,step_F1_triggers)|]
+ 		SKIP
+ 		
+S_step_Waiting_R(d) = S_step_Waiting(d)
+ 		[|diff(step_int_int,step_Waiting_triggers)|]
+ 		SKIP
+ 		
+STM_step(d) = ShowEvents_step(I_step_I1(d)
+[|{|step_enter.x.y,
+		step_entered.x.y,
+		step_exit.x.y,
+		step_exited.x.y |
+		x <- diff(step_SIDS,{"step_F1","step_Waiting"}),
+		y <- {"step_F1","step_Waiting"}
+|}|]
+ShowEvents_step(S_step_F1_R(d)
+  [|inter(CS_step_F1_sync,CS_step_Waiting_sync)|]
+ S_step_Waiting_R(d),inter(CS_step_F1_sync,CS_step_Waiting_sync))\inter(CS_step_F1_sync,CS_step_Waiting_sync)
+ 	,{|step_enter,step_entered,
+ 	step_exit,step_exited|})\{|step_enter,step_entered,
+  step_exit,step_exited|}
+-- memory process
+Memory_step(d) = (
+	step_stepDownIn__!"step_t5" -> Memory_step(d)
+	)
+-- main process
+step_aux(d) = ((STM_step(d)
+	[|union(
+		{||},
+		{|step_stepDownIn__."step_t5"|}
+	)|]
+	Memory_step(d)
+)[[step_leanOut__.x <- step_leanOut, step_stepDownIn__.x <- step_stepDownIn, step_stepDone__.x <- step_stepDone| x<-step_TIDS]]\{||})
+[|{|step_terminate|}|>SKIP\{|step_terminate, step_internal__|}
+
+step(d) = step_aux(d) \ {|step_enteredV, step_enterV, step_exitV, step_exitedV|}
+step_VS(d) = step_aux(d)

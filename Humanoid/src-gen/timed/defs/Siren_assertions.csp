@@ -1,0 +1,22 @@
+ExternalEvents_Siren = {|playCall,Siren_stopSiren,Siren_startSiren,red5sRet,green5sRet,red5sCall,playRet,green5sCall|}
+
+assert T_Siren :[deterministic]
+assert T_Siren :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Siren)      [F= T_Siren |\ union(ExternalEvents_Siren,{tock})
+
+-- zeno freedom
+assert T_Siren |\ union(ExternalEvents_Siren,{tock})  :[divergence-free]
+
+-- every state is reachable in this controller
+
+-- every state is can be reached infinitely often
+
+-- timed model is a refinement
+assert sbisim(diamond(Siren)) [F= T_Siren \ {tock}
+assert sbisim(diamond(Siren_VS)) [T= T_Siren_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Siren \ {tock} [T= sbisim(diamond(Siren))
+assert T_Siren_VS \ {tock} [T= sbisim(diamond(Siren_VS))

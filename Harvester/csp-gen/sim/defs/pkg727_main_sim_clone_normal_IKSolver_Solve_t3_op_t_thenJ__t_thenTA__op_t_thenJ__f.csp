@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -35,12 +35,12 @@ exports
 	channel get_startIKSolverF, set_startIKSolverF, setL_startIKSolverF, setR_startIKSolverF: core_boolean
 	
 	-- Shared variable channels
+	channel set_EXT_apple: setoperations_Coord3D
+	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
+	channel set_EXT_p2: main_JointsPos
 	channel set_EXT_p1: main_JointsPos
 	channel set_EXT_p3: main_JointsPos
-	channel set_EXT_apple: setoperations_Coord3D
-	channel set_EXT_p2: main_JointsPos
 	channel set_EXT_startIKSolverF: core_boolean
-	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -60,12 +60,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
+		set_EXT_apple,
+		set_EXT_positions,
+		set_EXT_p2,
 		set_EXT_p1,
 		set_EXT_p3,
-		set_EXT_apple,
-		set_EXT_p2,
-		set_EXT_startIKSolverF,
-		set_EXT_positions
+		set_EXT_startIKSolverF
 	|}
 	
 	
@@ -185,7 +185,7 @@ exports
 		Transitions(id__) = ((let
 			Trans = TimeOut_1(
 				 (share__ -> SKIP
-				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_apple?apple -> share__choice(get_p2?p2 -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP)))))))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; f::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(share__choice(get_apple?apple -> share__choice(get_positions?positions -> share__choice(get_p2?p2 -> share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP)))))))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; f::enter -> SKIP))))
 				 []
 				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
 				 []

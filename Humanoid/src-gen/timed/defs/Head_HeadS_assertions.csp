@@ -1,0 +1,29 @@
+ExternalEvents_Head_HeadS = {|Head_HeadS_wallDetected,Head_HeadS_startSiren,Head_HeadS_stopSiren|}
+
+assert T_Head_HeadS :[deterministic]
+assert T_Head_HeadS :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Head_HeadS)      [F= T_Head_HeadS |\ union(ExternalEvents_Head_HeadS,{tock})
+
+-- every state is reachable
+assert not STOP [T= T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Walking"|}
+assert not STOP [T= T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Stopped"|}
+assert not STOP [T= T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Turning"|}
+
+-- states can be reached infinitely often
+assert T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Walking"|} [T= RUN({|Head_HeadS_enteredV."Head_HeadS_Walking"|})
+assert T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Stopped"|} [T= RUN({|Head_HeadS_enteredV."Head_HeadS_Stopped"|})
+assert T_Head_HeadS_VS |\ {|Head_HeadS_enteredV."Head_HeadS_Turning"|} [T= RUN({|Head_HeadS_enteredV."Head_HeadS_Turning"|})
+
+-- timed model is a refinement
+assert sbisim(diamond(Head_HeadS)) [F= T_Head_HeadS \ {tock}
+assert sbisim(diamond(Head_HeadS_VS)) [T= T_Head_HeadS_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Head_HeadS \ {tock} [T= sbisim(diamond(Head_HeadS))
+assert T_Head_HeadS_VS \ {tock} [T= sbisim(diamond(Head_HeadS_VS))
+
+-- memory models consistency check
+assert timed::MemoryN_Head_HeadS [FD= timed::MemoryO_Head_HeadS
+assert timed::MemoryO_Head_HeadS [FD= timed::MemoryN_Head_HeadS

@@ -1,0 +1,37 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 15:11:44
+--
+
+include "core_timed_defs.csp"
+include "pre_pkg_foot_sim_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_foot_sim_clone_foot_controller_step_entry_2.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2
+P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2 = let
+	id__ = 0
+	
+	param_d = (0,0,0)
+	
+	
+	
+within
+	pre_pkg_foot_sim::OP_clone_foot_controller_step_entry_2::O__(id__,
+				param_d,
+			    const_pre_pkg_foot_sim_clone_foot_controller_step_entry_2_c)
+assert P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2 :[deadlock-free]	
+assert P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2 :[deterministic]
+assert P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_foot_sim_OP_clone_foot_controller_step_entry_2

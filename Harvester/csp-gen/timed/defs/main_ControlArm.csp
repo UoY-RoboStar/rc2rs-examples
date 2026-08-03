@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -23,11 +23,11 @@
 		
 		
 		-- declaring call and ret events for undefined operations
-		channel hideArmCall
-		channel moveCall: main_JointsPos
 		channel graspCall: main_JointsPos
+		channel moveCall: main_JointsPos
 		channel goHomeCall
 		channel pickCall
+		channel hideArmCall
 		channel dropCall: main_JointsPos
 		
 		-- declaring controller termination channel
@@ -37,11 +37,11 @@
 		sem__events = {|
 			terminate
 		,	takePic
-		,	hideArmCall,
+		,	graspCall,
 			moveCall,
-			graspCall,
 			goHomeCall,
 			pickCall,
+			hideArmCall,
 			dropCall
 		|}
 		
@@ -150,11 +150,11 @@
 			channel endGoHome: InOut
 			
 			-- Declaring call and ret events for undefined operations
-			channel hideArmCall
-			channel moveCall: main_JointsPos
 			channel graspCall: main_JointsPos
+			channel moveCall: main_JointsPos
 			channel goHomeCall
 			channel pickCall
+			channel hideArmCall
 			channel dropCall: main_JointsPos
 			
 			enterSS = {|
@@ -188,11 +188,11 @@
 				endIKSolver,
 				startGoHome,
 				endGoHome
-			,	hideArmCall,
+			,	graspCall,
 				moveCall,
-				graspCall,
 				goHomeCall,
 				pickCall,
+				hideArmCall,
 				dropCall
 				|}
 			
@@ -201,14 +201,31 @@
 			localClockResets = {||}
 			
 			
-			channel get_CLID_GetApple : core_clock_type 
-			channel get_CLID_Next : core_clock_type 
-			channel get_CLID_GoingHome : core_clock_type 
 			channel get_CLID_Prepare : core_clock_type 
 			channel get_CLID_LocalizeFruit : core_clock_type 
+			channel get_CLID_Next : core_clock_type 
+			channel get_CLID_GetApple : core_clock_type 
+			channel get_CLID_GoingHome : core_clock_type 
 			--channel increment__
 			
-			CLID_GetApple_clock_type(id__,
+			CLID_Prepare_clock_type(id__,
+					          const_main_AppleHarvestControl_hideTime,
+					          const_main_AppleHarvestControl_approachTime,
+					          const_main_AppleHarvestControl_graspTime,
+					          const_main_AppleHarvestControl_dropTime,
+					          const_main_AppleHarvestControl_pickTime,
+					          const_main_AppleHarvestControl_pickDeadl,
+					          const_main_AppleHarvestControl_homePos,
+					          const_main_AppleHarvestControl_storagePos) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_LocalizeFruit_clock_type(id__,
 					          const_main_AppleHarvestControl_hideTime,
 					          const_main_AppleHarvestControl_approachTime,
 					          const_main_AppleHarvestControl_graspTime,
@@ -242,41 +259,24 @@
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
+			CLID_GetApple_clock_type(id__,
+					          const_main_AppleHarvestControl_hideTime,
+					          const_main_AppleHarvestControl_approachTime,
+					          const_main_AppleHarvestControl_graspTime,
+					          const_main_AppleHarvestControl_dropTime,
+					          const_main_AppleHarvestControl_pickTime,
+					          const_main_AppleHarvestControl_pickDeadl,
+					          const_main_AppleHarvestControl_homePos,
+					          const_main_AppleHarvestControl_storagePos) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
 			CLID_GoingHome_clock_type(id__,
-					          const_main_AppleHarvestControl_hideTime,
-					          const_main_AppleHarvestControl_approachTime,
-					          const_main_AppleHarvestControl_graspTime,
-					          const_main_AppleHarvestControl_dropTime,
-					          const_main_AppleHarvestControl_pickTime,
-					          const_main_AppleHarvestControl_pickDeadl,
-					          const_main_AppleHarvestControl_homePos,
-					          const_main_AppleHarvestControl_storagePos) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_Prepare_clock_type(id__,
-					          const_main_AppleHarvestControl_hideTime,
-					          const_main_AppleHarvestControl_approachTime,
-					          const_main_AppleHarvestControl_graspTime,
-					          const_main_AppleHarvestControl_dropTime,
-					          const_main_AppleHarvestControl_pickTime,
-					          const_main_AppleHarvestControl_pickDeadl,
-					          const_main_AppleHarvestControl_homePos,
-					          const_main_AppleHarvestControl_storagePos) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_LocalizeFruit_clock_type(id__,
 					          const_main_AppleHarvestControl_hideTime,
 					          const_main_AppleHarvestControl_approachTime,
 					          const_main_AppleHarvestControl_graspTime,
@@ -517,63 +517,31 @@
 					channel startGoHome__: NIDS.InOut
 					channel endGoHome__: NIDS.InOut
 					
-					channel get_CLID_SolvingAndMoving : core_clock_type 
-					channel get_CLID_Moved : core_clock_type 
-					channel get_CLID_Solving : core_clock_type 
 					channel get_CLID_Done : core_clock_type 
+					channel get_CLID_SolvingAndMoving : core_clock_type 
 					channel get_CLID_Solved : core_clock_type 
 					channel get_CLID_Start : core_clock_type 
+					channel get_CLID_Solving : core_clock_type 
+					channel get_CLID_Moved : core_clock_type 
 					--channel increment__
 					
-					CLID_SolvingAndMoving_clock_type(id__,
-							          const_main_AppleHarvestControl_hideTime,
-							          const_main_AppleHarvestControl_approachTime,
-							          const_main_AppleHarvestControl_graspTime,
-							          const_main_AppleHarvestControl_dropTime,
-							          const_main_AppleHarvestControl_pickTime,
-							          const_main_AppleHarvestControl_pickDeadl,
-							          const_main_AppleHarvestControl_homePos,
-							          const_main_AppleHarvestControl_storagePos) = 
-						let
-							max = (clock_type_max(Union({
-					}))+1)
-						ctype = {0..max}
-					within
-						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-					
-					CLID_Moved_clock_type(id__,
-							          const_main_AppleHarvestControl_hideTime,
-							          const_main_AppleHarvestControl_approachTime,
-							          const_main_AppleHarvestControl_graspTime,
-							          const_main_AppleHarvestControl_dropTime,
-							          const_main_AppleHarvestControl_pickTime,
-							          const_main_AppleHarvestControl_pickDeadl,
-							          const_main_AppleHarvestControl_homePos,
-							          const_main_AppleHarvestControl_storagePos) = 
-						let
-							max = (clock_type_max(Union({
-					}))+1)
-						ctype = {0..max}
-					within
-						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-					
-					CLID_Solving_clock_type(id__,
-							          const_main_AppleHarvestControl_hideTime,
-							          const_main_AppleHarvestControl_approachTime,
-							          const_main_AppleHarvestControl_graspTime,
-							          const_main_AppleHarvestControl_dropTime,
-							          const_main_AppleHarvestControl_pickTime,
-							          const_main_AppleHarvestControl_pickDeadl,
-							          const_main_AppleHarvestControl_homePos,
-							          const_main_AppleHarvestControl_storagePos) = 
-						let
-							max = (clock_type_max(Union({
-					}))+1)
-						ctype = {0..max}
-					within
-						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-					
 					CLID_Done_clock_type(id__,
+							          const_main_AppleHarvestControl_hideTime,
+							          const_main_AppleHarvestControl_approachTime,
+							          const_main_AppleHarvestControl_graspTime,
+							          const_main_AppleHarvestControl_dropTime,
+							          const_main_AppleHarvestControl_pickTime,
+							          const_main_AppleHarvestControl_pickDeadl,
+							          const_main_AppleHarvestControl_homePos,
+							          const_main_AppleHarvestControl_storagePos) = 
+						let
+							max = (clock_type_max(Union({
+					}))+1)
+						ctype = {0..max}
+					within
+						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+					
+					CLID_SolvingAndMoving_clock_type(id__,
 							          const_main_AppleHarvestControl_hideTime,
 							          const_main_AppleHarvestControl_approachTime,
 							          const_main_AppleHarvestControl_graspTime,
@@ -606,6 +574,38 @@
 						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 					
 					CLID_Start_clock_type(id__,
+							          const_main_AppleHarvestControl_hideTime,
+							          const_main_AppleHarvestControl_approachTime,
+							          const_main_AppleHarvestControl_graspTime,
+							          const_main_AppleHarvestControl_dropTime,
+							          const_main_AppleHarvestControl_pickTime,
+							          const_main_AppleHarvestControl_pickDeadl,
+							          const_main_AppleHarvestControl_homePos,
+							          const_main_AppleHarvestControl_storagePos) = 
+						let
+							max = (clock_type_max(Union({
+					}))+1)
+						ctype = {0..max}
+					within
+						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+					
+					CLID_Solving_clock_type(id__,
+							          const_main_AppleHarvestControl_hideTime,
+							          const_main_AppleHarvestControl_approachTime,
+							          const_main_AppleHarvestControl_graspTime,
+							          const_main_AppleHarvestControl_dropTime,
+							          const_main_AppleHarvestControl_pickTime,
+							          const_main_AppleHarvestControl_pickDeadl,
+							          const_main_AppleHarvestControl_homePos,
+							          const_main_AppleHarvestControl_storagePos) = 
+						let
+							max = (clock_type_max(Union({
+					}))+1)
+						ctype = {0..max}
+					within
+						if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+					
+					CLID_Moved_clock_type(id__,
 							          const_main_AppleHarvestControl_hideTime,
 							          const_main_AppleHarvestControl_approachTime,
 							          const_main_AppleHarvestControl_graspTime,
@@ -1538,8 +1538,8 @@
 								 														| x____ <- NIDS
 								 													]]
 								 												)
-								 												[| {|get_CLID_Start,Start::entered,terminate|} |]
-								 												dbisim(Clock_CLID_Start(id__,0,
+								 												[| {|get_CLID_Moved,Moved::entered,terminate|} |]
+								 												dbisim(Clock_CLID_Moved(id__,0,
 								 														          const_main_AppleHarvestControl_hideTime,
 								 														          const_main_AppleHarvestControl_approachTime,
 								 														          const_main_AppleHarvestControl_graspTime,
@@ -1548,10 +1548,10 @@
 								 														          const_main_AppleHarvestControl_pickDeadl,
 								 														          const_main_AppleHarvestControl_homePos,
 								 														          const_main_AppleHarvestControl_storagePos))
-								 											)\{|get_CLID_Start|}
+								 											)\{|get_CLID_Moved|}
 								 										)
-								 										[| {|get_CLID_Solved,Solved::entered,terminate|} |]
-								 										dbisim(Clock_CLID_Solved(id__,0,
+								 										[| {|get_CLID_Solving,Solving::entered,terminate|} |]
+								 										dbisim(Clock_CLID_Solving(id__,0,
 								 												          const_main_AppleHarvestControl_hideTime,
 								 												          const_main_AppleHarvestControl_approachTime,
 								 												          const_main_AppleHarvestControl_graspTime,
@@ -1560,10 +1560,10 @@
 								 												          const_main_AppleHarvestControl_pickDeadl,
 								 												          const_main_AppleHarvestControl_homePos,
 								 												          const_main_AppleHarvestControl_storagePos))
-								 									)\{|get_CLID_Solved|}
+								 									)\{|get_CLID_Solving|}
 								 								)
-								 								[| {|get_CLID_Done,Done::entered,terminate|} |]
-								 								dbisim(Clock_CLID_Done(id__,0,
+								 								[| {|get_CLID_Start,Start::entered,terminate|} |]
+								 								dbisim(Clock_CLID_Start(id__,0,
 								 										          const_main_AppleHarvestControl_hideTime,
 								 										          const_main_AppleHarvestControl_approachTime,
 								 										          const_main_AppleHarvestControl_graspTime,
@@ -1572,10 +1572,10 @@
 								 										          const_main_AppleHarvestControl_pickDeadl,
 								 										          const_main_AppleHarvestControl_homePos,
 								 										          const_main_AppleHarvestControl_storagePos))
-								 							)\{|get_CLID_Done|}
+								 							)\{|get_CLID_Start|}
 								 						)
-								 						[| {|get_CLID_Solving,Solving::entered,terminate|} |]
-								 						dbisim(Clock_CLID_Solving(id__,0,
+								 						[| {|get_CLID_Solved,Solved::entered,terminate|} |]
+								 						dbisim(Clock_CLID_Solved(id__,0,
 								 								          const_main_AppleHarvestControl_hideTime,
 								 								          const_main_AppleHarvestControl_approachTime,
 								 								          const_main_AppleHarvestControl_graspTime,
@@ -1584,10 +1584,10 @@
 								 								          const_main_AppleHarvestControl_pickDeadl,
 								 								          const_main_AppleHarvestControl_homePos,
 								 								          const_main_AppleHarvestControl_storagePos))
-								 					)\{|get_CLID_Solving|}
+								 					)\{|get_CLID_Solved|}
 								 				)
-								 				[| {|get_CLID_Moved,Moved::entered,terminate|} |]
-								 				dbisim(Clock_CLID_Moved(id__,0,
+								 				[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
+								 				dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 								 						          const_main_AppleHarvestControl_hideTime,
 								 						          const_main_AppleHarvestControl_approachTime,
 								 						          const_main_AppleHarvestControl_graspTime,
@@ -1596,10 +1596,10 @@
 								 						          const_main_AppleHarvestControl_pickDeadl,
 								 						          const_main_AppleHarvestControl_homePos,
 								 						          const_main_AppleHarvestControl_storagePos))
-								 			)\{|get_CLID_Moved|}
+								 			)\{|get_CLID_SolvingAndMoving|}
 								 		)
-								 		[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
-								 		dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+								 		[| {|get_CLID_Done,Done::entered,terminate|} |]
+								 		dbisim(Clock_CLID_Done(id__,0,
 								 				          const_main_AppleHarvestControl_hideTime,
 								 				          const_main_AppleHarvestControl_approachTime,
 								 				          const_main_AppleHarvestControl_graspTime,
@@ -1608,30 +1608,30 @@
 								 				          const_main_AppleHarvestControl_pickDeadl,
 								 				          const_main_AppleHarvestControl_homePos,
 								 				          const_main_AppleHarvestControl_storagePos))
-								 	)\{|get_CLID_SolvingAndMoving|}
+								 	)\{|get_CLID_Done|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-								  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_img
-								 			,setL_localized
-								 			,setL_apples
 								 			,setL_nextApple
 								 			,setL_positions
-								 			,setR_img
-								 			 			,setR_localized
-								 			 			,setR_apples
-								 			 			,setR_nextApple
+								 			,setL_localized
+								 			,setL_img
+								 			,setL_apples
+								 			,setR_nextApple
 								 			 			,setR_positions
+								 			 			,setR_localized
+								 			 			,setR_img
+								 			 			,setR_apples
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-								  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+								  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 								 )
-								)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-								 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+								 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1835,8 +1835,8 @@
 								 														| x____ <- NIDS
 								 													]]
 								 												)
-								 												[| {|get_CLID_Start,Start::entered,terminate|} |]
-								 												dbisim(Clock_CLID_Start(id__,0,
+								 												[| {|get_CLID_Moved,Moved::entered,terminate|} |]
+								 												dbisim(Clock_CLID_Moved(id__,0,
 								 														          const_main_AppleHarvestControl_hideTime,
 								 														          const_main_AppleHarvestControl_approachTime,
 								 														          const_main_AppleHarvestControl_graspTime,
@@ -1845,10 +1845,10 @@
 								 														          const_main_AppleHarvestControl_pickDeadl,
 								 														          const_main_AppleHarvestControl_homePos,
 								 														          const_main_AppleHarvestControl_storagePos))
-								 											)\{|get_CLID_Start|}
+								 											)\{|get_CLID_Moved|}
 								 										)
-								 										[| {|get_CLID_Solved,Solved::entered,terminate|} |]
-								 										dbisim(Clock_CLID_Solved(id__,0,
+								 										[| {|get_CLID_Solving,Solving::entered,terminate|} |]
+								 										dbisim(Clock_CLID_Solving(id__,0,
 								 												          const_main_AppleHarvestControl_hideTime,
 								 												          const_main_AppleHarvestControl_approachTime,
 								 												          const_main_AppleHarvestControl_graspTime,
@@ -1857,10 +1857,10 @@
 								 												          const_main_AppleHarvestControl_pickDeadl,
 								 												          const_main_AppleHarvestControl_homePos,
 								 												          const_main_AppleHarvestControl_storagePos))
-								 									)\{|get_CLID_Solved|}
+								 									)\{|get_CLID_Solving|}
 								 								)
-								 								[| {|get_CLID_Done,Done::entered,terminate|} |]
-								 								dbisim(Clock_CLID_Done(id__,0,
+								 								[| {|get_CLID_Start,Start::entered,terminate|} |]
+								 								dbisim(Clock_CLID_Start(id__,0,
 								 										          const_main_AppleHarvestControl_hideTime,
 								 										          const_main_AppleHarvestControl_approachTime,
 								 										          const_main_AppleHarvestControl_graspTime,
@@ -1869,10 +1869,10 @@
 								 										          const_main_AppleHarvestControl_pickDeadl,
 								 										          const_main_AppleHarvestControl_homePos,
 								 										          const_main_AppleHarvestControl_storagePos))
-								 							)\{|get_CLID_Done|}
+								 							)\{|get_CLID_Start|}
 								 						)
-								 						[| {|get_CLID_Solving,Solving::entered,terminate|} |]
-								 						dbisim(Clock_CLID_Solving(id__,0,
+								 						[| {|get_CLID_Solved,Solved::entered,terminate|} |]
+								 						dbisim(Clock_CLID_Solved(id__,0,
 								 								          const_main_AppleHarvestControl_hideTime,
 								 								          const_main_AppleHarvestControl_approachTime,
 								 								          const_main_AppleHarvestControl_graspTime,
@@ -1881,10 +1881,10 @@
 								 								          const_main_AppleHarvestControl_pickDeadl,
 								 								          const_main_AppleHarvestControl_homePos,
 								 								          const_main_AppleHarvestControl_storagePos))
-								 					)\{|get_CLID_Solving|}
+								 					)\{|get_CLID_Solved|}
 								 				)
-								 				[| {|get_CLID_Moved,Moved::entered,terminate|} |]
-								 				dbisim(Clock_CLID_Moved(id__,0,
+								 				[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
+								 				dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 								 						          const_main_AppleHarvestControl_hideTime,
 								 						          const_main_AppleHarvestControl_approachTime,
 								 						          const_main_AppleHarvestControl_graspTime,
@@ -1893,10 +1893,10 @@
 								 						          const_main_AppleHarvestControl_pickDeadl,
 								 						          const_main_AppleHarvestControl_homePos,
 								 						          const_main_AppleHarvestControl_storagePos))
-								 			)\{|get_CLID_Moved|}
+								 			)\{|get_CLID_SolvingAndMoving|}
 								 		)
-								 		[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
-								 		dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+								 		[| {|get_CLID_Done,Done::entered,terminate|} |]
+								 		dbisim(Clock_CLID_Done(id__,0,
 								 				          const_main_AppleHarvestControl_hideTime,
 								 				          const_main_AppleHarvestControl_approachTime,
 								 				          const_main_AppleHarvestControl_graspTime,
@@ -1905,30 +1905,30 @@
 								 				          const_main_AppleHarvestControl_pickDeadl,
 								 				          const_main_AppleHarvestControl_homePos,
 								 				          const_main_AppleHarvestControl_storagePos))
-								 	)\{|get_CLID_SolvingAndMoving|}
+								 	)\{|get_CLID_Done|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-								  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_img
-								 			,setL_localized
-								 			,setL_apples
 								 			,setL_nextApple
 								 			,setL_positions
-								 			,setR_img
-								 			 			,setR_localized
-								 			 			,setR_apples
-								 			 			,setR_nextApple
+								 			,setL_localized
+								 			,setL_img
+								 			,setL_apples
+								 			,setR_nextApple
 								 			 			,setR_positions
+								 			 			,setR_localized
+								 			 			,setR_img
+								 			 			,setR_apples
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-								  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+								  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 								 )
-								)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-								 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+								 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1968,147 +1968,6 @@
 						
 						
 						-- Clocks
-						Clock_CLID_SolvingAndMoving(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos) = 
-							TimeOut_1(
-								SolvingAndMoving::entered -> Clock_CLID_SolvingAndMoving(id__,0,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								get_CLID_SolvingAndMoving!x__ -> Clock_CLID_SolvingAndMoving(id__,x__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								terminate -> SKIP,Clock_CLID_SolvingAndMoving(id__,clock_type_plus(x__,1,CLID_SolvingAndMoving_clock_type(id__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)),
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos))
-						Clock_CLID_Moved(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos) = 
-							TimeOut_1(
-								Moved::entered -> Clock_CLID_Moved(id__,0,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								get_CLID_Moved!x__ -> Clock_CLID_Moved(id__,x__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								terminate -> SKIP,Clock_CLID_Moved(id__,clock_type_plus(x__,1,CLID_Moved_clock_type(id__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)),
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos))
-						Clock_CLID_Solving(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos) = 
-							TimeOut_1(
-								Solving::entered -> Clock_CLID_Solving(id__,0,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								get_CLID_Solving!x__ -> Clock_CLID_Solving(id__,x__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)
-								[]
-								terminate -> SKIP,Clock_CLID_Solving(id__,clock_type_plus(x__,1,CLID_Solving_clock_type(id__,
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos)),
-										          const_main_AppleHarvestControl_hideTime,
-										          const_main_AppleHarvestControl_approachTime,
-										          const_main_AppleHarvestControl_graspTime,
-										          const_main_AppleHarvestControl_dropTime,
-										          const_main_AppleHarvestControl_pickTime,
-										          const_main_AppleHarvestControl_pickDeadl,
-										          const_main_AppleHarvestControl_homePos,
-										          const_main_AppleHarvestControl_storagePos))
 						Clock_CLID_Done(id__,x__,
 								          const_main_AppleHarvestControl_hideTime,
 								          const_main_AppleHarvestControl_approachTime,
@@ -2140,6 +1999,53 @@
 										          const_main_AppleHarvestControl_storagePos)
 								[]
 								terminate -> SKIP,Clock_CLID_Done(id__,clock_type_plus(x__,1,CLID_Done_clock_type(id__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)),
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos))
+						Clock_CLID_SolvingAndMoving(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos) = 
+							TimeOut_1(
+								SolvingAndMoving::entered -> Clock_CLID_SolvingAndMoving(id__,0,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								get_CLID_SolvingAndMoving!x__ -> Clock_CLID_SolvingAndMoving(id__,x__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								terminate -> SKIP,Clock_CLID_SolvingAndMoving(id__,clock_type_plus(x__,1,CLID_SolvingAndMoving_clock_type(id__,
 										          const_main_AppleHarvestControl_hideTime,
 										          const_main_AppleHarvestControl_approachTime,
 										          const_main_AppleHarvestControl_graspTime,
@@ -2250,6 +2156,100 @@
 										          const_main_AppleHarvestControl_pickDeadl,
 										          const_main_AppleHarvestControl_homePos,
 										          const_main_AppleHarvestControl_storagePos))
+						Clock_CLID_Solving(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos) = 
+							TimeOut_1(
+								Solving::entered -> Clock_CLID_Solving(id__,0,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								get_CLID_Solving!x__ -> Clock_CLID_Solving(id__,x__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								terminate -> SKIP,Clock_CLID_Solving(id__,clock_type_plus(x__,1,CLID_Solving_clock_type(id__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)),
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos))
+						Clock_CLID_Moved(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos) = 
+							TimeOut_1(
+								Moved::entered -> Clock_CLID_Moved(id__,0,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								get_CLID_Moved!x__ -> Clock_CLID_Moved(id__,x__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)
+								[]
+								terminate -> SKIP,Clock_CLID_Moved(id__,clock_type_plus(x__,1,CLID_Moved_clock_type(id__,
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos)),
+										          const_main_AppleHarvestControl_hideTime,
+										          const_main_AppleHarvestControl_approachTime,
+										          const_main_AppleHarvestControl_graspTime,
+										          const_main_AppleHarvestControl_dropTime,
+										          const_main_AppleHarvestControl_pickTime,
+										          const_main_AppleHarvestControl_pickDeadl,
+										          const_main_AppleHarvestControl_homePos,
+										          const_main_AppleHarvestControl_storagePos))
 						
 						StateClocks(id__,
 								          const_main_AppleHarvestControl_hideTime,
@@ -2259,7 +2259,7 @@
 								          const_main_AppleHarvestControl_pickTime,
 								          const_main_AppleHarvestControl_pickDeadl,
 								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+								          const_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_Done(id__,0,
 								          const_main_AppleHarvestControl_hideTime,
 								          const_main_AppleHarvestControl_approachTime,
 								          const_main_AppleHarvestControl_graspTime,
@@ -2269,27 +2269,7 @@
 								          const_main_AppleHarvestControl_homePos,
 								          const_main_AppleHarvestControl_storagePos))
 						[| { terminate } |] (
-						dbisim(Clock_CLID_Moved(id__,0,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos))
-						[| { terminate } |] (
-						dbisim(Clock_CLID_Solving(id__,0,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos))
-						[| { terminate } |] (
-						dbisim(Clock_CLID_Done(id__,0,
+						dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 								          const_main_AppleHarvestControl_hideTime,
 								          const_main_AppleHarvestControl_approachTime,
 								          const_main_AppleHarvestControl_graspTime,
@@ -2318,13 +2298,33 @@
 								          const_main_AppleHarvestControl_pickDeadl,
 								          const_main_AppleHarvestControl_homePos,
 								          const_main_AppleHarvestControl_storagePos))
+						[| { terminate } |] (
+						dbisim(Clock_CLID_Solving(id__,0,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos))
+						[| { terminate } |] (
+						dbisim(Clock_CLID_Moved(id__,0,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos))
 						)
 						)
 						)
 						)
 						)
 						
-						stateClockSync = {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,get_CLID_Moved,Moved::entered,get_CLID_Solving,Solving::entered,get_CLID_Done,Done::entered,get_CLID_Solved,Solved::entered,get_CLID_Start,Start::entered|}
+						stateClockSync = {|get_CLID_Done,Done::entered,get_CLID_SolvingAndMoving,SolvingAndMoving::entered,get_CLID_Solved,Solved::entered,get_CLID_Start,Start::entered,get_CLID_Solving,Solving::entered,get_CLID_Moved,Moved::entered|}
 					}
 				
 				endmodule
@@ -2795,25 +2795,6 @@
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
-				CALL__hideArm(id__,
-						    const_main_AppleHarvestControl_hideTime,
-						    const_main_AppleHarvestControl_approachTime,
-						    const_main_AppleHarvestControl_graspTime,
-						    const_main_AppleHarvestControl_dropTime,
-						    const_main_AppleHarvestControl_pickTime,
-						    const_main_AppleHarvestControl_pickDeadl,
-						    const_main_AppleHarvestControl_homePos,
-						    const_main_AppleHarvestControl_storagePos) = EDeadline(hideArmCall,0)
-				CALL__move(id__,
-						    const_main_AppleHarvestControl_hideTime,
-						    const_main_AppleHarvestControl_approachTime,
-						    const_main_AppleHarvestControl_graspTime,
-						    const_main_AppleHarvestControl_dropTime,
-						    const_main_AppleHarvestControl_pickTime,
-						    const_main_AppleHarvestControl_pickDeadl,
-						    const_main_AppleHarvestControl_homePos,
-						    const_main_AppleHarvestControl_storagePos,
-							param_jp) = EDeadline(moveCall.param_jp,0)
 				CALL__grasp(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -2824,6 +2805,16 @@
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos,
 							param_jp) = EDeadline(graspCall.param_jp,0)
+				CALL__move(id__,
+						    const_main_AppleHarvestControl_hideTime,
+						    const_main_AppleHarvestControl_approachTime,
+						    const_main_AppleHarvestControl_graspTime,
+						    const_main_AppleHarvestControl_dropTime,
+						    const_main_AppleHarvestControl_pickTime,
+						    const_main_AppleHarvestControl_pickDeadl,
+						    const_main_AppleHarvestControl_homePos,
+						    const_main_AppleHarvestControl_storagePos,
+							param_jp) = EDeadline(moveCall.param_jp,0)
 				CALL__goHome(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -2842,6 +2833,15 @@
 						    const_main_AppleHarvestControl_pickDeadl,
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = EDeadline(pickCall,0)
+				CALL__hideArm(id__,
+						    const_main_AppleHarvestControl_hideTime,
+						    const_main_AppleHarvestControl_approachTime,
+						    const_main_AppleHarvestControl_graspTime,
+						    const_main_AppleHarvestControl_dropTime,
+						    const_main_AppleHarvestControl_pickTime,
+						    const_main_AppleHarvestControl_pickDeadl,
+						    const_main_AppleHarvestControl_homePos,
+						    const_main_AppleHarvestControl_storagePos) = EDeadline(hideArmCall,0)
 				CALL__drop(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -2972,7 +2972,7 @@
 						    const_main_AppleHarvestControl_pickDeadl,
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = ((let
-					Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> TimeOut_1(
+					Trans = share__choice(get_nextApple?nextApple -> get_positions?positions -> get_localized?localized -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 						 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -3160,12 +3160,12 @@
 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-								  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_localized
 								 			,setL_nextApple
 								 			,setL_positions
+								 			,setL_localized
 								 			,setR_img
 								 			|}) |]
 								 ((i0::enter -> Transitions(id__,
@@ -3177,10 +3177,10 @@
 								 		    const_main_AppleHarvestControl_pickDeadl,
 								 		    const_main_AppleHarvestControl_homePos,
 								 		    const_main_AppleHarvestControl_storagePos))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 								  [[set_img <- setR_img]]
 								 )
-								)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 								 [[setR_img <- set_img]]
 								)
 							)
@@ -3220,7 +3220,7 @@
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_Next,Next::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered|}
+						stateClockSync = {|get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Next,Next::entered,get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered|}
 					 within
 						(MachineBody(id__,
 								    const_main_AppleHarvestControl_hideTime,
@@ -3252,7 +3252,7 @@
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_Next,Next::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered|}
+						stateClockSync = {|get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Next,Next::entered,get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -3273,8 +3273,8 @@
 																		    const_main_AppleHarvestControl_pickDeadl,
 																		    const_main_AppleHarvestControl_homePos,
 																		    const_main_AppleHarvestControl_storagePos)
-																[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
-																dbisim(Clock_CLID_LocalizeFruit(id__,0,
+																[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
+																dbisim(Clock_CLID_GoingHome(id__,0,
 																		          const_main_AppleHarvestControl_hideTime,
 																		          const_main_AppleHarvestControl_approachTime,
 																		          const_main_AppleHarvestControl_graspTime,
@@ -3283,10 +3283,10 @@
 																		          const_main_AppleHarvestControl_pickDeadl,
 																		          const_main_AppleHarvestControl_homePos,
 																		          const_main_AppleHarvestControl_storagePos))
-															)\{|get_CLID_LocalizeFruit|}
+															)\{|get_CLID_GoingHome|}
 														)
-														[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
-														dbisim(Clock_CLID_Prepare(id__,0,
+														[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
+														dbisim(Clock_CLID_GetApple(id__,0,
 																          const_main_AppleHarvestControl_hideTime,
 																          const_main_AppleHarvestControl_approachTime,
 																          const_main_AppleHarvestControl_graspTime,
@@ -3295,10 +3295,10 @@
 																          const_main_AppleHarvestControl_pickDeadl,
 																          const_main_AppleHarvestControl_homePos,
 																          const_main_AppleHarvestControl_storagePos))
-													)\{|get_CLID_Prepare|}
+													)\{|get_CLID_GetApple|}
 												)
-												[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
-												dbisim(Clock_CLID_GoingHome(id__,0,
+												[| {|get_CLID_Next,Next::entered,terminate|} |]
+												dbisim(Clock_CLID_Next(id__,0,
 														          const_main_AppleHarvestControl_hideTime,
 														          const_main_AppleHarvestControl_approachTime,
 														          const_main_AppleHarvestControl_graspTime,
@@ -3307,10 +3307,10 @@
 														          const_main_AppleHarvestControl_pickDeadl,
 														          const_main_AppleHarvestControl_homePos,
 														          const_main_AppleHarvestControl_storagePos))
-											)\{|get_CLID_GoingHome|}
+											)\{|get_CLID_Next|}
 										)
-										[| {|get_CLID_Next,Next::entered,terminate|} |]
-										dbisim(Clock_CLID_Next(id__,0,
+										[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
+										dbisim(Clock_CLID_LocalizeFruit(id__,0,
 												          const_main_AppleHarvestControl_hideTime,
 												          const_main_AppleHarvestControl_approachTime,
 												          const_main_AppleHarvestControl_graspTime,
@@ -3319,10 +3319,10 @@
 												          const_main_AppleHarvestControl_pickDeadl,
 												          const_main_AppleHarvestControl_homePos,
 												          const_main_AppleHarvestControl_storagePos))
-									)\{|get_CLID_Next|}
+									)\{|get_CLID_LocalizeFruit|}
 								)
-								[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
-								dbisim(Clock_CLID_GetApple(id__,0,
+								[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
+								dbisim(Clock_CLID_Prepare(id__,0,
 										          const_main_AppleHarvestControl_hideTime,
 										          const_main_AppleHarvestControl_approachTime,
 										          const_main_AppleHarvestControl_graspTime,
@@ -3331,7 +3331,7 @@
 										          const_main_AppleHarvestControl_pickDeadl,
 										          const_main_AppleHarvestControl_homePos,
 										          const_main_AppleHarvestControl_storagePos))
-							)\{|get_CLID_GetApple|}
+							)\{|get_CLID_Prepare|}
 						)
 						) \ union(stateClockSync,enteredSS)
 					)
@@ -3597,12 +3597,12 @@
 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-								  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_localized
 								 			,setL_nextApple
 								 			,setL_positions
+								 			,setL_localized
 								 			,setR_img
 								 			|}) |]
 								 ((i0::enter -> Transitions(id__,
@@ -3614,10 +3614,10 @@
 								 		    const_main_AppleHarvestControl_pickDeadl,
 								 		    const_main_AppleHarvestControl_homePos,
 								 		    const_main_AppleHarvestControl_storagePos))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 								  [[set_img <- setR_img]]
 								 )
-								)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 								 [[setR_img <- set_img]]
 								)
 							)
@@ -3657,7 +3657,7 @@
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_Next,Next::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered|}
+						stateClockSync = {|get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Next,Next::entered,get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered|}
 					 within
 						(MachineBody_VS_O(id__,
 								    const_main_AppleHarvestControl_hideTime,
@@ -3689,7 +3689,7 @@
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_Next,Next::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered|}
+						stateClockSync = {|get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Next,Next::entered,get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -3710,8 +3710,8 @@
 																		    const_main_AppleHarvestControl_pickDeadl,
 																		    const_main_AppleHarvestControl_homePos,
 																		    const_main_AppleHarvestControl_storagePos)
-																[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
-																dbisim(Clock_CLID_LocalizeFruit(id__,0,
+																[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
+																dbisim(Clock_CLID_GoingHome(id__,0,
 																		          const_main_AppleHarvestControl_hideTime,
 																		          const_main_AppleHarvestControl_approachTime,
 																		          const_main_AppleHarvestControl_graspTime,
@@ -3720,10 +3720,10 @@
 																		          const_main_AppleHarvestControl_pickDeadl,
 																		          const_main_AppleHarvestControl_homePos,
 																		          const_main_AppleHarvestControl_storagePos))
-															)\{|get_CLID_LocalizeFruit|}
+															)\{|get_CLID_GoingHome|}
 														)
-														[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
-														dbisim(Clock_CLID_Prepare(id__,0,
+														[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
+														dbisim(Clock_CLID_GetApple(id__,0,
 																          const_main_AppleHarvestControl_hideTime,
 																          const_main_AppleHarvestControl_approachTime,
 																          const_main_AppleHarvestControl_graspTime,
@@ -3732,10 +3732,10 @@
 																          const_main_AppleHarvestControl_pickDeadl,
 																          const_main_AppleHarvestControl_homePos,
 																          const_main_AppleHarvestControl_storagePos))
-													)\{|get_CLID_Prepare|}
+													)\{|get_CLID_GetApple|}
 												)
-												[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
-												dbisim(Clock_CLID_GoingHome(id__,0,
+												[| {|get_CLID_Next,Next::entered,terminate|} |]
+												dbisim(Clock_CLID_Next(id__,0,
 														          const_main_AppleHarvestControl_hideTime,
 														          const_main_AppleHarvestControl_approachTime,
 														          const_main_AppleHarvestControl_graspTime,
@@ -3744,10 +3744,10 @@
 														          const_main_AppleHarvestControl_pickDeadl,
 														          const_main_AppleHarvestControl_homePos,
 														          const_main_AppleHarvestControl_storagePos))
-											)\{|get_CLID_GoingHome|}
+											)\{|get_CLID_Next|}
 										)
-										[| {|get_CLID_Next,Next::entered,terminate|} |]
-										dbisim(Clock_CLID_Next(id__,0,
+										[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
+										dbisim(Clock_CLID_LocalizeFruit(id__,0,
 												          const_main_AppleHarvestControl_hideTime,
 												          const_main_AppleHarvestControl_approachTime,
 												          const_main_AppleHarvestControl_graspTime,
@@ -3756,10 +3756,10 @@
 												          const_main_AppleHarvestControl_pickDeadl,
 												          const_main_AppleHarvestControl_homePos,
 												          const_main_AppleHarvestControl_storagePos))
-									)\{|get_CLID_Next|}
+									)\{|get_CLID_LocalizeFruit|}
 								)
-								[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
-								dbisim(Clock_CLID_GetApple(id__,0,
+								[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
+								dbisim(Clock_CLID_Prepare(id__,0,
 										          const_main_AppleHarvestControl_hideTime,
 										          const_main_AppleHarvestControl_approachTime,
 										          const_main_AppleHarvestControl_graspTime,
@@ -3768,7 +3768,7 @@
 										          const_main_AppleHarvestControl_pickDeadl,
 										          const_main_AppleHarvestControl_homePos,
 										          const_main_AppleHarvestControl_storagePos))
-							)\{|get_CLID_GetApple|}
+							)\{|get_CLID_Prepare|}
 						)
 						) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -4084,147 +4084,6 @@
 				
 				clockSync = {||}
 				
-				Clock_CLID_GetApple(id__,x__,
-						          const_main_AppleHarvestControl_hideTime,
-						          const_main_AppleHarvestControl_approachTime,
-						          const_main_AppleHarvestControl_graspTime,
-						          const_main_AppleHarvestControl_dropTime,
-						          const_main_AppleHarvestControl_pickTime,
-						          const_main_AppleHarvestControl_pickDeadl,
-						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						GetApple::entered -> Clock_CLID_GetApple(id__,0,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_GetApple!x__ -> Clock_CLID_GetApple(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_GetApple(id__,clock_type_plus(x__,1,CLID_GetApple_clock_type(id__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)),
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos))
-				Clock_CLID_Next(id__,x__,
-						          const_main_AppleHarvestControl_hideTime,
-						          const_main_AppleHarvestControl_approachTime,
-						          const_main_AppleHarvestControl_graspTime,
-						          const_main_AppleHarvestControl_dropTime,
-						          const_main_AppleHarvestControl_pickTime,
-						          const_main_AppleHarvestControl_pickDeadl,
-						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						Next::entered -> Clock_CLID_Next(id__,0,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_Next!x__ -> Clock_CLID_Next(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_Next(id__,clock_type_plus(x__,1,CLID_Next_clock_type(id__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)),
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos))
-				Clock_CLID_GoingHome(id__,x__,
-						          const_main_AppleHarvestControl_hideTime,
-						          const_main_AppleHarvestControl_approachTime,
-						          const_main_AppleHarvestControl_graspTime,
-						          const_main_AppleHarvestControl_dropTime,
-						          const_main_AppleHarvestControl_pickTime,
-						          const_main_AppleHarvestControl_pickDeadl,
-						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						GoingHome::entered -> Clock_CLID_GoingHome(id__,0,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_GoingHome!x__ -> Clock_CLID_GoingHome(id__,x__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_GoingHome(id__,clock_type_plus(x__,1,CLID_GoingHome_clock_type(id__,
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos)),
-								          const_main_AppleHarvestControl_hideTime,
-								          const_main_AppleHarvestControl_approachTime,
-								          const_main_AppleHarvestControl_graspTime,
-								          const_main_AppleHarvestControl_dropTime,
-								          const_main_AppleHarvestControl_pickTime,
-								          const_main_AppleHarvestControl_pickDeadl,
-								          const_main_AppleHarvestControl_homePos,
-								          const_main_AppleHarvestControl_storagePos))
 				Clock_CLID_Prepare(id__,x__,
 						          const_main_AppleHarvestControl_hideTime,
 						          const_main_AppleHarvestControl_approachTime,
@@ -4319,6 +4178,147 @@
 								          const_main_AppleHarvestControl_pickDeadl,
 								          const_main_AppleHarvestControl_homePos,
 								          const_main_AppleHarvestControl_storagePos))
+				Clock_CLID_Next(id__,x__,
+						          const_main_AppleHarvestControl_hideTime,
+						          const_main_AppleHarvestControl_approachTime,
+						          const_main_AppleHarvestControl_graspTime,
+						          const_main_AppleHarvestControl_dropTime,
+						          const_main_AppleHarvestControl_pickTime,
+						          const_main_AppleHarvestControl_pickDeadl,
+						          const_main_AppleHarvestControl_homePos,
+						          const_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						Next::entered -> Clock_CLID_Next(id__,0,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_Next!x__ -> Clock_CLID_Next(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_Next(id__,clock_type_plus(x__,1,CLID_Next_clock_type(id__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)),
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos))
+				Clock_CLID_GetApple(id__,x__,
+						          const_main_AppleHarvestControl_hideTime,
+						          const_main_AppleHarvestControl_approachTime,
+						          const_main_AppleHarvestControl_graspTime,
+						          const_main_AppleHarvestControl_dropTime,
+						          const_main_AppleHarvestControl_pickTime,
+						          const_main_AppleHarvestControl_pickDeadl,
+						          const_main_AppleHarvestControl_homePos,
+						          const_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						GetApple::entered -> Clock_CLID_GetApple(id__,0,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_GetApple!x__ -> Clock_CLID_GetApple(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_GetApple(id__,clock_type_plus(x__,1,CLID_GetApple_clock_type(id__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)),
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos))
+				Clock_CLID_GoingHome(id__,x__,
+						          const_main_AppleHarvestControl_hideTime,
+						          const_main_AppleHarvestControl_approachTime,
+						          const_main_AppleHarvestControl_graspTime,
+						          const_main_AppleHarvestControl_dropTime,
+						          const_main_AppleHarvestControl_pickTime,
+						          const_main_AppleHarvestControl_pickDeadl,
+						          const_main_AppleHarvestControl_homePos,
+						          const_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						GoingHome::entered -> Clock_CLID_GoingHome(id__,0,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_GoingHome!x__ -> Clock_CLID_GoingHome(id__,x__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_GoingHome(id__,clock_type_plus(x__,1,CLID_GoingHome_clock_type(id__,
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos)),
+								          const_main_AppleHarvestControl_hideTime,
+								          const_main_AppleHarvestControl_approachTime,
+								          const_main_AppleHarvestControl_graspTime,
+								          const_main_AppleHarvestControl_dropTime,
+								          const_main_AppleHarvestControl_pickTime,
+								          const_main_AppleHarvestControl_pickDeadl,
+								          const_main_AppleHarvestControl_homePos,
+								          const_main_AppleHarvestControl_storagePos))
 				
 				StateClocks(id__,
 						          const_main_AppleHarvestControl_hideTime,
@@ -4328,7 +4328,17 @@
 						          const_main_AppleHarvestControl_pickTime,
 						          const_main_AppleHarvestControl_pickDeadl,
 						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_GetApple(id__,0,
+						          const_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_Prepare(id__,0,
+						          const_main_AppleHarvestControl_hideTime,
+						          const_main_AppleHarvestControl_approachTime,
+						          const_main_AppleHarvestControl_graspTime,
+						          const_main_AppleHarvestControl_dropTime,
+						          const_main_AppleHarvestControl_pickTime,
+						          const_main_AppleHarvestControl_pickDeadl,
+						          const_main_AppleHarvestControl_homePos,
+						          const_main_AppleHarvestControl_storagePos))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_LocalizeFruit(id__,0,
 						          const_main_AppleHarvestControl_hideTime,
 						          const_main_AppleHarvestControl_approachTime,
 						          const_main_AppleHarvestControl_graspTime,
@@ -4348,27 +4358,17 @@
 						          const_main_AppleHarvestControl_homePos,
 						          const_main_AppleHarvestControl_storagePos))
 				[| { terminate } |] (
+				dbisim(Clock_CLID_GetApple(id__,0,
+						          const_main_AppleHarvestControl_hideTime,
+						          const_main_AppleHarvestControl_approachTime,
+						          const_main_AppleHarvestControl_graspTime,
+						          const_main_AppleHarvestControl_dropTime,
+						          const_main_AppleHarvestControl_pickTime,
+						          const_main_AppleHarvestControl_pickDeadl,
+						          const_main_AppleHarvestControl_homePos,
+						          const_main_AppleHarvestControl_storagePos))
+				[| { terminate } |] (
 				dbisim(Clock_CLID_GoingHome(id__,0,
-						          const_main_AppleHarvestControl_hideTime,
-						          const_main_AppleHarvestControl_approachTime,
-						          const_main_AppleHarvestControl_graspTime,
-						          const_main_AppleHarvestControl_dropTime,
-						          const_main_AppleHarvestControl_pickTime,
-						          const_main_AppleHarvestControl_pickDeadl,
-						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos))
-				[| { terminate } |] (
-				dbisim(Clock_CLID_Prepare(id__,0,
-						          const_main_AppleHarvestControl_hideTime,
-						          const_main_AppleHarvestControl_approachTime,
-						          const_main_AppleHarvestControl_graspTime,
-						          const_main_AppleHarvestControl_dropTime,
-						          const_main_AppleHarvestControl_pickTime,
-						          const_main_AppleHarvestControl_pickDeadl,
-						          const_main_AppleHarvestControl_homePos,
-						          const_main_AppleHarvestControl_storagePos))
-				[| { terminate } |] (
-				dbisim(Clock_CLID_LocalizeFruit(id__,0,
 						          const_main_AppleHarvestControl_hideTime,
 						          const_main_AppleHarvestControl_approachTime,
 						          const_main_AppleHarvestControl_graspTime,
@@ -4382,7 +4382,7 @@
 				)
 				)
 				
-				stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_Next,Next::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered|}
+				stateClockSync = {|get_CLID_Prepare,Prepare::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Next,Next::entered,get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered|}
 				
 				-- Shared memory
 				-- Shared memory variables
@@ -4476,12 +4476,12 @@
 			localClockResets = {||}
 			
 			
-			channel get_CLID_Ready : core_clock_type 
-			channel get_CLID_Solve : core_clock_type 
 			channel get_CLID_Loop : core_clock_type 
+			channel get_CLID_Solve : core_clock_type 
+			channel get_CLID_Ready : core_clock_type 
 			--channel increment__
 			
-			CLID_Ready_clock_type(id__) = 
+			CLID_Loop_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -4499,7 +4499,7 @@
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Loop_clock_type(id__) = 
+			CLID_Ready_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -4817,7 +4817,7 @@
 						 [] dbisim((true)&(startIKSolver__!NID_Ready.in?apples:{apples|apples <- Set(setoperations_Coord3D), true} -> share__choice(set_apples!apples -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Loop::enter -> SKIP)))
 						 [] dbisim(((apples!={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_apples?apples -> pre_setoperations_choose(apples) & (share__choice(set_apple!setoperations_choose(apples) -> SKIP)))) ; Solve::enter -> SKIP)))
 						 [] dbisim(((apples=={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_positions?positions -> true&(share__choice(endIKSolver.out!positions -> SKIP))) ; Ready::enter -> SKIP)))
-						 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> share__choice(get_apple?apple -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_positions?positions -> share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> share__choice(get_apple?apple -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
 						 []
 						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
 						 []
@@ -4907,7 +4907,7 @@
 				
 				Behaviour(id__) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered|}
+						stateClockSync = {|get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered,get_CLID_Ready,Ready::entered|}
 					 within
 						(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
 					)
@@ -4915,7 +4915,7 @@
 				
 				IteratedBehaviour(id__) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered|}
+						stateClockSync = {|get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered,get_CLID_Ready,Ready::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -4924,17 +4924,17 @@
 										dbisim(
 											sbisim(
 												MachineBody(id__)
-												[| {|get_CLID_Loop,Loop::entered,terminate|} |]
-												dbisim(Clock_CLID_Loop(id__,0))
-											)\{|get_CLID_Loop|}
+												[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+												dbisim(Clock_CLID_Ready(id__,0))
+											)\{|get_CLID_Ready|}
 										)
 										[| {|get_CLID_Solve,Solve::entered,terminate|} |]
 										dbisim(Clock_CLID_Solve(id__,0))
 									)\{|get_CLID_Solve|}
 								)
-								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-								dbisim(Clock_CLID_Ready(id__,0))
-							)\{|get_CLID_Ready|}
+								[| {|get_CLID_Loop,Loop::entered,terminate|} |]
+								dbisim(Clock_CLID_Loop(id__,0))
+							)\{|get_CLID_Loop|}
 						)
 						) \ union(stateClockSync,enteredSS)
 					)
@@ -5071,7 +5071,7 @@
 				
 				Behaviour_VS_O(id__) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered|}
+						stateClockSync = {|get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered,get_CLID_Ready,Ready::entered|}
 					 within
 						(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -5079,7 +5079,7 @@
 				
 				IteratedBehaviour_VS_O(id__) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered|}
+						stateClockSync = {|get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered,get_CLID_Ready,Ready::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -5088,17 +5088,17 @@
 										dbisim(
 											sbisim(
 												MachineBody_VS_O(id__)
-												[| {|get_CLID_Loop,Loop::entered,terminate|} |]
-												dbisim(Clock_CLID_Loop(id__,0))
-											)\{|get_CLID_Loop|}
+												[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+												dbisim(Clock_CLID_Ready(id__,0))
+											)\{|get_CLID_Ready|}
 										)
 										[| {|get_CLID_Solve,Solve::entered,terminate|} |]
 										dbisim(Clock_CLID_Solve(id__,0))
 									)\{|get_CLID_Solve|}
 								)
-								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-								dbisim(Clock_CLID_Ready(id__,0))
-							)\{|get_CLID_Ready|}
+								[| {|get_CLID_Loop,Loop::entered,terminate|} |]
+								dbisim(Clock_CLID_Loop(id__,0))
+							)\{|get_CLID_Loop|}
 						)
 						) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -5238,20 +5238,6 @@
 				
 				clockSync = {||}
 				
-				Clock_CLID_Ready(id__,x__) = 
-					TimeOut_1(
-						Ready::entered -> Clock_CLID_Ready(id__,0)
-						[]
-						get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__)
-						[]
-						terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__))))
-				Clock_CLID_Solve(id__,x__) = 
-					TimeOut_1(
-						Solve::entered -> Clock_CLID_Solve(id__,0)
-						[]
-						get_CLID_Solve!x__ -> Clock_CLID_Solve(id__,x__)
-						[]
-						terminate -> SKIP,Clock_CLID_Solve(id__,clock_type_plus(x__,1,CLID_Solve_clock_type(id__))))
 				Clock_CLID_Loop(id__,x__) = 
 					TimeOut_1(
 						Loop::entered -> Clock_CLID_Loop(id__,0)
@@ -5259,16 +5245,30 @@
 						get_CLID_Loop!x__ -> Clock_CLID_Loop(id__,x__)
 						[]
 						terminate -> SKIP,Clock_CLID_Loop(id__,clock_type_plus(x__,1,CLID_Loop_clock_type(id__))))
+				Clock_CLID_Solve(id__,x__) = 
+					TimeOut_1(
+						Solve::entered -> Clock_CLID_Solve(id__,0)
+						[]
+						get_CLID_Solve!x__ -> Clock_CLID_Solve(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_Solve(id__,clock_type_plus(x__,1,CLID_Solve_clock_type(id__))))
+				Clock_CLID_Ready(id__,x__) = 
+					TimeOut_1(
+						Ready::entered -> Clock_CLID_Ready(id__,0)
+						[]
+						get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__))))
 				
-				StateClocks(id__) = dbisim(Clock_CLID_Ready(id__,0))
+				StateClocks(id__) = dbisim(Clock_CLID_Loop(id__,0))
 				[| { terminate } |] (
 				dbisim(Clock_CLID_Solve(id__,0))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_Loop(id__,0))
+				dbisim(Clock_CLID_Ready(id__,0))
 				)
 				)
 				
-				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered|}
+				stateClockSync = {|get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered,get_CLID_Ready,Ready::entered|}
 				
 				-- Shared memory
 				-- Shared memory variables
@@ -5316,11 +5316,11 @@
 			channel endGoHome: InOut
 			
 			-- Declaring call and ret events for undefined operations
-			channel hideArmCall
-			channel moveCall: main_JointsPos
 			channel graspCall: main_JointsPos
+			channel moveCall: main_JointsPos
 			channel goHomeCall
 			channel pickCall
+			channel hideArmCall
 			channel dropCall: main_JointsPos
 			
 			enterSS = {|
@@ -5344,11 +5344,11 @@
 				terminate
 			,	startGoHome,
 				endGoHome
-			,	hideArmCall,
+			,	graspCall,
 				moveCall,
-				graspCall,
 				goHomeCall,
 				pickCall,
+				hideArmCall,
 				dropCall
 				|}
 			
@@ -5357,11 +5357,11 @@
 			localClockResets = {||}
 			
 			
-			channel get_CLID_Going : core_clock_type 
 			channel get_CLID_Ready : core_clock_type 
+			channel get_CLID_Going : core_clock_type 
 			--channel increment__
 			
-			CLID_Going_clock_type(id__,
+			CLID_Ready_clock_type(id__,
 					          const_main_GoHome_goHTime) = 
 				let
 					max = (clock_type_max(Union({
@@ -5370,7 +5370,7 @@
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Ready_clock_type(id__,
+			CLID_Going_clock_type(id__,
 					          const_main_GoHome_goHTime) = 
 				let
 					max = (clock_type_max(Union({
@@ -5586,18 +5586,18 @@
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
-				CALL__hideArm(id__,
-						    const_main_GoHome_goHTime) = EDeadline(hideArmCall,0)
-				CALL__move(id__,
-						    const_main_GoHome_goHTime,
-							param_jp) = EDeadline(moveCall.param_jp,0)
 				CALL__grasp(id__,
 						    const_main_GoHome_goHTime,
 							param_jp) = EDeadline(graspCall.param_jp,0)
+				CALL__move(id__,
+						    const_main_GoHome_goHTime,
+							param_jp) = EDeadline(moveCall.param_jp,0)
 				CALL__goHome(id__,
 						    const_main_GoHome_goHTime) = EDeadline(goHomeCall,0)
 				CALL__pick(id__,
 						    const_main_GoHome_goHTime) = EDeadline(pickCall,0)
+				CALL__hideArm(id__,
+						    const_main_GoHome_goHTime) = EDeadline(hideArmCall,0)
 				CALL__drop(id__,
 						    const_main_GoHome_goHTime,
 							param_jp) = EDeadline(dropCall.param_jp,0)
@@ -5732,7 +5732,7 @@
 				Behaviour(id__,
 						    const_main_GoHome_goHTime) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 					 within
 						(MachineBody(id__,
 								    const_main_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -5743,7 +5743,7 @@
 				IteratedBehaviour(id__,
 						    const_main_GoHome_goHTime) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -5751,15 +5751,15 @@
 									sbisim(
 										MachineBody(id__,
 												    const_main_GoHome_goHTime)
-										[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-										dbisim(Clock_CLID_Ready(id__,0,
+										[| {|get_CLID_Going,Going::entered,terminate|} |]
+										dbisim(Clock_CLID_Going(id__,0,
 												          const_main_GoHome_goHTime))
-									)\{|get_CLID_Ready|}
+									)\{|get_CLID_Going|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
 										          const_main_GoHome_goHTime))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Ready|}
 						)
 						) \ union(stateClockSync,enteredSS)
 					)
@@ -5857,7 +5857,7 @@
 				Behaviour_VS_O(id__,
 						    const_main_GoHome_goHTime) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 					 within
 						(MachineBody_VS_O(id__,
 								    const_main_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -5868,7 +5868,7 @@
 				IteratedBehaviour_VS_O(id__,
 						    const_main_GoHome_goHTime) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+						stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -5876,15 +5876,15 @@
 									sbisim(
 										MachineBody_VS_O(id__,
 												    const_main_GoHome_goHTime)
-										[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-										dbisim(Clock_CLID_Ready(id__,0,
+										[| {|get_CLID_Going,Going::entered,terminate|} |]
+										dbisim(Clock_CLID_Going(id__,0,
 												          const_main_GoHome_goHTime))
-									)\{|get_CLID_Ready|}
+									)\{|get_CLID_Going|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
 										          const_main_GoHome_goHTime))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Ready|}
 						)
 						) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -5955,18 +5955,6 @@
 				
 				clockSync = {||}
 				
-				Clock_CLID_Going(id__,x__,
-						          const_main_GoHome_goHTime) = 
-					TimeOut_1(
-						Going::entered -> Clock_CLID_Going(id__,0,
-								          const_main_GoHome_goHTime)
-						[]
-						get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
-								          const_main_GoHome_goHTime)
-						[]
-						terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
-								          const_main_GoHome_goHTime)),
-								          const_main_GoHome_goHTime))
 				Clock_CLID_Ready(id__,x__,
 						          const_main_GoHome_goHTime) = 
 					TimeOut_1(
@@ -5979,16 +5967,28 @@
 						terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
 								          const_main_GoHome_goHTime)),
 								          const_main_GoHome_goHTime))
+				Clock_CLID_Going(id__,x__,
+						          const_main_GoHome_goHTime) = 
+					TimeOut_1(
+						Going::entered -> Clock_CLID_Going(id__,0,
+								          const_main_GoHome_goHTime)
+						[]
+						get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
+								          const_main_GoHome_goHTime)
+						[]
+						terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
+								          const_main_GoHome_goHTime)),
+								          const_main_GoHome_goHTime))
 				
 				StateClocks(id__,
-						          const_main_GoHome_goHTime) = dbisim(Clock_CLID_Going(id__,0,
+						          const_main_GoHome_goHTime) = dbisim(Clock_CLID_Ready(id__,0,
 						          const_main_GoHome_goHTime))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_Ready(id__,0,
+				dbisim(Clock_CLID_Going(id__,0,
 						          const_main_GoHome_goHTime))
 				)
 				
-				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 				
 				-- Shared memory
 				-- Shared memory variables
@@ -6005,13 +6005,13 @@
 		
 		Timed(OneStep) {
 				-- undefined operations
-				CALL__hideArm(id__) 	= hideArmCall -> SKIP
-				CALL__move(id__,
-						    param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__grasp(id__,
 						    param_jp) 	= graspCall.param_jp -> SKIP
+				CALL__move(id__,
+						    param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__goHome(id__) 	= goHomeCall -> SKIP
 				CALL__pick(id__) 	= pickCall -> SKIP
+				CALL__hideArm(id__) 	= hideArmCall -> SKIP
 				CALL__drop(id__,
 						    param_jp) 	= dropCall.param_jp -> SKIP
 				
@@ -6054,11 +6054,11 @@
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -6081,11 +6081,11 @@
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -6155,11 +6155,11 @@
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -6182,11 +6182,11 @@
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -6256,11 +6256,11 @@
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -6283,11 +6283,11 @@
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -6357,11 +6357,11 @@
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -6384,11 +6384,11 @@
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)

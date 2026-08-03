@@ -10,8 +10,8 @@ namespace robocalc
 {
 	namespace functions
 	{
-		PID initialisePID(double P, double I, double D);
 		PID computePID(PID pid, double newError, double dtime);
+		PID initialisePID(double P, double I, double D);
 		
 		template<typename T>
 		std::set<T> set_union(std::set<T> s1, std::set<T> s2)

@@ -1,0 +1,318 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 13:39:51
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "_csp"
+
+-- generate foot_controller
+P_foot_controller = let
+	id__ = 0
+	
+	
+	
+within
+	foot_controller::O__(
+		id__
+	)
+assert P_foot_controller :[deadlock-free]	
+assert P_foot_controller;RUN({r__}) :[deadlock-free]
+assert P_foot_controller :[deterministic]
+assert P_foot_controller :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_controller[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_controller
+
+-- generate OP_correct
+P_OP_correct = let
+	id__ = 0
+	
+	param_v = (0,0,0)
+	
+	
+	
+within
+	OP_correct::O__(id__,
+				param_v)
+assert P_OP_correct :[deadlock-free]	
+assert P_OP_correct;RUN({r__}) :[deadlock-free]
+assert P_OP_correct :[deterministic]
+assert P_OP_correct :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_correct[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_correct
+-- generate OP_step
+P_OP_step = let
+	id__ = 0
+	
+	param_d = (0,0,0)
+	
+	
+	
+within
+	OP_step::O__(id__,
+				param_d,
+			    const_step_c)
+assert P_OP_step :[deadlock-free]	
+assert P_OP_step;RUN({r__}) :[deadlock-free]
+assert P_OP_step :[deterministic]
+assert P_OP_step :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_step[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_step
+-- generate OP_Walk
+P_OP_Walk = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_Walk::O__(id__)
+assert P_OP_Walk :[deadlock-free]	
+assert P_OP_Walk;RUN({r__}) :[deadlock-free]
+assert P_OP_Walk :[deterministic]
+assert P_OP_Walk :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_Walk[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_Walk
+
+-- generate Foot
+P_Foot = let
+	id__ = 0
+	
+	
+	
+		
+	const_Foot_op_ref1_c = const_step_c
+within
+	Foot::O__(id__,
+			   	const_Foot_op_ref1_c)
+
+assert P_Foot :[deadlock-free]	
+assert P_Foot;RUN({r__}) :[deadlock-free]
+assert P_Foot :[deterministic]
+assert P_Foot :[divergence-free]
+
+-- generate Foot_stm_ref0
+P_Foot_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	Foot::stm_ref0::O__(
+		id__,
+		const_step_c
+	)
+assert P_Foot_stm_ref0 :[deadlock-free]	
+assert P_Foot_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_Foot_stm_ref0 :[deterministic]
+assert P_Foot_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Foot_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Foot_stm_ref0
+-- timed deadlock free
+assert prioritise(P_Foot[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Foot
+-- generate Head
+P_Head = let
+	id__ = 0
+	
+	
+	
+		
+within
+	Head::O__(id__)
+
+assert P_Head :[deadlock-free]	
+assert P_Head;RUN({r__}) :[deadlock-free]
+assert P_Head :[deterministic]
+assert P_Head :[divergence-free]
+
+-- generate Head_HeadS
+P_Head_HeadS = let
+	id__ = 0
+	
+	
+	
+within
+	Head::HeadS::O__(
+		id__
+	)
+assert P_Head_HeadS :[deadlock-free]	
+assert P_Head_HeadS;RUN({r__}) :[deadlock-free]
+assert P_Head_HeadS :[deterministic]
+assert P_Head_HeadS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Head_HeadS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Head_HeadS
+-- timed deadlock free
+assert prioritise(P_Head[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Head
+-- generate Siren
+P_Siren = let
+	id__ = 0
+	
+	
+	
+		
+within
+	Siren::O__(id__)
+
+assert P_Siren :[deadlock-free]	
+assert P_Siren;RUN({r__}) :[deadlock-free]
+assert P_Siren :[deterministic]
+assert P_Siren :[divergence-free]
+
+-- generate Siren_SirenS
+P_Siren_SirenS = let
+	id__ = 0
+	
+	
+	
+within
+	Siren::SirenS::O__(
+		id__
+	)
+assert P_Siren_SirenS :[deadlock-free]	
+assert P_Siren_SirenS;RUN({r__}) :[deadlock-free]
+assert P_Siren_SirenS :[deterministic]
+assert P_Siren_SirenS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Siren_SirenS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Siren_SirenS
+-- timed deadlock free
+assert prioritise(P_Siren[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Siren
+
+-- generate Humanoid
+P_Humanoid = let
+	id__ = 0
+	
+	
+	
+		
+	const_Foot_op_ref1_c = const_step_c
+	
+within
+	Humanoid::O__(id__,
+			   	const_Foot_op_ref1_c)
+assert P_Humanoid :[deadlock-free]	
+assert P_Humanoid;RUN({r__}) :[deadlock-free]
+assert P_Humanoid :[deterministic]
+assert P_Humanoid :[divergence-free]
+
+-- generate Humanoid_ctrl_ref0
+P_Humanoid_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	Humanoid::ctrl_ref0::O__(id__)
+
+assert P_Humanoid_ctrl_ref0 :[deadlock-free]	
+assert P_Humanoid_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_Humanoid_ctrl_ref0 :[deterministic]
+assert P_Humanoid_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_Humanoid_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Humanoid_ctrl_ref0
+-- generate Humanoid_ctrl_ref1
+P_Humanoid_ctrl_ref1 = let
+	id__ = 0
+	
+	
+	
+		
+	const_Foot_op_ref1_c = const_step_c
+within
+	Humanoid::ctrl_ref1::O__(id__,
+			   	const_Foot_op_ref1_c)
+
+assert P_Humanoid_ctrl_ref1 :[deadlock-free]	
+assert P_Humanoid_ctrl_ref1;RUN({r__}) :[deadlock-free]
+assert P_Humanoid_ctrl_ref1 :[deterministic]
+assert P_Humanoid_ctrl_ref1 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_Humanoid_ctrl_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Humanoid_ctrl_ref1
+-- generate Humanoid_ctrl_ref2
+P_Humanoid_ctrl_ref2 = let
+	id__ = 0
+	
+	
+	
+		
+	const_Foot_op_ref1_c = const_step_c
+within
+	Humanoid::ctrl_ref2::O__(id__,
+			   	const_Foot_op_ref1_c)
+
+assert P_Humanoid_ctrl_ref2 :[deadlock-free]	
+assert P_Humanoid_ctrl_ref2;RUN({r__}) :[deadlock-free]
+assert P_Humanoid_ctrl_ref2 :[deterministic]
+assert P_Humanoid_ctrl_ref2 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_Humanoid_ctrl_ref2[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Humanoid_ctrl_ref2
+-- generate Humanoid_ctrl_ref3
+P_Humanoid_ctrl_ref3 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	Humanoid::ctrl_ref3::O__(id__)
+
+assert P_Humanoid_ctrl_ref3 :[deadlock-free]	
+assert P_Humanoid_ctrl_ref3;RUN({r__}) :[deadlock-free]
+assert P_Humanoid_ctrl_ref3 :[deterministic]
+assert P_Humanoid_ctrl_ref3 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_Humanoid_ctrl_ref3[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Humanoid_ctrl_ref3
+-- timed deadlock free
+assert prioritise(P_Humanoid[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Humanoid

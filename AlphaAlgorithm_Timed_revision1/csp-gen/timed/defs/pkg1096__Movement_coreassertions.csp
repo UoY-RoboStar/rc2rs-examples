@@ -1,0 +1,42 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 28-07-2026 17:27:40
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pkg1096__Movement.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg1096__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg1096__Movement
+P_pkg1096__Movement = let
+	id__ = 0
+	
+	
+	
+within
+	pkg1096__Movement::O__(
+		id__,
+		const_pkg1096__Movement_lv,
+		const_pkg1096__Movement_av,
+		const_pkg1096__Movement_MB,
+		const_pkg1096__Movement_alpha
+	)
+assert P_pkg1096__Movement :[deadlock-free]	
+assert P_pkg1096__Movement;RUN({r__}) :[deadlock-free]
+assert P_pkg1096__Movement :[deterministic]
+assert P_pkg1096__Movement :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg1096__Movement[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg1096__Movement

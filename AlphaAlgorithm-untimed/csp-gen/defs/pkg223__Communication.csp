@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 16-05-2026 09:08:55
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 12:31:03
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -47,16 +47,16 @@ exports
 	channel robots: InOut.core_nat
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_Communication_Receive_t2_opCall
-	channel clone_normal_Communication_Receive_t5_opCall
 	channel normal_Communication_Receive_t3_opCall
-	channel clone_normal_Communication_Broadcast_entryCall
+	channel clone_normal_Communication_Receive_t5_opCall
+	channel normal_Communication_Receive_t5_opCall
+	channel clone_normal_Communication_Receive_t3_opCall
 	channel normal_Communication_Broadcast_t4_opCall
 	channel normal_Communication_Broadcast_entryCall
-	channel normal_Communication_Receive_t5_opCall
-	channel normal_Communication_Receive_t2_opCall
-	channel clone_normal_Communication_Receive_t3_opCall
 	channel clone_normal_Communication_Broadcast_t4_opCall
+	channel normal_Communication_Receive_t2_opCall
+	channel clone_normal_Communication_Receive_t2_opCall
+	channel clone_normal_Communication_Broadcast_entryCall
 	
 	enterSS = {|
 	i1::enter,
@@ -80,16 +80,16 @@ exports
 	,	broadcast,
 		receive,
 		robots
-	,	clone_normal_Communication_Receive_t2_opCall,
+	,	normal_Communication_Receive_t3_opCall,
 		clone_normal_Communication_Receive_t5_opCall,
-		normal_Communication_Receive_t3_opCall,
-		clone_normal_Communication_Broadcast_entryCall,
+		normal_Communication_Receive_t5_opCall,
+		clone_normal_Communication_Receive_t3_opCall,
 		normal_Communication_Broadcast_t4_opCall,
 		normal_Communication_Broadcast_entryCall,
-		normal_Communication_Receive_t5_opCall,
+		clone_normal_Communication_Broadcast_t4_opCall,
 		normal_Communication_Receive_t2_opCall,
-		clone_normal_Communication_Receive_t3_opCall,
-		clone_normal_Communication_Broadcast_t4_opCall
+		clone_normal_Communication_Receive_t2_opCall,
+		clone_normal_Communication_Broadcast_entryCall
 		|}
 
 	-- Nodes --
@@ -335,23 +335,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,setR_x |} ]] 
-				  [[set_y <- setL_y,set_neighs <- setL_neighs,set_x <- setL_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_y,setR_x |} ]] 
+				  [[set_neighs <- setL_neighs,set_y <- setL_y,set_x <- setL_x]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_y
 				 			,setL_neighs
+				 			,setL_y
 				 			,setL_x
-				 			,setR_y
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_y
 				 			 			,setR_x
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,setL_x |} ]]
-				  [[set_y <- setR_y,set_neighs <- setR_neighs,set_x <- setR_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_y,setL_x |} ]]
+				  [[set_neighs <- setR_neighs,set_y <- setR_y,set_x <- setR_x]]
 				 )
-				)[[setL_y <- set_y,setL_neighs <- set_neighs,setL_x <- set_x]]
-				 [[setR_y <- set_y,setR_neighs <- set_neighs,setR_x <- set_x]]
+				)[[setL_neighs <- set_neighs,setL_y <- set_y,setL_x <- set_x]]
+				 [[setR_neighs <- set_neighs,setR_y <- set_y,setR_x <- set_x]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -430,23 +430,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,setR_x |} ]] 
-				  [[set_y <- setL_y,set_neighs <- setL_neighs,set_x <- setL_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_y,setR_x |} ]] 
+				  [[set_neighs <- setL_neighs,set_y <- setL_y,set_x <- setL_x]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_y
 				 			,setL_neighs
+				 			,setL_y
 				 			,setL_x
-				 			,setR_y
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_y
 				 			 			,setR_x
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,setL_x |} ]]
-				  [[set_y <- setR_y,set_neighs <- setR_neighs,set_x <- setR_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_y,setL_x |} ]]
+				  [[set_neighs <- setR_neighs,set_y <- setR_y,set_x <- setR_x]]
 				 )
-				)[[setL_y <- set_y,setL_neighs <- set_neighs,setL_x <- set_x]]
-				 [[setR_y <- set_y,setR_neighs <- set_neighs,setR_x <- set_x]]
+				)[[setL_neighs <- set_neighs,setL_y <- set_y,setL_x <- set_x]]
+				 [[setR_neighs <- set_neighs,setR_y <- set_y,setR_x <- set_x]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -683,23 +683,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,setR_x |} ]] 
-				  [[set_y <- setL_y,set_neighs <- setL_neighs,set_x <- setL_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_y,setR_x |} ]] 
+				  [[set_neighs <- setL_neighs,set_y <- setL_y,set_x <- setL_x]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_y
 				 			,setL_neighs
+				 			,setL_y
 				 			,setL_x
-				 			,setR_y
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_y
 				 			 			,setR_x
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,setL_x |} ]]
-				  [[set_y <- setR_y,set_neighs <- setR_neighs,set_x <- setR_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_y,setL_x |} ]]
+				  [[set_neighs <- setR_neighs,set_y <- setR_y,set_x <- setR_x]]
 				 )
-				)[[setL_y <- set_y,setL_neighs <- set_neighs,setL_x <- set_x]]
-				 [[setR_y <- set_y,setR_neighs <- set_neighs,setR_x <- set_x]]
+				)[[setL_neighs <- set_neighs,setL_y <- set_y,setL_x <- set_x]]
+				 [[setR_neighs <- set_neighs,setR_y <- set_y,setR_x <- set_x]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -774,23 +774,23 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_y,setR_neighs,setR_x |} ]] 
-				  [[set_y <- setL_y,set_neighs <- setL_neighs,set_x <- setL_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_neighs,setR_y,setR_x |} ]] 
+				  [[set_neighs <- setL_neighs,set_y <- setL_y,set_x <- setL_x]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_y
 				 			,setL_neighs
+				 			,setL_y
 				 			,setL_x
-				 			,setR_y
-				 			 			,setR_neighs
+				 			,setR_neighs
+				 			 			,setR_y
 				 			 			,setR_x
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_y,setL_neighs,setL_x |} ]]
-				  [[set_y <- setR_y,set_neighs <- setR_neighs,set_x <- setR_x]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_neighs,setL_y,setL_x |} ]]
+				  [[set_neighs <- setR_neighs,set_y <- setR_y,set_x <- setR_x]]
 				 )
-				)[[setL_y <- set_y,setL_neighs <- set_neighs,setL_x <- set_x]]
-				 [[setR_y <- set_y,setR_neighs <- set_neighs,setR_x <- set_x]]
+				)[[setL_neighs <- set_neighs,setL_y <- set_y,setL_x <- set_x]]
+				 [[setR_neighs <- set_neighs,setR_y <- set_y,setR_x <- set_x]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -827,36 +827,36 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__clone_normal_Communication_Receive_t2_op(id__,
-			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t2_opCall -> SKIP
-	CALL__clone_normal_Communication_Receive_t5_op(id__,
-			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t5_opCall -> SKIP
 	CALL__normal_Communication_Receive_t3_op(id__,
 			    const_pkg223__Communication_id,
 			    const_pkg223__Communication_RC) 	= normal_Communication_Receive_t3_opCall -> SKIP
-	CALL__clone_normal_Communication_Broadcast_entry(id__,
+	CALL__clone_normal_Communication_Receive_t5_op(id__,
 			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Broadcast_entryCall -> SKIP
+			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t5_opCall -> SKIP
+	CALL__normal_Communication_Receive_t5_op(id__,
+			    const_pkg223__Communication_id,
+			    const_pkg223__Communication_RC) 	= normal_Communication_Receive_t5_opCall -> SKIP
+	CALL__clone_normal_Communication_Receive_t3_op(id__,
+			    const_pkg223__Communication_id,
+			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t3_opCall -> SKIP
 	CALL__normal_Communication_Broadcast_t4_op(id__,
 			    const_pkg223__Communication_id,
 			    const_pkg223__Communication_RC) 	= normal_Communication_Broadcast_t4_opCall -> SKIP
 	CALL__normal_Communication_Broadcast_entry(id__,
 			    const_pkg223__Communication_id,
 			    const_pkg223__Communication_RC) 	= normal_Communication_Broadcast_entryCall -> SKIP
-	CALL__normal_Communication_Receive_t5_op(id__,
-			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= normal_Communication_Receive_t5_opCall -> SKIP
-	CALL__normal_Communication_Receive_t2_op(id__,
-			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= normal_Communication_Receive_t2_opCall -> SKIP
-	CALL__clone_normal_Communication_Receive_t3_op(id__,
-			    const_pkg223__Communication_id,
-			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t3_opCall -> SKIP
 	CALL__clone_normal_Communication_Broadcast_t4_op(id__,
 			    const_pkg223__Communication_id,
 			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Broadcast_t4_opCall -> SKIP
+	CALL__normal_Communication_Receive_t2_op(id__,
+			    const_pkg223__Communication_id,
+			    const_pkg223__Communication_RC) 	= normal_Communication_Receive_t2_opCall -> SKIP
+	CALL__clone_normal_Communication_Receive_t2_op(id__,
+			    const_pkg223__Communication_id,
+			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Receive_t2_opCall -> SKIP
+	CALL__clone_normal_Communication_Broadcast_entry(id__,
+			    const_pkg223__Communication_id,
+			    const_pkg223__Communication_RC) 	= clone_normal_Communication_Broadcast_entryCall -> SKIP
 	
 	-- END of Operation calls --
 	

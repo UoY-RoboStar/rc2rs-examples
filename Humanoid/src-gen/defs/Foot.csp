@@ -1,0 +1,25 @@
+-- declaring controller events
+channel Foot_leanOut
+channel Foot_stepDone
+channel Foot_stepDownOut
+channel Foot_outOfBalance:Vector
+channel Foot_liftFoot
+channel Foot_leanIn
+channel Foot_stepDownIn
+
+Foot = foot_controller[[foot_controller_leanIn <- Foot_leanIn,
+						    foot_controller_liftFoot <- Foot_liftFoot,
+						    foot_controller_stepDownIn <- Foot_stepDownIn,
+						    foot_controller_stepDownOut <- Foot_stepDownOut,
+						    foot_controller_outOfBalance <- Foot_outOfBalance,
+						    foot_controller_stepDone <- Foot_stepDone,
+						    foot_controller_leanOut <- Foot_leanOut]]
+
+-- VS version
+Foot_VS = foot_controller_VS[[foot_controller_leanIn <- Foot_leanIn,
+						    foot_controller_liftFoot <- Foot_liftFoot,
+						    foot_controller_stepDownIn <- Foot_stepDownIn,
+						    foot_controller_stepDownOut <- Foot_stepDownOut,
+						    foot_controller_outOfBalance <- Foot_outOfBalance,
+						    foot_controller_stepDone <- Foot_stepDone,
+						    foot_controller_leanOut <- Foot_leanOut]]

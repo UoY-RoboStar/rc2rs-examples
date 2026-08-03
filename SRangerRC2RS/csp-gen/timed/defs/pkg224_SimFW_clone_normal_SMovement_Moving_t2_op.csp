@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:58:32
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 24-06-2026 14:28:48
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -39,8 +39,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_waitOp_j_2_4_fCall: core_nat
 	channel stopCall
+	channel clone_waitOp_j_2_4_fCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -60,8 +60,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	clone_waitOp_j_2_4_fCall,
-		stopCall
+	,	stopCall,
+		clone_waitOp_j_2_4_fCall
 		, share__
 		|}
 	datatype ClockSet = 
@@ -72,11 +72,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_MBC : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
-	CLID_f_clock_type(id__) = 
+	CLID_MBC_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -84,7 +84,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_MBC_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -181,9 +181,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__stop(id__) = EDeadline(stopCall,0)
 		CALL__clone_waitOp_j_2_4_f(id__,
 					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
-		CALL__stop(id__) = EDeadline(stopCall,0)
 		
 		-- END of Operation calls --
 	

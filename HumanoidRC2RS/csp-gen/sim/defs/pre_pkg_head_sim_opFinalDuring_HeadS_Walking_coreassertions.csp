@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 15:11:45
+--
+
+include "pre_pkg_head_sim_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_head_sim_opFinalDuring_HeadS_Walking.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking
+P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_head_sim::OP_opFinalDuring_HeadS_Walking::O__(id__)
+assert P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking :[deadlock-free]	
+assert P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking :[deterministic]
+assert P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_head_sim_OP_opFinalDuring_HeadS_Walking

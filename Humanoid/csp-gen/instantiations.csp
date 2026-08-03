@@ -1,0 +1,74 @@
+-- generate --
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+
+-- OPERATION CONSTANTS
+
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{}))..calc_type_max(Union({}))})
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2})|d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Vector_y(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Div(Mult(c, Vector_x(d), { -2..2}), no_zero_div(sqrt(Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2}))), { -2..2})|c <- { -2..2},d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Neg(c, { -2..2})|c <- { -2..2}},{Vector_z(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Vector_x(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Div((Mult(c, Vector_y(d), { -2..2})), no_zero_div(sqrt(Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2}))), { -2..2})|c <- { -2..2},d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2})|d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{c|c <- { -2..2}}}))..calc_type_max(Union({{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2})|d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Vector_y(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Div(Mult(c, Vector_x(d), { -2..2}), no_zero_div(sqrt(Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2}))), { -2..2})|c <- { -2..2},d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Neg(c, { -2..2})|c <- { -2..2}},{Vector_z(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Vector_x(v)|v <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Div((Mult(c, Vector_y(d), { -2..2})), no_zero_div(sqrt(Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2}))), { -2..2})|c <- { -2..2},d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{Plus((Mult(Vector_x(d), Vector_x(d), { -2..2})), (Mult(Vector_y(d), Vector_y(d), { -2..2})), { -2..2})|d <- {(f_x,f_y,f_z)|f_x <- { -2..2},f_y <- { -2..2},f_z <- { -2..2}}},{c|c <- { -2..2}}}))}) 
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{}))..calc_type_max(Union({}))})
+
+-- generate -- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+
+-- OPERATION CONSTANTS
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate sqrt
+sqrt(r) = 0
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate const_step_c
+const_step_c = 0
+
+-- BASIC TYPES
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+

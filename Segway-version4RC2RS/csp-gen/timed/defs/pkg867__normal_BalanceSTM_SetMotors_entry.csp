@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -46,9 +46,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel setLeftMotorSpeedCall: core_real
-	channel waitIntervalCall: core_nat.core_nat
 	channel setRightMotorSpeedCall: core_real
+	channel waitIntervalCall: core_nat.core_nat
+	channel setLeftMotorSpeedCall: core_real
 	
 	enterSS = {|
 	f::enter,
@@ -75,9 +75,9 @@ exports
 	,	set_EXT_angleOutput, set_angleOutput,
 		set_EXT_rotationOutput, set_rotationOutput,
 		set_EXT_speedOutput, set_speedOutput
-	,	setLeftMotorSpeedCall,
+	,	setRightMotorSpeedCall,
 		waitIntervalCall,
-		setRightMotorSpeedCall
+		setLeftMotorSpeedCall
 		, share__
 		|}
 	
@@ -222,16 +222,16 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__setLeftMotorSpeed(id__,
+		CALL__setRightMotorSpeed(id__,
 				    const_pkg867__normal_BalanceSTM_SetMotors_entry_motorBudget,
-					param_speed) = EDeadline(setLeftMotorSpeedCall.param_speed,0)
+					param_speed) = EDeadline(setRightMotorSpeedCall.param_speed,0)
 		CALL__waitInterval(id__,
 				    const_pkg867__normal_BalanceSTM_SetMotors_entry_motorBudget,
 					param_m,
 					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
-		CALL__setRightMotorSpeed(id__,
+		CALL__setLeftMotorSpeed(id__,
 				    const_pkg867__normal_BalanceSTM_SetMotors_entry_motorBudget,
-					param_speed) = EDeadline(setRightMotorSpeedCall.param_speed,0)
+					param_speed) = EDeadline(setLeftMotorSpeedCall.param_speed,0)
 		
 		-- END of Operation calls --
 	

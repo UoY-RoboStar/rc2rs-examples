@@ -1,0 +1,68 @@
+include "defs/timed_definitions.csp"
+include "../defs/siren_defs.csp"
+include "../instantiations.csp"
+include "../defs/robochart_defs.csp"
+
+-- untimed definitions
+
+include "../defs/Siren_SirenS.csp"
+
+
+include "../defs/Siren.csp"
+
+
+
+include "../defs/humanoid_defs.csp"
+include "../defs/head_defs.csp"
+include "../defs/leg_defs.csp"
+include "../defs/core_defs.csp"
+
+
+channel playCall, playRet
+channel movexCall, movexRet
+channel leanforwardCall, leanforwardRet
+channel green5sCall, green5sRet
+channel red5sCall, red5sRet
+channel turnCall, turnRet
+channel moveyCall, moveyRet
+channel movezCall, movezRet
+
+module timed
+exports
+		
+-- timed definitions
+
+include "defs/Siren_SirenS.csp"
+include "defs/step.csp"
+include "defs/Walk.csp"
+include "defs/correct.csp"
+
+
+
+include "defs/Siren.csp"
+
+
+
+endmodule
+
+transparent diamond
+transparent sbisim
+transparent wbisim
+transparent chase
+
+-- declare timed names of all controllers, modules and state-machines
+-- and include assertions
+
+T_Siren_SirenS = timed::Siren_SirenS
+T_Siren_SirenS_VS = timed::Siren_SirenS_VS
+			
+include "defs/Siren_SirenS_assertions.csp"
+
+
+T_Siren = timed::Siren
+T_Siren_VS = timed::Siren_VS
+
+include "defs/Siren_assertions.csp"
+
+
+   

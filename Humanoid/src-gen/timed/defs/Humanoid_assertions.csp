@@ -1,0 +1,29 @@
+ExternalEvents_Humanoid = {|outOfBalanceLeft,wallDetected,outOfBalanceRight|}
+
+assert T_Humanoid :[deterministic]
+assert T_Humanoid :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Humanoid)      [F= T_Humanoid |\ union(ExternalEvents_Humanoid,{tock})
+
+-- zeno freedom
+assert T_Humanoid |\ union(ExternalEvents_Humanoid,{tock})  :[divergence-free]
+
+-- every state is reachable in this module
+
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Balanced"|}
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Moving"|}
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Leaning"|}
+
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Balanced"|}
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Moving"|}
+assert not STOP [T= T_Humanoid_VS |\ {|foot_controller_enteredV."foot_controller_Leaning"|}
+
+
+-- timed model is a refinement
+assert sbisim(diamond(Humanoid)) [F= T_Humanoid \ {tock}
+assert sbisim(diamond(Humanoid_VS)) [T= T_Humanoid_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Humanoid \ {tock} [T= sbisim(diamond(Humanoid))
+assert T_Humanoid_VS \ {tock} [T= sbisim(diamond(Humanoid_VS))

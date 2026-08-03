@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:58:32
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 24-06-2026 14:28:47
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -39,8 +39,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel waitOpCall: core_nat
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	f::enter,
@@ -60,8 +60,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		waitOpCall
+	,	waitOpCall,
+		moveCall
 		, share__
 		|}
 	
@@ -154,13 +154,13 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__waitOp(id__,
+			    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
+				param_i) 	= waitOpCall.param_i -> SKIP
 	CALL__move(id__,
 			    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
 				param_lv,
 				param_av) 	= moveCall.param_lv.param_av -> SKIP
-	CALL__waitOp(id__,
-			    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
-				param_i) 	= waitOpCall.param_i -> SKIP
 	
 	-- END of Operation calls --
 	

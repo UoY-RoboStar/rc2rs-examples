@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 06-05-2026 11:01:27
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:10
 --
 
 module pkg213_main_sim_Rescue
@@ -14,10 +14,10 @@ exports
 	-- declaring channels
 	-- inputs, evars, rvars and outputs as calculated internally
 	-- outputs = {
-	--	(Drone::turnBack,Finder::turnBack),
-	--	(Drone::land,Finder::land),
 	--	(Drone::takeoff,Finder::takeoff),
-	--	(Drone::move,Finder::move)
+	--	(Drone::move,Finder::move),
+	--	(Drone::land,Finder::land),
+	--	(Drone::turnBack,Finder::turnBack)
 	--	 }
 	-- inputs = {
 	--	(Drone::switchOn,Finder::switchOn),
@@ -33,17 +33,17 @@ exports
 		| i_found.Bool
 		| i_origin.Bool
 	
-	datatype RegisterDataOutput = o_turnBack
-		| o_land
-		| o_takeoff
+	datatype RegisterDataOutput = o_takeoff
 		| o_move.core_nat
+		| o_land
+		| o_turnBack
 	
 	
 	nametype RegisterOutputs = {|
-	o_turnBack,
-	o_land,
 	o_takeoff,
-	o_move|}
+	o_move,
+	o_land,
+	o_turnBack|}
 	
 	nametype RegisterInputs = {|
 	i_switchOn,
@@ -73,10 +73,10 @@ exports
 		
 		-- inputs, evars, rvars and outputs as calculated internally
 		-- outputs = {
-		--	(Finder::land,stm_ref0::land),
+		--	(Finder::turnBack,stm_ref0::turnBack),
 		--	(Finder::takeoff,stm_ref0::takeoff),
-		--	(Finder::move,stm_ref0::move),
-		--	(Finder::turnBack,stm_ref0::turnBack)
+		--	(Finder::land,stm_ref0::land),
+		--	(Finder::move,stm_ref0::move)
 		--	 }
 		-- inputs = {
 		--	(Finder::switchOn,stm_ref0::switchOn),
@@ -87,24 +87,24 @@ exports
 		-- dvars = {}
 		
 		-- declaring registerRead/Write datatypes
-		datatype RegisterDataInput = i_found.Bool
+		datatype RegisterDataInput = i_switchOn.Bool
+			| i_found.Bool
 			| i_origin.Bool
-			| i_switchOn.Bool
 		
-		datatype RegisterDataOutput = o_move.core_nat
+		datatype RegisterDataOutput = o_switchOn
 			| o_found
-			| o_origin
-			| o_switchOn
-			| o_land
 			| o_turnBack
+			| o_move.core_nat
+			| o_origin
 			| o_takeoff
+			| o_land
 		
 		
 		nametype RegisterOutputs = {|
-		o_land,
+		o_turnBack,
 		o_takeoff,
-		o_move,
-		o_turnBack|}
+		o_land,
+		o_move|}
 			
 		nametype RegisterInputs = {|
 		i_switchOn,
@@ -163,8 +163,8 @@ exports
 			-- Declaring state machine events
 			
 			-- Declaring call and ret events for undefined operations
-			channel moveCall: core_nat
 			channel turnBackCall
+			channel moveCall: core_nat
 			
 			enterSS = {|
 			i0::enter,
@@ -192,13 +192,13 @@ exports
 			localClockResets = {||}
 			
 			
-			channel get_CLID_Looking : core_clock_type 
 			channel get_CLID_Off : core_clock_type 
+			channel get_CLID_Looking : core_clock_type 
 			channel get_CLID_Returning : core_clock_type 
 			channel get_CLID_Delivering : core_clock_type 
 			--channel increment__
 			
-			CLID_Looking_clock_type(id__,
+			CLID_Off_clock_type(id__,
 					          const_pkg213_main_sim_FinderM_DELIVERY,
 					          const_pkg213_main_sim_FinderM_LV,
 					          const_pkg213_main_sim_FinderM_TOP) = 
@@ -210,7 +210,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Off_clock_type(id__,
+			CLID_Looking_clock_type(id__,
 					          const_pkg213_main_sim_FinderM_DELIVERY,
 					          const_pkg213_main_sim_FinderM_LV,
 					          const_pkg213_main_sim_FinderM_TOP) = 
@@ -254,27 +254,27 @@ exports
 			channel startexec, startexec_action
 			
 			-- declaring registerRead/Write datatypes
-			datatype RegisterDataInput = i_found.Bool
-				| i_switchOn.Bool
+			datatype RegisterDataInput = i_switchOn.Bool
 				| i_origin.Bool
+				| i_found.Bool
 			
 			
 			datatype RegisterDataOutput = o_turnBack
-				| o_land
-				| o_takeoff
 				| o_move.core_nat
+				| o_takeoff
+				| o_land
 			
 			
 			nametype RegisterOutputs = {|
 			o_turnBack,
-			o_land,
+			o_move,
 			o_takeoff,
-			o_move|}
+			o_land|}
 				
 			nametype RegisterInputs = {|
-			i_found,
 			i_switchOn,
-			i_origin|}
+			i_origin,
+			i_found|}
 			
 			channel registerRead 	: RegisterDataInput
 			channel registerWrite 	: RegisterDataOutput
@@ -288,8 +288,8 @@ exports
 			sem__events = {|endexec,terminate
 						,registerRead
 						,registerWrite
-			,	moveCall,
-				turnBackCall
+			,	turnBackCall,
+				moveCall
 				|}
 		
 				-- Nodes --
@@ -587,23 +587,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -690,23 +690,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -718,7 +718,7 @@ exports
 								    const_pkg213_main_sim_FinderM_DELIVERY,
 								    const_pkg213_main_sim_FinderM_LV,
 								    const_pkg213_main_sim_FinderM_TOP) = ((let
-							Trans = share__choice(get_switchOnF?switchOnF -> get_switchOn?switchOn -> TimeOut_1(
+							Trans = share__choice(get_switchOn?switchOn -> get_switchOnF?switchOnF -> TimeOut_1(
 								 (share__ -> SKIP
 								 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 								 [] dbisim(((((not (member(switchOn,{true}))) and switchOnF)))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -1044,23 +1044,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1153,23 +1153,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1505,23 +1505,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1612,23 +1612,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1643,7 +1643,7 @@ exports
 							Trans = TimeOut_1(
 								 (share__ -> SKIP
 								 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
-								 [] dbisim((false)&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+								 [] dbisim(((not (true)))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
 								 	X = share__choice(exited -> SKIP [] endexec -> Y)
 								 	Y = share__choice(exited -> SKIP [] startexec -> X)
 								  within
@@ -1959,23 +1959,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2062,23 +2062,23 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
-								 			,setR_switchOnF
-								 			 			,setR_originF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2160,15 +2160,15 @@ exports
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
+				CALL__turnBack(id__,
+						    const_pkg213_main_sim_FinderM_DELIVERY,
+						    const_pkg213_main_sim_FinderM_LV,
+						    const_pkg213_main_sim_FinderM_TOP) = EDeadline(registerWrite.o_turnBack,0)
 				CALL__move(id__,
 						    const_pkg213_main_sim_FinderM_DELIVERY,
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP,
 							param_lv) = EDeadline(registerWrite.o_move.param_lv,0)
-				CALL__turnBack(id__,
-						    const_pkg213_main_sim_FinderM_DELIVERY,
-						    const_pkg213_main_sim_FinderM_LV,
-						    const_pkg213_main_sim_FinderM_TOP) = EDeadline(registerWrite.o_turnBack,0)
 				
 				CALL__clone_normal_FinderM_Looking_t2_op(id__,
 						    const_pkg213_main_sim_FinderM_DELIVERY,
@@ -2177,39 +2177,6 @@ exports
 				[[ OP_clone_normal_FinderM_Looking_t2_op::registerWrite.x___ <- OP_clone_normal_FinderM_Looking_t2_op_registerWrite(OP_clone_normal_FinderM_Looking_t2_op::registerWrite.x___) | x___ <- OP_clone_normal_FinderM_Looking_t2_op::RegisterDataOutput ]]
 				[[ OP_clone_normal_FinderM_Looking_t2_op::startexec <- startexec ]]
 				[[ OP_clone_normal_FinderM_Looking_t2_op::endexec <- endexec ]]
-				CALL__clone_normal_FinderM_Off_t1_op(id__,
-						    const_pkg213_main_sim_FinderM_DELIVERY,
-						    const_pkg213_main_sim_FinderM_LV,
-						    const_pkg213_main_sim_FinderM_TOP,
-						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP) = (OP_clone_normal_FinderM_Off_t1_op::O__(id__,
-						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP))
-				[[
-					OP_clone_normal_FinderM_Off_t1_op::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Off_t1_op::set_switchOnF <- set_switchOnF,
-					OP_clone_normal_FinderM_Off_t1_op::get_originF <- get_originF,
-					OP_clone_normal_FinderM_Off_t1_op::set_originF <- set_originF,
-					OP_clone_normal_FinderM_Off_t1_op::get_foundF <- get_foundF,
-					OP_clone_normal_FinderM_Off_t1_op::set_foundF <- set_foundF
-				]]
-				[[ OP_clone_normal_FinderM_Off_t1_op::registerWrite.x___ <- OP_clone_normal_FinderM_Off_t1_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op::registerWrite.x___) | x___ <- OP_clone_normal_FinderM_Off_t1_op::RegisterDataOutput ]]
-				[[ OP_clone_normal_FinderM_Off_t1_op::startexec <- startexec ]]
-				[[ OP_clone_normal_FinderM_Off_t1_op::endexec <- endexec ]]
-				CALL__clone_normal_FinderM_Delivering_entry(id__,
-						    const_pkg213_main_sim_FinderM_DELIVERY,
-						    const_pkg213_main_sim_FinderM_LV,
-						    const_pkg213_main_sim_FinderM_TOP,
-						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_entry_DELIVERY) = (OP_clone_normal_FinderM_Delivering_entry::O__(id__,
-						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_entry_DELIVERY))
-				[[
-					OP_clone_normal_FinderM_Delivering_entry::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Delivering_entry::set_switchOnF <- set_switchOnF,
-					OP_clone_normal_FinderM_Delivering_entry::get_originF <- get_originF,
-					OP_clone_normal_FinderM_Delivering_entry::set_originF <- set_originF,
-					OP_clone_normal_FinderM_Delivering_entry::get_foundF <- get_foundF,
-					OP_clone_normal_FinderM_Delivering_entry::set_foundF <- set_foundF
-				]]
-				[[ OP_clone_normal_FinderM_Delivering_entry::startexec <- startexec ]]
-				[[ OP_clone_normal_FinderM_Delivering_entry::endexec <- endexec ]]
 				CALL__clone_normal_FinderM_Returning_t4_op(id__,
 						    const_pkg213_main_sim_FinderM_DELIVERY,
 						    const_pkg213_main_sim_FinderM_LV,
@@ -2226,10 +2193,10 @@ exports
 						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_TOP,
 						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_t3_op_LV))
 				[[
-					OP_clone_normal_FinderM_Delivering_t3_op::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Delivering_t3_op::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_t3_op::get_originF <- get_originF,
 					OP_clone_normal_FinderM_Delivering_t3_op::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Delivering_t3_op::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Delivering_t3_op::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_t3_op::get_foundF <- get_foundF,
 					OP_clone_normal_FinderM_Delivering_t3_op::set_foundF <- set_foundF
 				]]
@@ -2240,25 +2207,58 @@ exports
 				[[ OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.x___ <- OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.x___) | x___ <- OP_clone_normal_FinderM_Delivering_t3_op::RegisterDataOutput ]]
 				[[ OP_clone_normal_FinderM_Delivering_t3_op::startexec <- startexec ]]
 				[[ OP_clone_normal_FinderM_Delivering_t3_op::endexec <- endexec ]]
+				CALL__clone_normal_FinderM_Delivering_entry(id__,
+						    const_pkg213_main_sim_FinderM_DELIVERY,
+						    const_pkg213_main_sim_FinderM_LV,
+						    const_pkg213_main_sim_FinderM_TOP,
+						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_entry_DELIVERY) = (OP_clone_normal_FinderM_Delivering_entry::O__(id__,
+						    const_pkg213_main_sim_clone_normal_FinderM_Delivering_entry_DELIVERY))
+				[[
+					OP_clone_normal_FinderM_Delivering_entry::get_originF <- get_originF,
+					OP_clone_normal_FinderM_Delivering_entry::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Delivering_entry::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Delivering_entry::set_switchOnF <- set_switchOnF,
+					OP_clone_normal_FinderM_Delivering_entry::get_foundF <- get_foundF,
+					OP_clone_normal_FinderM_Delivering_entry::set_foundF <- set_foundF
+				]]
+				[[ OP_clone_normal_FinderM_Delivering_entry::startexec <- startexec ]]
+				[[ OP_clone_normal_FinderM_Delivering_entry::endexec <- endexec ]]
+				CALL__clone_normal_FinderM_Off_t1_op(id__,
+						    const_pkg213_main_sim_FinderM_DELIVERY,
+						    const_pkg213_main_sim_FinderM_LV,
+						    const_pkg213_main_sim_FinderM_TOP,
+						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP) = (OP_clone_normal_FinderM_Off_t1_op::O__(id__,
+						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP))
+				[[
+					OP_clone_normal_FinderM_Off_t1_op::get_originF <- get_originF,
+					OP_clone_normal_FinderM_Off_t1_op::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Off_t1_op::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Off_t1_op::set_switchOnF <- set_switchOnF,
+					OP_clone_normal_FinderM_Off_t1_op::get_foundF <- get_foundF,
+					OP_clone_normal_FinderM_Off_t1_op::set_foundF <- set_foundF
+				]]
+				[[ OP_clone_normal_FinderM_Off_t1_op::registerWrite.x___ <- OP_clone_normal_FinderM_Off_t1_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op::registerWrite.x___) | x___ <- OP_clone_normal_FinderM_Off_t1_op::RegisterDataOutput ]]
+				[[ OP_clone_normal_FinderM_Off_t1_op::startexec <- startexec ]]
+				[[ OP_clone_normal_FinderM_Off_t1_op::endexec <- endexec ]]
 				-- END of Operation calls --
 			
 				datatype SOutputEvents = SOutput_turnBack
-					| SOutput_land
-					| SOutput_takeoff
 					| SOutput_move
+					| SOutput_takeoff
+					| SOutput_land
 				
 				cycle(cycle_pkg213_main_sim_FinderM_FinderM) =
 					let
 						project(o_turnBack) = SOutput_turnBack
-						project(o_land) = SOutput_land
-						project(o_takeoff) = SOutput_takeoff
 						project(o_move.x__) = SOutput_move
+						project(o_takeoff) = SOutput_takeoff
+						project(o_land) = SOutput_land
 				
 						Cycle =
 							Deadline(
-								(registerRead.i_found?x__ -> SKIP
-									||| registerRead.i_switchOn?x__ -> SKIP
-									||| registerRead.i_origin?x__ -> SKIP);
+								(registerRead.i_switchOn?x__ -> SKIP
+									||| registerRead.i_origin?x__ -> SKIP
+									||| registerRead.i_found?x__ -> SKIP);
 								startexec -> CollectOutputs(SOutputEvents),0);
 							TimeOut_1(terminate -> SKIP,WAIT(cycle_pkg213_main_sim_FinderM_FinderM-1);Cycle)
 						
@@ -2338,7 +2338,7 @@ exports
 						    const_pkg213_main_sim_FinderM_DELIVERY,
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP) = ((let
-					Trans = share__choice(get_switchOnF?switchOnF -> get_originF?originF -> get_found?found -> get_switchOn?switchOn -> get_foundF?foundF -> get_origin?origin -> TimeOut_1(
+					Trans = share__choice(get_switchOn?switchOn -> get_originF?originF -> get_switchOnF?switchOnF -> get_found?found -> get_origin?origin -> get_foundF?foundF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Off::enter -> SKIP))))
 						 [] dbisim((((member(switchOn,{true}) and switchOnF)))&(internal__!NID_Off -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -2467,20 +2467,20 @@ exports
 								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
 								|}) |]
 								 ((i0::enter -> Transitions(id__,cycle_pkg213_main_sim_FinderM_FinderM,
 								 		    const_pkg213_main_sim_FinderM_DELIVERY,
 								 		    const_pkg213_main_sim_FinderM_LV,
 								 		    const_pkg213_main_sim_FinderM_TOP))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
 								)
 							)
 							 \ hideSet)
@@ -2504,7 +2504,7 @@ exports
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Off,Off::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
+						stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
 					 within
 						(MachineBody(id__,cycle_pkg213_main_sim_FinderM_FinderM,
 								    const_pkg213_main_sim_FinderM_DELIVERY,
@@ -2521,7 +2521,7 @@ exports
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Off,Off::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
+						stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -2549,19 +2549,19 @@ exports
 														          const_pkg213_main_sim_FinderM_TOP))
 											)\{|get_CLID_Returning|}
 										)
-										[| {|get_CLID_Off,Off::entered,terminate|} |]
-										dbisim(Clock_CLID_Off(id__,0,
+										[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+										dbisim(Clock_CLID_Looking(id__,0,
 												          const_pkg213_main_sim_FinderM_DELIVERY,
 												          const_pkg213_main_sim_FinderM_LV,
 												          const_pkg213_main_sim_FinderM_TOP))
-									)\{|get_CLID_Off|}
+									)\{|get_CLID_Looking|}
 								)
-								[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-								dbisim(Clock_CLID_Looking(id__,0,
+								[| {|get_CLID_Off,Off::entered,terminate|} |]
+								dbisim(Clock_CLID_Off(id__,0,
 										          const_pkg213_main_sim_FinderM_DELIVERY,
 										          const_pkg213_main_sim_FinderM_LV,
 										          const_pkg213_main_sim_FinderM_TOP))
-							)\{|get_CLID_Looking|}
+							)\{|get_CLID_Off|}
 						)
 						) \ union(stateClockSync,enteredSS)
 					)
@@ -2608,15 +2608,15 @@ exports
 													    const_pkg213_main_sim_FinderM_LV,
 													    const_pkg213_main_sim_FinderM_TOP)
 											[| {|get_switchOnF,set_switchOnF,terminate|} |]
-											Memory_switchOnF(false)
+											Memory_switchOnF(true)
 										)\{|get_switchOnF,set_switchOnF|}
 									)
 									[| {|get_foundF,set_foundF,terminate|} |]
-									Memory_foundF(false)
+									Memory_foundF(true)
 								)\{|get_foundF,set_foundF|}
 							)
 							[| {|get_originF,set_originF,terminate|} |]
-							Memory_originF(false)
+							Memory_originF(true)
 						)\{|get_originF,set_originF|}
 					)
 					)
@@ -2687,20 +2687,20 @@ exports
 								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
 								 			,setL_foundF
 								|}) |]
 								 ((i0::enter -> Transitions(id__,cycle_pkg213_main_sim_FinderM_FinderM,
 								 		    const_pkg213_main_sim_FinderM_DELIVERY,
 								 		    const_pkg213_main_sim_FinderM_LV,
 								 		    const_pkg213_main_sim_FinderM_TOP))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,setL_foundF |} ]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
 								)
 							)
 							 \ hideSet)
@@ -2724,7 +2724,7 @@ exports
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Off,Off::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
+						stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
 					 within
 						(MachineBody_VS_O(id__,cycle_pkg213_main_sim_FinderM_FinderM,
 								    const_pkg213_main_sim_FinderM_DELIVERY,
@@ -2741,7 +2741,7 @@ exports
 						    const_pkg213_main_sim_FinderM_LV,
 						    const_pkg213_main_sim_FinderM_TOP) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Off,Off::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
+						stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -2769,19 +2769,19 @@ exports
 														          const_pkg213_main_sim_FinderM_TOP))
 											)\{|get_CLID_Returning|}
 										)
-										[| {|get_CLID_Off,Off::entered,terminate|} |]
-										dbisim(Clock_CLID_Off(id__,0,
+										[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+										dbisim(Clock_CLID_Looking(id__,0,
 												          const_pkg213_main_sim_FinderM_DELIVERY,
 												          const_pkg213_main_sim_FinderM_LV,
 												          const_pkg213_main_sim_FinderM_TOP))
-									)\{|get_CLID_Off|}
+									)\{|get_CLID_Looking|}
 								)
-								[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-								dbisim(Clock_CLID_Looking(id__,0,
+								[| {|get_CLID_Off,Off::entered,terminate|} |]
+								dbisim(Clock_CLID_Off(id__,0,
 										          const_pkg213_main_sim_FinderM_DELIVERY,
 										          const_pkg213_main_sim_FinderM_LV,
 										          const_pkg213_main_sim_FinderM_TOP))
-							)\{|get_CLID_Looking|}
+							)\{|get_CLID_Off|}
 						)
 						) \ diff(union(stateClockSync,enteredSS),enteredSS)
 					)
@@ -2828,15 +2828,15 @@ exports
 													    const_pkg213_main_sim_FinderM_LV,
 													    const_pkg213_main_sim_FinderM_TOP)
 											[| {|get_switchOnF,set_switchOnF,terminate|} |]
-											Memory_switchOnF(false)
+											Memory_switchOnF(true)
 										)\{|get_switchOnF,set_switchOnF|}
 									)
 									[| {|get_foundF,set_foundF,terminate|} |]
-									Memory_foundF(false)
+									Memory_foundF(true)
 								)\{|get_foundF,set_foundF|}
 							)
 							[| {|get_originF,set_originF,terminate|} |]
-							Memory_originF(false)
+							Memory_originF(true)
 						)\{|get_originF,set_originF|}
 					)
 					)
@@ -2868,11 +2868,11 @@ exports
 				varMemory(id__,cycle_pkg213_main_sim_FinderM_FinderM,
 						    const_pkg213_main_sim_FinderM_DELIVERY,
 						    const_pkg213_main_sim_FinderM_LV,
-						    const_pkg213_main_sim_FinderM_TOP) = Memory_originF(false)
+						    const_pkg213_main_sim_FinderM_TOP) = Memory_originF(true)
 				[| { terminate } |] (
-				Memory_foundF(false)
+				Memory_foundF(true)
 				[| { terminate } |] (
-				Memory_switchOnF(false)
+				Memory_switchOnF(true)
 				)
 				)
 				
@@ -2945,28 +2945,6 @@ exports
 				
 				clockSync = {||}
 				
-				Clock_CLID_Looking(id__,x__,
-						          const_pkg213_main_sim_FinderM_DELIVERY,
-						          const_pkg213_main_sim_FinderM_LV,
-						          const_pkg213_main_sim_FinderM_TOP) = 
-					TimeOut_1(
-						Looking::entered -> Clock_CLID_Looking(id__,0,
-								          const_pkg213_main_sim_FinderM_DELIVERY,
-								          const_pkg213_main_sim_FinderM_LV,
-								          const_pkg213_main_sim_FinderM_TOP)
-						[]
-						get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
-								          const_pkg213_main_sim_FinderM_DELIVERY,
-								          const_pkg213_main_sim_FinderM_LV,
-								          const_pkg213_main_sim_FinderM_TOP)
-						[]
-						terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
-								          const_pkg213_main_sim_FinderM_DELIVERY,
-								          const_pkg213_main_sim_FinderM_LV,
-								          const_pkg213_main_sim_FinderM_TOP)),
-								          const_pkg213_main_sim_FinderM_DELIVERY,
-								          const_pkg213_main_sim_FinderM_LV,
-								          const_pkg213_main_sim_FinderM_TOP))
 				Clock_CLID_Off(id__,x__,
 						          const_pkg213_main_sim_FinderM_DELIVERY,
 						          const_pkg213_main_sim_FinderM_LV,
@@ -2983,6 +2961,28 @@ exports
 								          const_pkg213_main_sim_FinderM_TOP)
 						[]
 						terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
+								          const_pkg213_main_sim_FinderM_DELIVERY,
+								          const_pkg213_main_sim_FinderM_LV,
+								          const_pkg213_main_sim_FinderM_TOP)),
+								          const_pkg213_main_sim_FinderM_DELIVERY,
+								          const_pkg213_main_sim_FinderM_LV,
+								          const_pkg213_main_sim_FinderM_TOP))
+				Clock_CLID_Looking(id__,x__,
+						          const_pkg213_main_sim_FinderM_DELIVERY,
+						          const_pkg213_main_sim_FinderM_LV,
+						          const_pkg213_main_sim_FinderM_TOP) = 
+					TimeOut_1(
+						Looking::entered -> Clock_CLID_Looking(id__,0,
+								          const_pkg213_main_sim_FinderM_DELIVERY,
+								          const_pkg213_main_sim_FinderM_LV,
+								          const_pkg213_main_sim_FinderM_TOP)
+						[]
+						get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+								          const_pkg213_main_sim_FinderM_DELIVERY,
+								          const_pkg213_main_sim_FinderM_LV,
+								          const_pkg213_main_sim_FinderM_TOP)
+						[]
+						terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
 								          const_pkg213_main_sim_FinderM_DELIVERY,
 								          const_pkg213_main_sim_FinderM_LV,
 								          const_pkg213_main_sim_FinderM_TOP)),
@@ -3037,12 +3037,12 @@ exports
 				StateClocks(id__,
 						          const_pkg213_main_sim_FinderM_DELIVERY,
 						          const_pkg213_main_sim_FinderM_LV,
-						          const_pkg213_main_sim_FinderM_TOP) = dbisim(Clock_CLID_Looking(id__,0,
+						          const_pkg213_main_sim_FinderM_TOP) = dbisim(Clock_CLID_Off(id__,0,
 						          const_pkg213_main_sim_FinderM_DELIVERY,
 						          const_pkg213_main_sim_FinderM_LV,
 						          const_pkg213_main_sim_FinderM_TOP))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_Off(id__,0,
+				dbisim(Clock_CLID_Looking(id__,0,
 						          const_pkg213_main_sim_FinderM_DELIVERY,
 						          const_pkg213_main_sim_FinderM_LV,
 						          const_pkg213_main_sim_FinderM_TOP))
@@ -3060,16 +3060,16 @@ exports
 				)
 				)
 				
-				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Off,Off::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
+				stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered,get_CLID_Delivering,Delivering::entered|}
 				
+				OP_clone_normal_FinderM_Off_t1_op_i_t_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op_i_t_op::registerWrite.OP_clone_normal_FinderM_Off_t1_op_i_t_op::o_takeoff) = registerWrite.o_takeoff
 				OP_clone_normal_FinderM_Looking_t2_op_registerWrite(OP_clone_normal_FinderM_Looking_t2_op::registerWrite.OP_clone_normal_FinderM_Looking_t2_op::o_land) = registerWrite.o_land
-				OP_clone_normal_FinderM_Off_t1_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op::registerWrite.OP_clone_normal_FinderM_Off_t1_op::o_takeoff) = registerWrite.o_takeoff
 				OP_clone_normal_FinderM_Delivering_t3_op_i_t_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op_i_t_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op_i_t_op::o_takeoff) = registerWrite.o_takeoff
 				OP_clone_normal_FinderM_Returning_t4_op_registerWrite(OP_clone_normal_FinderM_Returning_t4_op::registerWrite.OP_clone_normal_FinderM_Returning_t4_op::o_land) = registerWrite.o_land
-				OP_clone_normal_FinderM_Off_t1_op_i_t_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op_i_t_op::registerWrite.OP_clone_normal_FinderM_Off_t1_op_i_t_op::o_takeoff) = registerWrite.o_takeoff
-				OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op::o_move.lv) = registerWrite.o_move.lv
-				OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op::o_takeoff) = registerWrite.o_takeoff
 				OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op::o_turnBack) = registerWrite.o_turnBack
+				OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op::o_takeoff) = registerWrite.o_takeoff
+				OP_clone_normal_FinderM_Delivering_t3_op_registerWrite(OP_clone_normal_FinderM_Delivering_t3_op::registerWrite.OP_clone_normal_FinderM_Delivering_t3_op::o_move.lv) = registerWrite.o_move.lv
+				OP_clone_normal_FinderM_Off_t1_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op::registerWrite.OP_clone_normal_FinderM_Off_t1_op::o_takeoff) = registerWrite.o_takeoff
 				
 				-- Shared memory
 				-- Shared memory variables
@@ -3535,8 +3535,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -3559,8 +3559,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -3573,8 +3573,8 @@ exports
 			
 			
 			channel get_CLID_C : core_clock_type 
-			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_f : core_clock_type 
+			channel get_CLID_Waiting : core_clock_type 
 			--channel increment__
 			
 			CLID_C_clock_type(id__) = 
@@ -3587,7 +3587,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Waiting_clock_type(id__) = 
+			CLID_f_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -3596,7 +3596,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_f_clock_type(id__) = 
+			CLID_Waiting_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -3920,25 +3920,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,clockResetR.CLID_C,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,clockResetL.CLID_C
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
+								 			,clockResetL.CLID_C
 								 			,setL_foundF
-								 			,clockResetR.CLID_C
+								 			,setR_originF
 								 			 			,setR_switchOnF
-								 			 			,setR_originF
+								 			 			,clockResetR.CLID_C
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,clockResetL.CLID_C,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_foundF <- setR_foundF]]
 								 )
-								)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4014,25 +4014,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_switchOnF,setR_originF,setR_foundF |} ]] 
-								  [[clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,clockResetR.CLID_C,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,clockResetL.CLID_C
-								 			,setL_switchOnF
 								 			,setL_originF
+								 			,setL_switchOnF
+								 			,clockResetL.CLID_C
 								 			,setL_foundF
-								 			,clockResetR.CLID_C
+								 			,setR_originF
 								 			 			,setR_switchOnF
-								 			 			,setR_originF
+								 			 			,clockResetR.CLID_C
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_switchOnF,setL_originF,setL_foundF |} ]]
-								  [[clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,clockResetL.CLID_C,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_foundF <- setR_foundF]]
 								 )
-								)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4414,8 +4414,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -4437,8 +4437,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -4584,25 +4584,25 @@ exports
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
 				
-				CALL__clone_normal_FinderM_Off_t1_waitOp(id__,
-						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP,
-							param_n) = (OP_clone_normal_FinderM_Off_t1_waitOp::O__(id__,
-							param_n))
-				[[
-					OP_clone_normal_FinderM_Off_t1_waitOp::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Off_t1_waitOp::set_switchOnF <- set_switchOnF,
-					OP_clone_normal_FinderM_Off_t1_waitOp::get_originF <- get_originF,
-					OP_clone_normal_FinderM_Off_t1_waitOp::set_originF <- set_originF,
-					OP_clone_normal_FinderM_Off_t1_waitOp::get_foundF <- get_foundF,
-					OP_clone_normal_FinderM_Off_t1_waitOp::set_foundF <- set_foundF
-				]]
-				[[ OP_clone_normal_FinderM_Off_t1_waitOp::startexec <- startexec ]]
-				[[ OP_clone_normal_FinderM_Off_t1_waitOp::endexec <- endexec ]]
 				CALL__clone_normal_FinderM_Off_t1_op_i_t_op(id__,
 						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP) = (OP_clone_normal_FinderM_Off_t1_op_i_t_op::O__(id__))
 				[[ OP_clone_normal_FinderM_Off_t1_op_i_t_op::registerWrite.x___ <- OP_clone_normal_FinderM_Off_t1_op_i_t_op_registerWrite(OP_clone_normal_FinderM_Off_t1_op_i_t_op::registerWrite.x___) | x___ <- OP_clone_normal_FinderM_Off_t1_op_i_t_op::RegisterDataOutput ]]
 				[[ OP_clone_normal_FinderM_Off_t1_op_i_t_op::startexec <- startexec ]]
 				[[ OP_clone_normal_FinderM_Off_t1_op_i_t_op::endexec <- endexec ]]
+				CALL__clone_normal_FinderM_Off_t1_waitOp(id__,
+						    const_pkg213_main_sim_clone_normal_FinderM_Off_t1_op_TOP,
+							param_n) = (OP_clone_normal_FinderM_Off_t1_waitOp::O__(id__,
+							param_n))
+				[[
+					OP_clone_normal_FinderM_Off_t1_waitOp::get_originF <- get_originF,
+					OP_clone_normal_FinderM_Off_t1_waitOp::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Off_t1_waitOp::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Off_t1_waitOp::set_switchOnF <- set_switchOnF,
+					OP_clone_normal_FinderM_Off_t1_waitOp::get_foundF <- get_foundF,
+					OP_clone_normal_FinderM_Off_t1_waitOp::set_foundF <- set_foundF
+				]]
+				[[ OP_clone_normal_FinderM_Off_t1_waitOp::startexec <- startexec ]]
+				[[ OP_clone_normal_FinderM_Off_t1_waitOp::endexec <- endexec ]]
 				-- END of Operation calls --
 			
 				-- STM processes
@@ -5289,8 +5289,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -5311,8 +5311,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -5432,10 +5432,10 @@ exports
 							param_i) = (OP_clone_normal_FinderM_Delivering_entry_waitOp::O__(id__,
 							param_i))
 				[[
-					OP_clone_normal_FinderM_Delivering_entry_waitOp::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Delivering_entry_waitOp::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_entry_waitOp::get_originF <- get_originF,
 					OP_clone_normal_FinderM_Delivering_entry_waitOp::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Delivering_entry_waitOp::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Delivering_entry_waitOp::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_entry_waitOp::get_foundF <- get_foundF,
 					OP_clone_normal_FinderM_Delivering_entry_waitOp::set_foundF <- set_foundF
 				]]
@@ -6113,8 +6113,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -6140,8 +6140,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -6173,15 +6173,15 @@ exports
 			
 			-- declaring registerRead/Write datatypes
 			
-			datatype RegisterDataOutput = o_move.core_nat
+			datatype RegisterDataOutput = o_turnBack
 				| o_takeoff
-				| o_turnBack
+				| o_move.core_nat
 			
 			
 			nametype RegisterOutputs = {|
-			o_move,
+			o_turnBack,
 			o_takeoff,
-			o_turnBack|}
+			o_move|}
 				
 			nametype RegisterInputs = {||}
 			
@@ -6380,10 +6380,10 @@ exports
 							param_i) = (OP_clone_normal_FinderM_Delivering_t3_waitOp::O__(id__,
 							param_i))
 				[[
-					OP_clone_normal_FinderM_Delivering_t3_waitOp::get_switchOnF <- get_switchOnF,
-					OP_clone_normal_FinderM_Delivering_t3_waitOp::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_t3_waitOp::get_originF <- get_originF,
 					OP_clone_normal_FinderM_Delivering_t3_waitOp::set_originF <- set_originF,
+					OP_clone_normal_FinderM_Delivering_t3_waitOp::get_switchOnF <- get_switchOnF,
+					OP_clone_normal_FinderM_Delivering_t3_waitOp::set_switchOnF <- set_switchOnF,
 					OP_clone_normal_FinderM_Delivering_t3_waitOp::get_foundF <- get_foundF,
 					OP_clone_normal_FinderM_Delivering_t3_waitOp::set_foundF <- set_foundF
 				]]
@@ -6795,8 +6795,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -6819,8 +6819,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -6833,20 +6833,11 @@ exports
 			
 			
 			channel get_CLID_f : core_clock_type 
-			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_C : core_clock_type 
+			channel get_CLID_Waiting : core_clock_type 
 			--channel increment__
 			
 			CLID_f_clock_type(id__) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_Waiting_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -6860,6 +6851,15 @@ exports
 					max = (clock_type_max(Union({
 			({param_i|param_i <- core_nat}),
 			({param_i|param_i <- core_nat})
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Waiting_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			{}
 			}))+1)
 				ctype = {0..max}
 			within
@@ -7180,25 +7180,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF,clockResetR.CLID_C |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF,clockReset.CLID_C <- clockResetL.CLID_C]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,clockResetR.CLID_C,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
-								 			,setL_foundF
 								 			,clockResetL.CLID_C
-								 			,setR_switchOnF
-								 			 			,setR_originF
-								 			 			,setR_foundF
+								 			,setL_switchOnF
+								 			,setL_foundF
+								 			,setR_originF
 								 			 			,clockResetR.CLID_C
+								 			 			,setR_switchOnF
+								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF,clockResetL.CLID_C |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF,clockReset.CLID_C <- clockResetR.CLID_C]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,clockResetL.CLID_C,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF,clockResetL.CLID_C <- clockReset.CLID_C]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF,clockResetR.CLID_C <- clockReset.CLID_C]]
+								)[[setL_originF <- set_originF,clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -7274,25 +7274,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,setR_originF,setR_foundF,clockResetR.CLID_C |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,set_originF <- setL_originF,set_foundF <- setL_foundF,clockReset.CLID_C <- clockResetL.CLID_C]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,clockResetR.CLID_C,setR_switchOnF,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-								 			,setL_switchOnF
 								 			,setL_originF
-								 			,setL_foundF
 								 			,clockResetL.CLID_C
-								 			,setR_switchOnF
-								 			 			,setR_originF
-								 			 			,setR_foundF
+								 			,setL_switchOnF
+								 			,setL_foundF
+								 			,setR_originF
 								 			 			,clockResetR.CLID_C
+								 			 			,setR_switchOnF
+								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,setL_originF,setL_foundF,clockResetL.CLID_C |} ]]
-								  [[set_switchOnF <- setR_switchOnF,set_originF <- setR_originF,set_foundF <- setR_foundF,clockReset.CLID_C <- clockResetR.CLID_C]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,clockResetL.CLID_C,setL_switchOnF,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,setL_originF <- set_originF,setL_foundF <- set_foundF,clockResetL.CLID_C <- clockReset.CLID_C]]
-								 [[setR_switchOnF <- set_switchOnF,setR_originF <- set_originF,setR_foundF <- set_foundF,clockResetR.CLID_C <- clockReset.CLID_C]]
+								)[[setL_originF <- set_originF,clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8046,8 +8046,8 @@ exports
 			channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 			
 			-- Shared variable channels
-			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_originF: core_boolean
+			channel set_EXT_switchOnF: core_boolean
 			channel set_EXT_foundF: core_boolean
 			
 			-- Local variable channels for defined operations that are required by the state machine
@@ -8070,8 +8070,8 @@ exports
 			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 			
 			shared_variable_events = {|
-				set_EXT_switchOnF,
 				set_EXT_originF,
+				set_EXT_switchOnF,
 				set_EXT_foundF
 			|}
 			
@@ -8084,8 +8084,8 @@ exports
 			
 			
 			channel get_CLID_C : core_clock_type 
-			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_f : core_clock_type 
+			channel get_CLID_Waiting : core_clock_type 
 			--channel increment__
 			
 			CLID_C_clock_type(id__) = 
@@ -8098,7 +8098,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Waiting_clock_type(id__) = 
+			CLID_f_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -8107,7 +8107,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_f_clock_type(id__) = 
+			CLID_Waiting_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -8431,25 +8431,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,clockResetR.CLID_C,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,clockResetR.CLID_C,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_originF
 								 			,setL_switchOnF
 								 			,clockResetL.CLID_C
-								 			,setL_originF
 								 			,setL_foundF
-								 			,setR_switchOnF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,clockResetR.CLID_C
-								 			 			,setR_originF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,clockResetL.CLID_C,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,clockResetL.CLID_C,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_foundF <- set_foundF]]
 								)\union(enteredSS,{terminate}) 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8525,25 +8525,25 @@ exports
 								 	)\{|get_CLID_EmptyCycle|}
 								 )
 								 ))
-								  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,clockResetR.CLID_C,setR_originF,setR_foundF |} ]] 
-								  [[set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_switchOnF,clockResetR.CLID_C,setR_foundF |} ]] 
+								  [[set_originF <- setL_originF,set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_foundF <- setL_foundF]]
 								 )
 								 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+								 			,setL_originF
 								 			,setL_switchOnF
 								 			,clockResetL.CLID_C
-								 			,setL_originF
 								 			,setL_foundF
-								 			,setR_switchOnF
+								 			,setR_originF
+								 			 			,setR_switchOnF
 								 			 			,clockResetR.CLID_C
-								 			 			,setR_originF
 								 			 			,setR_foundF
 								 			|}) |]
 								 ((During)
-								  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,clockResetL.CLID_C,setL_originF,setL_foundF |} ]]
-								  [[set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_switchOnF,clockResetL.CLID_C,setL_foundF |} ]]
+								  [[set_originF <- setR_originF,set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_foundF <- setR_foundF]]
 								 )
-								)[[setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-								 [[setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+								)[[setL_originF <- set_originF,setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_foundF <- set_foundF]]
+								 [[setR_originF <- set_originF,setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_foundF <- set_foundF]]
 								)\{terminate} 
 							)
 							During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8899,10 +8899,10 @@ exports
 		
 		Timed(OneStep) {
 		-- (Rule 8) cycleController(...) : CSPProcess
-		datatype SOutputEvents = SOutput_land
+		datatype SOutputEvents = SOutput_turnBack
 			| SOutput_takeoff
+			| SOutput_land
 			| SOutput_move
-			| SOutput_turnBack
 		
 		DVarsEvents = {}
 		
@@ -8914,34 +8914,34 @@ exports
 				    const_pkg213_main_sim_Rescue_Finder_stm_ref0_TOP) =
 		let
 					
-			project_stm_ref0(stm_ref0::o_land) = SOutput_land
-			project_stm_ref0(stm_ref0::o_takeoff) = SOutput_takeoff
-			project_stm_ref0(stm_ref0::o_move.x__) = SOutput_move
 			project_stm_ref0(stm_ref0::o_turnBack) = SOutput_turnBack
+			project_stm_ref0(stm_ref0::o_takeoff) = SOutput_takeoff
+			project_stm_ref0(stm_ref0::o_land) = SOutput_land
+			project_stm_ref0(stm_ref0::o_move.x__) = SOutput_move
 		
-			connected_stm_ref0(stm_ref0::o_land) = true
-			connected_stm_ref0(stm_ref0::o_takeoff) = true
-			connected_stm_ref0(stm_ref0::o_move.x__) = true
 			connected_stm_ref0(stm_ref0::o_turnBack) = true
+			connected_stm_ref0(stm_ref0::o_takeoff) = true
+			connected_stm_ref0(stm_ref0::o_land) = true
+			connected_stm_ref0(stm_ref0::o_move.x__) = true
 			connected_stm_ref0(_) = false
 		
-			lift_stm_ref0(stm_ref0::o_land) = o_land
-			lift_stm_ref0(stm_ref0::o_takeoff) = o_takeoff
-			lift_stm_ref0(stm_ref0::o_move.x__) = o_move.x__
 			lift_stm_ref0(stm_ref0::o_turnBack) = o_turnBack
+			lift_stm_ref0(stm_ref0::o_takeoff) = o_takeoff
+			lift_stm_ref0(stm_ref0::o_land) = o_land
+			lift_stm_ref0(stm_ref0::o_move.x__) = o_move.x__
 			
 			CycleController =
 				Deadline(
 				-- read inputs from the controller and pass to state machines
 				(
-				((registerRead.i_found?x__ ->
+				((registerRead.i_switchOn?x__ ->
+					((stm_ref0::registerRead.stm_ref0::i_switchOn!x__ -> SKIP)))
+					|||
+				(registerRead.i_found?x__ ->
 					((stm_ref0::registerRead.stm_ref0::i_found!x__ -> SKIP)))
 					|||
 				(registerRead.i_origin?x__ ->
-					((stm_ref0::registerRead.stm_ref0::i_origin!x__ -> SKIP)))
-					|||
-				(registerRead.i_switchOn?x__ ->
-					((stm_ref0::registerRead.stm_ref0::i_switchOn!x__ -> SKIP))))
+					((stm_ref0::registerRead.stm_ref0::i_origin!x__ -> SKIP))))
 				-- ensure state machines read the values being communicated via evars
 						);
 				-- synchronize on events related to evars to erase memory
@@ -9070,10 +9070,10 @@ exports
 	Timed(OneStep) {
 	-- (Rule 3) cycleModule(...) : CSPProcess
 	
-	datatype COutputEvents = COutput_turnBack
-		| COutput_land
-		| COutput_takeoff
+	datatype COutputEvents = COutput_takeoff
 		| COutput_move
+		| COutput_land
+		| COutput_turnBack
 	
 	EVarsEvents = {}
 	
@@ -9081,21 +9081,21 @@ exports
 	cycleModule(id__,cycle_pkg213_main_sim_Rescue_Rescue) =
 	let 
 					
-		project_Finder(Finder::o_turnBack) = COutput_turnBack
-		project_Finder(Finder::o_land) = COutput_land
 		project_Finder(Finder::o_takeoff) = COutput_takeoff
 		project_Finder(Finder::o_move.x__) = COutput_move
+		project_Finder(Finder::o_land) = COutput_land
+		project_Finder(Finder::o_turnBack) = COutput_turnBack
 		
-		connected_Finder(Finder::o_turnBack) = true
-		connected_Finder(Finder::o_land) = true
 		connected_Finder(Finder::o_takeoff) = true
 		connected_Finder(Finder::o_move.x__) = true
+		connected_Finder(Finder::o_land) = true
+		connected_Finder(Finder::o_turnBack) = true
 		connected_Finder(_) = false
 	
-		lift_Finder(Finder::o_turnBack) = o_turnBack
-		lift_Finder(Finder::o_land) = o_land
 		lift_Finder(Finder::o_takeoff) = o_takeoff
 		lift_Finder(Finder::o_move.x__) = o_move.x__
+		lift_Finder(Finder::o_land) = o_land
+		lift_Finder(Finder::o_turnBack) = o_turnBack
 	
 		CycleModule =
 			Deadline(

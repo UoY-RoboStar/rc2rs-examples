@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:48
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -40,9 +40,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel setLeftMotorSpeedCall: core_real
-	channel clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call: core_nat.core_nat
 	channel setRightMotorSpeedCall: core_real
+	channel clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call: core_nat.core_nat
+	channel setLeftMotorSpeedCall: core_real
 	
 	enterSS = {|
 	f::enter,
@@ -63,9 +63,9 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	setLeftMotorSpeedCall,
+	,	setRightMotorSpeedCall,
 		clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call,
-		setRightMotorSpeedCall
+		setLeftMotorSpeedCall
 		, share__
 		|}
 	
@@ -182,16 +182,16 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__setLeftMotorSpeed(id__,
+	CALL__setRightMotorSpeed(id__,
 			    const_pkg867__clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
-				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
+				param_speed) 	= setRightMotorSpeedCall.param_speed -> SKIP
 	CALL__clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5(id__,
 			    const_pkg867__clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
 				param_m,
 				param_n) 	= clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call.param_m.param_n -> SKIP
-	CALL__setRightMotorSpeed(id__,
+	CALL__setLeftMotorSpeed(id__,
 			    const_pkg867__clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
-				param_speed) 	= setRightMotorSpeedCall.param_speed -> SKIP
+				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
 	
 	-- END of Operation calls --
 	

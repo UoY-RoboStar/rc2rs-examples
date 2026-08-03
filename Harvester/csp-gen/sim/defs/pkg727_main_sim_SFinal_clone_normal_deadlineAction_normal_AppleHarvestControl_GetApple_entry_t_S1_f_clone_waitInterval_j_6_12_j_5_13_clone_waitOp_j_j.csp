@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -36,12 +36,12 @@ exports
 	channel get_takePicF, set_takePicF, setL_takePicF, setR_takePicF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
-	channel set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f: core_boolean
-	channel set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f: core_boolean
 	channel set_EXT_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f: core_boolean
+	channel set_EXT_endIKSolverF: core_boolean
+	channel set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
+	channel set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f: core_boolean
+	channel set_EXT_takePicF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -63,12 +63,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
-		set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,
-		set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,
 		set_EXT_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,
-		set_EXT_endGoHomeF
+		set_EXT_endIKSolverF,
+		set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,
+		set_EXT_endGoHomeF,
+		set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,
+		set_EXT_takePicF
 	|}
 	
 	
@@ -77,11 +77,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_S1 : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
-	CLID_f_clock_type(id__) = 
+	CLID_S1_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -90,7 +90,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_S1_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -276,7 +276,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__) = ((let
-			Trans = share__choice(get_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f?exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f -> get_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f?inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f -> TimeOut_1(
+			Trans = share__choice(get_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f?inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f -> get_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f?exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; S1::enter -> SKIP))))
 				 [] dbisim((((inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f or exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f)))&(internal__!NID_S1 -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -339,16 +339,16 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f |} ]]
 						 )
-						)[[setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
+						)[[setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
 						)
 					)
 					 \ hideSet)
@@ -424,16 +424,16 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f |} ]]
 						 )
-						)[[setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
+						)[[setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f]]
 						)
 					)
 					 \ hideSet)

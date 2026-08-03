@@ -1,0 +1,30 @@
+external prioritise 
+
+datatype Signal = enable | disable
+
+-- time definitions
+channel tock, finished
+OneStep(_) = 0
+	
+-- immediate termination SKIP
+SKIP0 = SKIP
+Countdown(t) = if t <= 0 then SKIP0 else tock -> Countdown(t-1)
+Deadline(P, t) = ((P ; finished -> SKIP0) [|{tock, finished}|] (Countdown(t) /\ finished->SKIP0)) \ {finished}
+IB(P,Q,n,i) = if n == 0 then (P -> IB(P,Q,i,i) [] tock -> IB(P,Q,0,i)) else Q -> IB(P,Q,0,i) [] P -> IB(P,Q,i,i) [] tock -> IB(P,Q,n-1,i)
+EDeadline(e, t) = (e -> SKIP0) [|{e}|] (Countdown(t) /\ e->SKIP0)
+
+ETimedOffer(e,t) = if t == 0 then SKIP else (tock -> ETimedOffer(e, t-1) [] e -> ETimedOffer(e, t))
+TimedInterrupt(P,t) = if t > 0 then ((P /+ {tock} +\ Countdown(t-1) ; finished -> SKIP)[[finished <- tock]]) else SKIP
+
+-- Assumes no time needed to reset clock
+DoClockReset(CS) = ||| c : CS @ c -> SKIP
+
+-- Time can pass while counting down on a Transition Deadline
+-- Note: The reason this process is not simpler is because a deadline
+--		 can depend on the value of a variable whose value is only known
+--		 once the transition becomes enabled, hence P can be slightly more
+--		 complex than just EDeadline(e,t).
+Timed(OneStep) {
+	TDeadline(e, P) = e -> P ; TDeadline(e,P)
+}
+

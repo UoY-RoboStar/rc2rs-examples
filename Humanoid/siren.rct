@@ -1,0 +1,56 @@
+diagram siren 
+
+interface SirenI {
+	green5s()
+	red5s()
+	play()
+}
+controller Siren {
+	requires SirenI
+	event startSiren
+	event stopSiren
+	stm SirenS {
+		requires SirenI
+		event stopSiren
+		event startSiren
+		initial i0
+		state Stopped {
+		}
+		state s1 {
+			initial i0
+			state Red {
+				entry green5s()
+			}
+			state Green {
+				entry red5s()
+			}
+			transition t0 {
+				from i0
+				to Red
+			}
+			transition t1 {
+				from Red
+				to Green
+			}
+			transition t2 {
+				from Green
+				to Red
+			}
+			during play()
+		}
+		transition t0 {
+			from i0
+			to Stopped
+		}
+		transition t1 {
+			from Stopped
+			to s1
+		}
+		transition t2 {
+			from s1
+			to Stopped
+		}
+	}
+	connection Siren on startSiren to SirenS on startSiren
+	connection Siren on stopSiren to SirenS on stopSiren
+}

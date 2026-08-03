@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 06-05-2026 11:01:27
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:10
 --
 
 -- compileSelfContainedOperation
@@ -33,8 +33,8 @@ exports
 	channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_switchOnF: core_boolean
 	channel set_EXT_originF: core_boolean
+	channel set_EXT_switchOnF: core_boolean
 	channel set_EXT_foundF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
@@ -58,8 +58,8 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_switchOnF,
 		set_EXT_originF,
+		set_EXT_switchOnF,
 		set_EXT_foundF
 	|}
 	

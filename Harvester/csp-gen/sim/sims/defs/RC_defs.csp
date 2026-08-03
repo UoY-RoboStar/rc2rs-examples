@@ -9,39 +9,39 @@ exports
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
 	InputEvents = {|main::Harvester::takePic.in|}
-	OutputEvents = {|main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::pickCall,main::Harvester::goHomeCall,main::Harvester::dropCall|}
+	OutputEvents = {|main::Harvester::dropCall,main::Harvester::pickCall,main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::goHomeCall|}
 	ExternalEvents = {|main::Harvester::takePic.in
-					   ,main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::pickCall,main::Harvester::goHomeCall,main::Harvester::dropCall|}
+					   ,main::Harvester::dropCall,main::Harvester::pickCall,main::Harvester::hideArmCall,main::Harvester::moveCall,main::Harvester::graspCall,main::Harvester::goHomeCall|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
 	datatype RegisterDataInput = i_takePic.Bool.main_Image
 	
-	datatype RegisterDataOutput = o_hideArm
+	datatype RegisterDataOutput = o_drop.main_JointsPos
+		| o_pick
+		| o_hideArm
 		| o_move.main_JointsPos
 		| o_grasp.main_JointsPos
-		| o_pick
 		| o_goHome
-		| o_drop.main_JointsPos
 	
 	
 	nametype RegisterOutputs = {|
+	o_drop,
+	o_pick,
 	o_hideArm,
 	o_move,
 	o_grasp,
-	o_pick,
-	o_goHome,
-	o_drop|}
+	o_goHome|}
 	
 	nametype RegisterInputs = {|
 	i_takePic|}
 	
-	datatype COutputEvents = COutput_hideArm
+	datatype COutputEvents = COutput_drop
+		| COutput_pick
+		| COutput_hideArm
 		| COutput_move
 		| COutput_grasp
-		| COutput_pick
 		| COutput_goHome
-		| COutput_drop
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
@@ -60,12 +60,12 @@ exports
 	
 	TA2(cycle_RC_RC) = let
 			
+			read(COutput_drop) = main::Harvester::dropCall?x__ -> registerWrite.o_drop.x__ -> SKIP
+			read(COutput_pick) = main::Harvester::pickCall -> registerWrite.o_pick -> SKIP
 			read(COutput_hideArm) = main::Harvester::hideArmCall -> registerWrite.o_hideArm -> SKIP
 			read(COutput_move) = main::Harvester::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
 			read(COutput_grasp) = main::Harvester::graspCall?x__ -> registerWrite.o_grasp.x__ -> SKIP
-			read(COutput_pick) = main::Harvester::pickCall -> registerWrite.o_pick -> SKIP
 			read(COutput_goHome) = main::Harvester::goHomeCall -> registerWrite.o_goHome -> SKIP
-			read(COutput_drop) = main::Harvester::dropCall?x__ -> registerWrite.o_drop.x__ -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))

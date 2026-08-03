@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 15:11:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "siren_SirenS.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "siren_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate siren_SirenS
+P_siren_SirenS = let
+	id__ = 0
+	
+	
+	
+within
+	siren_SirenS::O__(
+		id__
+	)
+assert P_siren_SirenS :[deadlock-free]	
+assert P_siren_SirenS;RUN({r__}) :[deadlock-free]
+assert P_siren_SirenS :[deterministic]
+assert P_siren_SirenS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_siren_SirenS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_siren_SirenS

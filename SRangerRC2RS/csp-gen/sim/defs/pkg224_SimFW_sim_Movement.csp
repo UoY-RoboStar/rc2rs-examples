@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:58:34
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 24-06-2026 14:28:43
 --
 
 module pkg224_SimFW_sim_Movement
@@ -17,8 +17,8 @@ exports
 	
 	-- inputs, evars, rvars and outputs as calculated internally
 	-- outputs = {
-	--	(Movement::stop,stm_ref0::stop),
-	--	(Movement::move,stm_ref0::move)
+	--	(Movement::move,stm_ref0::move),
+	--	(Movement::stop,stm_ref0::stop)
 	--	 }
 	-- inputs = {
 	--	(Movement::obstacle,stm_ref0::obstacle)
@@ -29,14 +29,14 @@ exports
 	-- declaring registerRead/Write datatypes
 	datatype RegisterDataInput = i_obstacle.Bool
 	
-	datatype RegisterDataOutput = o_obstacle
-		| o_move.core_real.core_real
+	datatype RegisterDataOutput = o_move.core_real.core_real
 		| o_stop
+		| o_obstacle
 	
 	
 	nametype RegisterOutputs = {|
-	o_stop,
-	o_move|}
+	o_move,
+	o_stop|}
 		
 	nametype RegisterInputs = {|
 	i_obstacle|}
@@ -48,8 +48,8 @@ exports
 	
 	
 	-- declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel stopCall
+	channel moveCall: core_real.core_real
 	
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
@@ -89,8 +89,8 @@ exports
 		-- Declaring state machine events
 		
 		-- Declaring call and ret events for undefined operations
-		channel stopCall
 		channel moveCall: core_real.core_real
+		channel stopCall
 		
 		enterSS = {|
 		i1::enter,
@@ -116,22 +116,10 @@ exports
 		localClockResets = {|clockReset.CLID_MBC|}
 		
 		
-		channel get_CLID_Moving : core_clock_type 
 		channel get_CLID_MBC : core_clock_type 
+		channel get_CLID_Moving : core_clock_type 
 		channel get_CLID_Turning : core_clock_type 
 		--channel increment__
-		
-		CLID_Moving_clock_type(id__,
-				          const_pkg224_SimFW_sim_SMovement_lv,
-				          const_pkg224_SimFW_sim_SMovement_PI,
-				          const_pkg224_SimFW_sim_SMovement_av) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
 		CLID_MBC_clock_type(id__,
 				          const_pkg224_SimFW_sim_SMovement_lv,
@@ -140,8 +128,20 @@ exports
 			let
 				max = (clock_type_max(Union({
 		{},
-		({Div(const_pkg224_SimFW_sim_SMovement_PI, no_zero_div(const_pkg224_SimFW_sim_SMovement_av), core_real)|av <- core_real,PI <- core_real}),
-		({Div(const_pkg224_SimFW_sim_SMovement_PI, no_zero_div(const_pkg224_SimFW_sim_SMovement_av), core_real)|av <- core_real,PI <- core_real})
+		({Div(const_pkg224_SimFW_sim_SMovement_PI, no_zero_div(const_pkg224_SimFW_sim_SMovement_av), core_real)|PI <- core_real,av <- core_real}),
+		({Div(const_pkg224_SimFW_sim_SMovement_PI, no_zero_div(const_pkg224_SimFW_sim_SMovement_av), core_real)|PI <- core_real,av <- core_real})
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_Moving_clock_type(id__,
+				          const_pkg224_SimFW_sim_SMovement_lv,
+				          const_pkg224_SimFW_sim_SMovement_PI,
+				          const_pkg224_SimFW_sim_SMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
 		}))+1)
 			ctype = {0..max}
 		within
@@ -170,13 +170,13 @@ exports
 		datatype RegisterDataInput = i_obstacle.Bool
 		
 		
-		datatype RegisterDataOutput = o_stop
-			| o_move.core_real.core_real
+		datatype RegisterDataOutput = o_move.core_real.core_real
+			| o_stop
 		
 		
 		nametype RegisterOutputs = {|
-		o_stop,
-		o_move|}
+		o_move,
+		o_stop|}
 			
 		nametype RegisterInputs = {|
 		i_obstacle|}
@@ -191,8 +191,8 @@ exports
 		sem__events = {|endexec,terminate
 					,registerRead
 					,registerWrite
-		,	stopCall,
-			moveCall
+		,	moveCall,
+			stopCall
 			|}
 	
 			-- Nodes --
@@ -496,21 +496,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_MBC |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_MBC,setR_obstacleF |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
-							 			,setR_obstacleF
-							 			 			,clockResetR.CLID_MBC
+							 			,setL_obstacleF
+							 			,clockResetR.CLID_MBC
+							 			 			,setR_obstacleF
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
-							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
+							  [[clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_obstacleF <- setR_obstacleF]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
+							 [[clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_obstacleF <- set_obstacleF]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -603,21 +603,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_MBC |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_MBC,setR_obstacleF |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
-							 			,setR_obstacleF
-							 			 			,clockResetR.CLID_MBC
+							 			,setL_obstacleF
+							 			,clockResetR.CLID_MBC
+							 			 			,setR_obstacleF
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
-							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
+							  [[clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_obstacleF <- setR_obstacleF]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
+							 [[clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_obstacleF <- set_obstacleF]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -629,7 +629,7 @@ exports
 							    const_pkg224_SimFW_sim_SMovement_lv,
 							    const_pkg224_SimFW_sim_SMovement_PI,
 							    const_pkg224_SimFW_sim_SMovement_av) = ((let
-						Trans = share__choice(get_obstacle?obstacle -> get_obstacleF?obstacleF -> TimeOut_1(
+						Trans = share__choice(get_obstacleF?obstacleF -> get_obstacle?obstacle -> TimeOut_1(
 							 (share__ -> SKIP
 							 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 							 [] dbisim(((not (((member(obstacle,{true}) and obstacleF)))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -955,21 +955,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_MBC |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_MBC,setR_obstacleF |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
-							 			,setR_obstacleF
-							 			 			,clockResetR.CLID_MBC
+							 			,setL_obstacleF
+							 			,clockResetR.CLID_MBC
+							 			 			,setR_obstacleF
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
-							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
+							  [[clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_obstacleF <- setR_obstacleF]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
+							 [[clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_obstacleF <- set_obstacleF]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1062,21 +1062,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_MBC |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_MBC,setR_obstacleF |} ]] 
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
-							 			,setR_obstacleF
-							 			 			,clockResetR.CLID_MBC
+							 			,setL_obstacleF
+							 			,clockResetR.CLID_MBC
+							 			 			,setR_obstacleF
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
-							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
+							  [[clockReset.CLID_MBC <- clockResetR.CLID_MBC,set_obstacleF <- setR_obstacleF]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
+							 [[clockResetR.CLID_MBC <- clockReset.CLID_MBC,setR_obstacleF <- set_obstacleF]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1158,16 +1158,16 @@ exports
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
-			CALL__stop(id__,
-					    const_pkg224_SimFW_sim_SMovement_lv,
-					    const_pkg224_SimFW_sim_SMovement_PI,
-					    const_pkg224_SimFW_sim_SMovement_av) = EDeadline(registerWrite.o_stop,0)
 			CALL__move(id__,
 					    const_pkg224_SimFW_sim_SMovement_lv,
 					    const_pkg224_SimFW_sim_SMovement_PI,
 					    const_pkg224_SimFW_sim_SMovement_av,
 						param_lv,
 						param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
+			CALL__stop(id__,
+					    const_pkg224_SimFW_sim_SMovement_lv,
+					    const_pkg224_SimFW_sim_SMovement_PI,
+					    const_pkg224_SimFW_sim_SMovement_av) = EDeadline(registerWrite.o_stop,0)
 			
 			CALL__clone_normal_SMovement_Moving_t2_op(id__,
 					    const_pkg224_SimFW_sim_SMovement_lv,
@@ -1217,13 +1217,13 @@ exports
 			[[ OP_clone_normal_SMovement_Turning_entry::endexec <- endexec ]]
 			-- END of Operation calls --
 		
-			datatype SOutputEvents = SOutput_stop
-				| SOutput_move
+			datatype SOutputEvents = SOutput_move
+				| SOutput_stop
 			
 			cycle(cycle_pkg224_SimFW_sim_SMovement_SMovement) =
 				let
-					project(o_stop) = SOutput_stop
 					project(o_move.x__) = SOutput_move
+					project(o_stop) = SOutput_stop
 			
 					Cycle =
 						Deadline(
@@ -1307,10 +1307,10 @@ exports
 					    const_pkg224_SimFW_sim_SMovement_lv,
 					    const_pkg224_SimFW_sim_SMovement_PI,
 					    const_pkg224_SimFW_sim_SMovement_av) = ((let
-				Trans = share__choice(get_obstacle?obstacle -> get_obstacleF?obstacleF -> get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
+				Trans = share__choice(get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
 						          const_pkg224_SimFW_sim_SMovement_lv,
 						          const_pkg224_SimFW_sim_SMovement_PI,
-						          const_pkg224_SimFW_sim_SMovement_av) -> TimeOut_1(
+						          const_pkg224_SimFW_sim_SMovement_av) -> get_obstacleF?obstacleF -> get_obstacle?obstacle -> TimeOut_1(
 					 (share__ -> SKIP
 					 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Moving::enter -> SKIP))))
 					 [] dbisim((((member(obstacle,{true}) and obstacleF)))&(internal__!NID_Moving -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -1395,19 +1395,19 @@ exports
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
+							 			,setL_obstacleF
 							|}) |]
 							 ((i1::enter -> Transitions(id__,cycle_pkg224_SimFW_sim_SMovement_SMovement,
 							 		    const_pkg224_SimFW_sim_SMovement_lv,
 							 		    const_pkg224_SimFW_sim_SMovement_PI,
 							 		    const_pkg224_SimFW_sim_SMovement_av))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
 							)
 						)
 						 \ hideSet)
@@ -1520,7 +1520,7 @@ exports
 							)\{|get_CLID_MBC,clockReset.CLID_MBC|}
 						)
 						[| {|get_obstacleF,set_obstacleF,terminate|} |]
-						Memory_obstacleF(false)
+						Memory_obstacleF(true)
 					)\{|get_obstacleF,set_obstacleF|}
 				)
 				)
@@ -1575,19 +1575,19 @@ exports
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+							  [[clockReset.CLID_MBC <- clockResetL.CLID_MBC,set_obstacleF <- setL_obstacleF]]
 							 )
 							 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-							 			,setL_obstacleF
 							 			,clockResetL.CLID_MBC
+							 			,setL_obstacleF
 							|}) |]
 							 ((i1::enter -> Transitions(id__,cycle_pkg224_SimFW_sim_SMovement_SMovement,
 							 		    const_pkg224_SimFW_sim_SMovement_lv,
 							 		    const_pkg224_SimFW_sim_SMovement_PI,
 							 		    const_pkg224_SimFW_sim_SMovement_av))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_MBC |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_MBC,setL_obstacleF |} ]]
 							 )
-							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+							)[[clockResetL.CLID_MBC <- clockReset.CLID_MBC,setL_obstacleF <- set_obstacleF]]
 							)
 						)
 						 \ hideSet)
@@ -1700,7 +1700,7 @@ exports
 							)\{|get_CLID_MBC,clockReset.CLID_MBC|}
 						)
 						[| {|get_obstacleF,set_obstacleF,terminate|} |]
-						Memory_obstacleF(false)
+						Memory_obstacleF(true)
 					)\{|get_obstacleF,set_obstacleF|}
 				)
 				)
@@ -1720,7 +1720,7 @@ exports
 			varMemory(id__,cycle_pkg224_SimFW_sim_SMovement_SMovement,
 					    const_pkg224_SimFW_sim_SMovement_lv,
 					    const_pkg224_SimFW_sim_SMovement_PI,
-					    const_pkg224_SimFW_sim_SMovement_av) = Memory_obstacleF(false)
+					    const_pkg224_SimFW_sim_SMovement_av) = Memory_obstacleF(true)
 			
 			getsetLocalChannels = {|get_obstacleF,set_obstacleF|}
 			
@@ -1916,10 +1916,10 @@ exports
 	endmodule
 	
 	Timed(OneStep) {
+	CALL__stop(id__) 	= stopCall -> SKIP
 	CALL__move(id__,
 			    param_lv,
 			    param_av) 	= moveCall.param_lv.param_av -> SKIP
-	CALL__stop(id__) 	= stopCall -> SKIP
 	}
 	-- compileOperationDef
 	module OP_clone_normal_SMovement_Turning_entry
@@ -3401,25 +3401,25 @@ exports
 		localClockResets = {|clockReset.CLID_C|}
 		
 		
-		channel get_CLID_C : core_clock_type 
 		channel get_CLID_Waiting : core_clock_type 
+		channel get_CLID_C : core_clock_type 
 		channel get_CLID_f : core_clock_type 
 		--channel increment__
+		
+		CLID_Waiting_clock_type(id__) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
 		CLID_C_clock_type(id__) = 
 			let
 				max = (clock_type_max(Union({
 		({param_i|param_i <- core_nat}),
 		({param_i|param_i <- core_nat})
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_Waiting_clock_type(id__) = 
-			let
-				max = (clock_type_max(Union({
-		{}
 		}))+1)
 			ctype = {0..max}
 		within
@@ -3718,21 +3718,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_obstacleF |} ]] 
-							  [[clockReset.CLID_C <- clockResetL.CLID_C,set_obstacleF <- setL_obstacleF]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_C |} ]] 
+							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_C <- clockResetL.CLID_C]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,clockResetL.CLID_C
 							 			,setL_obstacleF
-							 			,clockResetR.CLID_C
-							 			 			,setR_obstacleF
+							 			,clockResetL.CLID_C
+							 			,setR_obstacleF
+							 			 			,clockResetR.CLID_C
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_obstacleF |} ]]
-							  [[clockReset.CLID_C <- clockResetR.CLID_C,set_obstacleF <- setR_obstacleF]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_C |} ]]
+							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_C <- clockResetR.CLID_C]]
 							 )
-							)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_obstacleF <- set_obstacleF]]
-							 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_obstacleF <- set_obstacleF]]
+							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_C <- clockReset.CLID_C]]
+							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_C <- clockReset.CLID_C]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3808,21 +3808,21 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_obstacleF |} ]] 
-							  [[clockReset.CLID_C <- clockResetL.CLID_C,set_obstacleF <- setL_obstacleF]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_C |} ]] 
+							  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_C <- clockResetL.CLID_C]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,clockResetL.CLID_C
 							 			,setL_obstacleF
-							 			,clockResetR.CLID_C
-							 			 			,setR_obstacleF
+							 			,clockResetL.CLID_C
+							 			,setR_obstacleF
+							 			 			,clockResetR.CLID_C
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_obstacleF |} ]]
-							  [[clockReset.CLID_C <- clockResetR.CLID_C,set_obstacleF <- setR_obstacleF]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_C |} ]]
+							  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_C <- clockResetR.CLID_C]]
 							 )
-							)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_obstacleF <- set_obstacleF]]
-							 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_obstacleF <- set_obstacleF]]
+							)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_C <- clockReset.CLID_C]]
+							 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_C <- clockReset.CLID_C]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4266,16 +4266,15 @@ exports
 		localClockResets = {|clockReset.CLID_C|}
 		
 		
-		channel get_CLID_C : core_clock_type 
-		channel get_CLID_Waiting : core_clock_type 
 		channel get_CLID_f : core_clock_type 
+		channel get_CLID_Waiting : core_clock_type 
+		channel get_CLID_C : core_clock_type 
 		--channel increment__
 		
-		CLID_C_clock_type(id__) = 
+		CLID_f_clock_type(id__) = 
 			let
 				max = (clock_type_max(Union({
-		({param_i|param_i <- core_nat}),
-		({param_i|param_i <- core_nat})
+		{}
 		}))+1)
 			ctype = {0..max}
 		within
@@ -4290,10 +4289,11 @@ exports
 		within
 			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
-		CLID_f_clock_type(id__) = 
+		CLID_C_clock_type(id__) = 
 			let
 				max = (clock_type_max(Union({
-		{}
+		({param_i|param_i <- core_nat}),
+		({param_i|param_i <- core_nat})
 		}))+1)
 			ctype = {0..max}
 		within
@@ -5125,11 +5125,11 @@ exports
 		localClockResets = {||}
 		
 		
-		channel get_CLID_f : core_clock_type 
 		channel get_CLID_MBC : core_clock_type 
+		channel get_CLID_f : core_clock_type 
 		--channel increment__
 		
-		CLID_f_clock_type(id__) = 
+		CLID_MBC_clock_type(id__) = 
 			let
 				max = (clock_type_max(Union({
 		}))+1)
@@ -5137,7 +5137,7 @@ exports
 		within
 			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
-		CLID_MBC_clock_type(id__) = 
+		CLID_f_clock_type(id__) = 
 			let
 				max = (clock_type_max(Union({
 		}))+1)
@@ -5452,8 +5452,8 @@ exports
 	
 	Timed(OneStep) {
 	-- (Rule 8) cycleController(...) : CSPProcess
-	datatype SOutputEvents = SOutput_stop
-		| SOutput_move
+	datatype SOutputEvents = SOutput_move
+		| SOutput_stop
 	
 	DVarsEvents = {}
 	
@@ -5465,15 +5465,15 @@ exports
 			    const_pkg224_SimFW_sim_Movement_stm_ref0_av) =
 	let
 				
-		project_stm_ref0(stm_ref0::o_stop) = SOutput_stop
 		project_stm_ref0(stm_ref0::o_move.x__) = SOutput_move
+		project_stm_ref0(stm_ref0::o_stop) = SOutput_stop
 	
-		connected_stm_ref0(stm_ref0::o_stop) = true
 		connected_stm_ref0(stm_ref0::o_move.x__) = true
+		connected_stm_ref0(stm_ref0::o_stop) = true
 		connected_stm_ref0(_) = false
 	
-		lift_stm_ref0(stm_ref0::o_stop) = o_stop
 		lift_stm_ref0(stm_ref0::o_move.x__) = o_move.x__
+		lift_stm_ref0(stm_ref0::o_stop) = o_stop
 		
 		CycleController =
 			Deadline(

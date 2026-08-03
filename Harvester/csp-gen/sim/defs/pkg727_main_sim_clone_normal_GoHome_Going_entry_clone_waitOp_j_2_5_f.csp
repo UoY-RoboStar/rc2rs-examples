@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -64,20 +64,10 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_C : core_clock_type 
 	channel get_CLID_f : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	--channel increment__
-	
-	CLID_C_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	({param_i|param_i <- core_nat}),
-	({param_i|param_i <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_f_clock_type(id__) = 
 		let
@@ -92,6 +82,16 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_C_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	({param_i|param_i <- core_nat}),
+	({param_i|param_i <- core_nat})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -381,21 +381,21 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_startGoHomeF |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_startGoHomeF <- setL_startGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_startGoHomeF,clockResetR.CLID_C |} ]] 
+						  [[set_startGoHomeF <- setL_startGoHomeF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_startGoHomeF
-						 			,clockResetR.CLID_C
-						 			 			,setR_startGoHomeF
+						 			,clockResetL.CLID_C
+						 			,setR_startGoHomeF
+						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_startGoHomeF |} ]]
-						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_startGoHomeF <- setR_startGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_startGoHomeF,clockResetL.CLID_C |} ]]
+						  [[set_startGoHomeF <- setR_startGoHomeF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_startGoHomeF <- set_startGoHomeF]]
-						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_startGoHomeF <- set_startGoHomeF]]
+						)[[setL_startGoHomeF <- set_startGoHomeF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_startGoHomeF <- set_startGoHomeF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -471,21 +471,21 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_startGoHomeF |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_startGoHomeF <- setL_startGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_startGoHomeF,clockResetR.CLID_C |} ]] 
+						  [[set_startGoHomeF <- setL_startGoHomeF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_startGoHomeF
-						 			,clockResetR.CLID_C
-						 			 			,setR_startGoHomeF
+						 			,clockResetL.CLID_C
+						 			,setR_startGoHomeF
+						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_startGoHomeF |} ]]
-						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_startGoHomeF <- setR_startGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_startGoHomeF,clockResetL.CLID_C |} ]]
+						  [[set_startGoHomeF <- setR_startGoHomeF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_startGoHomeF <- set_startGoHomeF]]
-						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_startGoHomeF <- set_startGoHomeF]]
+						)[[setL_startGoHomeF <- set_startGoHomeF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_startGoHomeF <- set_startGoHomeF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

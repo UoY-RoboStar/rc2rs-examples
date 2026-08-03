@@ -1,0 +1,216 @@
+channel Walk_internal__: Walk_TIDS
+
+ShowEvents_Walk(P,E) = P[[ Walk_entered.x.y <- Walk_enteredV.y | Walk_entered.x.y <- E]]
+							 [[	Walk_enter.x.y <- Walk_enterV.y | Walk_enter.x.y <- E]]
+							 [[ Walk_exit.x.y <- Walk_exitV.y | Walk_exit.x.y <- E]]
+							 [[ Walk_exited.x.y <- Walk_exitedV.y | Walk_exited.x.y <- E ]]
+
+channel Walk_enteredV, Walk_enterV, Walk_exitV, Walk_exitedV : Walk_SIDS
+channel Walk_enter, Walk_entered: Walk_SIDS.Walk_SIDS
+channel Walk_exit,Walk_exited: Walk_SIDS.Walk_SIDS
+
+
+-- declaring identifiers of state and final states
+Walk_SIDS = {
+	"Walk",
+	"Walk_LeftFoot",
+	"Walk_RightFoot"
+}
+
+-- declaring identifiers of transitions
+Walk_TIDS = {
+	"__NULLTRANSITION__",
+	"Walk_t1",
+	"Walk_t2"
+}
+
+-- declaring state machine events
+channel Walk_liftFootLeft__:Walk_TIDS
+channel Walk_liftFootLeft
+channel Walk_liftFootRight__:Walk_TIDS
+channel Walk_liftFootRight
+channel Walk_stepDoneLeft__:Walk_TIDS
+channel Walk_stepDoneLeft
+channel Walk_stepDoneRight__:Walk_TIDS
+channel Walk_stepDoneRight
+
+channel Walk_terminate
+
+-- declaring all states
+CS_Walk_LeftFoot_sync = {|
+	Walk_enter.y.x, 
+	Walk_entered.y.x, 
+	Walk_exit.y.x, 
+	Walk_exited.y.x,
+	Walk_enter.x.y, 
+	Walk_entered.x.y, 
+	Walk_exit.x.y, 
+	Walk_exited.x.y |
+	x <- {"Walk_LeftFoot","Walk_RightFoot"},
+	y <- {"Walk_LeftFoot"}
+|}
+
+
+
+Walk_LeftFoot_triggers = {|
+	Walk_stepDoneLeft__."Walk_t1"
+|}
+		   
+S_Walk_LeftFoot = let
+	T_Walk_t1	= Walk_stepDoneLeft__!"Walk_t1" ->  (Walk_enter!"Walk_LeftFoot"!"Walk_RightFoot" -> Walk_entered!"Walk_LeftFoot"!"Walk_RightFoot" ->
+	S_Walk_LeftFoot
+	)
+	
+
+	S_Walk_LeftFoot_execute(o__) = 
+	Walk_liftFootLeft -> SKIP; 
+	Walk_entered!o__!"Walk_LeftFoot" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Walk_t1
+	   											    []
+	   											    Walk_internal__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t1"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> (
+	   											      	Walk_exited!y!"Walk_LeftFoot" -> SKIP);
+	   											      	S_Walk_LeftFoot
+	   											    [] Walk_liftFootLeft__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t1"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> (
+	   											      	Walk_exited!y!"Walk_LeftFoot" -> SKIP);
+	   											      	S_Walk_LeftFoot
+	   											    [] Walk_liftFootRight__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t1"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> (
+	   											      	Walk_exited!y!"Walk_LeftFoot" -> SKIP);
+	   											      	S_Walk_LeftFoot
+	   											    [] Walk_stepDoneLeft__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t1"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> (
+	   											      	Walk_exited!y!"Walk_LeftFoot" -> SKIP);
+	   											      	S_Walk_LeftFoot
+	   											    [] Walk_stepDoneRight__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t1"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> (
+	   											      	Walk_exited!y!"Walk_LeftFoot" -> SKIP);
+	   											      	S_Walk_LeftFoot
+	   											    )
+	   										)
+within
+Walk_enter?x:diff(Walk_SIDS,{"Walk_LeftFoot"})!"Walk_LeftFoot" -> ( 
+	S_Walk_LeftFoot_execute(x)) 
+CS_Walk_RightFoot_sync = {|
+	Walk_enter.y.x, 
+	Walk_entered.y.x, 
+	Walk_exit.y.x, 
+	Walk_exited.y.x,
+	Walk_enter.x.y, 
+	Walk_entered.x.y, 
+	Walk_exit.x.y, 
+	Walk_exited.x.y |
+	x <- {"Walk_LeftFoot","Walk_RightFoot"},
+	y <- {"Walk_RightFoot"}
+|}
+
+
+
+Walk_RightFoot_triggers = {|
+	Walk_stepDoneRight__."Walk_t2"
+|}
+		   
+S_Walk_RightFoot = let
+	T_Walk_t2	= Walk_stepDoneRight__!"Walk_t2" ->  (Walk_enter!"Walk_RightFoot"!"Walk_LeftFoot" -> Walk_entered!"Walk_RightFoot"!"Walk_LeftFoot" ->
+	S_Walk_RightFoot
+	)
+	
+
+	S_Walk_RightFoot_execute(o__) = 
+	Walk_liftFootRight -> SKIP; 
+	Walk_entered!o__!"Walk_RightFoot" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Walk_t2
+	   											    []
+	   											    Walk_internal__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t2"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> (
+	   											      	Walk_exited!y!"Walk_RightFoot" -> SKIP);
+	   											      	S_Walk_RightFoot
+	   											    [] Walk_liftFootLeft__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t2"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> (
+	   											      	Walk_exited!y!"Walk_RightFoot" -> SKIP);
+	   											      	S_Walk_RightFoot
+	   											    [] Walk_liftFootRight__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t2"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> (
+	   											      	Walk_exited!y!"Walk_RightFoot" -> SKIP);
+	   											      	S_Walk_RightFoot
+	   											    [] Walk_stepDoneLeft__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t2"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> (
+	   											      	Walk_exited!y!"Walk_RightFoot" -> SKIP);
+	   											      	S_Walk_RightFoot
+	   											    [] Walk_stepDoneRight__?x:diff(Walk_TIDS,{"__NULLTRANSITION__","Walk_t2"}) ->
+	   											      Walk_exit?y:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> (
+	   											      	Walk_exited!y!"Walk_RightFoot" -> SKIP);
+	   											      	S_Walk_RightFoot
+	   											    )
+	   										)
+within
+Walk_enter?x:diff(Walk_SIDS,{"Walk_RightFoot"})!"Walk_RightFoot" -> ( 
+	S_Walk_RightFoot_execute(x)) 
+
+I_Walk_i0 = T_Walk_t0
+
+
+
+Walk_int_int = {|
+	Walk_liftFootLeft__."Walk_t1",
+	Walk_liftFootRight__."Walk_t1",
+	Walk_stepDoneLeft__."Walk_t1",
+	Walk_stepDoneRight__."Walk_t1",
+Walk_internal__."Walk_t1",
+	Walk_liftFootLeft__."Walk_t2",
+	Walk_liftFootRight__."Walk_t2",
+	Walk_stepDoneLeft__."Walk_t2",
+	Walk_stepDoneRight__."Walk_t2",
+Walk_internal__."Walk_t2"
+|}
+
+
+T_Walk_t0	= Walk_enter!"Walk"!"Walk_LeftFoot" -> Walk_entered!"Walk"!"Walk_LeftFoot" ->
+SKIP
+
+S_Walk_LeftFoot_R = S_Walk_LeftFoot
+ 		[|diff(Walk_int_int,Walk_LeftFoot_triggers)|]
+ 		SKIP
+ 		
+S_Walk_RightFoot_R = S_Walk_RightFoot
+ 		[|diff(Walk_int_int,Walk_RightFoot_triggers)|]
+ 		SKIP
+ 		
+STM_Walk = ShowEvents_Walk(I_Walk_i0
+[|{|Walk_enter.x.y,
+		Walk_entered.x.y,
+		Walk_exit.x.y,
+		Walk_exited.x.y |
+		x <- diff(Walk_SIDS,{"Walk_LeftFoot","Walk_RightFoot"}),
+		y <- {"Walk_LeftFoot","Walk_RightFoot"}
+|}|]
+ShowEvents_Walk(S_Walk_LeftFoot_R
+  [|inter(CS_Walk_LeftFoot_sync,CS_Walk_RightFoot_sync)|]
+ S_Walk_RightFoot_R,inter(CS_Walk_LeftFoot_sync,CS_Walk_RightFoot_sync))\inter(CS_Walk_LeftFoot_sync,CS_Walk_RightFoot_sync)
+ 	,{|Walk_enter,Walk_entered,
+ 	Walk_exit,Walk_exited|})\{|Walk_enter,Walk_entered,
+  Walk_exit,Walk_exited|}
+-- memory process
+Memory_Walk = (
+	Walk_stepDoneLeft__!"Walk_t1" -> Memory_Walk
+	  []
+	Walk_stepDoneRight__!"Walk_t2" -> Memory_Walk
+	)
+-- main process
+Walk_aux = ((STM_Walk
+	[|union(
+		{||},
+		{|Walk_stepDoneLeft__."Walk_t1",
+		Walk_stepDoneRight__."Walk_t2"|}
+	)|]
+	Memory_Walk
+)[[Walk_liftFootLeft__.x <- Walk_liftFootLeft, Walk_liftFootRight__.x <- Walk_liftFootRight, Walk_stepDoneLeft__.x <- Walk_stepDoneLeft, Walk_stepDoneRight__.x <- Walk_stepDoneRight| x<-Walk_TIDS]]\{||})
+[|{|Walk_terminate|}|>SKIP\{|Walk_terminate, Walk_internal__|}
+
+Walk = Walk_aux \ {|Walk_enteredV, Walk_enterV, Walk_exitV, Walk_exitedV|}
+Walk_VS = Walk_aux

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 module pkg727_main_sim_IKSolver
@@ -43,11 +43,11 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_IKSolver_Solve_t3_opCall
-	channel clone_normal_IKSolver_Solve_entryCall
 	channel clone_normal_IKSolver_Loop_t4_opCall
-	channel clone_normal_IKSolver_Loop_t2_opCall
 	channel clone_normal_IKSolver_Solve_exitCall
+	channel clone_normal_IKSolver_Solve_entryCall
+	channel clone_normal_IKSolver_Loop_t2_opCall
+	channel clone_normal_IKSolver_Solve_t3_opCall
 	
 	enterSS = {|
 	i0::enter,
@@ -73,12 +73,12 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_Solve : core_clock_type 
-	channel get_CLID_Loop : core_clock_type 
 	channel get_CLID_Ready : core_clock_type 
+	channel get_CLID_Loop : core_clock_type 
+	channel get_CLID_Solve : core_clock_type 
 	--channel increment__
 	
-	CLID_Solve_clock_type(id__) = 
+	CLID_Ready_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -96,7 +96,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Ready_clock_type(id__) = 
+	CLID_Solve_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -135,11 +135,11 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 				,registerWrite
-	,	clone_normal_IKSolver_Solve_t3_opCall,
+	,	clone_normal_IKSolver_Loop_t4_opCall,
+		clone_normal_IKSolver_Solve_exitCall,
 		clone_normal_IKSolver_Solve_entryCall,
-		clone_normal_IKSolver_Loop_t4_opCall,
 		clone_normal_IKSolver_Loop_t2_opCall,
-		clone_normal_IKSolver_Solve_exitCall
+		clone_normal_IKSolver_Solve_t3_opCall
 		|}
 
 		-- Nodes --
@@ -392,31 +392,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -488,31 +488,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -521,7 +521,7 @@ exports
 					Inactive [| {terminate} |> SKIP)
 				
 				Transitions(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = ((let
-					Trans = share__choice(get_startIKSolverF?startIKSolverF -> get_startIKSolver?startIKSolver -> TimeOut_1(
+					Trans = share__choice(get_startIKSolver?startIKSolver -> get_startIKSolverF?startIKSolverF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((not (((member(startIKSolver,{true.apples | apples <- Set(setoperations_Coord3D)}) and startIKSolverF)))))&(internal__!NID_EmptyCycle -> SKIP ; get_startIKSolver?b__?x__ -> set_apples!x__ -> SKIP
@@ -785,31 +785,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -881,31 +881,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1179,31 +1179,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1277,31 +1277,31 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_apple,setR_positions,setR_startIKSolverF,setR_p1,setR_p2,setR_p3 |} ]] 
-						  [[set_apples <- setL_apples,set_apple <- setL_apple,set_positions <- setL_positions,set_startIKSolverF <- setL_startIKSolverF,set_p1 <- setL_p1,set_p2 <- setL_p2,set_p3 <- setL_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_p2,setR_p1,setR_apple,setR_positions,setR_apples,setR_startIKSolverF,setR_p3 |} ]] 
+						  [[set_p2 <- setL_p2,set_p1 <- setL_p1,set_apple <- setL_apple,set_positions <- setL_positions,set_apples <- setL_apples,set_startIKSolverF <- setL_startIKSolverF,set_p3 <- setL_p3]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_apples
+						 			,setL_p2
+						 			,setL_p1
 						 			,setL_apple
 						 			,setL_positions
+						 			,setL_apples
 						 			,setL_startIKSolverF
-						 			,setL_p1
-						 			,setL_p2
 						 			,setL_p3
-						 			,setR_apples
+						 			,setR_p2
+						 			 			,setR_p1
 						 			 			,setR_apple
 						 			 			,setR_positions
+						 			 			,setR_apples
 						 			 			,setR_startIKSolverF
-						 			 			,setR_p1
-						 			 			,setR_p2
 						 			 			,setR_p3
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_apple,setL_positions,setL_startIKSolverF,setL_p1,setL_p2,setL_p3 |} ]]
-						  [[set_apples <- setR_apples,set_apple <- setR_apple,set_positions <- setR_positions,set_startIKSolverF <- setR_startIKSolverF,set_p1 <- setR_p1,set_p2 <- setR_p2,set_p3 <- setR_p3]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p1,setL_apple,setL_positions,setL_apples,setL_startIKSolverF,setL_p3 |} ]]
+						  [[set_p2 <- setR_p2,set_p1 <- setR_p1,set_apple <- setR_apple,set_positions <- setR_positions,set_apples <- setR_apples,set_startIKSolverF <- setR_startIKSolverF,set_p3 <- setR_p3]]
 						 )
-						)[[setL_apples <- set_apples,setL_apple <- set_apple,setL_positions <- set_positions,setL_startIKSolverF <- set_startIKSolverF,setL_p1 <- set_p1,setL_p2 <- set_p2,setL_p3 <- set_p3]]
-						 [[setR_apples <- set_apples,setR_apple <- set_apple,setR_positions <- set_positions,setR_startIKSolverF <- set_startIKSolverF,setR_p1 <- set_p1,setR_p2 <- set_p2,setR_p3 <- set_p3]]
+						)[[setL_p2 <- set_p2,setL_p1 <- set_p1,setL_apple <- set_apple,setL_positions <- set_positions,setL_apples <- set_apples,setL_startIKSolverF <- set_startIKSolverF,setL_p3 <- set_p3]]
+						 [[setR_p2 <- set_p2,setR_p1 <- set_p1,setR_apple <- set_apple,setR_positions <- set_positions,setR_apples <- set_apples,setR_startIKSolverF <- set_startIKSolverF,setR_p3 <- set_p3]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1358,11 +1358,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__clone_normal_IKSolver_Solve_t3_op(id__) = EDeadline(clone_normal_IKSolver_Solve_t3_opCall,0)
-		CALL__clone_normal_IKSolver_Solve_entry(id__) = EDeadline(clone_normal_IKSolver_Solve_entryCall,0)
 		CALL__clone_normal_IKSolver_Loop_t4_op(id__) = EDeadline(clone_normal_IKSolver_Loop_t4_opCall,0)
-		CALL__clone_normal_IKSolver_Loop_t2_op(id__) = EDeadline(clone_normal_IKSolver_Loop_t2_opCall,0)
 		CALL__clone_normal_IKSolver_Solve_exit(id__) = EDeadline(clone_normal_IKSolver_Solve_exitCall,0)
+		CALL__clone_normal_IKSolver_Solve_entry(id__) = EDeadline(clone_normal_IKSolver_Solve_entryCall,0)
+		CALL__clone_normal_IKSolver_Loop_t2_op(id__) = EDeadline(clone_normal_IKSolver_Loop_t2_opCall,0)
+		CALL__clone_normal_IKSolver_Solve_t3_op(id__) = EDeadline(clone_normal_IKSolver_Solve_t3_opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -1433,7 +1433,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = ((let
-			Trans = share__choice(get_apples?apples -> get_startIKSolverF?startIKSolverF -> get_startIKSolver?startIKSolver -> TimeOut_1(
+			Trans = share__choice(get_startIKSolver?startIKSolver -> get_apples?apples -> get_startIKSolverF?startIKSolverF -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Ready::enter -> SKIP))))
 				 [] dbisim((((member(startIKSolver,{true.apples | apples <- Set(setoperations_Coord3D)}) and startIKSolverF)))&(internal__!NID_Ready -> SKIP ; get_startIKSolver?b__?x__ -> set_apples!x__ -> SKIP
@@ -1546,7 +1546,7 @@ exports
 		
 		Behaviour(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered|}
 			 within
 				(MachineBody(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
 			)
@@ -1554,7 +1554,7 @@ exports
 		
 		IteratedBehaviour(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1563,17 +1563,17 @@ exports
 								dbisim(
 									sbisim(
 										MachineBody(id__,cycle_pkg727_main_sim_IKSolver_IKSolver)
-										[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-										dbisim(Clock_CLID_Ready(id__,0))
-									)\{|get_CLID_Ready|}
+										[| {|get_CLID_Solve,Solve::entered,terminate|} |]
+										dbisim(Clock_CLID_Solve(id__,0))
+									)\{|get_CLID_Solve|}
 								)
 								[| {|get_CLID_Loop,Loop::entered,terminate|} |]
 								dbisim(Clock_CLID_Loop(id__,0))
 							)\{|get_CLID_Loop|}
 						)
-						[| {|get_CLID_Solve,Solve::entered,terminate|} |]
-						dbisim(Clock_CLID_Solve(id__,0))
-					)\{|get_CLID_Solve|}
+						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+						dbisim(Clock_CLID_Ready(id__,0))
+					)\{|get_CLID_Ready|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -1614,7 +1614,7 @@ exports
 																sbisim(
 																	IteratedBehaviour(id__,cycle_pkg727_main_sim_IKSolver_IKSolver)
 																	[| {|get_startIKSolverF,set_startIKSolverF,terminate|} |]
-																	Memory_startIKSolverF(false)
+																	Memory_startIKSolverF(true)
 																)\{|get_startIKSolverF,set_startIKSolverF|}
 															)
 															[| {|get_p3,set_p3,terminate|} |]
@@ -1713,7 +1713,7 @@ exports
 		
 		Behaviour_VS_O(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered|}
 			 within
 				(MachineBody_VS_O(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -1721,7 +1721,7 @@ exports
 		
 		IteratedBehaviour_VS_O(id__,cycle_pkg727_main_sim_IKSolver_IKSolver) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1730,17 +1730,17 @@ exports
 								dbisim(
 									sbisim(
 										MachineBody_VS_O(id__,cycle_pkg727_main_sim_IKSolver_IKSolver)
-										[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-										dbisim(Clock_CLID_Ready(id__,0))
-									)\{|get_CLID_Ready|}
+										[| {|get_CLID_Solve,Solve::entered,terminate|} |]
+										dbisim(Clock_CLID_Solve(id__,0))
+									)\{|get_CLID_Solve|}
 								)
 								[| {|get_CLID_Loop,Loop::entered,terminate|} |]
 								dbisim(Clock_CLID_Loop(id__,0))
 							)\{|get_CLID_Loop|}
 						)
-						[| {|get_CLID_Solve,Solve::entered,terminate|} |]
-						dbisim(Clock_CLID_Solve(id__,0))
-					)\{|get_CLID_Solve|}
+						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+						dbisim(Clock_CLID_Ready(id__,0))
+					)\{|get_CLID_Ready|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -1781,7 +1781,7 @@ exports
 																sbisim(
 																	IteratedBehaviour_VS_O(id__,cycle_pkg727_main_sim_IKSolver_IKSolver)
 																	[| {|get_startIKSolverF,set_startIKSolverF,terminate|} |]
-																	Memory_startIKSolverF(false)
+																	Memory_startIKSolverF(true)
 																)\{|get_startIKSolverF,set_startIKSolverF|}
 															)
 															[| {|get_p3,set_p3,terminate|} |]
@@ -1870,7 +1870,7 @@ exports
 		[| { terminate } |] (
 		Memory_p3(0)
 		[| { terminate } |] (
-		Memory_startIKSolverF(false)
+		Memory_startIKSolverF(true)
 		)
 		)
 		)
@@ -1896,20 +1896,6 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_Solve(id__,x__) = 
-			TimeOut_1(
-				Solve::entered -> Clock_CLID_Solve(id__,0)
-				[]
-				get_CLID_Solve!x__ -> Clock_CLID_Solve(id__,x__)
-				[]
-				terminate -> SKIP,Clock_CLID_Solve(id__,clock_type_plus(x__,1,CLID_Solve_clock_type(id__))))
-		Clock_CLID_Loop(id__,x__) = 
-			TimeOut_1(
-				Loop::entered -> Clock_CLID_Loop(id__,0)
-				[]
-				get_CLID_Loop!x__ -> Clock_CLID_Loop(id__,x__)
-				[]
-				terminate -> SKIP,Clock_CLID_Loop(id__,clock_type_plus(x__,1,CLID_Loop_clock_type(id__))))
 		Clock_CLID_Ready(id__,x__) = 
 			TimeOut_1(
 				Ready::entered -> Clock_CLID_Ready(id__,0)
@@ -1917,16 +1903,30 @@ exports
 				get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__))))
+		Clock_CLID_Loop(id__,x__) = 
+			TimeOut_1(
+				Loop::entered -> Clock_CLID_Loop(id__,0)
+				[]
+				get_CLID_Loop!x__ -> Clock_CLID_Loop(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Loop(id__,clock_type_plus(x__,1,CLID_Loop_clock_type(id__))))
+		Clock_CLID_Solve(id__,x__) = 
+			TimeOut_1(
+				Solve::entered -> Clock_CLID_Solve(id__,0)
+				[]
+				get_CLID_Solve!x__ -> Clock_CLID_Solve(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Solve(id__,clock_type_plus(x__,1,CLID_Solve_clock_type(id__))))
 		
-		StateClocks(id__) = dbisim(Clock_CLID_Solve(id__,0))
+		StateClocks(id__) = dbisim(Clock_CLID_Ready(id__,0))
 		[| { terminate } |] (
 		dbisim(Clock_CLID_Loop(id__,0))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Ready(id__,0))
+		dbisim(Clock_CLID_Solve(id__,0))
 		)
 		)
 		
-		stateClockSync = {|get_CLID_Solve,Solve::entered,get_CLID_Loop,Loop::entered,get_CLID_Ready,Ready::entered|}
+		stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Loop,Loop::entered,get_CLID_Solve,Solve::entered|}
 		
 		
 		-- Shared memory

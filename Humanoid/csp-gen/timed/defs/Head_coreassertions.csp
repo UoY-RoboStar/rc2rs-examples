@@ -1,0 +1,58 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 13:39:51
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "Head.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate Head
+P_Head = let
+	id__ = 0
+	
+	
+	
+		
+within
+	Head::O__(id__)
+
+assert P_Head :[deadlock-free]	
+assert P_Head;RUN({r__}) :[deadlock-free]
+assert P_Head :[deterministic]
+assert P_Head :[divergence-free]
+
+-- generate Head_HeadS
+P_Head_HeadS = let
+	id__ = 0
+	
+	
+	
+within
+	Head::HeadS::O__(
+		id__
+	)
+assert P_Head_HeadS :[deadlock-free]	
+assert P_Head_HeadS;RUN({r__}) :[deadlock-free]
+assert P_Head_HeadS :[deterministic]
+assert P_Head_HeadS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Head_HeadS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Head_HeadS
+-- timed deadlock free
+assert prioritise(P_Head[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Head

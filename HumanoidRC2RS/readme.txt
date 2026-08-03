@@ -1,0 +1,2 @@
+The original RoboChart state machine SirenS (of controller Siren) is not schedulable. To make it schedulable, we modified the entry action of the state Red:
+    entry green5s() => entry green5s(); wait(1)

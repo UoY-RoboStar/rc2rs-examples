@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:48
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -71,21 +71,21 @@ exports
 	channel gyroZ: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel AnglePIDCall: core_real.core_real
+	channel setLeftMotorSpeedCall: core_real
 	channel clone_normal_BalanceSTM_StopMotors_entryCall
+	channel AnglePIDCall: core_real.core_real
 	channel clone_normal_BalanceSTM_CalculateSpeed_entryCall
 	channel SpeedPIDCall: core_real
-	channel setRightMotorSpeedCall: core_real
-	channel clone_normal_BalanceSTM_CalculateRotation_entryCall
-	channel clone_normal_BalanceSTM_CalculateAngle_entryCall
-	channel clone_normal_BalanceSTM_Initialisation_entryCall
-	channel disableInterruptsCall
-	channel RotationPIDCall: core_real
-	channel enableInterruptsCall
-	channel clone_normal_BalanceSTM_j1_t5_opCall
 	channel clone_normal_BalanceSTM_CalculateAngle_t3_opCall
+	channel clone_normal_BalanceSTM_CalculateRotation_entryCall
+	channel enableInterruptsCall
+	channel disableInterruptsCall
+	channel clone_normal_BalanceSTM_j1_t5_opCall
+	channel setRightMotorSpeedCall: core_real
+	channel clone_normal_BalanceSTM_Initialisation_entryCall
+	channel clone_normal_BalanceSTM_CalculateAngle_entryCall
 	channel clone_normal_BalanceSTM_SetMotors_entryCall
-	channel setLeftMotorSpeedCall: core_real
+	channel RotationPIDCall: core_real
 	
 	enterSS = {|
 	i0::enter,
@@ -126,21 +126,21 @@ exports
 		gyroX,
 		gyroY,
 		gyroZ
-	,	AnglePIDCall,
+	,	setLeftMotorSpeedCall,
 		clone_normal_BalanceSTM_StopMotors_entryCall,
+		AnglePIDCall,
 		clone_normal_BalanceSTM_CalculateSpeed_entryCall,
 		SpeedPIDCall,
-		setRightMotorSpeedCall,
-		clone_normal_BalanceSTM_CalculateRotation_entryCall,
-		clone_normal_BalanceSTM_CalculateAngle_entryCall,
-		clone_normal_BalanceSTM_Initialisation_entryCall,
-		disableInterruptsCall,
-		RotationPIDCall,
-		enableInterruptsCall,
-		clone_normal_BalanceSTM_j1_t5_opCall,
 		clone_normal_BalanceSTM_CalculateAngle_t3_opCall,
+		clone_normal_BalanceSTM_CalculateRotation_entryCall,
+		enableInterruptsCall,
+		disableInterruptsCall,
+		clone_normal_BalanceSTM_j1_t5_opCall,
+		setRightMotorSpeedCall,
+		clone_normal_BalanceSTM_Initialisation_entryCall,
+		clone_normal_BalanceSTM_CalculateAngle_entryCall,
 		clone_normal_BalanceSTM_SetMotors_entryCall,
-		setLeftMotorSpeedCall
+		RotationPIDCall
 		|}
 
 	-- Nodes --
@@ -483,41 +483,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -634,41 +634,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -992,41 +992,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1143,41 +1143,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1501,41 +1501,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1652,41 +1652,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2010,41 +2010,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2161,41 +2161,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2663,41 +2663,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2814,41 +2814,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3161,41 +3161,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3301,41 +3301,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3659,41 +3659,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3810,41 +3810,41 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_currAngle,setR_rotationOutput,setR_currGyroY,setR_speedIntegral,setR_speedOutput,setR_currGyroX,setR_currGyroZ,setR_angleOutput,setR_speedCount,setR_currRightVel,setR_rotationCount |} ]] 
-				  [[set_currLeftVel <- setL_currLeftVel,set_currAngle <- setL_currAngle,set_rotationOutput <- setL_rotationOutput,set_currGyroY <- setL_currGyroY,set_speedIntegral <- setL_speedIntegral,set_speedOutput <- setL_speedOutput,set_currGyroX <- setL_currGyroX,set_currGyroZ <- setL_currGyroZ,set_angleOutput <- setL_angleOutput,set_speedCount <- setL_speedCount,set_currRightVel <- setL_currRightVel,set_rotationCount <- setL_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_speedOutput,setR_currLeftVel,setR_rotationCount,setR_speedIntegral,setR_currGyroZ,setR_rotationOutput,setR_currRightVel,setR_currAngle,setR_angleOutput,setR_currGyroX,setR_speedCount,setR_currGyroY |} ]] 
+				  [[set_speedOutput <- setL_speedOutput,set_currLeftVel <- setL_currLeftVel,set_rotationCount <- setL_rotationCount,set_speedIntegral <- setL_speedIntegral,set_currGyroZ <- setL_currGyroZ,set_rotationOutput <- setL_rotationOutput,set_currRightVel <- setL_currRightVel,set_currAngle <- setL_currAngle,set_angleOutput <- setL_angleOutput,set_currGyroX <- setL_currGyroX,set_speedCount <- setL_speedCount,set_currGyroY <- setL_currGyroY]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currLeftVel
-				 			,setL_currAngle
-				 			,setL_rotationOutput
-				 			,setL_currGyroY
-				 			,setL_speedIntegral
 				 			,setL_speedOutput
-				 			,setL_currGyroX
-				 			,setL_currGyroZ
-				 			,setL_angleOutput
-				 			,setL_speedCount
-				 			,setL_currRightVel
+				 			,setL_currLeftVel
 				 			,setL_rotationCount
-				 			,setR_currLeftVel
-				 			 			,setR_currAngle
-				 			 			,setR_rotationOutput
-				 			 			,setR_currGyroY
-				 			 			,setR_speedIntegral
-				 			 			,setR_speedOutput
-				 			 			,setR_currGyroX
-				 			 			,setR_currGyroZ
-				 			 			,setR_angleOutput
-				 			 			,setR_speedCount
-				 			 			,setR_currRightVel
+				 			,setL_speedIntegral
+				 			,setL_currGyroZ
+				 			,setL_rotationOutput
+				 			,setL_currRightVel
+				 			,setL_currAngle
+				 			,setL_angleOutput
+				 			,setL_currGyroX
+				 			,setL_speedCount
+				 			,setL_currGyroY
+				 			,setR_speedOutput
+				 			 			,setR_currLeftVel
 				 			 			,setR_rotationCount
+				 			 			,setR_speedIntegral
+				 			 			,setR_currGyroZ
+				 			 			,setR_rotationOutput
+				 			 			,setR_currRightVel
+				 			 			,setR_currAngle
+				 			 			,setR_angleOutput
+				 			 			,setR_currGyroX
+				 			 			,setR_speedCount
+				 			 			,setR_currGyroY
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_currAngle,setL_rotationOutput,setL_currGyroY,setL_speedIntegral,setL_speedOutput,setL_currGyroX,setL_currGyroZ,setL_angleOutput,setL_speedCount,setL_currRightVel,setL_rotationCount |} ]]
-				  [[set_currLeftVel <- setR_currLeftVel,set_currAngle <- setR_currAngle,set_rotationOutput <- setR_rotationOutput,set_currGyroY <- setR_currGyroY,set_speedIntegral <- setR_speedIntegral,set_speedOutput <- setR_speedOutput,set_currGyroX <- setR_currGyroX,set_currGyroZ <- setR_currGyroZ,set_angleOutput <- setR_angleOutput,set_speedCount <- setR_speedCount,set_currRightVel <- setR_currRightVel,set_rotationCount <- setR_rotationCount]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_speedOutput,setL_currLeftVel,setL_rotationCount,setL_speedIntegral,setL_currGyroZ,setL_rotationOutput,setL_currRightVel,setL_currAngle,setL_angleOutput,setL_currGyroX,setL_speedCount,setL_currGyroY |} ]]
+				  [[set_speedOutput <- setR_speedOutput,set_currLeftVel <- setR_currLeftVel,set_rotationCount <- setR_rotationCount,set_speedIntegral <- setR_speedIntegral,set_currGyroZ <- setR_currGyroZ,set_rotationOutput <- setR_rotationOutput,set_currRightVel <- setR_currRightVel,set_currAngle <- setR_currAngle,set_angleOutput <- setR_angleOutput,set_currGyroX <- setR_currGyroX,set_speedCount <- setR_speedCount,set_currGyroY <- setR_currGyroY]]
 				 )
-				)[[setL_currLeftVel <- set_currLeftVel,setL_currAngle <- set_currAngle,setL_rotationOutput <- set_rotationOutput,setL_currGyroY <- set_currGyroY,setL_speedIntegral <- set_speedIntegral,setL_speedOutput <- set_speedOutput,setL_currGyroX <- set_currGyroX,setL_currGyroZ <- set_currGyroZ,setL_angleOutput <- set_angleOutput,setL_speedCount <- set_speedCount,setL_currRightVel <- set_currRightVel,setL_rotationCount <- set_rotationCount]]
-				 [[setR_currLeftVel <- set_currLeftVel,setR_currAngle <- set_currAngle,setR_rotationOutput <- set_rotationOutput,setR_currGyroY <- set_currGyroY,setR_speedIntegral <- set_speedIntegral,setR_speedOutput <- set_speedOutput,setR_currGyroX <- set_currGyroX,setR_currGyroZ <- set_currGyroZ,setR_angleOutput <- set_angleOutput,setR_speedCount <- set_speedCount,setR_currRightVel <- set_currRightVel,setR_rotationCount <- set_rotationCount]]
+				)[[setL_speedOutput <- set_speedOutput,setL_currLeftVel <- set_currLeftVel,setL_rotationCount <- set_rotationCount,setL_speedIntegral <- set_speedIntegral,setL_currGyroZ <- set_currGyroZ,setL_rotationOutput <- set_rotationOutput,setL_currRightVel <- set_currRightVel,setL_currAngle <- set_currAngle,setL_angleOutput <- set_angleOutput,setL_currGyroX <- set_currGyroX,setL_speedCount <- set_speedCount,setL_currGyroY <- set_currGyroY]]
+				 [[setR_speedOutput <- set_speedOutput,setR_currLeftVel <- set_currLeftVel,setR_rotationCount <- set_rotationCount,setR_speedIntegral <- set_speedIntegral,setR_currGyroZ <- set_currGyroZ,setR_rotationOutput <- set_rotationOutput,setR_currRightVel <- set_currRightVel,setR_currAngle <- set_currAngle,setR_angleOutput <- set_angleOutput,setR_currGyroX <- set_currGyroX,setR_speedCount <- set_speedCount,setR_currGyroY <- set_currGyroY]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3936,6 +3936,27 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__setLeftMotorSpeed(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget,
+				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
+	CALL__clone_normal_BalanceSTM_StopMotors_entry(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_StopMotors_entryCall -> SKIP
 	CALL__AnglePID(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
@@ -3948,16 +3969,6 @@ exports
 			    const_pkg867__BalanceSTM_motorBudget,
 				param_newError,
 				param_diff) 	= AnglePIDCall.param_newError.param_diff -> SKIP
-	CALL__clone_normal_BalanceSTM_StopMotors_entry(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_StopMotors_entryCall -> SKIP
 	CALL__clone_normal_BalanceSTM_CalculateSpeed_entry(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
@@ -3979,6 +3990,56 @@ exports
 			    const_pkg867__BalanceSTM_rotationBudget,
 			    const_pkg867__BalanceSTM_motorBudget,
 				param_newError) 	= SpeedPIDCall.param_newError -> SKIP
+	CALL__clone_normal_BalanceSTM_CalculateAngle_t3_op(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateAngle_t3_opCall -> SKIP
+	CALL__clone_normal_BalanceSTM_CalculateRotation_entry(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateRotation_entryCall -> SKIP
+	CALL__enableInterrupts(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= enableInterruptsCall -> SKIP
+	CALL__disableInterrupts(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= disableInterruptsCall -> SKIP
+	CALL__clone_normal_BalanceSTM_j1_t5_op(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_j1_t5_opCall -> SKIP
 	CALL__setRightMotorSpeed(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
@@ -3990,26 +4051,6 @@ exports
 			    const_pkg867__BalanceSTM_rotationBudget,
 			    const_pkg867__BalanceSTM_motorBudget,
 				param_speed) 	= setRightMotorSpeedCall.param_speed -> SKIP
-	CALL__clone_normal_BalanceSTM_CalculateRotation_entry(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateRotation_entryCall -> SKIP
-	CALL__clone_normal_BalanceSTM_CalculateAngle_entry(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateAngle_entryCall -> SKIP
 	CALL__clone_normal_BalanceSTM_Initialisation_entry(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
@@ -4020,7 +4061,7 @@ exports
 			    const_pkg867__BalanceSTM_speedBudget,
 			    const_pkg867__BalanceSTM_rotationBudget,
 			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_Initialisation_entryCall -> SKIP
-	CALL__disableInterrupts(id__,
+	CALL__clone_normal_BalanceSTM_CalculateAngle_entry(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
 			    const_pkg867__BalanceSTM_startupDelay,
@@ -4029,7 +4070,17 @@ exports
 			    const_pkg867__BalanceSTM_angleBudget,
 			    const_pkg867__BalanceSTM_speedBudget,
 			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= disableInterruptsCall -> SKIP
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateAngle_entryCall -> SKIP
+	CALL__clone_normal_BalanceSTM_SetMotors_entry(id__,
+			    const_pkg867__BalanceSTM_maxAngle,
+			    const_pkg867__BalanceSTM_loopTime,
+			    const_pkg867__BalanceSTM_startupDelay,
+			    const_pkg867__BalanceSTM_speedUpdate,
+			    const_pkg867__BalanceSTM_rotationUpdate,
+			    const_pkg867__BalanceSTM_angleBudget,
+			    const_pkg867__BalanceSTM_speedBudget,
+			    const_pkg867__BalanceSTM_rotationBudget,
+			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_SetMotors_entryCall -> SKIP
 	CALL__RotationPID(id__,
 			    const_pkg867__BalanceSTM_maxAngle,
 			    const_pkg867__BalanceSTM_loopTime,
@@ -4041,57 +4092,6 @@ exports
 			    const_pkg867__BalanceSTM_rotationBudget,
 			    const_pkg867__BalanceSTM_motorBudget,
 				param_diff) 	= RotationPIDCall.param_diff -> SKIP
-	CALL__enableInterrupts(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= enableInterruptsCall -> SKIP
-	CALL__clone_normal_BalanceSTM_j1_t5_op(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_j1_t5_opCall -> SKIP
-	CALL__clone_normal_BalanceSTM_CalculateAngle_t3_op(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_CalculateAngle_t3_opCall -> SKIP
-	CALL__clone_normal_BalanceSTM_SetMotors_entry(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget) 	= clone_normal_BalanceSTM_SetMotors_entryCall -> SKIP
-	CALL__setLeftMotorSpeed(id__,
-			    const_pkg867__BalanceSTM_maxAngle,
-			    const_pkg867__BalanceSTM_loopTime,
-			    const_pkg867__BalanceSTM_startupDelay,
-			    const_pkg867__BalanceSTM_speedUpdate,
-			    const_pkg867__BalanceSTM_rotationUpdate,
-			    const_pkg867__BalanceSTM_angleBudget,
-			    const_pkg867__BalanceSTM_speedBudget,
-			    const_pkg867__BalanceSTM_rotationBudget,
-			    const_pkg867__BalanceSTM_motorBudget,
-				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
 	
 	-- END of Operation calls --
 	
@@ -4189,7 +4189,7 @@ exports
 			    const_pkg867__BalanceSTM_speedBudget,
 			    const_pkg867__BalanceSTM_rotationBudget,
 			    const_pkg867__BalanceSTM_motorBudget) = ((let
-		Trans = share__choice(get_currAngle?currAngle -> get_speedCount?speedCount -> get_rotationCount?rotationCount -> (
+		Trans = share__choice(get_rotationCount?rotationCount -> get_currAngle?currAngle -> get_speedCount?speedCount -> (
 			((share__ -> SKIP
 			 [] dbisim(((speedCount>=const_pkg867__BalanceSTM_speedUpdate))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; CalculateSpeed::enter -> SKIP))))
 			 	 [] dbisim((true)&(internal__!NID_CalculateSpeed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
@@ -4454,12 +4454,12 @@ exports
 					 [[j3::interrupt <- x__ | x__ <- {|internal__.NID_j3,internal__.NID_j3|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-					  [[set_currAngle <- setL_currAngle,set_speedCount <- setL_speedCount,set_rotationCount <- setL_rotationCount]]
+					  [[set_rotationCount <- setL_rotationCount,set_currAngle <- setL_currAngle,set_speedCount <- setL_speedCount]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_rotationCount
 					 			,setL_currAngle
 					 			,setL_speedCount
-					 			,setL_rotationCount
 					|}) |]
 					 ((i0::enter -> Transitions(id__,
 					 		    const_pkg867__BalanceSTM_maxAngle,
@@ -4471,9 +4471,9 @@ exports
 					 		    const_pkg867__BalanceSTM_speedBudget,
 					 		    const_pkg867__BalanceSTM_rotationBudget,
 					 		    const_pkg867__BalanceSTM_motorBudget))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_speedCount,setL_rotationCount |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_rotationCount,setL_currAngle,setL_speedCount |} ]]
 					 )
-					)[[setL_currAngle <- set_currAngle,setL_speedCount <- set_speedCount,setL_rotationCount <- set_rotationCount]]
+					)[[setL_rotationCount <- set_rotationCount,setL_currAngle <- set_currAngle,setL_speedCount <- set_speedCount]]
 					)
 				)
 				 \ hideSet)
@@ -4863,12 +4863,12 @@ exports
 					 [[j3::interrupt <- x__ | x__ <- {|internal__.NID_j3,internal__.NID_j3|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-					  [[set_currAngle <- setL_currAngle,set_speedCount <- setL_speedCount,set_rotationCount <- setL_rotationCount]]
+					  [[set_rotationCount <- setL_rotationCount,set_currAngle <- setL_currAngle,set_speedCount <- setL_speedCount]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_rotationCount
 					 			,setL_currAngle
 					 			,setL_speedCount
-					 			,setL_rotationCount
 					|}) |]
 					 ((i0::enter -> Transitions(id__,
 					 		    const_pkg867__BalanceSTM_maxAngle,
@@ -4880,9 +4880,9 @@ exports
 					 		    const_pkg867__BalanceSTM_speedBudget,
 					 		    const_pkg867__BalanceSTM_rotationBudget,
 					 		    const_pkg867__BalanceSTM_motorBudget))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_currAngle,setL_speedCount,setL_rotationCount |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_rotationCount,setL_currAngle,setL_speedCount |} ]]
 					 )
-					)[[setL_currAngle <- set_currAngle,setL_speedCount <- set_speedCount,setL_rotationCount <- set_rotationCount]]
+					)[[setL_rotationCount <- set_rotationCount,setL_currAngle <- set_currAngle,setL_speedCount <- set_speedCount]]
 					)
 				)
 				 \ hideSet)

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 module pkg727_main_sim_GoHome
@@ -36,14 +36,14 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: main_JointsPos
-	channel dropCall: main_JointsPos
-	channel hideArmCall
 	channel graspCall: main_JointsPos
+	channel moveCall: main_JointsPos
+	channel goHomeCall
+	channel hideArmCall
 	channel clone_normal_GoHome_Going_t2_opCall
 	channel pickCall
-	channel goHomeCall
 	channel clone_normal_GoHome_Going_entryCall
+	channel dropCall: main_JointsPos
 	
 	enterSS = {|
 	i0::enter,
@@ -67,11 +67,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_Going : core_clock_type 
 	channel get_CLID_Ready : core_clock_type 
+	channel get_CLID_Going : core_clock_type 
 	--channel increment__
 	
-	CLID_Going_clock_type(id__,
+	CLID_Ready_clock_type(id__,
 			          const_pkg727_main_sim_GoHome_goHTime) = 
 		let
 			max = (clock_type_max(Union({
@@ -81,7 +81,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Ready_clock_type(id__,
+	CLID_Going_clock_type(id__,
 			          const_pkg727_main_sim_GoHome_goHTime) = 
 		let
 			max = (clock_type_max(Union({
@@ -102,23 +102,23 @@ exports
 	datatype RegisterDataInput = i_startGoHome.Bool
 	
 	
-	datatype RegisterDataOutput = o_grasp.main_JointsPos
-		| o_endGoHome
-		| o_move.main_JointsPos
+	datatype RegisterDataOutput = o_hideArm
 		| o_goHome
-		| o_pick
 		| o_drop.main_JointsPos
-		| o_hideArm
+		| o_pick
+		| o_move.main_JointsPos
+		| o_grasp.main_JointsPos
+		| o_endGoHome
 	
 	
 	nametype RegisterOutputs = {|
-	o_grasp,
-	o_endGoHome,
-	o_move,
+	o_hideArm,
 	o_goHome,
-	o_pick,
 	o_drop,
-	o_hideArm|}
+	o_pick,
+	o_move,
+	o_grasp,
+	o_endGoHome|}
 		
 	nametype RegisterInputs = {|
 	i_startGoHome|}
@@ -133,14 +133,14 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 				,registerWrite
-	,	moveCall,
-		dropCall,
+	,	graspCall,
+		moveCall,
+		goHomeCall,
 		hideArmCall,
-		graspCall,
 		clone_normal_GoHome_Going_t2_opCall,
 		pickCall,
-		goHomeCall,
-		clone_normal_GoHome_Going_entryCall
+		clone_normal_GoHome_Going_entryCall,
+		dropCall
 		|}
 
 		-- Nodes --
@@ -969,45 +969,45 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__move(id__,
-				    const_pkg727_main_sim_GoHome_goHTime,
-					param_jp) = EDeadline(registerWrite.o_move.param_jp,0)
-		CALL__drop(id__,
-				    const_pkg727_main_sim_GoHome_goHTime,
-					param_jp) = EDeadline(registerWrite.o_drop.param_jp,0)
-		CALL__hideArm(id__,
-				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(registerWrite.o_hideArm,0)
 		CALL__grasp(id__,
 				    const_pkg727_main_sim_GoHome_goHTime,
 					param_jp) = EDeadline(registerWrite.o_grasp.param_jp,0)
+		CALL__move(id__,
+				    const_pkg727_main_sim_GoHome_goHTime,
+					param_jp) = EDeadline(registerWrite.o_move.param_jp,0)
+		CALL__goHome(id__,
+				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(registerWrite.o_goHome,0)
+		CALL__hideArm(id__,
+				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(registerWrite.o_hideArm,0)
 		CALL__clone_normal_GoHome_Going_t2_op(id__,
 				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_t2_opCall,0)
 		CALL__pick(id__,
 				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(registerWrite.o_pick,0)
-		CALL__goHome(id__,
-				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(registerWrite.o_goHome,0)
 		CALL__clone_normal_GoHome_Going_entry(id__,
 				    const_pkg727_main_sim_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_entryCall,0)
+		CALL__drop(id__,
+				    const_pkg727_main_sim_GoHome_goHTime,
+					param_jp) = EDeadline(registerWrite.o_drop.param_jp,0)
 		
 		-- END of Operation calls --
 	
-		datatype SOutputEvents = SOutput_grasp
-			| SOutput_endGoHome
-			| SOutput_move
+		datatype SOutputEvents = SOutput_hideArm
 			| SOutput_goHome
-			| SOutput_pick
 			| SOutput_drop
-			| SOutput_hideArm
+			| SOutput_pick
+			| SOutput_move
+			| SOutput_grasp
+			| SOutput_endGoHome
 		
 		cycle(cycle_pkg727_main_sim_GoHome_GoHome) =
 			let
+				project(o_hideArm) = SOutput_hideArm
+				project(o_goHome) = SOutput_goHome
+				project(o_drop.x__) = SOutput_drop
+				project(o_pick) = SOutput_pick
+				project(o_move.x__) = SOutput_move
 				project(o_grasp.x__) = SOutput_grasp
 				project(o_endGoHome) = SOutput_endGoHome
-				project(o_move.x__) = SOutput_move
-				project(o_goHome) = SOutput_goHome
-				project(o_pick) = SOutput_pick
-				project(o_drop.x__) = SOutput_drop
-				project(o_hideArm) = SOutput_hideArm
 		
 				Cycle =
 					Deadline(
@@ -1181,7 +1181,7 @@ exports
 		Behaviour(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 				    const_pkg727_main_sim_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 			 within
 				(MachineBody(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 						    const_pkg727_main_sim_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -1192,7 +1192,7 @@ exports
 		IteratedBehaviour(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 				    const_pkg727_main_sim_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1200,15 +1200,15 @@ exports
 							sbisim(
 								MachineBody(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 										    const_pkg727_main_sim_GoHome_goHTime)
-								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-								dbisim(Clock_CLID_Ready(id__,0,
+								[| {|get_CLID_Going,Going::entered,terminate|} |]
+								dbisim(Clock_CLID_Going(id__,0,
 										          const_pkg727_main_sim_GoHome_goHTime))
-							)\{|get_CLID_Ready|}
+							)\{|get_CLID_Going|}
 						)
-						[| {|get_CLID_Going,Going::entered,terminate|} |]
-						dbisim(Clock_CLID_Going(id__,0,
+						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+						dbisim(Clock_CLID_Ready(id__,0,
 								          const_pkg727_main_sim_GoHome_goHTime))
-					)\{|get_CLID_Going|}
+					)\{|get_CLID_Ready|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -1237,7 +1237,7 @@ exports
 					IteratedBehaviour(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 							    const_pkg727_main_sim_GoHome_goHTime)
 					[| {|get_startGoHomeF,set_startGoHomeF,terminate|} |]
-					Memory_startGoHomeF(false)
+					Memory_startGoHomeF(true)
 				)\{|get_startGoHomeF,set_startGoHomeF|}
 			)
 			)
@@ -1313,7 +1313,7 @@ exports
 		Behaviour_VS_O(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 				    const_pkg727_main_sim_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 			 within
 				(MachineBody_VS_O(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 						    const_pkg727_main_sim_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -1324,7 +1324,7 @@ exports
 		IteratedBehaviour_VS_O(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 				    const_pkg727_main_sim_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1332,15 +1332,15 @@ exports
 							sbisim(
 								MachineBody_VS_O(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 										    const_pkg727_main_sim_GoHome_goHTime)
-								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-								dbisim(Clock_CLID_Ready(id__,0,
+								[| {|get_CLID_Going,Going::entered,terminate|} |]
+								dbisim(Clock_CLID_Going(id__,0,
 										          const_pkg727_main_sim_GoHome_goHTime))
-							)\{|get_CLID_Ready|}
+							)\{|get_CLID_Going|}
 						)
-						[| {|get_CLID_Going,Going::entered,terminate|} |]
-						dbisim(Clock_CLID_Going(id__,0,
+						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+						dbisim(Clock_CLID_Ready(id__,0,
 								          const_pkg727_main_sim_GoHome_goHTime))
-					)\{|get_CLID_Going|}
+					)\{|get_CLID_Ready|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -1369,7 +1369,7 @@ exports
 					IteratedBehaviour_VS_O(id__,cycle_pkg727_main_sim_GoHome_GoHome,
 							    const_pkg727_main_sim_GoHome_goHTime)
 					[| {|get_startGoHomeF,set_startGoHomeF,terminate|} |]
-					Memory_startGoHomeF(false)
+					Memory_startGoHomeF(true)
 				)\{|get_startGoHomeF,set_startGoHomeF|}
 			)
 			)
@@ -1387,7 +1387,7 @@ exports
 		
 		-- varMemory process
 		varMemory(id__,cycle_pkg727_main_sim_GoHome_GoHome,
-				    const_pkg727_main_sim_GoHome_goHTime) = Memory_startGoHomeF(false)
+				    const_pkg727_main_sim_GoHome_goHTime) = Memory_startGoHomeF(true)
 		
 		getsetLocalChannels = {|get_startGoHomeF,set_startGoHomeF|}
 		
@@ -1424,18 +1424,6 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_Going(id__,x__,
-				          const_pkg727_main_sim_GoHome_goHTime) = 
-			TimeOut_1(
-				Going::entered -> Clock_CLID_Going(id__,0,
-						          const_pkg727_main_sim_GoHome_goHTime)
-				[]
-				get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
-						          const_pkg727_main_sim_GoHome_goHTime)
-				[]
-				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
-						          const_pkg727_main_sim_GoHome_goHTime)),
-						          const_pkg727_main_sim_GoHome_goHTime))
 		Clock_CLID_Ready(id__,x__,
 				          const_pkg727_main_sim_GoHome_goHTime) = 
 			TimeOut_1(
@@ -1448,16 +1436,28 @@ exports
 				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
 						          const_pkg727_main_sim_GoHome_goHTime)),
 						          const_pkg727_main_sim_GoHome_goHTime))
+		Clock_CLID_Going(id__,x__,
+				          const_pkg727_main_sim_GoHome_goHTime) = 
+			TimeOut_1(
+				Going::entered -> Clock_CLID_Going(id__,0,
+						          const_pkg727_main_sim_GoHome_goHTime)
+				[]
+				get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
+						          const_pkg727_main_sim_GoHome_goHTime)
+				[]
+				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
+						          const_pkg727_main_sim_GoHome_goHTime)),
+						          const_pkg727_main_sim_GoHome_goHTime))
 		
 		StateClocks(id__,
-				          const_pkg727_main_sim_GoHome_goHTime) = dbisim(Clock_CLID_Going(id__,0,
+				          const_pkg727_main_sim_GoHome_goHTime) = dbisim(Clock_CLID_Ready(id__,0,
 				          const_pkg727_main_sim_GoHome_goHTime))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Ready(id__,0,
+		dbisim(Clock_CLID_Going(id__,0,
 				          const_pkg727_main_sim_GoHome_goHTime))
 		)
 		
-		stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
+		stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
 		
 		
 		-- Shared memory

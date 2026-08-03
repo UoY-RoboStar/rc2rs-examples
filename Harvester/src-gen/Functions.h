@@ -10,15 +10,15 @@ namespace robocalc
 {
 	namespace functions
 	{
-		 jointFruit(null apple);
-		bool jointInLimit(null position);
-		 choose(std::set<> s);
-		bool reachable(null apple);
-		 jointApproach(null apple);
 		 jointStorage(null apple);
+		 choose(std::set<> s);
+		 jointFruit(null apple);
+		bool reachable(null apple);
 		 fdiff(null apple,  lut);
-		 addApple( ps, null a, null j1, null j2, null j3);
 		bool isEmpty( lut);
+		 jointApproach(null apple);
+		bool jointInLimit(null position);
+		 addApple( ps, null a, null j1, null j2, null j3);
 		
 		template<typename T>
 		std::set<T> set_union(std::set<T> s1, std::set<T> s2)

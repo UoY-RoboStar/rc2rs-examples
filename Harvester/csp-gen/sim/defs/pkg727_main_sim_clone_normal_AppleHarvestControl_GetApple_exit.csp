@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -34,11 +34,11 @@ exports
 	channel get_takePicF, set_takePicF, setL_takePicF, setR_takePicF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_nextApple: setoperations_Coord3D
 	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
 	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
+	channel set_EXT_nextApple: setoperations_Coord3D
+	channel set_EXT_takePicF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -58,11 +58,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_nextApple,
 		set_EXT_positions,
 		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
-		set_EXT_endGoHomeF
+		set_EXT_endGoHomeF,
+		set_EXT_nextApple,
+		set_EXT_takePicF
 	|}
 	
 	
@@ -182,7 +182,7 @@ exports
 		Transitions(id__) = ((let
 			Trans = TimeOut_1(
 				 (share__ -> SKIP
-				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(share__choice(get_nextApple?nextApple -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_fdiff(nextApple,positions) -> SKIP))))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; f::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(share__choice(get_positions?positions -> share__choice(get_nextApple?nextApple -> true & (share__choice(set_positions!main_fdiff(nextApple,positions) -> SKIP))))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; f::enter -> SKIP))))
 				 []
 				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
 				 []

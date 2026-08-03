@@ -1,4 +1,4 @@
-package pkg1126__sim  interface I_events_normal_SourceAnalysis_SourceDetected_t8_op_outEvs {
+package pre_pkg_SourceAnalysisPkg_sim  interface I_events_normal_SourceAnalysis_SourceDetected_t8_op_outEvs {
 	event stop
 }
 
@@ -14,20 +14,12 @@ interface req_normal_SourceAnalysis_SourceDetected_t9a_op_localVars {
 	var gs : Seq( real )
 }
 
-interface I_inpEvs_SourceAnalysis {
-	event s : Seq( real )
-}
-
 interface I_clone_normal_SourceAnalysis_Analysis_t3_op_softwareOps_SourceAnalysis {
 	clone_normal_SourceAnalysis_Analysis_t3_op ( )
 }
 
 interface I_clone_normal_SourceAnalysis_SourceDetected_t9a_op_softwareOps_SourceAnalysis {
 	clone_normal_SourceAnalysis_SourceDetected_t9a_op ( )
-}
-
-interface IctrEvars_SourceAnalysis {
-	var sF : boolean = true
 }
 
 interface I_outEvs_SourceAnalysis {
@@ -38,6 +30,14 @@ interface I_outEvs_SourceAnalysis {
 
 interface I_clone_normal_SourceAnalysis_SourceDetected_t8_op_softwareOps_SourceAnalysis {
 	clone_normal_SourceAnalysis_SourceDetected_t8_op ( )
+}
+
+interface I_inpEvs_SourceAnalysis {
+	event s : Seq( real )
+}
+
+interface IctrEvars_SourceAnalysis {
+	var sF : boolean = true
 }
 
 stm SourceAnalysis {
@@ -73,7 +73,7 @@ stm SourceAnalysis {
 		transition tEmptyCycle_SourceAnalysis_Analysis_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( analysis ( gs ) == Status :: sourceD ) \/ ( analysis ( gs ) == Status :: noSource ) )
+			condition not ( ( analysis ( gs ) == Status :: noSource ) \/ ( analysis ( gs ) == Status :: sourceD ) )
 			action exec ; sF = true
 		}
 	}
@@ -118,25 +118,28 @@ stm SourceAnalysis {
 		condition ( $ s ? gs /\ sF )
 		action sF = false
 	}
+	transition t3 {
+		from Analysis
+		to NoSource
+		condition analysis ( gs ) == Status :: noSource
+		action clone_normal_SourceAnalysis_Analysis_t3_op ( )
+	}
 	transition t4 {
 		from Analysis
 		to SourceDetected
 		condition analysis ( gs ) == Status :: sourceD
 	}
-	transition t3 {
-		from Analysis
-		to NoSource
-		condition analysis ( gs ) == Status :: noSource
-	}
 	transition t8 {
 		from SourceDetected
 		to j1
 		condition gt ( intensity ( gs ) , thr )
+		action clone_normal_SourceAnalysis_SourceDetected_t8_op ( )
 	}
 	transition t9a {
 		from SourceDetected
 		to Reading
 		condition not gt ( intensity ( gs ) , thr )
+		action clone_normal_SourceAnalysis_SourceDetected_t9a_op ( )
 	}
 	transition t0 {
 		from Reading

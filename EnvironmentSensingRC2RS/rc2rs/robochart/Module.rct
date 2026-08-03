@@ -1,9 +1,97 @@
-package pkg1126_EnvironmentalSensing interface Operations {
-	stop ( )
+package pre_pkg_main interface Operations {
+	stopOp ( )
 	moveForward ( )
 	reverse ( )
 	moveTowards (  a : real )
 	changeDirection ( l : Loc )
+}
+
+interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+operation tStop ( ) {
+	initial i
+	state sStop {
+	}
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	final f
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp initial i
+	junction j
+	final f
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	clock C
 }
 
 module EnvironmentalSensing {
@@ -21,7 +109,7 @@ module EnvironmentalSensing {
 		event odometer : real
 	}
 
-	cref ctrl_ref0 = pkg1126_::MicroController
-	cref ctrl_ref1 = pkg1126_::MainController
+	cref ctrl_ref0 = pre_pkg_MicroControllerPkg::MicroController
+	cref ctrl_ref1 = pre_pkg_MainControllerPkg::MainController
 }
 

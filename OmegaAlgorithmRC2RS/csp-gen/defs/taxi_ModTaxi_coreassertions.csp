@@ -1,0 +1,66 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "state_defs.csp"
+include "taxi_ModTaxi.csp"
+include "taxi_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate taxi_ModTaxi
+P_taxi_ModTaxi = let
+	id__ = 0
+	
+	
+	
+	const_taxi_ctrlTaxi_stm1_MoveForwardVal = const_taxi_SwarmTaxisFSM_MoveForwardVal
+		
+	const_taxi_ctrlTaxi_op1_angularSpeed1 = const_taxi_Turn_angularSpeed1
+	const_taxi_ctrlTaxi_op1_rotate = const_taxi_Turn_rotate
+	const_taxi_ctrlTaxi_op5_avoidanceRadius1 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius1
+	const_taxi_ctrlTaxi_op5_avoidanceRadius2 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius2
+	
+within
+	taxi_ModTaxi::O__(id__,
+			    const_taxi_ctrlTaxi_stm1_MoveForwardVal,
+			   	const_taxi_ctrlTaxi_op1_angularSpeed1,
+			   	const_taxi_ctrlTaxi_op1_rotate,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius1,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius2)
+assert P_taxi_ModTaxi :[deadlock-free]	
+assert P_taxi_ModTaxi;RUN({r__}) :[deadlock-free]
+assert P_taxi_ModTaxi :[deterministic]
+assert P_taxi_ModTaxi :[divergence-free]
+
+-- generate taxi_ModTaxi_ctrl1
+P_taxi_ModTaxi_ctrl1 = let
+	id__ = 0
+	
+	
+	
+	const_taxi_ctrlTaxi_stm1_MoveForwardVal = const_taxi_SwarmTaxisFSM_MoveForwardVal
+		
+	const_taxi_ctrlTaxi_op1_angularSpeed1 = const_taxi_Turn_angularSpeed1
+	const_taxi_ctrlTaxi_op1_rotate = const_taxi_Turn_rotate
+	const_taxi_ctrlTaxi_op5_avoidanceRadius1 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius1
+	const_taxi_ctrlTaxi_op5_avoidanceRadius2 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius2
+within
+	taxi_ModTaxi::ctrl1::O__(id__,
+			    const_taxi_ctrlTaxi_stm1_MoveForwardVal,
+			   	const_taxi_ctrlTaxi_op1_angularSpeed1,
+			   	const_taxi_ctrlTaxi_op1_rotate,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius1,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius2)
+
+assert P_taxi_ModTaxi_ctrl1 :[deadlock-free]	
+assert P_taxi_ModTaxi_ctrl1;RUN({r__}) :[deadlock-free]
+assert P_taxi_ModTaxi_ctrl1 :[deterministic]
+assert P_taxi_ModTaxi_ctrl1 :[divergence-free]
+

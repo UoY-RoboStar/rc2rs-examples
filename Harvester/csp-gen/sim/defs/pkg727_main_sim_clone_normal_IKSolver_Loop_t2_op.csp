@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -32,9 +32,9 @@ exports
 	channel get_startIKSolverF, set_startIKSolverF, setL_startIKSolverF, setR_startIKSolverF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_startIKSolverF: core_boolean
-	channel set_EXT_apple: setoperations_Coord3D
 	channel set_EXT_apples: Set(setoperations_Coord3D)
+	channel set_EXT_apple: setoperations_Coord3D
+	channel set_EXT_startIKSolverF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -54,9 +54,9 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_startIKSolverF,
+		set_EXT_apples,
 		set_EXT_apple,
-		set_EXT_apples
+		set_EXT_startIKSolverF
 	|}
 	
 	

@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 06-05-2026 11:01:25
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:11
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -66,8 +66,8 @@ module Rescue
 			
 			
 			-- declaring call and ret events for undefined operations
-			channel moveCall: core_nat
 			channel turnBackCall
+			channel moveCall: core_nat
 			
 			-- declaring controller termination channel
 			channel terminate
@@ -80,8 +80,8 @@ module Rescue
 				land,
 				found,
 				origin
-			,	moveCall,
-				turnBackCall
+			,	turnBackCall,
+				moveCall
 			|}
 			
 			-- set of visible memory events
@@ -942,8 +942,8 @@ module Rescue
 				
 				
 				channel get_CLID_C : core_clock_type 
-				channel get_CLID_f : core_clock_type 
 				channel get_CLID_Waiting : core_clock_type 
+				channel get_CLID_f : core_clock_type 
 				--channel increment__
 				
 				CLID_C_clock_type(id__) = 
@@ -955,7 +955,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_f_clock_type(id__) = 
+				CLID_Waiting_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -964,7 +964,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Waiting_clock_type(id__) = 
+				CLID_f_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -4743,17 +4743,17 @@ module Rescue
 							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV,
 								param_lv) = EDeadline(moveCall.param_lv,0)
 					
+					CALL__clone_normal_FinderM_Delivering_t3_waitOp(id__,
+							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
+							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV,
+								param_n) = (OP_clone_normal_FinderM_Delivering_t3_waitOp::O__(id__,
+								param_n))
 					CALL__clone_normal_FinderM_Delivering_t3_op_i_t_op(id__,
 							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
 							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV) = (OP_clone_normal_FinderM_Delivering_t3_op_i_t_op::O__(id__))
 					[[
 						OP_clone_normal_FinderM_Delivering_t3_op_i_t_op::takeoff <- takeoff
 					]]
-					CALL__clone_normal_FinderM_Delivering_t3_waitOp(id__,
-							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
-							    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV,
-								param_n) = (OP_clone_normal_FinderM_Delivering_t3_waitOp::O__(id__,
-								param_n))
 					-- END of Operation calls --
 				
 					-- STM processes
@@ -5899,10 +5899,19 @@ module Rescue
 				localClockResets = {|clockReset.CLID_C|}
 				
 				
+				channel get_CLID_C : core_clock_type 
 				channel get_CLID_f : core_clock_type 
 				channel get_CLID_Waiting : core_clock_type 
-				channel get_CLID_C : core_clock_type 
 				--channel increment__
+				
+				CLID_C_clock_type(id__) = 
+					let
+						max = (clock_type_max(Union({
+				({param_n|param_n <- core_nat})
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
 				CLID_f_clock_type(id__) = 
 					let
@@ -5917,15 +5926,6 @@ module Rescue
 					let
 						max = (clock_type_max(Union({
 				{}
-				}))+1)
-					ctype = {0..max}
-				within
-					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-				
-				CLID_C_clock_type(id__) = 
-					let
-						max = (clock_type_max(Union({
-				({param_n|param_n <- core_nat})
 				}))+1)
 					ctype = {0..max}
 				within
@@ -7512,8 +7512,8 @@ module Rescue
 				
 				
 				channel get_CLID_C : core_clock_type 
-				channel get_CLID_f : core_clock_type 
 				channel get_CLID_Waiting : core_clock_type 
+				channel get_CLID_f : core_clock_type 
 				--channel increment__
 				
 				CLID_C_clock_type(id__) = 
@@ -7525,7 +7525,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_f_clock_type(id__) = 
+				CLID_Waiting_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -7534,7 +7534,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Waiting_clock_type(id__) = 
+				CLID_f_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -8300,8 +8300,8 @@ module Rescue
 				channel origin: InOut
 				
 				-- Declaring call and ret events for undefined operations
-				channel moveCall: core_nat
 				channel turnBackCall
+				channel moveCall: core_nat
 				
 				enterSS = {|
 				i0::enter,
@@ -8331,8 +8331,8 @@ module Rescue
 					land,
 					found,
 					origin
-				,	moveCall,
-					turnBackCall
+				,	turnBackCall,
+					moveCall
 					|}
 				
 				channel clockReset, clockResetL, clockResetR 
@@ -8340,13 +8340,13 @@ module Rescue
 				localClockResets = {||}
 				
 				
-				channel get_CLID_Looking : core_clock_type 
-				channel get_CLID_Delivering : core_clock_type 
-				channel get_CLID_Returning : core_clock_type 
 				channel get_CLID_Off : core_clock_type 
+				channel get_CLID_Delivering : core_clock_type 
+				channel get_CLID_Looking : core_clock_type 
+				channel get_CLID_Returning : core_clock_type 
 				--channel increment__
 				
-				CLID_Looking_clock_type(id__,
+				CLID_Off_clock_type(id__,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP) = 
@@ -8368,7 +8368,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Returning_clock_type(id__,
+				CLID_Looking_clock_type(id__,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP) = 
@@ -8379,7 +8379,7 @@ module Rescue
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Off_clock_type(id__,
+				CLID_Returning_clock_type(id__,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP) = 
@@ -10185,16 +10185,23 @@ module Rescue
 					-- If it is in the context of a controller, the required operations not provided by the
 					-- controller will be declared here, and the defined operations will be defined in the
 					-- context of the Controller module, and therefore within scope of the state machine module.
+					CALL__turnBack(id__,
+							    const_pkg213_main_FinderM_DELIVERY,
+							    const_pkg213_main_FinderM_LV,
+							    const_pkg213_main_FinderM_TOP) = EDeadline(turnBackCall,0)
 					CALL__move(id__,
 							    const_pkg213_main_FinderM_DELIVERY,
 							    const_pkg213_main_FinderM_LV,
 							    const_pkg213_main_FinderM_TOP,
 								param_lv) = EDeadline(moveCall.param_lv,0)
-					CALL__turnBack(id__,
+					
+					CALL__clone_normal_FinderM_Returning_t4_op(id__,
 							    const_pkg213_main_FinderM_DELIVERY,
 							    const_pkg213_main_FinderM_LV,
-							    const_pkg213_main_FinderM_TOP) = EDeadline(turnBackCall,0)
-					
+							    const_pkg213_main_FinderM_TOP) = (OP_clone_normal_FinderM_Returning_t4_op::O__(id__))
+					[[
+						OP_clone_normal_FinderM_Returning_t4_op::land <- land
+					]]
 					CALL__clone_normal_FinderM_Off_t1_op(id__,
 							    const_pkg213_main_FinderM_DELIVERY,
 							    const_pkg213_main_FinderM_LV,
@@ -10210,13 +10217,6 @@ module Rescue
 							    const_pkg213_main_FinderM_TOP) = (OP_clone_normal_FinderM_Looking_t2_op::O__(id__))
 					[[
 						OP_clone_normal_FinderM_Looking_t2_op::land <- land
-					]]
-					CALL__clone_normal_FinderM_Returning_t4_op(id__,
-							    const_pkg213_main_FinderM_DELIVERY,
-							    const_pkg213_main_FinderM_LV,
-							    const_pkg213_main_FinderM_TOP) = (OP_clone_normal_FinderM_Returning_t4_op::O__(id__))
-					[[
-						OP_clone_normal_FinderM_Returning_t4_op::land <- land
 					]]
 					CALL__clone_normal_FinderM_Delivering_t3_op(id__,
 							    const_pkg213_main_FinderM_DELIVERY,
@@ -10441,7 +10441,7 @@ module Rescue
 							    const_pkg213_main_FinderM_LV,
 							    const_pkg213_main_FinderM_TOP) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+							stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 						 within
 							(MachineBody(id__,
 									    const_pkg213_main_FinderM_DELIVERY,
@@ -10458,7 +10458,7 @@ module Rescue
 							    const_pkg213_main_FinderM_LV,
 							    const_pkg213_main_FinderM_TOP) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+							stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -10472,19 +10472,19 @@ module Rescue
 																	    const_pkg213_main_FinderM_DELIVERY,
 																	    const_pkg213_main_FinderM_LV,
 																	    const_pkg213_main_FinderM_TOP)
-															[| {|get_CLID_Off,Off::entered,terminate|} |]
-															dbisim(Clock_CLID_Off(id__,0,
+															[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+															dbisim(Clock_CLID_Returning(id__,0,
 																	          const_pkg213_main_FinderM_DELIVERY,
 																	          const_pkg213_main_FinderM_LV,
 																	          const_pkg213_main_FinderM_TOP))
-														)\{|get_CLID_Off|}
+														)\{|get_CLID_Returning|}
 													)
-													[| {|get_CLID_Returning,Returning::entered,terminate|} |]
-													dbisim(Clock_CLID_Returning(id__,0,
+													[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+													dbisim(Clock_CLID_Looking(id__,0,
 															          const_pkg213_main_FinderM_DELIVERY,
 															          const_pkg213_main_FinderM_LV,
 															          const_pkg213_main_FinderM_TOP))
-												)\{|get_CLID_Returning|}
+												)\{|get_CLID_Looking|}
 											)
 											[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
 											dbisim(Clock_CLID_Delivering(id__,0,
@@ -10493,12 +10493,12 @@ module Rescue
 													          const_pkg213_main_FinderM_TOP))
 										)\{|get_CLID_Delivering|}
 									)
-									[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-									dbisim(Clock_CLID_Looking(id__,0,
+									[| {|get_CLID_Off,Off::entered,terminate|} |]
+									dbisim(Clock_CLID_Off(id__,0,
 											          const_pkg213_main_FinderM_DELIVERY,
 											          const_pkg213_main_FinderM_LV,
 											          const_pkg213_main_FinderM_TOP))
-								)\{|get_CLID_Looking|}
+								)\{|get_CLID_Off|}
 							)
 							) \ union(stateClockSync,enteredSS)
 						)
@@ -10641,7 +10641,7 @@ module Rescue
 							    const_pkg213_main_FinderM_LV,
 							    const_pkg213_main_FinderM_TOP) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+							stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 						 within
 							(MachineBody_VS_O(id__,
 									    const_pkg213_main_FinderM_DELIVERY,
@@ -10658,7 +10658,7 @@ module Rescue
 							    const_pkg213_main_FinderM_LV,
 							    const_pkg213_main_FinderM_TOP) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+							stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -10672,19 +10672,19 @@ module Rescue
 																	    const_pkg213_main_FinderM_DELIVERY,
 																	    const_pkg213_main_FinderM_LV,
 																	    const_pkg213_main_FinderM_TOP)
-															[| {|get_CLID_Off,Off::entered,terminate|} |]
-															dbisim(Clock_CLID_Off(id__,0,
+															[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+															dbisim(Clock_CLID_Returning(id__,0,
 																	          const_pkg213_main_FinderM_DELIVERY,
 																	          const_pkg213_main_FinderM_LV,
 																	          const_pkg213_main_FinderM_TOP))
-														)\{|get_CLID_Off|}
+														)\{|get_CLID_Returning|}
 													)
-													[| {|get_CLID_Returning,Returning::entered,terminate|} |]
-													dbisim(Clock_CLID_Returning(id__,0,
+													[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+													dbisim(Clock_CLID_Looking(id__,0,
 															          const_pkg213_main_FinderM_DELIVERY,
 															          const_pkg213_main_FinderM_LV,
 															          const_pkg213_main_FinderM_TOP))
-												)\{|get_CLID_Returning|}
+												)\{|get_CLID_Looking|}
 											)
 											[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
 											dbisim(Clock_CLID_Delivering(id__,0,
@@ -10693,12 +10693,12 @@ module Rescue
 													          const_pkg213_main_FinderM_TOP))
 										)\{|get_CLID_Delivering|}
 									)
-									[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-									dbisim(Clock_CLID_Looking(id__,0,
+									[| {|get_CLID_Off,Off::entered,terminate|} |]
+									dbisim(Clock_CLID_Off(id__,0,
 											          const_pkg213_main_FinderM_DELIVERY,
 											          const_pkg213_main_FinderM_LV,
 											          const_pkg213_main_FinderM_TOP))
-								)\{|get_CLID_Looking|}
+								)\{|get_CLID_Off|}
 							)
 							) \ diff(union(stateClockSync,enteredSS),enteredSS)
 						)
@@ -10817,22 +10817,22 @@ module Rescue
 					
 					clockSync = {||}
 					
-					Clock_CLID_Looking(id__,x__,
+					Clock_CLID_Off(id__,x__,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
 							          const_pkg213_main_FinderM_TOP) = 
 						TimeOut_1(
-							Looking::entered -> Clock_CLID_Looking(id__,0,
+							Off::entered -> Clock_CLID_Off(id__,0,
 									          const_pkg213_main_FinderM_DELIVERY,
 									          const_pkg213_main_FinderM_LV,
 									          const_pkg213_main_FinderM_TOP)
 							[]
-							get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+							get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__,
 									          const_pkg213_main_FinderM_DELIVERY,
 									          const_pkg213_main_FinderM_LV,
 									          const_pkg213_main_FinderM_TOP)
 							[]
-							terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
+							terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
 									          const_pkg213_main_FinderM_DELIVERY,
 									          const_pkg213_main_FinderM_LV,
 									          const_pkg213_main_FinderM_TOP)),
@@ -10861,6 +10861,28 @@ module Rescue
 									          const_pkg213_main_FinderM_DELIVERY,
 									          const_pkg213_main_FinderM_LV,
 									          const_pkg213_main_FinderM_TOP))
+					Clock_CLID_Looking(id__,x__,
+							          const_pkg213_main_FinderM_DELIVERY,
+							          const_pkg213_main_FinderM_LV,
+							          const_pkg213_main_FinderM_TOP) = 
+						TimeOut_1(
+							Looking::entered -> Clock_CLID_Looking(id__,0,
+									          const_pkg213_main_FinderM_DELIVERY,
+									          const_pkg213_main_FinderM_LV,
+									          const_pkg213_main_FinderM_TOP)
+							[]
+							get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+									          const_pkg213_main_FinderM_DELIVERY,
+									          const_pkg213_main_FinderM_LV,
+									          const_pkg213_main_FinderM_TOP)
+							[]
+							terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
+									          const_pkg213_main_FinderM_DELIVERY,
+									          const_pkg213_main_FinderM_LV,
+									          const_pkg213_main_FinderM_TOP)),
+									          const_pkg213_main_FinderM_DELIVERY,
+									          const_pkg213_main_FinderM_LV,
+									          const_pkg213_main_FinderM_TOP))
 					Clock_CLID_Returning(id__,x__,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
@@ -10883,33 +10905,11 @@ module Rescue
 									          const_pkg213_main_FinderM_DELIVERY,
 									          const_pkg213_main_FinderM_LV,
 									          const_pkg213_main_FinderM_TOP))
-					Clock_CLID_Off(id__,x__,
-							          const_pkg213_main_FinderM_DELIVERY,
-							          const_pkg213_main_FinderM_LV,
-							          const_pkg213_main_FinderM_TOP) = 
-						TimeOut_1(
-							Off::entered -> Clock_CLID_Off(id__,0,
-									          const_pkg213_main_FinderM_DELIVERY,
-									          const_pkg213_main_FinderM_LV,
-									          const_pkg213_main_FinderM_TOP)
-							[]
-							get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__,
-									          const_pkg213_main_FinderM_DELIVERY,
-									          const_pkg213_main_FinderM_LV,
-									          const_pkg213_main_FinderM_TOP)
-							[]
-							terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
-									          const_pkg213_main_FinderM_DELIVERY,
-									          const_pkg213_main_FinderM_LV,
-									          const_pkg213_main_FinderM_TOP)),
-									          const_pkg213_main_FinderM_DELIVERY,
-									          const_pkg213_main_FinderM_LV,
-									          const_pkg213_main_FinderM_TOP))
 					
 					StateClocks(id__,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
-							          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_Looking(id__,0,
+							          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_Off(id__,0,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
 							          const_pkg213_main_FinderM_TOP))
@@ -10919,12 +10919,12 @@ module Rescue
 							          const_pkg213_main_FinderM_LV,
 							          const_pkg213_main_FinderM_TOP))
 					[| { terminate } |] (
-					dbisim(Clock_CLID_Returning(id__,0,
+					dbisim(Clock_CLID_Looking(id__,0,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
 							          const_pkg213_main_FinderM_TOP))
 					[| { terminate } |] (
-					dbisim(Clock_CLID_Off(id__,0,
+					dbisim(Clock_CLID_Returning(id__,0,
 							          const_pkg213_main_FinderM_DELIVERY,
 							          const_pkg213_main_FinderM_LV,
 							          const_pkg213_main_FinderM_TOP))
@@ -10932,7 +10932,7 @@ module Rescue
 					)
 					)
 					
-					stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+					stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 					
 					-- Shared memory
 					-- Shared memory variables
@@ -10951,9 +10951,9 @@ module Rescue
 			
 			Timed(OneStep) {
 					-- undefined operations
+					CALL__turnBack(id__) 	= turnBackCall -> SKIP
 					CALL__move(id__,
 							    param_lv) 	= moveCall.param_lv -> SKIP
-					CALL__turnBack(id__) 	= turnBackCall -> SKIP
 					
 					-- declaring controller memory
 					Memory(id__) = SKIP
@@ -10977,8 +10977,8 @@ module Rescue
 								stm_ref0::takeoff <- takeoff,
 								stm_ref0::switchOn <- switchOn,
 								stm_ref0::origin <- origin,
-								stm_ref0::moveCall <- moveCall,
-								stm_ref0::turnBackCall <- turnBackCall
+								stm_ref0::turnBackCall <- turnBackCall,
+								stm_ref0::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11020,8 +11020,8 @@ module Rescue
 								stm_ref0::takeoff <- takeoff,
 								stm_ref0::switchOn <- switchOn,
 								stm_ref0::origin <- origin,
-								stm_ref0::moveCall <- moveCall,
-								stm_ref0::turnBackCall <- turnBackCall
+								stm_ref0::turnBackCall <- turnBackCall,
+								stm_ref0::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11063,8 +11063,8 @@ module Rescue
 								stm_ref0::takeoff <- takeoff,
 								stm_ref0::switchOn <- switchOn,
 								stm_ref0::origin <- origin,
-								stm_ref0::moveCall <- moveCall,
-								stm_ref0::turnBackCall <- turnBackCall
+								stm_ref0::turnBackCall <- turnBackCall,
+								stm_ref0::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11106,8 +11106,8 @@ module Rescue
 								stm_ref0::takeoff <- takeoff,
 								stm_ref0::switchOn <- switchOn,
 								stm_ref0::origin <- origin,
-								stm_ref0::moveCall <- moveCall,
-								stm_ref0::turnBackCall <- turnBackCall
+								stm_ref0::turnBackCall <- turnBackCall,
+								stm_ref0::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11165,8 +11165,8 @@ module Rescue
 								Finder::takeoff <- takeoff,
 								Finder::switchOn <- switchOn,
 								Finder::origin <- origin,
-								Finder::moveCall <- moveCall,
-								Finder::turnBackCall <- turnBackCall
+								Finder::turnBackCall <- turnBackCall,
+								Finder::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11214,8 +11214,8 @@ module Rescue
 								Finder::takeoff <- takeoff,
 								Finder::switchOn <- switchOn,
 								Finder::origin <- origin,
-								Finder::moveCall <- moveCall,
-								Finder::turnBackCall <- turnBackCall
+								Finder::turnBackCall <- turnBackCall,
+								Finder::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11263,8 +11263,8 @@ module Rescue
 								Finder::takeoff <- takeoff,
 								Finder::switchOn <- switchOn,
 								Finder::origin <- origin,
-								Finder::moveCall <- moveCall,
-								Finder::turnBackCall <- turnBackCall
+								Finder::turnBackCall <- turnBackCall,
+								Finder::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11312,8 +11312,8 @@ module Rescue
 								Finder::takeoff <- takeoff,
 								Finder::switchOn <- switchOn,
 								Finder::origin <- origin,
-								Finder::moveCall <- moveCall,
-								Finder::turnBackCall <- turnBackCall
+								Finder::turnBackCall <- turnBackCall,
+								Finder::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11361,8 +11361,8 @@ module Rescue
 								Finder::takeoff <- takeoff,
 								Finder::switchOn <- switchOn,
 								Finder::origin <- origin,
-								Finder::moveCall <- moveCall,
-								Finder::turnBackCall <- turnBackCall
+								Finder::turnBackCall <- turnBackCall,
+								Finder::moveCall <- moveCall
 							]]
 						)
 							[|
@@ -11391,6 +11391,7 @@ module Rescue
 	}
 	
 endmodule
+
 
 
 module FinderM
@@ -11436,13 +11437,13 @@ exports
 	channel origin: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_FinderM_Looking_t2_opCall
-	channel moveCall: core_nat
-	channel clone_normal_FinderM_Delivering_entryCall
-	channel clone_normal_FinderM_Off_t1_opCall
-	channel clone_normal_FinderM_Delivering_t3_opCall
 	channel turnBackCall
+	channel moveCall: core_nat
+	channel clone_normal_FinderM_Looking_t2_opCall
 	channel clone_normal_FinderM_Returning_t4_opCall
+	channel clone_normal_FinderM_Off_t1_opCall
+	channel clone_normal_FinderM_Delivering_entryCall
+	channel clone_normal_FinderM_Delivering_t3_opCall
 	
 	enterSS = {|
 	i0::enter,
@@ -11472,13 +11473,13 @@ exports
 		land,
 		found,
 		origin
-	,	clone_normal_FinderM_Looking_t2_opCall,
+	,	turnBackCall,
 		moveCall,
-		clone_normal_FinderM_Delivering_entryCall,
+		clone_normal_FinderM_Looking_t2_opCall,
+		clone_normal_FinderM_Returning_t4_opCall,
 		clone_normal_FinderM_Off_t1_opCall,
-		clone_normal_FinderM_Delivering_t3_opCall,
-		turnBackCall,
-		clone_normal_FinderM_Returning_t4_opCall
+		clone_normal_FinderM_Delivering_entryCall,
+		clone_normal_FinderM_Delivering_t3_opCall
 		|}
 	
 	channel clockReset, clockResetL, clockResetR 
@@ -11486,13 +11487,13 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_Looking : core_clock_type 
-	channel get_CLID_Delivering : core_clock_type 
-	channel get_CLID_Returning : core_clock_type 
 	channel get_CLID_Off : core_clock_type 
+	channel get_CLID_Delivering : core_clock_type 
+	channel get_CLID_Looking : core_clock_type 
+	channel get_CLID_Returning : core_clock_type 
 	--channel increment__
 	
-	CLID_Looking_clock_type(id__,
+	CLID_Off_clock_type(id__,
 			          const_pkg213_main_FinderM_DELIVERY,
 			          const_pkg213_main_FinderM_LV,
 			          const_pkg213_main_FinderM_TOP) = 
@@ -11514,7 +11515,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Returning_clock_type(id__,
+	CLID_Looking_clock_type(id__,
 			          const_pkg213_main_FinderM_DELIVERY,
 			          const_pkg213_main_FinderM_LV,
 			          const_pkg213_main_FinderM_TOP) = 
@@ -11525,7 +11526,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Off_clock_type(id__,
+	CLID_Returning_clock_type(id__,
 			          const_pkg213_main_FinderM_DELIVERY,
 			          const_pkg213_main_FinderM_LV,
 			          const_pkg213_main_FinderM_TOP) = 
@@ -13329,35 +13330,35 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__clone_normal_FinderM_Looking_t2_op(id__,
+		CALL__turnBack(id__,
 				    const_pkg213_main_FinderM_DELIVERY,
 				    const_pkg213_main_FinderM_LV,
-				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Looking_t2_opCall,0)
+				    const_pkg213_main_FinderM_TOP) = EDeadline(turnBackCall,0)
 		CALL__move(id__,
 				    const_pkg213_main_FinderM_DELIVERY,
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP,
 					param_lv) = EDeadline(moveCall.param_lv,0)
-		CALL__clone_normal_FinderM_Delivering_entry(id__,
+		CALL__clone_normal_FinderM_Looking_t2_op(id__,
 				    const_pkg213_main_FinderM_DELIVERY,
 				    const_pkg213_main_FinderM_LV,
-				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_entryCall,0)
-		CALL__clone_normal_FinderM_Off_t1_op(id__,
-				    const_pkg213_main_FinderM_DELIVERY,
-				    const_pkg213_main_FinderM_LV,
-				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Off_t1_opCall,0)
-		CALL__clone_normal_FinderM_Delivering_t3_op(id__,
-				    const_pkg213_main_FinderM_DELIVERY,
-				    const_pkg213_main_FinderM_LV,
-				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_t3_opCall,0)
-		CALL__turnBack(id__,
-				    const_pkg213_main_FinderM_DELIVERY,
-				    const_pkg213_main_FinderM_LV,
-				    const_pkg213_main_FinderM_TOP) = EDeadline(turnBackCall,0)
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Looking_t2_opCall,0)
 		CALL__clone_normal_FinderM_Returning_t4_op(id__,
 				    const_pkg213_main_FinderM_DELIVERY,
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Returning_t4_opCall,0)
+		CALL__clone_normal_FinderM_Off_t1_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Off_t1_opCall,0)
+		CALL__clone_normal_FinderM_Delivering_entry(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_entryCall,0)
+		CALL__clone_normal_FinderM_Delivering_t3_op(id__,
+				    const_pkg213_main_FinderM_DELIVERY,
+				    const_pkg213_main_FinderM_LV,
+				    const_pkg213_main_FinderM_TOP) = EDeadline(clone_normal_FinderM_Delivering_t3_opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -13558,7 +13559,7 @@ exports
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+				stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 			 within
 				(MachineBody(id__,
 						    const_pkg213_main_FinderM_DELIVERY,
@@ -13575,7 +13576,7 @@ exports
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+				stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -13589,19 +13590,19 @@ exports
 														    const_pkg213_main_FinderM_DELIVERY,
 														    const_pkg213_main_FinderM_LV,
 														    const_pkg213_main_FinderM_TOP)
-												[| {|get_CLID_Off,Off::entered,terminate|} |]
-												dbisim(Clock_CLID_Off(id__,0,
+												[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+												dbisim(Clock_CLID_Returning(id__,0,
 														          const_pkg213_main_FinderM_DELIVERY,
 														          const_pkg213_main_FinderM_LV,
 														          const_pkg213_main_FinderM_TOP))
-											)\{|get_CLID_Off|}
+											)\{|get_CLID_Returning|}
 										)
-										[| {|get_CLID_Returning,Returning::entered,terminate|} |]
-										dbisim(Clock_CLID_Returning(id__,0,
+										[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+										dbisim(Clock_CLID_Looking(id__,0,
 												          const_pkg213_main_FinderM_DELIVERY,
 												          const_pkg213_main_FinderM_LV,
 												          const_pkg213_main_FinderM_TOP))
-									)\{|get_CLID_Returning|}
+									)\{|get_CLID_Looking|}
 								)
 								[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
 								dbisim(Clock_CLID_Delivering(id__,0,
@@ -13610,12 +13611,12 @@ exports
 										          const_pkg213_main_FinderM_TOP))
 							)\{|get_CLID_Delivering|}
 						)
-						[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-						dbisim(Clock_CLID_Looking(id__,0,
+						[| {|get_CLID_Off,Off::entered,terminate|} |]
+						dbisim(Clock_CLID_Off(id__,0,
 								          const_pkg213_main_FinderM_DELIVERY,
 								          const_pkg213_main_FinderM_LV,
 								          const_pkg213_main_FinderM_TOP))
-					)\{|get_CLID_Looking|}
+					)\{|get_CLID_Off|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -13758,7 +13759,7 @@ exports
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+				stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 						    const_pkg213_main_FinderM_DELIVERY,
@@ -13775,7 +13776,7 @@ exports
 				    const_pkg213_main_FinderM_LV,
 				    const_pkg213_main_FinderM_TOP) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+				stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -13789,19 +13790,19 @@ exports
 														    const_pkg213_main_FinderM_DELIVERY,
 														    const_pkg213_main_FinderM_LV,
 														    const_pkg213_main_FinderM_TOP)
-												[| {|get_CLID_Off,Off::entered,terminate|} |]
-												dbisim(Clock_CLID_Off(id__,0,
+												[| {|get_CLID_Returning,Returning::entered,terminate|} |]
+												dbisim(Clock_CLID_Returning(id__,0,
 														          const_pkg213_main_FinderM_DELIVERY,
 														          const_pkg213_main_FinderM_LV,
 														          const_pkg213_main_FinderM_TOP))
-											)\{|get_CLID_Off|}
+											)\{|get_CLID_Returning|}
 										)
-										[| {|get_CLID_Returning,Returning::entered,terminate|} |]
-										dbisim(Clock_CLID_Returning(id__,0,
+										[| {|get_CLID_Looking,Looking::entered,terminate|} |]
+										dbisim(Clock_CLID_Looking(id__,0,
 												          const_pkg213_main_FinderM_DELIVERY,
 												          const_pkg213_main_FinderM_LV,
 												          const_pkg213_main_FinderM_TOP))
-									)\{|get_CLID_Returning|}
+									)\{|get_CLID_Looking|}
 								)
 								[| {|get_CLID_Delivering,Delivering::entered,terminate|} |]
 								dbisim(Clock_CLID_Delivering(id__,0,
@@ -13810,12 +13811,12 @@ exports
 										          const_pkg213_main_FinderM_TOP))
 							)\{|get_CLID_Delivering|}
 						)
-						[| {|get_CLID_Looking,Looking::entered,terminate|} |]
-						dbisim(Clock_CLID_Looking(id__,0,
+						[| {|get_CLID_Off,Off::entered,terminate|} |]
+						dbisim(Clock_CLID_Off(id__,0,
 								          const_pkg213_main_FinderM_DELIVERY,
 								          const_pkg213_main_FinderM_LV,
 								          const_pkg213_main_FinderM_TOP))
-					)\{|get_CLID_Looking|}
+					)\{|get_CLID_Off|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -13934,22 +13935,22 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_Looking(id__,x__,
+		Clock_CLID_Off(id__,x__,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
 				          const_pkg213_main_FinderM_TOP) = 
 			TimeOut_1(
-				Looking::entered -> Clock_CLID_Looking(id__,0,
+				Off::entered -> Clock_CLID_Off(id__,0,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP)
 				[]
-				get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+				get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP)
 				[]
-				terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP)),
@@ -13978,6 +13979,28 @@ exports
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP))
+		Clock_CLID_Looking(id__,x__,
+				          const_pkg213_main_FinderM_DELIVERY,
+				          const_pkg213_main_FinderM_LV,
+				          const_pkg213_main_FinderM_TOP) = 
+			TimeOut_1(
+				Looking::entered -> Clock_CLID_Looking(id__,0,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				get_CLID_Looking!x__ -> Clock_CLID_Looking(id__,x__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)
+				[]
+				terminate -> SKIP,Clock_CLID_Looking(id__,clock_type_plus(x__,1,CLID_Looking_clock_type(id__,
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP)),
+						          const_pkg213_main_FinderM_DELIVERY,
+						          const_pkg213_main_FinderM_LV,
+						          const_pkg213_main_FinderM_TOP))
 		Clock_CLID_Returning(id__,x__,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
@@ -14000,33 +14023,11 @@ exports
 						          const_pkg213_main_FinderM_DELIVERY,
 						          const_pkg213_main_FinderM_LV,
 						          const_pkg213_main_FinderM_TOP))
-		Clock_CLID_Off(id__,x__,
-				          const_pkg213_main_FinderM_DELIVERY,
-				          const_pkg213_main_FinderM_LV,
-				          const_pkg213_main_FinderM_TOP) = 
-			TimeOut_1(
-				Off::entered -> Clock_CLID_Off(id__,0,
-						          const_pkg213_main_FinderM_DELIVERY,
-						          const_pkg213_main_FinderM_LV,
-						          const_pkg213_main_FinderM_TOP)
-				[]
-				get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__,
-						          const_pkg213_main_FinderM_DELIVERY,
-						          const_pkg213_main_FinderM_LV,
-						          const_pkg213_main_FinderM_TOP)
-				[]
-				terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__,
-						          const_pkg213_main_FinderM_DELIVERY,
-						          const_pkg213_main_FinderM_LV,
-						          const_pkg213_main_FinderM_TOP)),
-						          const_pkg213_main_FinderM_DELIVERY,
-						          const_pkg213_main_FinderM_LV,
-						          const_pkg213_main_FinderM_TOP))
 		
 		StateClocks(id__,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
-				          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_Looking(id__,0,
+				          const_pkg213_main_FinderM_TOP) = dbisim(Clock_CLID_Off(id__,0,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
 				          const_pkg213_main_FinderM_TOP))
@@ -14036,12 +14037,12 @@ exports
 				          const_pkg213_main_FinderM_LV,
 				          const_pkg213_main_FinderM_TOP))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Returning(id__,0,
+		dbisim(Clock_CLID_Looking(id__,0,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
 				          const_pkg213_main_FinderM_TOP))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Off(id__,0,
+		dbisim(Clock_CLID_Returning(id__,0,
 				          const_pkg213_main_FinderM_DELIVERY,
 				          const_pkg213_main_FinderM_LV,
 				          const_pkg213_main_FinderM_TOP))
@@ -14049,7 +14050,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_Looking,Looking::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Returning,Returning::entered,get_CLID_Off,Off::entered|}
+		stateClockSync = {|get_CLID_Off,Off::entered,get_CLID_Delivering,Delivering::entered,get_CLID_Looking,Looking::entered,get_CLID_Returning,Returning::entered|}
 		
 		-- Shared memory
 		-- Shared memory variables
@@ -14905,8 +14906,8 @@ exports
 	channel takeoff: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitOpCall: core_nat
 	channel normal_FinderM_Off_t1_op_i_t_opCall
+	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -14927,8 +14928,8 @@ exports
 	sem__events = {|
 		terminate
 	,	takeoff
-	,	waitOpCall,
-		normal_FinderM_Off_t1_op_i_t_opCall
+	,	normal_FinderM_Off_t1_op_i_t_opCall,
+		waitOpCall
 		, share__
 		|}
 	
@@ -15047,11 +15048,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__normal_FinderM_Off_t1_op_i_t_op(id__,
+				    const_pkg213_main_normal_FinderM_Off_t1_op_TOP) = EDeadline(normal_FinderM_Off_t1_op_i_t_opCall,0)
 		CALL__waitOp(id__,
 				    const_pkg213_main_normal_FinderM_Off_t1_op_TOP,
 					param_i) = EDeadline(waitOpCall.param_i,0)
-		CALL__normal_FinderM_Off_t1_op_i_t_op(id__,
-				    const_pkg213_main_normal_FinderM_Off_t1_op_TOP) = EDeadline(normal_FinderM_Off_t1_op_i_t_opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -15771,10 +15772,10 @@ exports
 	channel takeoff: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitOpCall: core_nat
 	channel turnBackCall
 	channel moveCall: core_nat
 	channel normal_FinderM_Delivering_t3_op_i_t_opCall
+	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -15797,10 +15798,10 @@ exports
 	sem__events = {|
 		terminate
 	,	takeoff
-	,	waitOpCall,
-		turnBackCall,
+	,	turnBackCall,
 		moveCall,
-		normal_FinderM_Delivering_t3_op_i_t_opCall
+		normal_FinderM_Delivering_t3_op_i_t_opCall,
+		waitOpCall
 		, share__
 		|}
 	
@@ -15987,10 +15988,6 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__waitOp(id__,
-				    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
-				    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV,
-					param_i) = EDeadline(waitOpCall.param_i,0)
 		CALL__turnBack(id__,
 				    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
 				    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV) = EDeadline(turnBackCall,0)
@@ -16001,6 +15998,10 @@ exports
 		CALL__normal_FinderM_Delivering_t3_op_i_t_op(id__,
 				    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
 				    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV) = EDeadline(normal_FinderM_Delivering_t3_op_i_t_opCall,0)
+		CALL__waitOp(id__,
+				    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
+				    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV,
+					param_i) = EDeadline(waitOpCall.param_i,0)
 		
 		-- END of Operation calls --
 	
@@ -17325,8 +17326,8 @@ exports
 	
 	
 	channel get_CLID_C : core_clock_type 
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
 	CLID_C_clock_type(id__) = 
@@ -17338,7 +17339,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_Waiting_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -17347,7 +17348,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Waiting_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -21384,8 +21385,8 @@ exports
 	channel takeoff: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_FinderM_Off_t1_waitOpCall: core_nat
 	channel clone_normal_FinderM_Off_t1_op_i_t_opCall
+	channel clone_normal_FinderM_Off_t1_waitOpCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -21406,8 +21407,8 @@ exports
 	sem__events = {|
 		terminate
 	,	takeoff
-	,	clone_normal_FinderM_Off_t1_waitOpCall,
-		clone_normal_FinderM_Off_t1_op_i_t_opCall
+	,	clone_normal_FinderM_Off_t1_op_i_t_opCall,
+		clone_normal_FinderM_Off_t1_waitOpCall
 		, share__
 		|}
 	
@@ -21526,11 +21527,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_FinderM_Off_t1_op_i_t_op(id__,
+				    const_pkg213_main_clone_normal_FinderM_Off_t1_op_TOP) = EDeadline(clone_normal_FinderM_Off_t1_op_i_t_opCall,0)
 		CALL__clone_normal_FinderM_Off_t1_waitOp(id__,
 				    const_pkg213_main_clone_normal_FinderM_Off_t1_op_TOP,
 					param_n) = EDeadline(clone_normal_FinderM_Off_t1_waitOpCall.param_n,0)
-		CALL__clone_normal_FinderM_Off_t1_op_i_t_op(id__,
-				    const_pkg213_main_clone_normal_FinderM_Off_t1_op_TOP) = EDeadline(clone_normal_FinderM_Off_t1_op_i_t_opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -21880,8 +21881,8 @@ exports
 	-- Declaring call and ret events for undefined operations
 	channel turnBackCall
 	channel clone_normal_FinderM_Delivering_t3_waitOpCall: core_nat
-	channel clone_normal_FinderM_Delivering_t3_op_i_t_opCall
 	channel moveCall: core_nat
+	channel clone_normal_FinderM_Delivering_t3_op_i_t_opCall
 	
 	enterSS = {|
 	i::enter,
@@ -21906,8 +21907,8 @@ exports
 	,	takeoff
 	,	turnBackCall,
 		clone_normal_FinderM_Delivering_t3_waitOpCall,
-		clone_normal_FinderM_Delivering_t3_op_i_t_opCall,
-		moveCall
+		moveCall,
+		clone_normal_FinderM_Delivering_t3_op_i_t_opCall
 		, share__
 		|}
 	
@@ -22101,13 +22102,13 @@ exports
 				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
 				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV,
 					param_n) = EDeadline(clone_normal_FinderM_Delivering_t3_waitOpCall.param_n,0)
-		CALL__clone_normal_FinderM_Delivering_t3_op_i_t_op(id__,
-				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
-				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV) = EDeadline(clone_normal_FinderM_Delivering_t3_op_i_t_opCall,0)
 		CALL__move(id__,
 				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
 				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV,
 					param_lv) = EDeadline(moveCall.param_lv,0)
+		CALL__clone_normal_FinderM_Delivering_t3_op_i_t_op(id__,
+				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_TOP,
+				    const_pkg213_main_clone_normal_FinderM_Delivering_t3_op_LV) = EDeadline(clone_normal_FinderM_Delivering_t3_op_i_t_opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -23440,10 +23441,19 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
+	channel get_CLID_C : core_clock_type 
 	channel get_CLID_f : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
-	channel get_CLID_C : core_clock_type 
 	--channel increment__
+	
+	CLID_C_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	({param_n|param_n <- core_nat})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_f_clock_type(id__) = 
 		let
@@ -23458,15 +23468,6 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_C_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	({param_n|param_n <- core_nat})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -24301,8 +24302,8 @@ exports
 	
 	
 	channel get_CLID_C : core_clock_type 
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
 	CLID_C_clock_type(id__) = 
@@ -24314,7 +24315,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_Waiting_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -24323,7 +24324,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Waiting_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}

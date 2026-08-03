@@ -1,0 +1,61 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 13:39:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "Foot.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate Foot
+P_Foot = let
+	id__ = 0
+	
+	
+	
+		
+	const_Foot_op_ref1_c = const_step_c
+within
+	Foot::O__(id__,
+			   	const_Foot_op_ref1_c)
+
+assert P_Foot :[deadlock-free]	
+assert P_Foot;RUN({r__}) :[deadlock-free]
+assert P_Foot :[deterministic]
+assert P_Foot :[divergence-free]
+
+-- generate Foot_stm_ref0
+P_Foot_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	Foot::stm_ref0::O__(
+		id__,
+		const_step_c
+	)
+assert P_Foot_stm_ref0 :[deadlock-free]	
+assert P_Foot_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_Foot_stm_ref0 :[deterministic]
+assert P_Foot_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Foot_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Foot_stm_ref0
+-- timed deadlock free
+assert prioritise(P_Foot[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Foot

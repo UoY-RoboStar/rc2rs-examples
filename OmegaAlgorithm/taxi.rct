@@ -1,0 +1,214 @@
+
+interface SwarmTaxiVarsI {
+    var linearSpeed : real
+    var angularSpeed : real
+    var reached : boolean
+    var desiredTurningDegree : real
+    var degreeTurned : real
+    var avoidanceRadius : real
+    var illuminated : boolean
+}
+
+interface SwarmTaxiEventsI {
+	event anyRobotToAvoid
+}
+
+interface SwarmTaxiPlatformOpI {
+    CheckIlluminationStatus()
+    RotateClockwise(i : real)
+    RotateAntiClockwise(i : real)
+    CalcCoherenceHeading()
+    CalcAvoidanceHeading()
+    
+}
+
+interface SwarmTaxiCtrlOpI {
+    Turn()
+    UpdateAvoidanceRadius()
+    MoveForward(i : real)
+    
+}
+
+
+
+
+operation Turn(){
+  	requires SwarmTaxiVarsI
+	requires SwarmTaxiPlatformOpI
+	const angularSpeed1 : real // 0.1
+	const rotate : real // 2.51
+
+  initial I
+  final F
+  state S {
+    entry if desiredTurningDegree <= 0 then RotateClockwise(-rotate)
+          else RotateAntiClockwise(rotate) end;
+          degreeTurned = degreeTurned + angularSpeed * angularSpeed1;
+          if (desiredTurningDegree < 0 /\ degreeTurned < desiredTurningDegree)
+            then reached = true; degreeTurned = 0
+            else skip end;
+          if (desiredTurningDegree > 0 /\ degreeTurned > desiredTurningDegree)
+            then reached = true; degreeTurned = 0
+            else skip end
+  }
+  transition t1 {
+    from I
+    to S
+  }
+  transition t2 {
+    from S
+    to F
+  }
+}
+
+operation UpdateAvoidanceRadius(){
+  	requires SwarmTaxiVarsI
+	requires SwarmTaxiPlatformOpI
+	const avoidanceRadius1 : real // 0.1
+	const avoidanceRadius2 : real // 0.2
+	 
+  
+
+  initial I
+  final F
+  state S {
+    entry CheckIlluminationStatus();
+          if illuminated == true then avoidanceRadius = avoidanceRadius2
+          else avoidanceRadius = avoidanceRadius1 end
+  }
+  transition t1 {
+    from I
+    to S
+  }
+  transition t2 {
+    from S
+    to F
+  }
+}
+
+operation MoveForward(i : real) {
+  	requires SwarmTaxiVarsI
+  precondition i > 0
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = i; angularSpeed = 0
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+operation RotateClockwise(j : real) {
+	requires SwarmTaxiVarsI
+  precondition j < 0
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = 0; angularSpeed = j
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+operation RotateAntiClockwise(j : real){
+  requires SwarmTaxiVarsI
+  precondition j > 0
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = 0; angularSpeed = j
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+
+
+module ModTaxi {
+	robotic platform robotTaxi {
+		provides SwarmTaxiPlatformOpI
+		uses SwarmTaxiEventsI
+	}
+	
+	controller ctrlTaxi {
+		requires SwarmTaxiPlatformOpI
+		uses SwarmTaxiEventsI
+		
+		opref op_ref0 = Turn
+		opref op_ref1 = UpdateAvoidanceRadius
+		opref op_ref2 = MoveForward
+		
+		stm SwarmTaxisFSM {
+		    uses SwarmTaxiVarsI
+		    uses SwarmTaxiEventsI
+		    requires SwarmTaxiPlatformOpI
+		    requires SwarmTaxiCtrlOpI
+		    const MoveForwardVal : real // 6.4
+		    clock T
+		    
+		    initial i1
+		
+		    state Forward {
+		      entry reached = false; UpdateAvoidanceRadius(); MoveForward(MoveForwardVal)
+		    }
+		    state Coherence {
+		      entry CalcCoherenceHeading(); Turn()
+		    }
+		    state Avoidance {
+		      entry CalcAvoidanceHeading(); Turn()
+		    }
+		
+		    transition t1 {
+		      from i1
+		      to Forward
+		      action #T
+		    }
+		    transition t2 {
+		      from Forward
+		      to Coherence
+		      condition since(T) > 25
+		    }
+		    transition t3 {
+		      from Forward
+		      to Avoidance
+		      trigger anyRobotToAvoid
+		    }
+		    transition t4 {
+		      from Coherence
+		      to Forward
+		      # T
+				condition reached == true
+			}
+			transition t0 {
+				from Avoidance
+				to Forward
+				# T
+				condition reached == true
+			}
+		}
+	}
+	
+	connection robotTaxi on anyRobotToAvoid to ctrlTaxi on anyRobotToAvoid ( _async )
+}
+

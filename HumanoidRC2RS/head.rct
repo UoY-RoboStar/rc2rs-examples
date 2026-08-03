@@ -1,0 +1,138 @@
+package head
+
+datatype Vector {
+	x: real
+	y: real
+	z: real 
+}
+ 
+
+module Humanoid {
+	cref ctrl_ref0 = Head 
+	
+	robotic platform Robot {
+		event outOfBalanceLeft : Vector
+		event outOfBalanceRight : Vector
+		event wallDetected
+		provides HeadI
+		
+		 
+	}   
+	
+    //connection ctrl_ref0 on liftFootLeft to ctrl_ref1 on liftFoot
+	//connection ctrl_ref0 on liftFootRight to ctrl_ref2 on liftFoot
+	//connection ctrl_ref2 on stepDone to ctrl_ref0 on stepDoneRight
+	//connection ctrl_ref1 on stepDone to ctrl_ref0 on stepDoneLeft
+
+	connection Robot on wallDetected to ctrl_ref0 on wallDetected ( _async )
+	
+	
+}
+
+interface HeadI {
+	turn()
+	//Walk()
+}
+operation Walk() {
+	event liftFootLeft
+	event liftFootRight
+	event stepDoneLeft
+	event stepDoneRight
+	initial i0
+//	final f
+//	transition t{
+//		from i0 to f
+//	}
+	state LeftFoot {
+		entry send liftFootLeft
+	}
+	state RightFoot {
+		entry send liftFootRight
+	}
+	transition t0 {
+		from i0
+		to LeftFoot
+	}
+	transition t1 {
+		from LeftFoot
+		to RightFoot
+		trigger stepDoneLeft
+	}
+	transition t2 {
+		from RightFoot
+		to LeftFoot
+		trigger stepDoneRight
+	}
+}
+//
+interface WalkI{
+	Walk()
+}
+
+controller Head {
+	event startSiren
+	event wallDetected
+	event stopSiren
+	event liftFootLeft
+ 	event liftFootRight
+    event stepDoneLeft
+	event stepDoneRight
+	requires HeadI
+	sref stm_ref = HeadS
+	 
+	connection stm_ref on startSiren to Head on startSiren
+	connection stm_ref on stopSiren to Head on stopSiren
+	connection Head on wallDetected to stm_ref on wallDetected
+
+    opref op1 = Walk
+}
+
+stm HeadS {
+		requires HeadI
+		requires WalkI
+		event startSiren
+		event wallDetected
+		event stopSiren
+		event liftFootLeft
+	    event liftFootRight
+	    event stepDoneLeft
+	    event stepDoneRight
+		initial i0
+		junction j0
+		junction j1
+		junction j2
+
+	state Walking {
+			during Walk()
+		}
+	final f0
+		transition t0 {
+			from i0
+			to j0
+		}
+		transition t1 {
+			from j0
+			to j1
+			action send startSiren
+		}
+		transition t2 {
+			from j0
+			to j2
+		}
+		transition t3 {
+			from j1
+			to Walking
+		}
+		transition t4 {
+			from j2
+			to Walking
+		}
+		transition t5 {
+			from Walking
+			to f0
+			trigger 
+		wallDetected
+		action stopSiren
+	}
+}
+

@@ -1,12 +1,13 @@
-package EnvironmentalSensing 
-
+package main 
  
-interface Operations {
-	stop(    )
-	moveForward()
+
+
+interface Operations {   
+	stopOp(    )
+	moveForward() 
 reverse()
-moveTowards(  a : real)
-changeDirection( l : Loc)
+moveTowards(  a : real) 
+changeDirection( l : Loc) 
 }
 
 
@@ -15,15 +16,16 @@ module EnvironmentalSensing {
 		event flag
 		provides Operations 
 		
-		event s : Seq( real )
+		event s : Seq( real ) 
 		event obstacle : Loc
 		event odometer : real
 	}
-	cref ctrl_ref0 = MicroController
-	cref ctrl_ref1 = MainController
+	cref ctrl_ref0 = MicroControllerPkg::MicroController
+	cref ctrl_ref1 = MainControllerPkg::MainController
 	connection SensingVehicle on s to ctrl_ref1 on s (_async)
 	
-	connection ctrl_ref1 on stop to ctrl_ref0 on stop connection SensingVehicle on obstacle to ctrl_ref0 on obstacle (_async)
+	connection ctrl_ref1 on stop to ctrl_ref0 on stop 
+	connection SensingVehicle on obstacle to ctrl_ref0 on obstacle (_async)
 	connection ctrl_ref0 on flag to SensingVehicle on flag  (_async)
 	connection ctrl_ref1 on resume to ctrl_ref0 on resume
 	connection SensingVehicle on odometer to ctrl_ref0 on odometer (_async)

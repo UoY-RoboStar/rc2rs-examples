@@ -1,0 +1,38 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 17:43:09
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_taxi_sim_defs.csp"
+include "pre_pkg_taxi_sim_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7
+P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7 = let
+	id__ = 0
+	
+	
+	const_pre_pkg_taxi_sim_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7_rotate = 0
+	const_pre_pkg_taxi_sim_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7_angularSpeed1 = 0
+	
+	
+within
+	pre_pkg_taxi_sim::OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7::O__(id__,
+			    const_pre_pkg_taxi_sim_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7_rotate,
+			    const_pre_pkg_taxi_sim_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7_angularSpeed1)
+assert P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7 :[deadlock-free]	
+assert P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7 :[deterministic]
+assert P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_taxi_sim_OP_clone_clone_clone_normal_SwarmTaxisFSM_Coherence_entry_Turn_j_2_4_f_2_normal_Turn_S_entry_entry_7

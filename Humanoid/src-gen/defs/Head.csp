@@ -1,0 +1,17 @@
+-- declaring controller events
+channel Head_startSiren
+channel Head_wallDetected
+channel Head_stopSiren
+channel Head_liftFootLeft
+channel Head_liftFootRight
+channel Head_stepDoneLeft
+channel Head_stepDoneRight
+
+Head = Head_HeadS[[Head_HeadS_startSiren <- Head_startSiren,
+						    Head_HeadS_stopSiren <- Head_stopSiren,
+						    Head_HeadS_wallDetected <- Head_wallDetected]]
+
+-- VS version
+Head_VS = Head_HeadS_VS[[Head_HeadS_startSiren <- Head_startSiren,
+						    Head_HeadS_stopSiren <- Head_stopSiren,
+						    Head_HeadS_wallDetected <- Head_wallDetected]]

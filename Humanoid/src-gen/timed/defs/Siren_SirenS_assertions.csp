@@ -1,0 +1,27 @@
+ExternalEvents_Siren_SirenS = {|Siren_SirenS_startSiren,Siren_SirenS_stopSiren|}
+
+assert T_Siren_SirenS :[deterministic]
+assert T_Siren_SirenS :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Siren_SirenS)      [F= T_Siren_SirenS |\ union(ExternalEvents_Siren_SirenS,{tock})
+
+-- every state is reachable
+assert not STOP [T= T_Siren_SirenS_VS |\ {|Siren_SirenS_enteredV."Siren_SirenS_Stopped"|}
+assert not STOP [T= T_Siren_SirenS_VS |\ {|Siren_SirenS_enteredV."Siren_SirenS_s1"|}
+
+-- states can be reached infinitely often
+assert T_Siren_SirenS_VS |\ {|Siren_SirenS_enteredV."Siren_SirenS_Stopped"|} [T= RUN({|Siren_SirenS_enteredV."Siren_SirenS_Stopped"|})
+assert T_Siren_SirenS_VS |\ {|Siren_SirenS_enteredV."Siren_SirenS_s1"|} [T= RUN({|Siren_SirenS_enteredV."Siren_SirenS_s1"|})
+
+-- timed model is a refinement
+assert sbisim(diamond(Siren_SirenS)) [F= T_Siren_SirenS \ {tock}
+assert sbisim(diamond(Siren_SirenS_VS)) [T= T_Siren_SirenS_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Siren_SirenS \ {tock} [T= sbisim(diamond(Siren_SirenS))
+assert T_Siren_SirenS_VS \ {tock} [T= sbisim(diamond(Siren_SirenS_VS))
+
+-- memory models consistency check
+assert timed::MemoryN_Siren_SirenS [FD= timed::MemoryO_Siren_SirenS
+assert timed::MemoryO_Siren_SirenS [FD= timed::MemoryN_Siren_SirenS

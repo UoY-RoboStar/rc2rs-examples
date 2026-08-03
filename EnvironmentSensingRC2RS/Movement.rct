@@ -1,28 +1,30 @@
-import EnvironmentalSensing::*
+package MovementPkg
+import main::*
+
   
-stm Movement {
+stm Movement { 
 	requires Operations
 	const lv : real , evadeTime : int , stuckDist : real , outPeriod : int
-	var a : real , d0 : real , d1 : real
+	var a : real , d0 : real , d1 : real 
 	var l : Loc 
 	event obstacle : Loc
-	event odometer : real
+	event odometer : real   
 	event resume
-	
+	  
 	event turn : real
 	event stop
-	event flag
+	event flag 
 	initial i1
 	state Exploring {
-		entry moveForward()
-	}
+		entry moveForward() 
+	} 
 	state Going {
 		
-	entry moveTowards( a)
+	entry moveTowards( a)  
 	}
 	state Found {
-		
-	entry stop() ; flag
+		 
+	entry stopOp() ; flag
 	}
 	final j1
 	state Avoiding {
@@ -33,7 +35,7 @@ stm Movement {
 	}
 	transition t1 {
 		from i1
-		to Exploring
+		to Exploring 
 	}
 	transition t2 {
 		from Exploring

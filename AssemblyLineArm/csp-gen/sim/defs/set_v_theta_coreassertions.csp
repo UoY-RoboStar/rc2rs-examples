@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 10-07-2026 14:27:12
+--
+
+include "core_timed_defs.csp"
+include "file_main_defs.csp"
+include "core_defs.csp"
+include "set_v_theta.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_set_v_theta
+P_OP_set_v_theta = let
+	id__ = 0
+	
+	param_v_t = 0
+	
+	
+	
+within
+	OP_set_v_theta::O__(id__,
+				param_v_t)
+assert P_OP_set_v_theta :[deadlock-free]	
+assert P_OP_set_v_theta;RUN({r__}) :[deadlock-free]
+assert P_OP_set_v_theta :[deterministic]
+assert P_OP_set_v_theta :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_set_v_theta[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_set_v_theta

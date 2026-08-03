@@ -1,0 +1,384 @@
+channel foot_controller_internal__: foot_controller_TIDS
+
+ShowEvents_foot_controller(P,E) = P[[ foot_controller_entered.x.y <- foot_controller_enteredV.y | foot_controller_entered.x.y <- E]]
+							 [[	foot_controller_enter.x.y <- foot_controller_enterV.y | foot_controller_enter.x.y <- E]]
+							 [[ foot_controller_exit.x.y <- foot_controller_exitV.y | foot_controller_exit.x.y <- E]]
+							 [[ foot_controller_exited.x.y <- foot_controller_exitedV.y | foot_controller_exited.x.y <- E ]]
+
+channel foot_controller_enteredV, foot_controller_enterV, foot_controller_exitV, foot_controller_exitedV : foot_controller_SIDS
+channel foot_controller_enter, foot_controller_entered: foot_controller_SIDS.foot_controller_SIDS
+channel foot_controller_exit,foot_controller_exited: foot_controller_SIDS.foot_controller_SIDS
+
+channel get_foot_controller_v, set_foot_controller_v: Vector
+channel get_foot_controller_direction, set_foot_controller_direction: Vector
+
+-- declaring identifiers of state and final states
+foot_controller_SIDS = {
+	"foot_controller",
+	"foot_controller_Balanced",
+	"foot_controller_Moving",
+	"foot_controller_Leaning"
+}
+
+-- declaring identifiers of transitions
+foot_controller_TIDS = {
+	"__NULLTRANSITION__",
+	"foot_controller_t1",
+	"foot_controller_t3",
+	"foot_controller_t4",
+	"foot_controller_t5",
+	"foot_controller_t6"
+}
+
+-- declaring state machine events
+channel foot_controller_leanOut__:foot_controller_TIDS
+channel foot_controller_leanOut
+channel foot_controller_stepDone__:foot_controller_TIDS
+channel foot_controller_stepDone
+channel foot_controller_stepDownOut__:foot_controller_TIDS
+channel foot_controller_stepDownOut
+channel foot_controller_outOfBalance__:foot_controller_TIDS.Vector
+channel foot_controller_outOfBalance:Vector
+channel foot_controller_liftFoot__:foot_controller_TIDS
+channel foot_controller_liftFoot
+channel foot_controller_leanIn__:foot_controller_TIDS
+channel foot_controller_leanIn
+channel foot_controller_stepDownIn__:foot_controller_TIDS
+channel foot_controller_stepDownIn
+
+channel foot_controller_terminate
+
+-- declaring all states
+CS_foot_controller_Balanced_sync = {|
+	foot_controller_enter.y.x, 
+	foot_controller_entered.y.x, 
+	foot_controller_exit.y.x, 
+	foot_controller_exited.y.x,
+	foot_controller_enter.x.y, 
+	foot_controller_entered.x.y, 
+	foot_controller_exit.x.y, 
+	foot_controller_exited.x.y |
+	x <- {"foot_controller_Balanced","foot_controller_Moving","foot_controller_Leaning"},
+	y <- {"foot_controller_Balanced"}
+|}
+
+
+
+foot_controller_Balanced_triggers = {|
+	foot_controller_outOfBalance__."foot_controller_t1",
+	foot_controller_liftFoot__."foot_controller_t3",
+	foot_controller_leanIn__."foot_controller_t5"
+|}
+		   
+S_foot_controller_Balanced = let
+	T_foot_controller_t1	= foot_controller_outOfBalance__!"foot_controller_t1"?v -> set_foot_controller_v!v ->  (get_foot_controller_v?v -> correct(v);foot_controller_enter!"foot_controller_Balanced"!"foot_controller_Balanced" -> S_foot_controller_Balanced_execute("foot_controller_Balanced")
+	)
+	T_foot_controller_t3	= foot_controller_liftFoot__!"foot_controller_t3" ->  (foot_controller_enter!"foot_controller_Balanced"!"foot_controller_Moving" -> foot_controller_entered!"foot_controller_Balanced"!"foot_controller_Moving" ->
+	S_foot_controller_Balanced
+	)
+	T_foot_controller_t5	= foot_controller_leanIn__!"foot_controller_t5" ->  (foot_controller_enter!"foot_controller_Balanced"!"foot_controller_Leaning" -> foot_controller_entered!"foot_controller_Balanced"!"foot_controller_Leaning" ->
+	S_foot_controller_Balanced
+	)
+	
+
+	S_foot_controller_Balanced_execute(o__) = 
+	SKIP; 
+	foot_controller_entered!o__!"foot_controller_Balanced" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_foot_controller_t1[]
+	   											    T_foot_controller_t3[]
+	   											    T_foot_controller_t5
+	   											    []
+	   											    foot_controller_internal__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_leanOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_stepDone__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_stepDownOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_outOfBalance__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"})?x__ ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_liftFoot__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_leanIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    [] foot_controller_stepDownIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t1","foot_controller_t3","foot_controller_t5"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Balanced" -> SKIP);
+	   											      	S_foot_controller_Balanced
+	   											    )
+	   										)
+within
+foot_controller_enter?x:diff(foot_controller_SIDS,{"foot_controller_Balanced"})!"foot_controller_Balanced" -> ( 
+	S_foot_controller_Balanced_execute(x)) 
+CS_foot_controller_Moving_sync = {|
+	foot_controller_enter.y.x, 
+	foot_controller_entered.y.x, 
+	foot_controller_exit.y.x, 
+	foot_controller_exited.y.x,
+	foot_controller_enter.x.y, 
+	foot_controller_entered.x.y, 
+	foot_controller_exit.x.y, 
+	foot_controller_exited.x.y |
+	x <- {"foot_controller_Balanced","foot_controller_Moving","foot_controller_Leaning"},
+	y <- {"foot_controller_Moving"}
+|}
+
+
+
+foot_controller_Moving_triggers = {|
+	foot_controller_internal__."foot_controller_t4"
+|}
+		   
+S_foot_controller_Moving = let
+	T_foot_controller_t4	= foot_controller_internal__!"foot_controller_t4" ->  foot_controller_enter!"foot_controller_Moving"!"foot_controller_Balanced" -> foot_controller_entered!"foot_controller_Moving"!"foot_controller_Balanced" ->
+	S_foot_controller_Moving
+	
+
+	S_foot_controller_Moving_execute(o__) = 
+	get_foot_controller_direction?direction -> step(direction); 
+	foot_controller_entered!o__!"foot_controller_Moving" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_foot_controller_t4
+	   											    []
+	   											    foot_controller_internal__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_leanOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_stepDone__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_stepDownOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_outOfBalance__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"})?x__ ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_liftFoot__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_leanIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    [] foot_controller_stepDownIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t4"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Moving" -> SKIP);
+	   											      	S_foot_controller_Moving
+	   											    )
+	   										)
+within
+foot_controller_enter?x:diff(foot_controller_SIDS,{"foot_controller_Moving"})!"foot_controller_Moving" -> ( 
+	S_foot_controller_Moving_execute(x)) 
+CS_foot_controller_Leaning_sync = {|
+	foot_controller_enter.y.x, 
+	foot_controller_entered.y.x, 
+	foot_controller_exit.y.x, 
+	foot_controller_exited.y.x,
+	foot_controller_enter.x.y, 
+	foot_controller_entered.x.y, 
+	foot_controller_exit.x.y, 
+	foot_controller_exited.x.y |
+	x <- {"foot_controller_Balanced","foot_controller_Moving","foot_controller_Leaning"},
+	y <- {"foot_controller_Leaning"}
+|}
+
+
+
+foot_controller_Leaning_triggers = {|
+	foot_controller_internal__."foot_controller_t6"
+|}
+		   
+S_foot_controller_Leaning = let
+	T_foot_controller_t6	= foot_controller_internal__!"foot_controller_t6" ->  foot_controller_stepDownOut -> SKIP;foot_controller_enter!"foot_controller_Leaning"!"foot_controller_Balanced" -> foot_controller_entered!"foot_controller_Leaning"!"foot_controller_Balanced" ->
+	S_foot_controller_Leaning
+	
+
+	S_foot_controller_Leaning_execute(o__) = 
+	leanforwardCall -> leanforwardRet -> SKIP; 
+	foot_controller_entered!o__!"foot_controller_Leaning" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_foot_controller_t6
+	   											    []
+	   											    foot_controller_internal__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_leanOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_stepDone__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_stepDownOut__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_outOfBalance__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"})?x__ ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_liftFoot__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_leanIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    [] foot_controller_stepDownIn__?x:diff(foot_controller_TIDS,{"__NULLTRANSITION__","foot_controller_t6"}) ->
+	   											      foot_controller_exit?y:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> (
+	   											      	foot_controller_exited!y!"foot_controller_Leaning" -> SKIP);
+	   											      	S_foot_controller_Leaning
+	   											    )
+	   										)
+within
+foot_controller_enter?x:diff(foot_controller_SIDS,{"foot_controller_Leaning"})!"foot_controller_Leaning" -> ( 
+	S_foot_controller_Leaning_execute(x)) 
+
+I_foot_controller_I1 = T_foot_controller_t2
+
+
+
+foot_controller_int_int = {|
+	foot_controller_leanOut__."foot_controller_t1",
+	foot_controller_stepDone__."foot_controller_t1",
+	foot_controller_stepDownOut__."foot_controller_t1",
+	foot_controller_outOfBalance__."foot_controller_t1",
+	foot_controller_liftFoot__."foot_controller_t1",
+	foot_controller_leanIn__."foot_controller_t1",
+	foot_controller_stepDownIn__."foot_controller_t1",
+foot_controller_internal__."foot_controller_t1",
+	foot_controller_leanOut__."foot_controller_t3",
+	foot_controller_stepDone__."foot_controller_t3",
+	foot_controller_stepDownOut__."foot_controller_t3",
+	foot_controller_outOfBalance__."foot_controller_t3",
+	foot_controller_liftFoot__."foot_controller_t3",
+	foot_controller_leanIn__."foot_controller_t3",
+	foot_controller_stepDownIn__."foot_controller_t3",
+foot_controller_internal__."foot_controller_t3",
+	foot_controller_leanOut__."foot_controller_t4",
+	foot_controller_stepDone__."foot_controller_t4",
+	foot_controller_stepDownOut__."foot_controller_t4",
+	foot_controller_outOfBalance__."foot_controller_t4",
+	foot_controller_liftFoot__."foot_controller_t4",
+	foot_controller_leanIn__."foot_controller_t4",
+	foot_controller_stepDownIn__."foot_controller_t4",
+foot_controller_internal__."foot_controller_t4",
+	foot_controller_leanOut__."foot_controller_t5",
+	foot_controller_stepDone__."foot_controller_t5",
+	foot_controller_stepDownOut__."foot_controller_t5",
+	foot_controller_outOfBalance__."foot_controller_t5",
+	foot_controller_liftFoot__."foot_controller_t5",
+	foot_controller_leanIn__."foot_controller_t5",
+	foot_controller_stepDownIn__."foot_controller_t5",
+foot_controller_internal__."foot_controller_t5",
+	foot_controller_leanOut__."foot_controller_t6",
+	foot_controller_stepDone__."foot_controller_t6",
+	foot_controller_stepDownOut__."foot_controller_t6",
+	foot_controller_outOfBalance__."foot_controller_t6",
+	foot_controller_liftFoot__."foot_controller_t6",
+	foot_controller_leanIn__."foot_controller_t6",
+	foot_controller_stepDownIn__."foot_controller_t6",
+foot_controller_internal__."foot_controller_t6"
+|}
+
+
+T_foot_controller_t2	= foot_controller_enter!"foot_controller"!"foot_controller_Balanced" -> foot_controller_entered!"foot_controller"!"foot_controller_Balanced" ->
+SKIP
+
+S_foot_controller_Balanced_R = S_foot_controller_Balanced
+ 		[|diff(foot_controller_int_int,foot_controller_Balanced_triggers)|]
+ 		SKIP
+ 		
+S_foot_controller_Moving_R = S_foot_controller_Moving
+ 		[|diff(foot_controller_int_int,foot_controller_Moving_triggers)|]
+ 		SKIP
+ 		
+S_foot_controller_Leaning_R = S_foot_controller_Leaning
+ 		[|diff(foot_controller_int_int,foot_controller_Leaning_triggers)|]
+ 		SKIP
+ 		
+STM_foot_controller = ShowEvents_foot_controller(I_foot_controller_I1
+[|{|foot_controller_enter.x.y,
+		foot_controller_entered.x.y,
+		foot_controller_exit.x.y,
+		foot_controller_exited.x.y |
+		x <- diff(foot_controller_SIDS,{"foot_controller_Balanced","foot_controller_Moving","foot_controller_Leaning"}),
+		y <- {"foot_controller_Balanced","foot_controller_Moving","foot_controller_Leaning"}
+|}|]
+ShowEvents_foot_controller(S_foot_controller_Balanced_R
+  [|inter(CS_foot_controller_Balanced_sync,union(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync))|]
+ ShowEvents_foot_controller(S_foot_controller_Moving_R
+   [|inter(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync)|]
+  S_foot_controller_Leaning_R,inter(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync))\inter(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync)
+ ,inter(CS_foot_controller_Balanced_sync,union(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync)))\inter(CS_foot_controller_Balanced_sync,union(CS_foot_controller_Moving_sync,CS_foot_controller_Leaning_sync))
+ 	,{|foot_controller_enter,foot_controller_entered,
+ 	foot_controller_exit,foot_controller_exited|})\{|foot_controller_enter,foot_controller_entered,
+  foot_controller_exit,foot_controller_exited|}
+-- memory process
+Memory_foot_controller(v,direction) = (
+  get_foot_controller_v!v -> Memory_foot_controller(v,direction)
+  []
+  set_foot_controller_v?x__ -> Memory_foot_controller(x__,direction)
+  []
+  get_foot_controller_direction!direction -> Memory_foot_controller(v,direction)
+  []
+  set_foot_controller_direction?x__ -> Memory_foot_controller(v,x__)
+	  []
+	foot_controller_outOfBalance__!"foot_controller_t1"?v -> Memory_foot_controller(v,direction)
+	  []
+	foot_controller_liftFoot__!"foot_controller_t3" -> Memory_foot_controller(v,direction)
+	  []
+	foot_controller_internal__!"foot_controller_t4" -> Memory_foot_controller(v,direction)
+	  []
+	foot_controller_leanIn__!"foot_controller_t5" -> Memory_foot_controller(v,direction)
+	  []
+	foot_controller_internal__!"foot_controller_t6" -> Memory_foot_controller(v,direction)
+	)
+-- main process
+foot_controller_aux = ((STM_foot_controller
+	[|union(
+		{|get_foot_controller_v,set_foot_controller_v,
+		get_foot_controller_direction,set_foot_controller_direction|},
+		{|foot_controller_outOfBalance__."foot_controller_t1",
+		foot_controller_liftFoot__."foot_controller_t3",
+		foot_controller_internal__."foot_controller_t4",
+		foot_controller_leanIn__."foot_controller_t5",
+		foot_controller_internal__."foot_controller_t6"|}
+	)|]
+	Memory_foot_controller((0,0,0),(0,0,0))
+)[[foot_controller_leanOut__.x <- foot_controller_leanOut, foot_controller_stepDone__.x <- foot_controller_stepDone, foot_controller_stepDownOut__.x <- foot_controller_stepDownOut, foot_controller_outOfBalance__.x <- foot_controller_outOfBalance, foot_controller_liftFoot__.x <- foot_controller_liftFoot, foot_controller_leanIn__.x <- foot_controller_leanIn, foot_controller_stepDownIn__.x <- foot_controller_stepDownIn| x<-foot_controller_TIDS]]\{|get_foot_controller_v,set_foot_controller_v,
+get_foot_controller_direction,set_foot_controller_direction|})
+[|{|foot_controller_terminate|}|>SKIP\{|foot_controller_terminate, foot_controller_internal__|}
+
+foot_controller = foot_controller_aux \ {|foot_controller_enteredV, foot_controller_enterV, foot_controller_exitV, foot_controller_exitedV|}
+foot_controller_VS = foot_controller_aux

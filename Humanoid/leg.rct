@@ -1,0 +1,154 @@
+diagram leg
+
+datatype Vector {
+	x: real
+	y: real
+	z: real
+}
+
+interface foot {
+	movex(r:real)
+	movey(r:real)
+	movez(r:real)
+	leanforward()
+}
+
+interface StepOpI{
+	step(d:Vector)
+}
+
+interface CorrectOpI {
+	correct(v:Vector)
+}
+
+controller Foot {
+	requires foot
+	opref op_ref0 = correct
+	opref op_ref1 = step
+	sref stm_ref0 = foot_controller
+	event leanOut
+	event stepDone
+	event stepDownOut
+	event outOfBalance: Vector
+	event liftFoot
+	event leanIn
+	event stepDownIn
+connection Foot on leanIn to stm_ref0 on leanIn
+	connection Foot on liftFoot to stm_ref0 on liftFoot
+	connection Foot on stepDownIn to stm_ref0 on stepDownIn
+	connection stm_ref0 on stepDownOut to Foot on stepDownOut
+	connection Foot on outOfBalance to stm_ref0 on outOfBalance
+	connection stm_ref0 on stepDone to Foot on stepDone
+	connection stm_ref0 on leanOut to Foot on leanOut
+}
+
+stm foot_controller {
+	requires foot
+	requires CorrectOpI
+	requires StepOpI
+	event leanOut
+	event stepDone
+	event stepDownOut
+	event outOfBalance: Vector
+	event liftFoot
+	event leanIn
+	event stepDownIn
+	var v: Vector, direction: Vector
+	initial I1
+	state Balanced {
+		
+	}
+	
+	state Moving {
+		entry step( direction)
+	}
+	
+	state Leaning {
+		entry leanforward()
+	}
+	
+	transition t1 {
+		from Balanced
+		to Balanced
+		trigger outOfBalance?v
+		action correct( v)
+	}
+	
+	transition t2 {
+		from I1 to Balanced
+	}
+	
+	transition t3 {
+		from Balanced to Moving
+		trigger liftFoot
+	}
+	
+	transition t4 {
+		from Moving to Balanced
+	}
+	
+	transition t5 {
+		from Balanced to Leaning
+		trigger leanIn
+	}
+	
+	transition t6 {
+		from Leaning to Balanced
+		action send stepDownOut
+	}
+}
+
+operation correct(v: Vector) {
+	requires foot
+	initial I1
+	final F1
+	transition t1 { 
+		from I1 to F1
+		action movex( v . x) ; movey( v . y) ; movez( v . z)
+	}
+}
+
+operation step(d: Vector) {
+	event leanOut
+	event stepDownIn
+	event stepDone
+	requires foot
+	const c: real
+	initial I1
+	final F1
+	junction j1
+	junction j2
+	junction j3
+	state Waiting {
+		
+	}
+	junction j4
+	transition t1 {
+		from I1 to j1
+		action movex( c * d . x / sqrt ( ( d . x * d . x ) + ( d . y * d . y ) ))
+	}
+	transition t2 {
+		from j1 to j2
+		action movey( ( c * d . y ) / sqrt ( ( d . x * d . x ) + ( d . y * d . y ) ))
+	}
+	transition t3 {
+		from j2 to j3
+		action movez( c) 
+	}
+	transition t4 {
+		from j3 to Waiting
+		action send leanOut
+	}
+	transition t5 {
+		from Waiting to j4
+		trigger stepDownIn
+		action send stepDone
+	}
+	transition t6 {
+		from j4 to F1
+		action movez( - c)
+	}
+}function sqrt(r:real):real {
+	precondition r >= 0
+	postcondition r <= result*result /\ result*result < r + 1 
+}

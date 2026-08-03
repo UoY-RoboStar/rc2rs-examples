@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 01-08-2026 20:29:30
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel odometer: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitOpCall: core_nat
 	channel normal_Movement_Avoiding_entry_i_t_opCall
+	channel waitOpCall: core_nat
 	channel normal_Movement_Avoiding_entry_j_3_3_t_3_3_opCall
 	
 	enterSS = {|
@@ -70,8 +70,8 @@ exports
 		terminate
 	,	set_EXT_d0, set_d0
 	,	odometer
-	,	waitOpCall,
-		normal_Movement_Avoiding_entry_i_t_opCall,
+	,	normal_Movement_Avoiding_entry_i_t_opCall,
+		waitOpCall,
 		normal_Movement_Avoiding_entry_j_3_3_t_3_3_opCall
 		, share__
 		|}
@@ -217,11 +217,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__normal_Movement_Avoiding_entry_i_t_op(id__,
+				    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = EDeadline(normal_Movement_Avoiding_entry_i_t_opCall,0)
 		CALL__waitOp(id__,
 				    const_pkg994__normal_Movement_Avoiding_entry_evadeTime,
 					param_i) = EDeadline(waitOpCall.param_i,0)
-		CALL__normal_Movement_Avoiding_entry_i_t_op(id__,
-				    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = EDeadline(normal_Movement_Avoiding_entry_i_t_opCall,0)
 		CALL__normal_Movement_Avoiding_entry_j_3_3_t_3_3_op(id__,
 				    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = EDeadline(normal_Movement_Avoiding_entry_j_3_3_t_3_3_opCall,0)
 		

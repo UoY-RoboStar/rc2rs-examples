@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:58:34
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 24-06-2026 14:28:42
 --
 
 -- compileSelfContainedOperation
@@ -64,25 +64,25 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_C : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	channel get_CLID_f : core_clock_type 
 	--channel increment__
+	
+	CLID_Waiting_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_C_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	({param_i|param_i <- core_nat}),
 	({param_i|param_i <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_Waiting_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	{}
 	}))+1)
 		ctype = {0..max}
 	within
@@ -381,21 +381,21 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_obstacleF |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_obstacleF <- setL_obstacleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_C |} ]] 
+						  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_obstacleF
-						 			,clockResetR.CLID_C
-						 			 			,setR_obstacleF
+						 			,clockResetL.CLID_C
+						 			,setR_obstacleF
+						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_obstacleF |} ]]
-						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_obstacleF <- setR_obstacleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_C |} ]]
+						  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_obstacleF <- set_obstacleF]]
-						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_obstacleF <- set_obstacleF]]
+						)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -471,21 +471,21 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_obstacleF |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_obstacleF <- setL_obstacleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,clockResetR.CLID_C |} ]] 
+						  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_obstacleF
-						 			,clockResetR.CLID_C
-						 			 			,setR_obstacleF
+						 			,clockResetL.CLID_C
+						 			,setR_obstacleF
+						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_obstacleF |} ]]
-						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_obstacleF <- setR_obstacleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_C |} ]]
+						  [[set_obstacleF <- setR_obstacleF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_obstacleF <- set_obstacleF]]
-						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_obstacleF <- set_obstacleF]]
+						)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_obstacleF <- set_obstacleF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

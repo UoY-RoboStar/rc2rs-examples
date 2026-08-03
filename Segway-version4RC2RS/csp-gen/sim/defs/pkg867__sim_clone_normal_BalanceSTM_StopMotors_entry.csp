@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 -- compileSelfContainedOperation
@@ -36,11 +36,11 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
-	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_angleF: core_boolean
 	channel set_EXT_leftMotorVelocityF: core_boolean
 	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_angleF: core_boolean
+	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_gyroZF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -48,8 +48,8 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call: core_nat.core_nat
-	channel setLeftMotorSpeedCall: core_real
 	channel setRightMotorSpeedCall: core_real
+	channel setLeftMotorSpeedCall: core_real
 	
 	enterSS = {|
 	i::enter,
@@ -65,11 +65,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
-		set_EXT_gyroXF,
+		set_EXT_angleF,
 		set_EXT_leftMotorVelocityF,
 		set_EXT_rightMotorVelocityF,
-		set_EXT_angleF
+		set_EXT_gyroXF,
+		set_EXT_gyroZF
 	|}
 	
 	
@@ -99,13 +99,13 @@ exports
 	
 	-- declaring registerRead/Write datatypes
 	
-	datatype RegisterDataOutput = o_setLeftMotorSpeed.core_real
-		| o_setRightMotorSpeed.core_real
+	datatype RegisterDataOutput = o_setRightMotorSpeed.core_real
+		| o_setLeftMotorSpeed.core_real
 	
 	
 	nametype RegisterOutputs = {|
-	o_setLeftMotorSpeed,
-	o_setRightMotorSpeed|}
+	o_setRightMotorSpeed,
+	o_setLeftMotorSpeed|}
 		
 	nametype RegisterInputs = {||}
 	
@@ -117,8 +117,8 @@ exports
 	sem__events = {|endexec,terminate
 				,registerWrite
 	,	clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call,
-		setLeftMotorSpeedCall,
-		setRightMotorSpeedCall
+		setRightMotorSpeedCall,
+		setLeftMotorSpeedCall
 		, share__
 		|}
 	
@@ -248,12 +248,12 @@ exports
 				    const_pkg867__sim_clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
 					param_m,
 					param_n) = EDeadline(clone_clone_normal_BalanceSTM_StopMotors_entry_waitInterval_j_2_12_f_5Call.param_m.param_n,0)
-		CALL__setLeftMotorSpeed(id__,
-				    const_pkg867__sim_clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
-					param_speed) = EDeadline(registerWrite.o_setLeftMotorSpeed.param_speed,0)
 		CALL__setRightMotorSpeed(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
 					param_speed) = EDeadline(registerWrite.o_setRightMotorSpeed.param_speed,0)
+		CALL__setLeftMotorSpeed(id__,
+				    const_pkg867__sim_clone_normal_BalanceSTM_StopMotors_entry_motorBudget,
+					param_speed) = EDeadline(registerWrite.o_setLeftMotorSpeed.param_speed,0)
 		
 		-- END of Operation calls --
 	

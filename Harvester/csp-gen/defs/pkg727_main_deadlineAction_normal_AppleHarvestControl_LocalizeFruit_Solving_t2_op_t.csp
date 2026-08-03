@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -42,8 +42,8 @@ exports
 	channel startGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall
 	channel deadlineCheckCall: core_nat
+	channel normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall
 	
 	enterSS = {|
 	i::enter,
@@ -65,8 +65,8 @@ exports
 	sem__events = {|
 		terminate
 	,	startGoHome
-	,	normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall,
-		deadlineCheckCall
+	,	deadlineCheckCall,
+		normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall
 		, share__
 		|}
 	
@@ -504,9 +504,9 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t(id__) 	= normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall -> SKIP
 	CALL__deadlineCheck(id__,
 				param_d) 	= deadlineCheckCall.param_d -> SKIP
+	CALL__normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t(id__) 	= normal_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_tCall -> SKIP
 	
 	-- END of Operation calls --
 	

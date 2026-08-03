@@ -1,0 +1,45 @@
+
+--
+-- RoboSim generator version 3.0.0.202603091039
+-- Automatically generated on 12-05-2026 11:37:02
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pkg867__sim_BalanceSTM.csp"
+include "state_timed_defs.csp"
+include "pkg867__sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pkg867__sim_BalanceSTM
+P_pkg867__sim_BalanceSTM = let
+	cycle_pkg867__sim_BalanceSTM_BalanceSTM = 1
+	id__ = 0
+	
+	
+	
+within
+	pkg867__sim_BalanceSTM::O__(
+		id__,
+		const_pkg867__sim_BalanceSTM_maxAngle,
+		const_pkg867__sim_BalanceSTM_loopTime,
+		const_pkg867__sim_BalanceSTM_startupDelay,
+		const_pkg867__sim_BalanceSTM_speedUpdate,
+		const_pkg867__sim_BalanceSTM_rotationUpdate,
+		const_pkg867__sim_BalanceSTM_angleBudget,
+		const_pkg867__sim_BalanceSTM_speedBudget,
+		const_pkg867__sim_BalanceSTM_rotationBudget,
+		const_pkg867__sim_BalanceSTM_motorBudget
+	)
+assert P_pkg867__sim_BalanceSTM :[deadlock-free]	
+assert P_pkg867__sim_BalanceSTM;RUN({r__}) :[deadlock-free]
+assert P_pkg867__sim_BalanceSTM :[deterministic]
+assert P_pkg867__sim_BalanceSTM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pkg867__sim_BalanceSTM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pkg867__sim_BalanceSTM

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:58:34
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 24-06-2026 14:28:43
 --
 
 -- compileSelfContainedOperation
@@ -64,16 +64,15 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_C : core_clock_type 
-	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	--channel increment__
 	
-	CLID_C_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
-	({param_i|param_i <- core_nat}),
-	({param_i|param_i <- core_nat})
+	{}
 	}))+1)
 		ctype = {0..max}
 	within
@@ -88,10 +87,11 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_C_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
-	{}
+	({param_i|param_i <- core_nat}),
+	({param_i|param_i <- core_nat})
 	}))+1)
 		ctype = {0..max}
 	within

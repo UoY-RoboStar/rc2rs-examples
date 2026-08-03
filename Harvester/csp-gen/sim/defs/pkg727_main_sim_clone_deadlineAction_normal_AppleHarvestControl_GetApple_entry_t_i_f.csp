@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -39,24 +39,24 @@ exports
 	channel get_takePicF, set_takePicF, setL_takePicF, setR_takePicF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_nextApple: setoperations_Coord3D
-	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
 	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
+	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
+	channel set_EXT_takePicF: core_boolean
+	channel set_EXT_nextApple: setoperations_Coord3D
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: main_JointsPos
-	channel clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall: core_nat
-	channel pickCall
-	channel graspCall: main_JointsPos
-	channel clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_fCall
-	channel opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0Call
 	channel dropCall: main_JointsPos
+	channel pickCall
+	channel clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_fCall
+	channel moveCall: main_JointsPos
+	channel graspCall: main_JointsPos
+	channel opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0Call
+	channel clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -72,11 +72,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_nextApple,
-		set_EXT_positions,
 		set_EXT_endIKSolverF,
+		set_EXT_endGoHomeF,
+		set_EXT_positions,
 		set_EXT_takePicF,
-		set_EXT_endGoHomeF
+		set_EXT_nextApple
 	|}
 	
 	
@@ -85,11 +85,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_S0 : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_S0 : core_clock_type 
 	--channel increment__
 	
-	CLID_S0_clock_type(id__,
+	CLID_f_clock_type(id__,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
@@ -102,7 +102,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__,
+	CLID_S0_clock_type(id__,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
 			          const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
@@ -124,17 +124,17 @@ exports
 	
 	-- declaring registerRead/Write datatypes
 	
-	datatype RegisterDataOutput = o_grasp.main_JointsPos
+	datatype RegisterDataOutput = o_pick
 		| o_drop.main_JointsPos
+		| o_grasp.main_JointsPos
 		| o_move.main_JointsPos
-		| o_pick
 	
 	
 	nametype RegisterOutputs = {|
-	o_grasp,
+	o_pick,
 	o_drop,
-	o_move,
-	o_pick|}
+	o_grasp,
+	o_move|}
 		
 	nametype RegisterInputs = {||}
 	
@@ -145,13 +145,13 @@ exports
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
 				,registerWrite
-	,	moveCall,
-		clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall,
+	,	dropCall,
 		pickCall,
-		graspCall,
 		clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_fCall,
+		moveCall,
+		graspCall,
 		opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0Call,
-		dropCall
+		clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall
 		, share__
 		|}
 	
@@ -530,35 +530,35 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_g,setR_endIKSolverF,setR_takePicF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF |} ]] 
-						  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_g <- setL_g,set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setL_endGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endIKSolverF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_positions,setR_takePicF,setR_g,setR_nextApple |} ]] 
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endIKSolverF <- setL_endIKSolverF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setL_endGoHomeF,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_positions <- setL_positions,set_takePicF <- setL_takePicF,set_g <- setL_g,set_nextApple <- setL_nextApple]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_nextApple
-						 			,setL_positions
-						 			,setL_g
-						 			,setL_endIKSolverF
-						 			,setL_takePicF
-						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_endIKSolverF
+						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_endGoHomeF
-						 			,setR_nextApple
-						 			 			,setR_positions
-						 			 			,setR_g
+						 			,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_positions
+						 			,setL_takePicF
+						 			,setL_g
+						 			,setL_nextApple
+						 			,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			 			,setR_endIKSolverF
-						 			 			,setR_takePicF
 						 			 			,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			 			,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			 			,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			 			,setR_endGoHomeF
+						 			 			,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			 			,setR_positions
+						 			 			,setR_takePicF
+						 			 			,setR_g
+						 			 			,setR_nextApple
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_g,setL_endIKSolverF,setL_takePicF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF |} ]]
-						  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_g <- setR_g,set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setR_endGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endIKSolverF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_positions,setL_takePicF,setL_g,setL_nextApple |} ]]
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endIKSolverF <- setR_endIKSolverF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setR_endGoHomeF,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_positions <- setR_positions,set_takePicF <- setR_takePicF,set_g <- setR_g,set_nextApple <- setR_nextApple]]
 						 )
-						)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_g <- set_g,setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF <- set_endGoHomeF]]
-						 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_g <- set_g,setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF <- set_endGoHomeF]]
+						)[[setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endIKSolverF <- set_endIKSolverF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_positions <- set_positions,setL_takePicF <- set_takePicF,setL_g <- set_g,setL_nextApple <- set_nextApple]]
+						 [[setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endIKSolverF <- set_endIKSolverF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_positions <- set_positions,setR_takePicF <- set_takePicF,setR_g <- set_g,setR_nextApple <- set_nextApple]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -675,35 +675,35 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_g,setR_endIKSolverF,setR_takePicF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF |} ]] 
-						  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_g <- setL_g,set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setL_endGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endIKSolverF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_positions,setR_takePicF,setR_g,setR_nextApple |} ]] 
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endIKSolverF <- setL_endIKSolverF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setL_endGoHomeF,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_positions <- setL_positions,set_takePicF <- setL_takePicF,set_g <- setL_g,set_nextApple <- setL_nextApple]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_nextApple
-						 			,setL_positions
-						 			,setL_g
-						 			,setL_endIKSolverF
-						 			,setL_takePicF
-						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_endIKSolverF
+						 			,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			,setL_endGoHomeF
-						 			,setR_nextApple
-						 			 			,setR_positions
-						 			 			,setR_g
+						 			,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			,setL_positions
+						 			,setL_takePicF
+						 			,setL_g
+						 			,setL_nextApple
+						 			,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			 			,setR_endIKSolverF
-						 			 			,setR_takePicF
 						 			 			,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			 			,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
-						 			 			,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
 						 			 			,setR_endGoHomeF
+						 			 			,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f
+						 			 			,setR_positions
+						 			 			,setR_takePicF
+						 			 			,setR_g
+						 			 			,setR_nextApple
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_g,setL_endIKSolverF,setL_takePicF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF |} ]]
-						  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_g <- setR_g,set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setR_endGoHomeF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endIKSolverF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_positions,setL_takePicF,setL_g,setL_nextApple |} ]]
+						  [[set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endIKSolverF <- setR_endIKSolverF,set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_endGoHomeF <- setR_endGoHomeF,set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,set_positions <- setR_positions,set_takePicF <- setR_takePicF,set_g <- setR_g,set_nextApple <- setR_nextApple]]
 						 )
-						)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_g <- set_g,setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF <- set_endGoHomeF]]
-						 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_g <- set_g,setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF <- set_endGoHomeF]]
+						)[[setL_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endIKSolverF <- set_endIKSolverF,setL_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setL_positions <- set_positions,setL_takePicF <- set_takePicF,setL_g <- set_g,setL_nextApple <- set_nextApple]]
+						 [[setR_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endIKSolverF <- set_endIKSolverF,setR_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f <- set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f,setR_positions <- set_positions,setR_takePicF <- set_takePicF,setR_g <- set_g,setR_nextApple <- set_nextApple]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -855,45 +855,45 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__move(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
-					param_jp) = EDeadline(registerWrite.o_move.param_jp,0)
-		CALL__clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheck(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
-					param_d) = EDeadline(clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall.param_d,0)
-		CALL__pick(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(registerWrite.o_pick,0)
-		CALL__grasp(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
-					param_jp) = EDeadline(registerWrite.o_grasp.param_jp,0)
-		CALL__clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_fCall,0)
-		CALL__opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0(id__,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
-				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0Call,0)
 		CALL__drop(id__,
 				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
 				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
 				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
 				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
 					param_jp) = EDeadline(registerWrite.o_drop.param_jp,0)
+		CALL__pick(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(registerWrite.o_pick,0)
+		CALL__clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_f(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(clone_normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_S1_fCall,0)
+		CALL__move(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
+					param_jp) = EDeadline(registerWrite.o_move.param_jp,0)
+		CALL__grasp(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
+					param_jp) = EDeadline(registerWrite.o_grasp.param_jp,0)
+		CALL__opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime) = EDeadline(opFinalDuring_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_S0Call,0)
+		CALL__clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheck(id__,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_pickTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_graspTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_dropTime,
+				    const_pkg727_main_sim_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_approachTime,
+					param_d) = EDeadline(clone_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f_deadlineCheckCall.param_d,0)
 		
 		-- END of Operation calls --
 	
@@ -1295,7 +1295,7 @@ exports
 		[| { terminate } |] (
 		Memory_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(false)
 		[| { terminate } |] (
-		Memory_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(false)
+		Memory_inact_clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(true)
 		)
 		)
 		)

@@ -1,0 +1,116 @@
+diagram head
+interface HeadI {
+	turn()
+	Walk()
+}
+operation Walk() {
+	event liftFootLeft
+	event liftFootRight
+	event stepDoneLeft
+	event stepDoneRight
+	initial i0
+	state LeftFoot {
+		entry send liftFootLeft
+	}
+	state RightFoot {
+		entry send liftFootRight
+	}
+	transition t0 {
+		from i0
+		to LeftFoot
+	}
+	transition t1 {
+		from LeftFoot
+		to RightFoot
+		trigger stepDoneLeft
+	}
+	transition t2 {
+		from RightFoot
+		to LeftFoot
+		trigger stepDoneRight
+	}
+}
+
+controller Head {
+	event startSiren
+	event wallDetected
+	event stopSiren
+	event liftFootLeft
+	event liftFootRight
+	event stepDoneLeft
+	event stepDoneRight
+	requires HeadI
+	opref op_ref0 = Walk
+	
+	
+	stm HeadS {
+		requires HeadI
+		event startSiren
+		event wallDetected
+		event stopSiren
+		event liftFootLeft
+		event liftFootRight
+		event stepDoneLeft
+		event stepDoneRight
+		initial i0
+		junction j0
+		junction j1
+		junction j2
+		junction j3
+		state Walking {
+			during Walk()
+		}
+		state Stopped {
+		}
+		state Turning {
+			entry turn()
+		}
+		transition t0 {
+			from i0
+			to j0
+		}
+		transition t1 {
+			from j0
+			to j1
+			action send startSiren
+		}
+		transition t2 {
+			from j0
+			to j2
+		}
+		transition t3 {
+			from j1
+			to Walking
+		}
+		transition t4 {
+			from j2
+			to Walking
+		}
+		transition t5 {
+			from Walking
+			to j3
+			trigger wallDetected
+		}
+		transition t6 {
+			from j3
+			to Stopped
+			action send stopSiren
+		}
+		transition t7 {
+			from j3
+			to Turning
+		}
+		transition t8 {
+			from Turning
+			to j0
+		}
+	}
+	connection HeadS on startSiren to Head on startSiren
+	connection HeadS on stopSiren to Head on stopSiren
+	connection Head on wallDetected to HeadS on wallDetected
+	connection HeadS on liftFootLeft to Head on liftFootLeft
+	connection HeadS on liftFootRight to Head on liftFootRight
+	connection Head on stepDoneLeft to HeadS on stepDoneLeft
+	connection Head on stepDoneRight to HeadS on stepDoneRight
+
+}

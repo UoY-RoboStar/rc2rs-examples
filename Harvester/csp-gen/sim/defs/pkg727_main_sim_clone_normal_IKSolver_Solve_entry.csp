@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -36,20 +36,20 @@ exports
 	channel get_startIKSolverF, set_startIKSolverF, setL_startIKSolverF, setR_startIKSolverF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_apple: setoperations_Coord3D
-	channel set_EXT_p1: main_JointsPos
-	channel set_EXT_startIKSolverF: core_boolean
-	channel set_EXT_p3: main_JointsPos
 	channel set_EXT_p2: main_JointsPos
+	channel set_EXT_p1: main_JointsPos
+	channel set_EXT_apple: setoperations_Coord3D
+	channel set_EXT_p3: main_JointsPos
+	channel set_EXT_startIKSolverF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall
 	channel clone_normal_IKSolver_Solve_entry_j_3_2_t_3_2_op_j_3_2_j_2_6Call
 	channel clone_normal_IKSolver_Solve_entry_i_t_op_i_j_3_2Call
-	channel clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall
 	
 	enterSS = {|
 	i::enter,
@@ -65,11 +65,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_apple,
+		set_EXT_p2,
 		set_EXT_p1,
-		set_EXT_startIKSolverF,
+		set_EXT_apple,
 		set_EXT_p3,
-		set_EXT_p2
+		set_EXT_startIKSolverF
 	|}
 	
 	
@@ -108,9 +108,9 @@ exports
 	
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
-	,	clone_normal_IKSolver_Solve_entry_j_3_2_t_3_2_op_j_3_2_j_2_6Call,
-		clone_normal_IKSolver_Solve_entry_i_t_op_i_j_3_2Call,
-		clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall
+	,	clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall,
+		clone_normal_IKSolver_Solve_entry_j_3_2_t_3_2_op_j_3_2_j_2_6Call,
+		clone_normal_IKSolver_Solve_entry_i_t_op_i_j_3_2Call
 		, share__
 		|}
 	
@@ -224,9 +224,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_f(id__) = EDeadline(clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall,0)
 		CALL__clone_normal_IKSolver_Solve_entry_j_3_2_t_3_2_op_j_3_2_j_2_6(id__) = EDeadline(clone_normal_IKSolver_Solve_entry_j_3_2_t_3_2_op_j_3_2_j_2_6Call,0)
 		CALL__clone_normal_IKSolver_Solve_entry_i_t_op_i_j_3_2(id__) = EDeadline(clone_normal_IKSolver_Solve_entry_i_t_op_i_j_3_2Call,0)
-		CALL__clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_f(id__) = EDeadline(clone_normal_IKSolver_Solve_entry_j_2_6_t_2_6_op_j_2_6_fCall,0)
 		
 		-- END of Operation calls --
 	

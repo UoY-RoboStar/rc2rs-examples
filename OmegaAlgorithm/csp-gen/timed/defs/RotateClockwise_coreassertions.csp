@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 20-07-2026 13:09:20
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "RotateClockwise.csp"
+include "file_taxi_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_RotateClockwise
+P_OP_RotateClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	OP_RotateClockwise::O__(id__,
+				param_j)
+assert P_OP_RotateClockwise :[deadlock-free]	
+assert P_OP_RotateClockwise;RUN({r__}) :[deadlock-free]
+assert P_OP_RotateClockwise :[deterministic]
+assert P_OP_RotateClockwise :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_RotateClockwise[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_RotateClockwise

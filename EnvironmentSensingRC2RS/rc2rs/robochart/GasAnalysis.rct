@@ -1,18 +1,9 @@
-package pkg1126_ 
-interface I_events_normal_SourceAnalysis_Analysis_t3_op {
+package pre_pkg_SourceAnalysisPkg  interface I_events_normal_SourceAnalysis_Analysis_t3_op {
 	event resume
 }
 
 interface I_normal_SourceAnalysis_Analysis_t3_op {
 	normal_SourceAnalysis_Analysis_t3_op ( )
-}
-
-interface I_events_normal_SourceAnalysis_SourceDetected_t8_op {
-	event stop
-}
-
-interface I_normal_SourceAnalysis_SourceDetected_t8_op {
-	normal_SourceAnalysis_SourceDetected_t8_op ( )
 }
 
 interface req_normal_SourceAnalysis_SourceDetected_t9a_op {
@@ -25,6 +16,14 @@ interface I_events_normal_SourceAnalysis_SourceDetected_t9a_op {
 
 interface I_normal_SourceAnalysis_SourceDetected_t9a_op {
 	normal_SourceAnalysis_SourceDetected_t9a_op ( )
+}
+
+interface I_events_normal_SourceAnalysis_SourceDetected_t8_op {
+	event stop
+}
+
+interface I_normal_SourceAnalysis_SourceDetected_t8_op {
+	normal_SourceAnalysis_SourceDetected_t8_op ( )
 }
 
 interface I_clone_normal_SourceAnalysis_SourceDetected_t8_op {
@@ -48,9 +47,9 @@ stm SourceAnalysis {
 	event stop
 	initial i1
 	state NoSource {
+		initial i
 		state EmptyCycle {
 		}
-		initial i
 		transition tNoSource {
 			from i
 			to EmptyCycle
@@ -76,9 +75,9 @@ stm SourceAnalysis {
 	}
 	final j1
 	state Reading {
-		initial i
 		state EmptyCycle {
 		}
+		initial i
 		transition tReading {
 			from i
 			to EmptyCycle
@@ -124,8 +123,8 @@ stm SourceAnalysis {
 }
 
 operation normal_SourceAnalysis_Analysis_t3_op ( ) {
-	uses I_events_normal_SourceAnalysis_Analysis_t3_op final f
-	initial i
+	uses I_events_normal_SourceAnalysis_Analysis_t3_op initial i
+	final f
 	transition t {
 		from i
 		to f
@@ -133,19 +132,9 @@ operation normal_SourceAnalysis_Analysis_t3_op ( ) {
 	}
 }
 
-operation normal_SourceAnalysis_SourceDetected_t8_op ( ) {
-	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op final f
-	initial i
-	transition t {
-		from i
-		to f
-		action stop
-	}
-}
-
 operation normal_SourceAnalysis_SourceDetected_t9a_op ( ) {
-	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op final f
-	initial i
+	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op initial i
+	final f
 	transition t {
 		from i
 		to f
@@ -153,9 +142,19 @@ operation normal_SourceAnalysis_SourceDetected_t9a_op ( ) {
 	}
 }
 
+operation normal_SourceAnalysis_SourceDetected_t8_op ( ) {
+	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action stop
+	}
+}
+
 operation clone_normal_SourceAnalysis_SourceDetected_t8_op ( ) {
-	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op final f
-	initial i
+	uses I_events_normal_SourceAnalysis_SourceDetected_t8_op initial i
+	final f
 	transition t {
 		from i
 		to f
@@ -164,8 +163,8 @@ operation clone_normal_SourceAnalysis_SourceDetected_t8_op ( ) {
 }
 
 operation clone_normal_SourceAnalysis_Analysis_t3_op ( ) {
-	uses I_events_normal_SourceAnalysis_Analysis_t3_op final f
-	initial i
+	uses I_events_normal_SourceAnalysis_Analysis_t3_op initial i
+	final f
 	transition t {
 		from i
 		to f
@@ -174,8 +173,8 @@ operation clone_normal_SourceAnalysis_Analysis_t3_op ( ) {
 }
 
 operation clone_normal_SourceAnalysis_SourceDetected_t9a_op ( ) {
-	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op final f
-	initial i
+	uses I_events_normal_SourceAnalysis_SourceDetected_t9a_op requires req_normal_SourceAnalysis_SourceDetected_t9a_op initial i
+	final f
 	transition t {
 		from i
 		to f

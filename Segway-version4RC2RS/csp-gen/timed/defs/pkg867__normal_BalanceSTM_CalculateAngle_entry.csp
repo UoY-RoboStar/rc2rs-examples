@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -53,10 +53,10 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel waitIntervalCall: core_nat.core_nat
-	channel AnglePIDCall: core_real.core_real
-	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call: core_nat
 	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call: core_nat
+	channel AnglePIDCall: core_real.core_real
 	channel enableInterruptsCall
+	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -88,10 +88,10 @@ exports
 	,	angle,
 		gyroX
 	,	waitIntervalCall,
-		AnglePIDCall,
-		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call,
 		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
-		enableInterruptsCall
+		AnglePIDCall,
+		enableInterruptsCall,
+		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call
 		, share__
 		|}
 	
@@ -292,18 +292,18 @@ exports
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 					param_m,
 					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
+		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
+					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d,0)
 		CALL__AnglePID(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 					param_newError,
 					param_diff) = EDeadline(AnglePIDCall.param_newError.param_diff,0)
+		CALL__enableInterrupts(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget) = EDeadline(enableInterruptsCall,0)
 		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call.param_d,0)
-		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
-					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d,0)
-		CALL__enableInterrupts(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget) = EDeadline(enableInterruptsCall,0)
 		
 		-- END of Operation calls --
 	

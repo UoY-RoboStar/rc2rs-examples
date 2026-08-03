@@ -1,0 +1,224 @@
+-- generate const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE2
+const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE2 = 0
+
+-- generate const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE1
+const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE1 = 0
+
+-- generate calc_v_theta
+calc_v_theta(e_theta,i_theta,d_theta) = 0
+-- CYCLE DEFINITIONS
+
+-- generate calc_radius
+calc_radius(target_x,target_y) = 0
+
+-- generate get_t_x
+get_t_x(x) = 0
+
+-- generate get_t_y
+get_t_y(y) = 0
+
+-- generate const_simDetectionBehaviourStm_HOME_X
+const_simDetectionBehaviourStm_HOME_X = 0
+
+-- generate const_simDetectionBehaviourStm_HOME_Y
+const_simDetectionBehaviourStm_HOME_Y = 0
+
+-- generate const_simArmController_HEIGHT_TO_SHAPE2
+const_simArmController_HEIGHT_TO_SHAPE2 = 0
+
+-- generate cycle_simDetectionBehaviourStm_simDetectionBehaviourStm
+cycle_simDetectionBehaviourStm_simDetectionBehaviourStm = 1
+
+-- generate const_simArmController_HEIGHT_TO_SHAPE1
+const_simArmController_HEIGHT_TO_SHAPE1 = 0
+
+-- generate calc_p_e_theta
+calc_p_e_theta(t_theta,c_theta) = 0
+
+-- generate const_pidOp_step_size
+const_pidOp_step_size = 0
+
+-- BASIC TYPES
+
+-- generate update_t_y
+update_t_y(target_y,belt_speed,step_size) = 0
+
+-- generate const_simArmController_BELT_SPEED
+const_simArmController_BELT_SPEED = 0
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate --
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{{0..2},{0..2},{0..2},{0..2},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}}}))..calc_type_max(Union({{0..2},{0..2},{0..2},{0..2},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}}}))})
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS
+
+-- generate const_simArmController_WAIT_LOWER1
+const_simArmController_WAIT_LOWER1 = 0
+
+-- generate const_simArmController_sm_WAIT_PICK
+const_simArmController_sm_WAIT_PICK = 0
+
+-- generate const_simArmController_WAIT_LOWER2
+const_simArmController_WAIT_LOWER2 = 0
+
+-- generate calc_i_theta
+calc_i_theta(e_theta,p_e_theta,step_size) = 0
+
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{calc_e_theta(t_theta,c_theta)|c_theta <- { -2..2},t_theta <- { -2..2}},{calc_e_radius(t_radius,c_radius)|t_radius <- { -2..2},c_radius <- { -2..2}},{calc_d_theta(e_theta,p_e_theta,STEP_SIZE)|p_e_theta <- { -2..2},e_theta <- { -2..2},STEP_SIZE <- {0..2}},{calc_d_radius(e_radius,p_e_radius,STEP_SIZE)|e_radius <- { -2..2},p_e_radius <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_theta, calc_i_theta(e_theta,p_e_theta,STEP_SIZE), { -2..2})|i_theta <- { -2..2},p_e_theta <- { -2..2},e_theta <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_radius, calc_i_radius(e_radius,p_e_radius,STEP_SIZE), { -2..2})|e_radius <- { -2..2},i_radius <- { -2..2},p_e_radius <- { -2..2},STEP_SIZE <- {0..2}},{calc_v_theta(e_theta,i_theta,d_theta)|i_theta <- { -2..2},e_theta <- { -2..2},d_theta <- { -2..2}},{calc_v_radius(e_radius,i_radius,d_radius)|e_radius <- { -2..2},d_radius <- { -2..2},i_radius <- { -2..2}},{get_t_x(x)|x <- { -2..2}},{get_t_y(y)|y <- { -2..2}},{0},{0},{0},{0},{0},{0},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_p_e_theta(t_theta,c_theta)|c_theta <- { -2..2},t_theta <- { -2..2}},{calc_p_e_radius(t_radius,c_radius)|t_radius <- { -2..2},c_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{update_t_y(target_y,BELT_SPEED,STEP_SIZE)|BELT_SPEED <- { -2..2},STEP_SIZE <- {0..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{0},{0},{calc_e_theta(t_theta,c_theta)|t_theta <- { -2..2},c_theta <- { -2..2}},{calc_e_radius(t_radius,c_radius)|c_radius <- { -2..2},t_radius <- { -2..2}},{calc_d_theta(e_theta,p_e_theta,STEP_SIZE)|e_theta <- { -2..2},p_e_theta <- { -2..2},STEP_SIZE <- {0..2}},{calc_d_radius(e_radius,p_e_radius,STEP_SIZE)|p_e_radius <- { -2..2},e_radius <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_theta, calc_i_theta(e_theta,p_e_theta,STEP_SIZE), { -2..2})|i_theta <- { -2..2},e_theta <- { -2..2},p_e_theta <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_radius, calc_i_radius(e_radius,p_e_radius,STEP_SIZE), { -2..2})|p_e_radius <- { -2..2},i_radius <- { -2..2},e_radius <- { -2..2},STEP_SIZE <- {0..2}},{calc_v_theta(e_theta,i_theta,d_theta)|i_theta <- { -2..2},e_theta <- { -2..2},d_theta <- { -2..2}},{calc_v_radius(e_radius,i_radius,d_radius)|d_radius <- { -2..2},i_radius <- { -2..2},e_radius <- { -2..2}},{get_t_x(x)|x <- { -2..2}},{get_t_y(y)|y <- { -2..2}},{0},{0},{0},{0},{0},{0},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_p_e_theta(t_theta,c_theta)|t_theta <- { -2..2},c_theta <- { -2..2}},{calc_p_e_radius(t_radius,c_radius)|c_radius <- { -2..2},t_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{0},{0},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{t_radius|t_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{e_radius|e_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{BELT_SPEED|BELT_SPEED <- { -2..2}},{target_y|target_y <- { -2..2}},{c_theta|c_theta <- { -2..2}},{d_radius|d_radius <- { -2..2}},{t_radius|t_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{p_e_theta|p_e_theta <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{c_theta|c_theta <- { -2..2}},{(Plus(shape2_y, Mult((Minus(liftTS, shape2_ts, { -2..2})), BELT_SPEED, { -2..2}), { -2..2}))|BELT_SPEED <- { -2..2},shape2_y <- { -2..2},liftTS <- { -2..2},shape2_ts <- { -2..2}},{t_theta|t_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{c_radius|c_radius <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{target_x|target_x <- { -2..2}},{shape2_x|shape2_x <- { -2..2}},{v_radius|v_radius <- { -2..2}},{e_radius|e_radius <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{d_theta|d_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{target_y|target_y <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{e_theta|e_theta <- { -2..2}},{v_theta|v_theta <- { -2..2}},{x|x <- { -2..2}},{e_theta|e_theta <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{target_x|target_x <- { -2..2}},{i_theta|i_theta <- { -2..2}},{y|y <- { -2..2}},{c_theta|c_theta <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{target_x|target_x <- { -2..2}},{e_radius|e_radius <- { -2..2}},{(Plus(shape1_y, Mult((Minus(shape2_ts, shape1_ts, { -2..2})), BELT_SPEED, { -2..2}), { -2..2}))|BELT_SPEED <- { -2..2},shape1_ts <- { -2..2},shape1_y <- { -2..2},shape2_ts <- { -2..2}},{c_radius|c_radius <- { -2..2}},{i_theta|i_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{e_radius|e_radius <- { -2..2}},{v_theta|v_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{target_x|target_x <- { -2..2}},{y|y <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_x|target_x <- { -2..2}},{t_radius|t_radius <- { -2..2}},{target_y|target_y <- { -2..2}},{target_y|target_y <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{p_e_radius|p_e_radius <- { -2..2}},{HOME_X|HOME_X <- { -2..2}},{i_radius|i_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{t_theta|t_theta <- { -2..2}},{v_radius|v_radius <- { -2..2}},{c_radius|c_radius <- { -2..2}},{d_radius|d_radius <- { -2..2}},{t_theta|t_theta <- { -2..2}},{t_theta|t_theta <- { -2..2}},{HEIGHT_TO_SHAPE1|HEIGHT_TO_SHAPE1 <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{t_radius|t_radius <- { -2..2}},{HOME_Y|HOME_Y <- { -2..2}},{d_theta|d_theta <- { -2..2}},{x|x <- { -2..2}},{shape1_x|shape1_x <- { -2..2}},{HEIGHT_TO_SHAPE2|HEIGHT_TO_SHAPE2 <- { -2..2}},{c_theta|c_theta <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_x|target_x <- { -2..2}},{c_radius|c_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{i_radius|i_radius <- { -2..2}}}))..calc_type_max(Union({{calc_e_theta(t_theta,c_theta)|c_theta <- { -2..2},t_theta <- { -2..2}},{calc_e_radius(t_radius,c_radius)|t_radius <- { -2..2},c_radius <- { -2..2}},{calc_d_theta(e_theta,p_e_theta,STEP_SIZE)|p_e_theta <- { -2..2},e_theta <- { -2..2},STEP_SIZE <- {0..2}},{calc_d_radius(e_radius,p_e_radius,STEP_SIZE)|e_radius <- { -2..2},p_e_radius <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_theta, calc_i_theta(e_theta,p_e_theta,STEP_SIZE), { -2..2})|i_theta <- { -2..2},p_e_theta <- { -2..2},e_theta <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_radius, calc_i_radius(e_radius,p_e_radius,STEP_SIZE), { -2..2})|e_radius <- { -2..2},i_radius <- { -2..2},p_e_radius <- { -2..2},STEP_SIZE <- {0..2}},{calc_v_theta(e_theta,i_theta,d_theta)|i_theta <- { -2..2},e_theta <- { -2..2},d_theta <- { -2..2}},{calc_v_radius(e_radius,i_radius,d_radius)|e_radius <- { -2..2},d_radius <- { -2..2},i_radius <- { -2..2}},{get_t_x(x)|x <- { -2..2}},{get_t_y(y)|y <- { -2..2}},{0},{0},{0},{0},{0},{0},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_p_e_theta(t_theta,c_theta)|c_theta <- { -2..2},t_theta <- { -2..2}},{calc_p_e_radius(t_radius,c_radius)|t_radius <- { -2..2},c_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{update_t_y(target_y,BELT_SPEED,STEP_SIZE)|BELT_SPEED <- { -2..2},STEP_SIZE <- {0..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{0},{0},{calc_e_theta(t_theta,c_theta)|t_theta <- { -2..2},c_theta <- { -2..2}},{calc_e_radius(t_radius,c_radius)|c_radius <- { -2..2},t_radius <- { -2..2}},{calc_d_theta(e_theta,p_e_theta,STEP_SIZE)|e_theta <- { -2..2},p_e_theta <- { -2..2},STEP_SIZE <- {0..2}},{calc_d_radius(e_radius,p_e_radius,STEP_SIZE)|p_e_radius <- { -2..2},e_radius <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_theta, calc_i_theta(e_theta,p_e_theta,STEP_SIZE), { -2..2})|i_theta <- { -2..2},e_theta <- { -2..2},p_e_theta <- { -2..2},STEP_SIZE <- {0..2}},{Plus(i_radius, calc_i_radius(e_radius,p_e_radius,STEP_SIZE), { -2..2})|p_e_radius <- { -2..2},i_radius <- { -2..2},e_radius <- { -2..2},STEP_SIZE <- {0..2}},{calc_v_theta(e_theta,i_theta,d_theta)|i_theta <- { -2..2},e_theta <- { -2..2},d_theta <- { -2..2}},{calc_v_radius(e_radius,i_radius,d_radius)|d_radius <- { -2..2},i_radius <- { -2..2},e_radius <- { -2..2}},{get_t_x(x)|x <- { -2..2}},{get_t_y(y)|y <- { -2..2}},{0},{0},{0},{0},{0},{0},{calc_theta(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_radius(target_x,target_y)|target_x <- { -2..2},target_y <- { -2..2}},{calc_p_e_theta(t_theta,c_theta)|t_theta <- { -2..2},c_theta <- { -2..2}},{calc_p_e_radius(t_radius,c_radius)|c_radius <- { -2..2},t_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{0},{0},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{t_radius|t_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{e_radius|e_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{BELT_SPEED|BELT_SPEED <- { -2..2}},{target_y|target_y <- { -2..2}},{c_theta|c_theta <- { -2..2}},{d_radius|d_radius <- { -2..2}},{t_radius|t_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{p_e_theta|p_e_theta <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{c_theta|c_theta <- { -2..2}},{(Plus(shape2_y, Mult((Minus(liftTS, shape2_ts, { -2..2})), BELT_SPEED, { -2..2}), { -2..2}))|BELT_SPEED <- { -2..2},shape2_y <- { -2..2},liftTS <- { -2..2},shape2_ts <- { -2..2}},{t_theta|t_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{c_radius|c_radius <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{target_x|target_x <- { -2..2}},{shape2_x|shape2_x <- { -2..2}},{v_radius|v_radius <- { -2..2}},{e_radius|e_radius <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{d_theta|d_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{target_y|target_y <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{e_theta|e_theta <- { -2..2}},{v_theta|v_theta <- { -2..2}},{x|x <- { -2..2}},{e_theta|e_theta <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{target_x|target_x <- { -2..2}},{i_theta|i_theta <- { -2..2}},{y|y <- { -2..2}},{c_theta|c_theta <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_y|target_y <- { -2..2}},{target_x|target_x <- { -2..2}},{e_radius|e_radius <- { -2..2}},{(Plus(shape1_y, Mult((Minus(shape2_ts, shape1_ts, { -2..2})), BELT_SPEED, { -2..2}), { -2..2}))|BELT_SPEED <- { -2..2},shape1_ts <- { -2..2},shape1_y <- { -2..2},shape2_ts <- { -2..2}},{c_radius|c_radius <- { -2..2}},{i_theta|i_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{p_e_radius|p_e_radius <- { -2..2}},{e_radius|e_radius <- { -2..2}},{v_theta|v_theta <- { -2..2}},{e_radius|e_radius <- { -2..2}},{target_x|target_x <- { -2..2}},{y|y <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_x|target_x <- { -2..2}},{t_radius|t_radius <- { -2..2}},{target_y|target_y <- { -2..2}},{target_y|target_y <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{p_e_radius|p_e_radius <- { -2..2}},{HOME_X|HOME_X <- { -2..2}},{i_radius|i_radius <- { -2..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{t_theta|t_theta <- { -2..2}},{v_radius|v_radius <- { -2..2}},{c_radius|c_radius <- { -2..2}},{d_radius|d_radius <- { -2..2}},{t_theta|t_theta <- { -2..2}},{t_theta|t_theta <- { -2..2}},{HEIGHT_TO_SHAPE1|HEIGHT_TO_SHAPE1 <- { -2..2}},{p_e_theta|p_e_theta <- { -2..2}},{t_radius|t_radius <- { -2..2}},{HOME_Y|HOME_Y <- { -2..2}},{d_theta|d_theta <- { -2..2}},{x|x <- { -2..2}},{shape1_x|shape1_x <- { -2..2}},{HEIGHT_TO_SHAPE2|HEIGHT_TO_SHAPE2 <- { -2..2}},{c_theta|c_theta <- { -2..2}},{e_theta|e_theta <- { -2..2}},{target_x|target_x <- { -2..2}},{c_radius|c_radius <- { -2..2}},{e_theta|e_theta <- { -2..2}},{i_radius|i_radius <- { -2..2}}}))}) 
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+
+-- generate const_interceptOp_WAIT_LOWER1
+const_interceptOp_WAIT_LOWER1 = 0
+
+-- generate const_simArmController_sm_DELAY_DISCARD
+const_simArmController_sm_DELAY_DISCARD = 0
+
+-- generate const_interceptOp_WAIT_LOWER2
+const_interceptOp_WAIT_LOWER2 = 0
+
+-- generate calc_v_radius
+calc_v_radius(e_radius,i_radius,d_radius) = 0
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate const_simArmController_step_size
+const_simArmController_step_size = 0
+
+-- STATEMACHINE CONSTANTS
+
+-- generate calc_theta
+calc_theta(target_x,target_y) = 0
+
+-- generate calc_e_theta
+calc_e_theta(t_theta,c_theta) = 0
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate const_interceptOp_step_size
+const_interceptOp_step_size = 0
+
+-- generate const_pidOp_HEIGHT_TO_SHAPE2
+const_pidOp_HEIGHT_TO_SHAPE2 = 0
+
+-- generate calc_d_radius
+calc_d_radius(e_radius,p_e_radius,step_size) = 0
+
+-- generate calc_e_radius
+calc_e_radius(t_radius,c_radius) = 0
+
+-- generate const_simDetectionBehaviourStm_WAIT_PICK
+const_simDetectionBehaviourStm_WAIT_PICK = 0
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_pidOp_HEIGHT_TO_SHAPE1
+const_pidOp_HEIGHT_TO_SHAPE1 = 0
+
+-- generate const_simDetectionBehaviourStm_DELAY_DISCARD
+const_simDetectionBehaviourStm_DELAY_DISCARD = 0
+
+-- generate const_pidOp_WAIT_LOWER1
+const_pidOp_WAIT_LOWER1 = 0
+
+-- generate const_pidOp_WAIT_LOWER2
+const_pidOp_WAIT_LOWER2 = 0
+
+-- generate calc_i_radius
+calc_i_radius(e_radius,p_e_radius,step_size) = 0
+
+-- generate -- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- generate calc_p_e_radius
+calc_p_e_radius(t_radius,c_radius) = 0
+
+-- generate const_interceptOp_BELT_SPEED
+const_interceptOp_BELT_SPEED = 0
+
+-- generate const_simArmController_sm_HOME_X
+const_simArmController_sm_HOME_X = 0
+
+-- generate const_simDetectionBehaviourStm_WAIT_LOWER2
+const_simDetectionBehaviourStm_WAIT_LOWER2 = 0
+
+-- generate const_simArmController_sm_HOME_Y
+const_simArmController_sm_HOME_Y = 0
+
+-- generate const_interceptOp_HEIGHT_TO_SHAPE2
+const_interceptOp_HEIGHT_TO_SHAPE2 = 0
+
+-- generate const_simDetectionBehaviourStm_WAIT_LOWER1
+const_simDetectionBehaviourStm_WAIT_LOWER1 = 0
+
+-- generate const_interceptOp_HEIGHT_TO_SHAPE1
+const_interceptOp_HEIGHT_TO_SHAPE1 = 0
+
+-- generate const_simDetectionBehaviourStm_BELT_SPEED
+const_simDetectionBehaviourStm_BELT_SPEED = 0
+
+-- generate calc_d_theta
+calc_d_theta(e_theta,p_e_theta,step_size) = 0
+
+-- generate const_interceptOp_STEP_SIZE
+const_interceptOp_STEP_SIZE = 0
+
+-- generate const_simDetectionBehaviourStm_WAIT_DROP
+const_simDetectionBehaviourStm_WAIT_DROP = 0
+
+-- generate cycle_simArmController_simArmController
+cycle_simArmController_simArmController = 1
+
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{{0..2},{0..2},{0..2},{0..2},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}}}))..calc_type_max(Union({{0..2},{0..2},{0..2},{0..2},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}},{STEP_SIZE|STEP_SIZE <- {0..2}}}))})
+
+-- generate const_pidOp_BELT_SPEED
+const_pidOp_BELT_SPEED = 0
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate const_simDetectionBehaviourStm_step_size
+const_simDetectionBehaviourStm_step_size = 0
+
+-- generate const_simArmController_sm_WAIT_DROP
+const_simArmController_sm_WAIT_DROP = 0
+
+-- OPERATION CONSTANTS
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate const_pidOp_STEP_SIZE
+const_pidOp_STEP_SIZE = 0
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+

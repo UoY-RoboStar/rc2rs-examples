@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 -- compileSelfContainedOperation
@@ -33,8 +33,8 @@ exports
 	channel get_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, setR_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	channel set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
+	channel set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -58,8 +58,8 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,
-		set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
+		set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,
+		set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
 	|}
 	
 	datatype ClockSet = 
@@ -72,8 +72,8 @@ exports
 	
 	channel get_CLID_C : core_clock_type 
 	channel get_CLID_S2 : core_clock_type 
-	channel get_CLID_S1 : core_clock_type 
 	channel get_CLID_sStop : core_clock_type 
+	channel get_CLID_S1 : core_clock_type 
 	--channel increment__
 	
 	CLID_C_clock_type(id__) = 
@@ -96,7 +96,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_S1_clock_type(id__) = 
+	CLID_sStop_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -105,7 +105,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_sStop_clock_type(id__) = 
+	CLID_S1_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -547,7 +547,7 @@ exports
 		Behaviour(id__,
 					param_d) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 			 within
 				(MachineBody(id__,
 							param_d) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
@@ -648,7 +648,7 @@ exports
 		Behaviour_VS_O(id__,
 					param_d) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 							param_d) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
@@ -729,13 +729,6 @@ exports
 				get_CLID_S2!x__ -> Clock_CLID_S2(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_S2(id__,clock_type_plus(x__,1,CLID_S2_clock_type(id__))))
-		Clock_CLID_S1(id__,x__) = 
-			TimeOut_1(
-				S1::entered -> Clock_CLID_S1(id__,0)
-				[]
-				get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
-				[]
-				terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 		Clock_CLID_sStop(id__,x__) = 
 			TimeOut_1(
 				sStop::entered -> Clock_CLID_sStop(id__,0)
@@ -743,16 +736,23 @@ exports
 				get_CLID_sStop!x__ -> Clock_CLID_sStop(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_sStop(id__,clock_type_plus(x__,1,CLID_sStop_clock_type(id__))))
+		Clock_CLID_S1(id__,x__) = 
+			TimeOut_1(
+				S1::entered -> Clock_CLID_S1(id__,0)
+				[]
+				get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 		
 		StateClocks(id__) = dbisim(Clock_CLID_S2(id__,0))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_S1(id__,0))
-		[| { terminate } |] (
 		dbisim(Clock_CLID_sStop(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_S1(id__,0))
 		)
 		)
 		
-		stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+		stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 		
 		}
 			endmodule

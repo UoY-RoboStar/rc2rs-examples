@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel gyroX: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
 	channel deadlineCheckCall: core_nat
+	channel normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
 	
 	enterSS = {|
 	i::enter,
@@ -69,8 +69,8 @@ exports
 		terminate
 	,	set_EXT_currGyroX, set_currGyroX
 	,	gyroX
-	,	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
-		deadlineCheckCall
+	,	deadlineCheckCall,
+		normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
 		, share__
 		|}
 	
@@ -79,11 +79,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_S0 : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_S0 : core_clock_type 
 	--channel increment__
 	
-	CLID_S0_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -92,7 +92,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_S0_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -400,21 +400,21 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currGyroX |} ]] 
-						  [[set_g <- setL_g,set_currGyroX <- setL_currGyroX]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currGyroX,setR_g |} ]] 
+						  [[set_currGyroX <- setL_currGyroX,set_g <- setL_g]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_g
 						 			,setL_currGyroX
-						 			,setR_g
-						 			 			,setR_currGyroX
+						 			,setL_g
+						 			,setR_currGyroX
+						 			 			,setR_g
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currGyroX |} ]]
-						  [[set_g <- setR_g,set_currGyroX <- setR_currGyroX]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currGyroX,setL_g |} ]]
+						  [[set_currGyroX <- setR_currGyroX,set_g <- setR_g]]
 						 )
-						)[[setL_g <- set_g,setL_currGyroX <- set_currGyroX]]
-						 [[setR_g <- set_g,setR_currGyroX <- set_currGyroX]]
+						)[[setL_currGyroX <- set_currGyroX,setL_g <- set_g]]
+						 [[setR_currGyroX <- set_currGyroX,setR_g <- set_g]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -498,21 +498,21 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currGyroX |} ]] 
-						  [[set_g <- setL_g,set_currGyroX <- setL_currGyroX]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_currGyroX,setR_g |} ]] 
+						  [[set_currGyroX <- setL_currGyroX,set_g <- setL_g]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_g
 						 			,setL_currGyroX
-						 			,setR_g
-						 			 			,setR_currGyroX
+						 			,setL_g
+						 			,setR_currGyroX
+						 			 			,setR_g
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currGyroX |} ]]
-						  [[set_g <- setR_g,set_currGyroX <- setR_currGyroX]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currGyroX,setL_g |} ]]
+						  [[set_currGyroX <- setR_currGyroX,set_g <- setR_g]]
 						 )
-						)[[setL_g <- set_g,setL_currGyroX <- set_currGyroX]]
-						 [[setR_g <- set_g,setR_currGyroX <- set_currGyroX]]
+						)[[setL_currGyroX <- set_currGyroX,setL_g <- set_g]]
+						 [[setR_currGyroX <- set_currGyroX,setR_g <- set_g]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -600,9 +600,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__) = EDeadline(normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,0)
 		CALL__deadlineCheck(id__,
 					param_d) = EDeadline(deadlineCheckCall.param_d,0)
+		CALL__normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__) = EDeadline(normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,0)
 		
 		-- END of Operation calls --
 	

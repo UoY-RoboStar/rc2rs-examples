@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 -- compileSelfContainedOperation
@@ -35,11 +35,11 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
-	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_angleF: core_boolean
 	channel set_EXT_leftMotorVelocityF: core_boolean
 	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_angleF: core_boolean
+	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_gyroZF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -61,11 +61,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
-		set_EXT_gyroXF,
+		set_EXT_angleF,
 		set_EXT_leftMotorVelocityF,
 		set_EXT_rightMotorVelocityF,
-		set_EXT_angleF
+		set_EXT_gyroXF,
+		set_EXT_gyroZF
 	|}
 	
 	datatype ClockSet = 
@@ -76,24 +76,24 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_C : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	--channel increment__
+	
+	CLID_f_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_C_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	({param_m|param_m <- core_nat}),
 	({param_n|param_n <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_f_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	{}
 	}))+1)
 		ctype = {0..max}
 	within

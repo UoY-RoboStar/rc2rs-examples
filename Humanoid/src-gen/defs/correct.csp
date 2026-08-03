@@ -1,0 +1,96 @@
+channel correct_internal__: correct_TIDS
+
+ShowEvents_correct(P,E) = P[[ correct_entered.x.y <- correct_enteredV.y | correct_entered.x.y <- E]]
+							 [[	correct_enter.x.y <- correct_enterV.y | correct_enter.x.y <- E]]
+							 [[ correct_exit.x.y <- correct_exitV.y | correct_exit.x.y <- E]]
+							 [[ correct_exited.x.y <- correct_exitedV.y | correct_exited.x.y <- E ]]
+
+channel correct_enteredV, correct_enterV, correct_exitV, correct_exitedV : correct_SIDS
+channel correct_enter, correct_entered: correct_SIDS.correct_SIDS
+channel correct_exit,correct_exited: correct_SIDS.correct_SIDS
+
+
+-- declaring identifiers of state and final states
+correct_SIDS = {
+	"correct",
+	"correct_F1"
+}
+
+-- declaring identifiers of transitions
+correct_TIDS = {
+	"__NULLTRANSITION__"
+}
+
+-- declaring state machine events
+
+channel correct_terminate
+
+-- declaring all states
+CS_correct_F1_sync = {|
+	correct_enter.y.x, 
+	correct_entered.y.x, 
+	correct_exit.y.x, 
+	correct_exited.y.x,
+	correct_enter.x.y, 
+	correct_entered.x.y, 
+	correct_exit.x.y, 
+	correct_exited.x.y |
+	x <- {"correct_F1"},
+	y <- {"correct_F1"}
+|}
+
+
+
+correct_F1_triggers = {||}
+		   
+S_correct_F1(v) = let
+	
+
+	S_correct_F1_execute(o__,v) = 
+	SKIP; 
+	correct_entered!o__!"correct_F1" ->
+	   correct_terminate -> SKIP
+	   within
+correct_enter?x:diff(correct_SIDS,{"correct_F1"})!"correct_F1" -> ( 
+	S_correct_F1_execute(x,v)) 
+
+I_correct_I1(v) = T_correct_t1(v)
+
+
+
+correct_int_int = {||}
+
+
+T_correct_t1(v)	= movexCall -> movexRet -> SKIP;moveyCall -> moveyRet -> SKIP;movezCall -> movezRet -> SKIP;correct_enter!"correct"!"correct_F1" -> correct_entered!"correct"!"correct_F1" ->
+SKIP
+
+S_correct_F1_R(v) = S_correct_F1(v)
+ 		[|diff(correct_int_int,correct_F1_triggers)|]
+ 		SKIP
+ 		
+STM_correct(v) = ShowEvents_correct(I_correct_I1(v)
+[|{|correct_enter.x.y,
+		correct_entered.x.y,
+		correct_exit.x.y,
+		correct_exited.x.y |
+		x <- diff(correct_SIDS,{"correct_F1"}),
+		y <- {"correct_F1"}
+|}|]
+S_correct_F1_R(v)
+ 	,{|correct_enter,correct_entered,
+ 	correct_exit,correct_exited|})\{|correct_enter,correct_entered,
+  correct_exit,correct_exited|}
+-- memory process
+Memory_correct(v) = SKIP
+-- main process
+correct_aux(v) = ((STM_correct(v)
+	[|union(
+		{||},
+		{||}
+	)|]
+	Memory_correct(v)
+)\{||})
+[|{|correct_terminate|}|>SKIP\{|correct_terminate, correct_internal__|}
+
+correct(v) = correct_aux(v) \ {|correct_enteredV, correct_enterV, correct_exitV, correct_exitedV|}
+correct_VS(v) = correct_aux(v)

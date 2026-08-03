@@ -1,0 +1,28 @@
+ExternalEvents_Foot = {|Foot_stepDownIn,Foot_stepDone,Foot_leanIn,Foot_outOfBalance,Foot_liftFoot,Foot_stepDownOut,Foot_leanOut|}
+
+assert T_Foot :[deterministic]
+assert T_Foot :[divergence-free]
+
+-- no time locks
+assert RUN({tock}) ||| CHAOS(ExternalEvents_Foot)      [F= T_Foot |\ union(ExternalEvents_Foot,{tock})
+
+-- zeno freedom
+assert T_Foot |\ union(ExternalEvents_Foot,{tock})  :[divergence-free]
+
+-- every state is reachable in this controller
+assert not STOP [T= T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Balanced"|}
+assert not STOP [T= T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Moving"|}
+assert not STOP [T= T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Leaning"|}
+
+-- every state is can be reached infinitely often
+assert T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Balanced"|} [T= RUN({|foot_controller_enteredV."foot_controller_Balanced"|}) 
+assert T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Moving"|} [T= RUN({|foot_controller_enteredV."foot_controller_Moving"|}) 
+assert T_Foot_VS |\ {|foot_controller_enteredV."foot_controller_Leaning"|} [T= RUN({|foot_controller_enteredV."foot_controller_Leaning"|}) 
+
+-- timed model is a refinement
+assert sbisim(diamond(Foot)) [F= T_Foot \ {tock}
+assert sbisim(diamond(Foot_VS)) [T= T_Foot_VS \ {tock}
+
+-- do time constraints constrain traces?
+assert T_Foot \ {tock} [T= sbisim(diamond(Foot))
+assert T_Foot_VS \ {tock} [T= sbisim(diamond(Foot_VS))

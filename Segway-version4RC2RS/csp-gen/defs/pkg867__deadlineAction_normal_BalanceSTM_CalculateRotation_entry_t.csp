@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:48
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel gyroZ: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall
 	channel deadlineCheckCall: core_nat
+	channel normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall
 	
 	enterSS = {|
 	i::enter,
@@ -69,8 +69,8 @@ exports
 		terminate
 	,	set_EXT_currGyroZ, set_currGyroZ
 	,	gyroZ
-	,	normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall,
-		deadlineCheckCall
+	,	deadlineCheckCall,
+		normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall
 		, share__
 		|}
 	
@@ -364,21 +364,21 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currGyroZ,setR_g |} ]] 
-				  [[set_currGyroZ <- setL_currGyroZ,set_g <- setL_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currGyroZ |} ]] 
+				  [[set_g <- setL_g,set_currGyroZ <- setL_currGyroZ]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currGyroZ
 				 			,setL_g
-				 			,setR_currGyroZ
-				 			 			,setR_g
+				 			,setL_currGyroZ
+				 			,setR_g
+				 			 			,setR_currGyroZ
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currGyroZ,setL_g |} ]]
-				  [[set_currGyroZ <- setR_currGyroZ,set_g <- setR_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currGyroZ |} ]]
+				  [[set_g <- setR_g,set_currGyroZ <- setR_currGyroZ]]
 				 )
-				)[[setL_currGyroZ <- set_currGyroZ,setL_g <- set_g]]
-				 [[setR_currGyroZ <- set_currGyroZ,setR_g <- set_g]]
+				)[[setL_g <- set_g,setL_currGyroZ <- set_currGyroZ]]
+				 [[setR_g <- set_g,setR_currGyroZ <- set_currGyroZ]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -456,21 +456,21 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currGyroZ,setR_g |} ]] 
-				  [[set_currGyroZ <- setL_currGyroZ,set_g <- setL_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currGyroZ |} ]] 
+				  [[set_g <- setL_g,set_currGyroZ <- setL_currGyroZ]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currGyroZ
 				 			,setL_g
-				 			,setR_currGyroZ
-				 			 			,setR_g
+				 			,setL_currGyroZ
+				 			,setR_g
+				 			 			,setR_currGyroZ
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currGyroZ,setL_g |} ]]
-				  [[set_currGyroZ <- setR_currGyroZ,set_g <- setR_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currGyroZ |} ]]
+				  [[set_g <- setR_g,set_currGyroZ <- setR_currGyroZ]]
 				 )
-				)[[setL_currGyroZ <- set_currGyroZ,setL_g <- set_g]]
-				 [[setR_currGyroZ <- set_currGyroZ,setR_g <- set_g]]
+				)[[setL_g <- set_g,setL_currGyroZ <- set_currGyroZ]]
+				 [[setR_g <- set_g,setR_currGyroZ <- set_currGyroZ]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -512,9 +512,9 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall -> SKIP
 	CALL__deadlineCheck(id__,
 				param_d) 	= deadlineCheckCall.param_d -> SKIP
+	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall -> SKIP
 	
 	-- END of Operation calls --
 	

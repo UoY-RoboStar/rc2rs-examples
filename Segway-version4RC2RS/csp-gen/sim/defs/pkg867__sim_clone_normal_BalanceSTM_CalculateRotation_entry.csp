@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 13:02:44
 --
 
 -- compileSelfContainedOperation
@@ -40,24 +40,24 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
-	channel set_EXT_gyroXF: core_boolean
-	channel set_EXT_leftMotorVelocityF: core_boolean
 	channel set_EXT_currGyroZ: core_real
-	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_rotationCount: core_nat
-	channel set_EXT_angleF: core_boolean
 	channel set_EXT_rotationOutput: core_real
+	channel set_EXT_angleF: core_boolean
+	channel set_EXT_rotationCount: core_nat
+	channel set_EXT_leftMotorVelocityF: core_boolean
+	channel set_EXT_rightMotorVelocityF: core_boolean
+	channel set_EXT_gyroXF: core_boolean
+	channel set_EXT_gyroZF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call: core_nat
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call: core_nat.core_nat
 	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call: core_real
 	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call
-	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call: core_nat.core_nat
+	channel clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -74,14 +74,14 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
-		set_EXT_gyroXF,
-		set_EXT_leftMotorVelocityF,
 		set_EXT_currGyroZ,
-		set_EXT_rightMotorVelocityF,
-		set_EXT_rotationCount,
+		set_EXT_rotationOutput,
 		set_EXT_angleF,
-		set_EXT_rotationOutput
+		set_EXT_rotationCount,
+		set_EXT_leftMotorVelocityF,
+		set_EXT_rightMotorVelocityF,
+		set_EXT_gyroXF,
+		set_EXT_gyroZF
 	|}
 	
 	
@@ -127,10 +127,10 @@ exports
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
 				,registerRead
-	,	clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call,
+	,	clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call,
 		clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call,
 		clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call,
-		clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call
+		clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call
 		, share__
 		|}
 	
@@ -282,18 +282,18 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13(id__,
+		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
-					param_d) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call.param_d,0)
+					param_m,
+					param_n) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call.param_m.param_n,0)
 		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
 					param_diff) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_RotationPID_j_4_8_j_3_10_3Call.param_diff,0)
 		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op_j_3_10_j_2_20_19Call,0)
-		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10(id__,
+		CALL__clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
-					param_m,
-					param_n) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_waitInterval_j_2_20_f_10Call.param_m.param_n,0)
+					param_d) = EDeadline(clone_clone_normal_BalanceSTM_CalculateRotation_entry_deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t_i_j_4_8_13Call.param_d,0)
 		
 		-- END of Operation calls --
 	

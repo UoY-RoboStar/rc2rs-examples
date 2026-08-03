@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:58:34
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 24-06-2026 14:28:45
 --
 
 
@@ -62,8 +62,8 @@ exports
 		
 		-- inputs, evars, rvars and outputs as calculated internally
 		-- outputs = {
-		--	(cm::move,sm::move),
-		--	(cm::stop,sm::stop)
+		--	(cm::stop,sm::stop),
+		--	(cm::move,sm::move)
 		--	 }
 		-- inputs = {
 		--	(cm::obstacle,sm::obstacle)
@@ -74,14 +74,14 @@ exports
 		-- declaring registerRead/Write datatypes
 		datatype RegisterDataInput = i_obstacle.Bool
 		
-		datatype RegisterDataOutput = o_obstacle
+		datatype RegisterDataOutput = o_move.core_real.core_real
 			| o_stop
-			| o_move.core_real.core_real
+			| o_obstacle
 		
 		
 		nametype RegisterOutputs = {|
-		o_move,
-		o_stop|}
+		o_stop,
+		o_move|}
 			
 		nametype RegisterInputs = {|
 		i_obstacle|}
@@ -93,8 +93,8 @@ exports
 		
 		
 		-- declaring call and ret events for undefined operations
-		channel moveCall: core_real.core_real
 		channel stopCall
+		channel moveCall: core_real.core_real
 		
 		-- channel set with all visible events
 		sem__events = {|endexec,terminate
@@ -138,8 +138,8 @@ exports
 			-- Declaring state machine events
 			
 			-- Declaring call and ret events for undefined operations
-			channel moveCall: core_real.core_real
 			channel stopCall
+			channel moveCall: core_real.core_real
 			
 			enterSS = {|
 			i1::enter,
@@ -174,64 +174,14 @@ exports
 			
 			
 			channel get_CLID_Waiting : core_clock_type 
+			channel get_CLID_DTurning : core_clock_type 
 			channel get_CLID_MBC : core_clock_type 
 			channel get_CLID_SMoving : core_clock_type 
-			channel get_CLID_STurning : core_clock_type 
 			channel get_CLID_DMoving : core_clock_type 
-			channel get_CLID_DTurning : core_clock_type 
+			channel get_CLID_STurning : core_clock_type 
 			--channel increment__
 			
 			CLID_Waiting_clock_type(id__,
-					          const_SimSMovement_PI,
-					          const_SimSMovement_lv,
-					          const_SimSMovement_av) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_MBC_clock_type(id__,
-					          const_SimSMovement_PI,
-					          const_SimSMovement_lv,
-					          const_SimSMovement_av) = 
-				let
-					max = (clock_type_max(Union({
-			{},
-			({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real}),
-			({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real})
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_SMoving_clock_type(id__,
-					          const_SimSMovement_PI,
-					          const_SimSMovement_lv,
-					          const_SimSMovement_av) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_STurning_clock_type(id__,
-					          const_SimSMovement_PI,
-					          const_SimSMovement_lv,
-					          const_SimSMovement_av) = 
-				let
-					max = (clock_type_max(Union({
-			{}
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_DMoving_clock_type(id__,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av) = 
@@ -255,6 +205,56 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
+			CLID_MBC_clock_type(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				let
+					max = (clock_type_max(Union({
+			{},
+			({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real}),
+			({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real})
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_SMoving_clock_type(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_DMoving_clock_type(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_STurning_clock_type(id__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
 			
 			
 			-- RoboSim-specific declarations
@@ -266,13 +266,13 @@ exports
 			datatype RegisterDataInput = i_obstacle.Bool
 			
 			
-			datatype RegisterDataOutput = o_move.core_real.core_real
-				| o_stop
+			datatype RegisterDataOutput = o_stop
+				| o_move.core_real.core_real
 			
 			
 			nametype RegisterOutputs = {|
-			o_move,
-			o_stop|}
+			o_stop,
+			o_move|}
 				
 			nametype RegisterInputs = {|
 			i_obstacle|}
@@ -287,8 +287,8 @@ exports
 			sem__events = {|endexec,terminate
 						,registerRead
 						,registerWrite
-			,	moveCall,
-				stopCall
+			,	stopCall,
+				moveCall
 				|}
 		
 				-- Nodes --
@@ -868,26 +868,26 @@ exports
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
+				CALL__stop(id__,
+						    const_SimSMovement_PI,
+						    const_SimSMovement_lv,
+						    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 				CALL__move(id__,
 						    const_SimSMovement_PI,
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av,
 							param_lv,
 							param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
-				CALL__stop(id__,
-						    const_SimSMovement_PI,
-						    const_SimSMovement_lv,
-						    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 				
 				-- END of Operation calls --
 			
-				datatype SOutputEvents = SOutput_move
-					| SOutput_stop
+				datatype SOutputEvents = SOutput_stop
+					| SOutput_move
 				
 				cycle(cycle_SimSMovement_SimSMovement) =
 					let
-						project(o_move.x__) = SOutput_move
 						project(o_stop) = SOutput_stop
+						project(o_move.x__) = SOutput_move
 				
 						Cycle =
 							Deadline(
@@ -971,10 +971,10 @@ exports
 						    const_SimSMovement_PI,
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av) = ((let
-					Trans = share__choice(get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
+					Trans = share__choice(get_obstacle?obstacle -> get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
-							          const_SimSMovement_av) -> get_obstacle?obstacle -> TimeOut_1(
+							          const_SimSMovement_av) -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SMoving::enter -> SKIP))))
 						 [] dbisim((true)&(internal__!NID_SMoving -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -1153,7 +1153,7 @@ exports
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 					 within
 						(MachineBody(id__,cycle_SimSMovement_SimSMovement,
 								    const_SimSMovement_PI,
@@ -1170,7 +1170,7 @@ exports
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -1186,12 +1186,12 @@ exports
 																		    const_SimSMovement_PI,
 																		    const_SimSMovement_lv,
 																		    const_SimSMovement_av)
-																[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-																dbisim(Clock_CLID_DTurning(id__,0,
+																[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+																dbisim(Clock_CLID_STurning(id__,0,
 																		          const_SimSMovement_PI,
 																		          const_SimSMovement_lv,
 																		          const_SimSMovement_av))
-															)\{|get_CLID_DTurning|}
+															)\{|get_CLID_STurning|}
 														)
 														[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 														dbisim(Clock_CLID_DMoving(id__,0,
@@ -1200,19 +1200,19 @@ exports
 																          const_SimSMovement_av))
 													)\{|get_CLID_DMoving|}
 												)
-												[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-												dbisim(Clock_CLID_STurning(id__,0,
+												[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+												dbisim(Clock_CLID_SMoving(id__,0,
 														          const_SimSMovement_PI,
 														          const_SimSMovement_lv,
 														          const_SimSMovement_av))
-											)\{|get_CLID_STurning|}
+											)\{|get_CLID_SMoving|}
 										)
-										[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-										dbisim(Clock_CLID_SMoving(id__,0,
+										[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+										dbisim(Clock_CLID_DTurning(id__,0,
 												          const_SimSMovement_PI,
 												          const_SimSMovement_lv,
 												          const_SimSMovement_av))
-									)\{|get_CLID_SMoving|}
+									)\{|get_CLID_DTurning|}
 								)
 								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 								dbisim(Clock_CLID_Waiting(id__,0,
@@ -1393,7 +1393,7 @@ exports
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 					 within
 						(MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
 								    const_SimSMovement_PI,
@@ -1410,7 +1410,7 @@ exports
 						    const_SimSMovement_lv,
 						    const_SimSMovement_av) = 
 					dbisim((let
-						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+						stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 					 within
 						(dbisim(
 							sbisim(
@@ -1426,12 +1426,12 @@ exports
 																		    const_SimSMovement_PI,
 																		    const_SimSMovement_lv,
 																		    const_SimSMovement_av)
-																[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-																dbisim(Clock_CLID_DTurning(id__,0,
+																[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+																dbisim(Clock_CLID_STurning(id__,0,
 																		          const_SimSMovement_PI,
 																		          const_SimSMovement_lv,
 																		          const_SimSMovement_av))
-															)\{|get_CLID_DTurning|}
+															)\{|get_CLID_STurning|}
 														)
 														[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 														dbisim(Clock_CLID_DMoving(id__,0,
@@ -1440,19 +1440,19 @@ exports
 																          const_SimSMovement_av))
 													)\{|get_CLID_DMoving|}
 												)
-												[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-												dbisim(Clock_CLID_STurning(id__,0,
+												[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+												dbisim(Clock_CLID_SMoving(id__,0,
 														          const_SimSMovement_PI,
 														          const_SimSMovement_lv,
 														          const_SimSMovement_av))
-											)\{|get_CLID_STurning|}
+											)\{|get_CLID_SMoving|}
 										)
-										[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-										dbisim(Clock_CLID_SMoving(id__,0,
+										[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+										dbisim(Clock_CLID_DTurning(id__,0,
 												          const_SimSMovement_PI,
 												          const_SimSMovement_lv,
 												          const_SimSMovement_av))
-									)\{|get_CLID_SMoving|}
+									)\{|get_CLID_DTurning|}
 								)
 								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 								dbisim(Clock_CLID_Waiting(id__,0,
@@ -1635,6 +1635,28 @@ exports
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av))
+				Clock_CLID_DTurning(id__,x__,
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av) = 
+					TimeOut_1(
+						DTurning::entered -> Clock_CLID_DTurning(id__,0,
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av)
+						[]
+						get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av)
+						[]
+						terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av)),
+								          const_SimSMovement_PI,
+								          const_SimSMovement_lv,
+								          const_SimSMovement_av))
 				Clock_CLID_SMoving(id__,x__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
@@ -1651,28 +1673,6 @@ exports
 								          const_SimSMovement_av)
 						[]
 						terminate -> SKIP,Clock_CLID_SMoving(id__,clock_type_plus(x__,1,CLID_SMoving_clock_type(id__,
-								          const_SimSMovement_PI,
-								          const_SimSMovement_lv,
-								          const_SimSMovement_av)),
-								          const_SimSMovement_PI,
-								          const_SimSMovement_lv,
-								          const_SimSMovement_av))
-				Clock_CLID_STurning(id__,x__,
-						          const_SimSMovement_PI,
-						          const_SimSMovement_lv,
-						          const_SimSMovement_av) = 
-					TimeOut_1(
-						STurning::entered -> Clock_CLID_STurning(id__,0,
-								          const_SimSMovement_PI,
-								          const_SimSMovement_lv,
-								          const_SimSMovement_av)
-						[]
-						get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
-								          const_SimSMovement_PI,
-								          const_SimSMovement_lv,
-								          const_SimSMovement_av)
-						[]
-						terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av)),
@@ -1701,22 +1701,22 @@ exports
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av))
-				Clock_CLID_DTurning(id__,x__,
+				Clock_CLID_STurning(id__,x__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av) = 
 					TimeOut_1(
-						DTurning::entered -> Clock_CLID_DTurning(id__,0,
+						STurning::entered -> Clock_CLID_STurning(id__,0,
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av)
 						[]
-						get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+						get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av)
 						[]
-						terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+						terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 								          const_SimSMovement_PI,
 								          const_SimSMovement_lv,
 								          const_SimSMovement_av)),
@@ -1732,12 +1732,12 @@ exports
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_SMoving(id__,0,
+				dbisim(Clock_CLID_DTurning(id__,0,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_STurning(id__,0,
+				dbisim(Clock_CLID_SMoving(id__,0,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
@@ -1747,7 +1747,7 @@ exports
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_DTurning(id__,0,
+				dbisim(Clock_CLID_STurning(id__,0,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
@@ -1756,7 +1756,7 @@ exports
 				)
 				)
 				
-				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 				
 				
 				-- Shared memory
@@ -1794,16 +1794,16 @@ exports
 		endmodule
 		
 		Timed(OneStep) {
+		CALL__stop(id__) 	= stopCall -> SKIP
 		CALL__move(id__,
 				    param_lv,
 				    param_av) 	= moveCall.param_lv.param_av -> SKIP
-		CALL__stop(id__) 	= stopCall -> SKIP
 		}
 		
 		Timed(OneStep) {
 		-- (Rule 8) cycleController(...) : CSPProcess
-		datatype SOutputEvents = SOutput_move
-			| SOutput_stop
+		datatype SOutputEvents = SOutput_stop
+			| SOutput_move
 		
 		DVarsEvents = {}
 		
@@ -1815,15 +1815,15 @@ exports
 				    const_SimMovement_sm_av) =
 		let
 					
-			project_sm(sm::o_move.x__) = SOutput_move
 			project_sm(sm::o_stop) = SOutput_stop
+			project_sm(sm::o_move.x__) = SOutput_move
 		
-			connected_sm(sm::o_move.x__) = true
 			connected_sm(sm::o_stop) = true
+			connected_sm(sm::o_move.x__) = true
 			connected_sm(_) = false
 		
-			lift_sm(sm::o_move.x__) = o_move.x__
 			lift_sm(sm::o_stop) = o_stop
+			lift_sm(sm::o_move.x__) = o_move.x__
 			
 			CycleController =
 				Deadline(
@@ -2115,9 +2115,9 @@ exports
 	-- declaring registerRead/Write datatypes
 	datatype RegisterDataInput = i_obstacle.Bool
 	
-	datatype RegisterDataOutput = o_stop
+	datatype RegisterDataOutput = o_obstacle
+		| o_stop
 		| o_move.core_real.core_real
-		| o_obstacle
 	
 	
 	nametype RegisterOutputs = {|
@@ -2134,8 +2134,8 @@ exports
 	
 	
 	-- declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel stopCall
+	channel moveCall: core_real.core_real
 	
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
@@ -2179,8 +2179,8 @@ exports
 		-- Declaring state machine events
 		
 		-- Declaring call and ret events for undefined operations
-		channel moveCall: core_real.core_real
 		channel stopCall
+		channel moveCall: core_real.core_real
 		
 		enterSS = {|
 		i1::enter,
@@ -2215,64 +2215,14 @@ exports
 		
 		
 		channel get_CLID_Waiting : core_clock_type 
+		channel get_CLID_DTurning : core_clock_type 
 		channel get_CLID_MBC : core_clock_type 
 		channel get_CLID_SMoving : core_clock_type 
-		channel get_CLID_STurning : core_clock_type 
 		channel get_CLID_DMoving : core_clock_type 
-		channel get_CLID_DTurning : core_clock_type 
+		channel get_CLID_STurning : core_clock_type 
 		--channel increment__
 		
 		CLID_Waiting_clock_type(id__,
-				          const_SimSMovement_PI,
-				          const_SimSMovement_lv,
-				          const_SimSMovement_av) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_MBC_clock_type(id__,
-				          const_SimSMovement_PI,
-				          const_SimSMovement_lv,
-				          const_SimSMovement_av) = 
-			let
-				max = (clock_type_max(Union({
-		{},
-		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real}),
-		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real})
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_SMoving_clock_type(id__,
-				          const_SimSMovement_PI,
-				          const_SimSMovement_lv,
-				          const_SimSMovement_av) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_STurning_clock_type(id__,
-				          const_SimSMovement_PI,
-				          const_SimSMovement_lv,
-				          const_SimSMovement_av) = 
-			let
-				max = (clock_type_max(Union({
-		{}
-		}))+1)
-			ctype = {0..max}
-		within
-			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-		
-		CLID_DMoving_clock_type(id__,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av) = 
@@ -2296,6 +2246,56 @@ exports
 		within
 			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 		
+		CLID_MBC_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{},
+		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real}),
+		({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real})
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_SMoving_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_DMoving_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
+		CLID_STurning_clock_type(id__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			let
+				max = (clock_type_max(Union({
+		{}
+		}))+1)
+			ctype = {0..max}
+		within
+			if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+		
 		
 		
 		-- RoboSim-specific declarations
@@ -2307,13 +2307,13 @@ exports
 		datatype RegisterDataInput = i_obstacle.Bool
 		
 		
-		datatype RegisterDataOutput = o_move.core_real.core_real
-			| o_stop
+		datatype RegisterDataOutput = o_stop
+			| o_move.core_real.core_real
 		
 		
 		nametype RegisterOutputs = {|
-		o_move,
-		o_stop|}
+		o_stop,
+		o_move|}
 			
 		nametype RegisterInputs = {|
 		i_obstacle|}
@@ -2328,8 +2328,8 @@ exports
 		sem__events = {|endexec,terminate
 					,registerRead
 					,registerWrite
-		,	moveCall,
-			stopCall
+		,	stopCall,
+			moveCall
 			|}
 	
 			-- Nodes --
@@ -2909,26 +2909,26 @@ exports
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
+			CALL__stop(id__,
+					    const_SimSMovement_PI,
+					    const_SimSMovement_lv,
+					    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 			CALL__move(id__,
 					    const_SimSMovement_PI,
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av,
 						param_lv,
 						param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
-			CALL__stop(id__,
-					    const_SimSMovement_PI,
-					    const_SimSMovement_lv,
-					    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 			
 			-- END of Operation calls --
 		
-			datatype SOutputEvents = SOutput_move
-				| SOutput_stop
+			datatype SOutputEvents = SOutput_stop
+				| SOutput_move
 			
 			cycle(cycle_SimSMovement_SimSMovement) =
 				let
-					project(o_move.x__) = SOutput_move
 					project(o_stop) = SOutput_stop
+					project(o_move.x__) = SOutput_move
 			
 					Cycle =
 						Deadline(
@@ -3012,10 +3012,10 @@ exports
 					    const_SimSMovement_PI,
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av) = ((let
-				Trans = share__choice(get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
+				Trans = share__choice(get_obstacle?obstacle -> get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
-						          const_SimSMovement_av) -> get_obstacle?obstacle -> TimeOut_1(
+						          const_SimSMovement_av) -> TimeOut_1(
 					 (share__ -> SKIP
 					 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SMoving::enter -> SKIP))))
 					 [] dbisim((true)&(internal__!NID_SMoving -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -3194,7 +3194,7 @@ exports
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 				 within
 					(MachineBody(id__,cycle_SimSMovement_SimSMovement,
 							    const_SimSMovement_PI,
@@ -3211,7 +3211,7 @@ exports
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 				 within
 					(dbisim(
 						sbisim(
@@ -3227,12 +3227,12 @@ exports
 																	    const_SimSMovement_PI,
 																	    const_SimSMovement_lv,
 																	    const_SimSMovement_av)
-															[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-															dbisim(Clock_CLID_DTurning(id__,0,
+															[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+															dbisim(Clock_CLID_STurning(id__,0,
 																	          const_SimSMovement_PI,
 																	          const_SimSMovement_lv,
 																	          const_SimSMovement_av))
-														)\{|get_CLID_DTurning|}
+														)\{|get_CLID_STurning|}
 													)
 													[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 													dbisim(Clock_CLID_DMoving(id__,0,
@@ -3241,19 +3241,19 @@ exports
 															          const_SimSMovement_av))
 												)\{|get_CLID_DMoving|}
 											)
-											[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-											dbisim(Clock_CLID_STurning(id__,0,
+											[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+											dbisim(Clock_CLID_SMoving(id__,0,
 													          const_SimSMovement_PI,
 													          const_SimSMovement_lv,
 													          const_SimSMovement_av))
-										)\{|get_CLID_STurning|}
+										)\{|get_CLID_SMoving|}
 									)
-									[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-									dbisim(Clock_CLID_SMoving(id__,0,
+									[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+									dbisim(Clock_CLID_DTurning(id__,0,
 											          const_SimSMovement_PI,
 											          const_SimSMovement_lv,
 											          const_SimSMovement_av))
-								)\{|get_CLID_SMoving|}
+								)\{|get_CLID_DTurning|}
 							)
 							[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 							dbisim(Clock_CLID_Waiting(id__,0,
@@ -3434,7 +3434,7 @@ exports
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 				 within
 					(MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
 							    const_SimSMovement_PI,
@@ -3451,7 +3451,7 @@ exports
 					    const_SimSMovement_lv,
 					    const_SimSMovement_av) = 
 				dbisim((let
-					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+					stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 				 within
 					(dbisim(
 						sbisim(
@@ -3467,12 +3467,12 @@ exports
 																	    const_SimSMovement_PI,
 																	    const_SimSMovement_lv,
 																	    const_SimSMovement_av)
-															[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-															dbisim(Clock_CLID_DTurning(id__,0,
+															[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+															dbisim(Clock_CLID_STurning(id__,0,
 																	          const_SimSMovement_PI,
 																	          const_SimSMovement_lv,
 																	          const_SimSMovement_av))
-														)\{|get_CLID_DTurning|}
+														)\{|get_CLID_STurning|}
 													)
 													[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 													dbisim(Clock_CLID_DMoving(id__,0,
@@ -3481,19 +3481,19 @@ exports
 															          const_SimSMovement_av))
 												)\{|get_CLID_DMoving|}
 											)
-											[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-											dbisim(Clock_CLID_STurning(id__,0,
+											[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+											dbisim(Clock_CLID_SMoving(id__,0,
 													          const_SimSMovement_PI,
 													          const_SimSMovement_lv,
 													          const_SimSMovement_av))
-										)\{|get_CLID_STurning|}
+										)\{|get_CLID_SMoving|}
 									)
-									[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-									dbisim(Clock_CLID_SMoving(id__,0,
+									[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+									dbisim(Clock_CLID_DTurning(id__,0,
 											          const_SimSMovement_PI,
 											          const_SimSMovement_lv,
 											          const_SimSMovement_av))
-								)\{|get_CLID_SMoving|}
+								)\{|get_CLID_DTurning|}
 							)
 							[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 							dbisim(Clock_CLID_Waiting(id__,0,
@@ -3676,6 +3676,28 @@ exports
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av))
+			Clock_CLID_DTurning(id__,x__,
+					          const_SimSMovement_PI,
+					          const_SimSMovement_lv,
+					          const_SimSMovement_av) = 
+				TimeOut_1(
+					DTurning::entered -> Clock_CLID_DTurning(id__,0,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)
+					[]
+					terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av)),
+							          const_SimSMovement_PI,
+							          const_SimSMovement_lv,
+							          const_SimSMovement_av))
 			Clock_CLID_SMoving(id__,x__,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
@@ -3692,28 +3714,6 @@ exports
 							          const_SimSMovement_av)
 					[]
 					terminate -> SKIP,Clock_CLID_SMoving(id__,clock_type_plus(x__,1,CLID_SMoving_clock_type(id__,
-							          const_SimSMovement_PI,
-							          const_SimSMovement_lv,
-							          const_SimSMovement_av)),
-							          const_SimSMovement_PI,
-							          const_SimSMovement_lv,
-							          const_SimSMovement_av))
-			Clock_CLID_STurning(id__,x__,
-					          const_SimSMovement_PI,
-					          const_SimSMovement_lv,
-					          const_SimSMovement_av) = 
-				TimeOut_1(
-					STurning::entered -> Clock_CLID_STurning(id__,0,
-							          const_SimSMovement_PI,
-							          const_SimSMovement_lv,
-							          const_SimSMovement_av)
-					[]
-					get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
-							          const_SimSMovement_PI,
-							          const_SimSMovement_lv,
-							          const_SimSMovement_av)
-					[]
-					terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av)),
@@ -3742,22 +3742,22 @@ exports
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av))
-			Clock_CLID_DTurning(id__,x__,
+			Clock_CLID_STurning(id__,x__,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av) = 
 				TimeOut_1(
-					DTurning::entered -> Clock_CLID_DTurning(id__,0,
+					STurning::entered -> Clock_CLID_STurning(id__,0,
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av)
 					[]
-					get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+					get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av)
 					[]
-					terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+					terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 							          const_SimSMovement_PI,
 							          const_SimSMovement_lv,
 							          const_SimSMovement_av)),
@@ -3773,12 +3773,12 @@ exports
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av))
 			[| { terminate } |] (
-			dbisim(Clock_CLID_SMoving(id__,0,
+			dbisim(Clock_CLID_DTurning(id__,0,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av))
 			[| { terminate } |] (
-			dbisim(Clock_CLID_STurning(id__,0,
+			dbisim(Clock_CLID_SMoving(id__,0,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av))
@@ -3788,7 +3788,7 @@ exports
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av))
 			[| { terminate } |] (
-			dbisim(Clock_CLID_DTurning(id__,0,
+			dbisim(Clock_CLID_STurning(id__,0,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
 					          const_SimSMovement_av))
@@ -3797,7 +3797,7 @@ exports
 			)
 			)
 			
-			stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+			stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 			
 			
 			-- Shared memory
@@ -3835,10 +3835,10 @@ exports
 	endmodule
 	
 	Timed(OneStep) {
+	CALL__stop(id__) 	= stopCall -> SKIP
 	CALL__move(id__,
 			    param_lv,
 			    param_av) 	= moveCall.param_lv.param_av -> SKIP
-	CALL__stop(id__) 	= stopCall -> SKIP
 	}
 	
 	Timed(OneStep) {
@@ -4031,8 +4031,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel stopCall
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	i1::enter,
@@ -4067,64 +4067,14 @@ exports
 	
 	
 	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_DTurning : core_clock_type 
 	channel get_CLID_MBC : core_clock_type 
 	channel get_CLID_SMoving : core_clock_type 
-	channel get_CLID_STurning : core_clock_type 
 	channel get_CLID_DMoving : core_clock_type 
-	channel get_CLID_DTurning : core_clock_type 
+	channel get_CLID_STurning : core_clock_type 
 	--channel increment__
 	
 	CLID_Waiting_clock_type(id__,
-			          const_SimSMovement_PI,
-			          const_SimSMovement_lv,
-			          const_SimSMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_MBC_clock_type(id__,
-			          const_SimSMovement_PI,
-			          const_SimSMovement_lv,
-			          const_SimSMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	{},
-	({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real}),
-	({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|PI <- core_real,av <- core_real})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_SMoving_clock_type(id__,
-			          const_SimSMovement_PI,
-			          const_SimSMovement_lv,
-			          const_SimSMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_STurning_clock_type(id__,
-			          const_SimSMovement_PI,
-			          const_SimSMovement_lv,
-			          const_SimSMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_DMoving_clock_type(id__,
 			          const_SimSMovement_PI,
 			          const_SimSMovement_lv,
 			          const_SimSMovement_av) = 
@@ -4148,6 +4098,56 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
+	CLID_MBC_clock_type(id__,
+			          const_SimSMovement_PI,
+			          const_SimSMovement_lv,
+			          const_SimSMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	{},
+	({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real}),
+	({Div(const_SimSMovement_PI, no_zero_div(const_SimSMovement_av), core_real)|av <- core_real,PI <- core_real})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SMoving_clock_type(id__,
+			          const_SimSMovement_PI,
+			          const_SimSMovement_lv,
+			          const_SimSMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_DMoving_clock_type(id__,
+			          const_SimSMovement_PI,
+			          const_SimSMovement_lv,
+			          const_SimSMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_STurning_clock_type(id__,
+			          const_SimSMovement_PI,
+			          const_SimSMovement_lv,
+			          const_SimSMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
 	
 	
 	-- RoboSim-specific declarations
@@ -4159,13 +4159,13 @@ exports
 	datatype RegisterDataInput = i_obstacle.Bool
 	
 	
-	datatype RegisterDataOutput = o_move.core_real.core_real
-		| o_stop
+	datatype RegisterDataOutput = o_stop
+		| o_move.core_real.core_real
 	
 	
 	nametype RegisterOutputs = {|
-	o_move,
-	o_stop|}
+	o_stop,
+	o_move|}
 		
 	nametype RegisterInputs = {|
 	i_obstacle|}
@@ -4180,8 +4180,8 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 				,registerWrite
-	,	moveCall,
-		stopCall
+	,	stopCall,
+		moveCall
 		|}
 
 		-- Nodes --
@@ -4761,26 +4761,26 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__stop(id__,
+				    const_SimSMovement_PI,
+				    const_SimSMovement_lv,
+				    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 		CALL__move(id__,
 				    const_SimSMovement_PI,
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av,
 					param_lv,
 					param_av) = EDeadline(registerWrite.o_move.param_lv.param_av,0)
-		CALL__stop(id__,
-				    const_SimSMovement_PI,
-				    const_SimSMovement_lv,
-				    const_SimSMovement_av) = EDeadline(registerWrite.o_stop,0)
 		
 		-- END of Operation calls --
 	
-		datatype SOutputEvents = SOutput_move
-			| SOutput_stop
+		datatype SOutputEvents = SOutput_stop
+			| SOutput_move
 		
 		cycle(cycle_SimSMovement_SimSMovement) =
 			let
-				project(o_move.x__) = SOutput_move
 				project(o_stop) = SOutput_stop
+				project(o_move.x__) = SOutput_move
 		
 				Cycle =
 					Deadline(
@@ -4864,10 +4864,10 @@ exports
 				    const_SimSMovement_PI,
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av) = ((let
-			Trans = share__choice(get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
+			Trans = share__choice(get_obstacle?obstacle -> get_CLID_MBC?MBC:CLID_MBC_clock_type(id__,
 					          const_SimSMovement_PI,
 					          const_SimSMovement_lv,
-					          const_SimSMovement_av) -> get_obstacle?obstacle -> TimeOut_1(
+					          const_SimSMovement_av) -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SMoving::enter -> SKIP))))
 				 [] dbisim((true)&(internal__!NID_SMoving -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -5046,7 +5046,7 @@ exports
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 			 within
 				(MachineBody(id__,cycle_SimSMovement_SimSMovement,
 						    const_SimSMovement_PI,
@@ -5063,7 +5063,7 @@ exports
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -5079,12 +5079,12 @@ exports
 																    const_SimSMovement_PI,
 																    const_SimSMovement_lv,
 																    const_SimSMovement_av)
-														[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-														dbisim(Clock_CLID_DTurning(id__,0,
+														[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+														dbisim(Clock_CLID_STurning(id__,0,
 																          const_SimSMovement_PI,
 																          const_SimSMovement_lv,
 																          const_SimSMovement_av))
-													)\{|get_CLID_DTurning|}
+													)\{|get_CLID_STurning|}
 												)
 												[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 												dbisim(Clock_CLID_DMoving(id__,0,
@@ -5093,19 +5093,19 @@ exports
 														          const_SimSMovement_av))
 											)\{|get_CLID_DMoving|}
 										)
-										[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-										dbisim(Clock_CLID_STurning(id__,0,
+										[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+										dbisim(Clock_CLID_SMoving(id__,0,
 												          const_SimSMovement_PI,
 												          const_SimSMovement_lv,
 												          const_SimSMovement_av))
-									)\{|get_CLID_STurning|}
+									)\{|get_CLID_SMoving|}
 								)
-								[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-								dbisim(Clock_CLID_SMoving(id__,0,
+								[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+								dbisim(Clock_CLID_DTurning(id__,0,
 										          const_SimSMovement_PI,
 										          const_SimSMovement_lv,
 										          const_SimSMovement_av))
-							)\{|get_CLID_SMoving|}
+							)\{|get_CLID_DTurning|}
 						)
 						[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 						dbisim(Clock_CLID_Waiting(id__,0,
@@ -5286,7 +5286,7 @@ exports
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 			 within
 				(MachineBody_VS_O(id__,cycle_SimSMovement_SimSMovement,
 						    const_SimSMovement_PI,
@@ -5303,7 +5303,7 @@ exports
 				    const_SimSMovement_lv,
 				    const_SimSMovement_av) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -5319,12 +5319,12 @@ exports
 																    const_SimSMovement_PI,
 																    const_SimSMovement_lv,
 																    const_SimSMovement_av)
-														[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
-														dbisim(Clock_CLID_DTurning(id__,0,
+														[| {|get_CLID_STurning,STurning::entered,terminate|} |]
+														dbisim(Clock_CLID_STurning(id__,0,
 																          const_SimSMovement_PI,
 																          const_SimSMovement_lv,
 																          const_SimSMovement_av))
-													)\{|get_CLID_DTurning|}
+													)\{|get_CLID_STurning|}
 												)
 												[| {|get_CLID_DMoving,DMoving::entered,terminate|} |]
 												dbisim(Clock_CLID_DMoving(id__,0,
@@ -5333,19 +5333,19 @@ exports
 														          const_SimSMovement_av))
 											)\{|get_CLID_DMoving|}
 										)
-										[| {|get_CLID_STurning,STurning::entered,terminate|} |]
-										dbisim(Clock_CLID_STurning(id__,0,
+										[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
+										dbisim(Clock_CLID_SMoving(id__,0,
 												          const_SimSMovement_PI,
 												          const_SimSMovement_lv,
 												          const_SimSMovement_av))
-									)\{|get_CLID_STurning|}
+									)\{|get_CLID_SMoving|}
 								)
-								[| {|get_CLID_SMoving,SMoving::entered,terminate|} |]
-								dbisim(Clock_CLID_SMoving(id__,0,
+								[| {|get_CLID_DTurning,DTurning::entered,terminate|} |]
+								dbisim(Clock_CLID_DTurning(id__,0,
 										          const_SimSMovement_PI,
 										          const_SimSMovement_lv,
 										          const_SimSMovement_av))
-							)\{|get_CLID_SMoving|}
+							)\{|get_CLID_DTurning|}
 						)
 						[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
 						dbisim(Clock_CLID_Waiting(id__,0,
@@ -5528,6 +5528,28 @@ exports
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
+		Clock_CLID_DTurning(id__,x__,
+				          const_SimSMovement_PI,
+				          const_SimSMovement_lv,
+				          const_SimSMovement_av) = 
+			TimeOut_1(
+				DTurning::entered -> Clock_CLID_DTurning(id__,0,
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av)
+				[]
+				get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av)
+				[]
+				terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av)),
+						          const_SimSMovement_PI,
+						          const_SimSMovement_lv,
+						          const_SimSMovement_av))
 		Clock_CLID_SMoving(id__,x__,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
@@ -5544,28 +5566,6 @@ exports
 						          const_SimSMovement_av)
 				[]
 				terminate -> SKIP,Clock_CLID_SMoving(id__,clock_type_plus(x__,1,CLID_SMoving_clock_type(id__,
-						          const_SimSMovement_PI,
-						          const_SimSMovement_lv,
-						          const_SimSMovement_av)),
-						          const_SimSMovement_PI,
-						          const_SimSMovement_lv,
-						          const_SimSMovement_av))
-		Clock_CLID_STurning(id__,x__,
-				          const_SimSMovement_PI,
-				          const_SimSMovement_lv,
-				          const_SimSMovement_av) = 
-			TimeOut_1(
-				STurning::entered -> Clock_CLID_STurning(id__,0,
-						          const_SimSMovement_PI,
-						          const_SimSMovement_lv,
-						          const_SimSMovement_av)
-				[]
-				get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
-						          const_SimSMovement_PI,
-						          const_SimSMovement_lv,
-						          const_SimSMovement_av)
-				[]
-				terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av)),
@@ -5594,22 +5594,22 @@ exports
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av))
-		Clock_CLID_DTurning(id__,x__,
+		Clock_CLID_STurning(id__,x__,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av) = 
 			TimeOut_1(
-				DTurning::entered -> Clock_CLID_DTurning(id__,0,
+				STurning::entered -> Clock_CLID_STurning(id__,0,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av)
 				[]
-				get_CLID_DTurning!x__ -> Clock_CLID_DTurning(id__,x__,
+				get_CLID_STurning!x__ -> Clock_CLID_STurning(id__,x__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av)
 				[]
-				terminate -> SKIP,Clock_CLID_DTurning(id__,clock_type_plus(x__,1,CLID_DTurning_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_STurning(id__,clock_type_plus(x__,1,CLID_STurning_clock_type(id__,
 						          const_SimSMovement_PI,
 						          const_SimSMovement_lv,
 						          const_SimSMovement_av)),
@@ -5625,12 +5625,12 @@ exports
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_SMoving(id__,0,
+		dbisim(Clock_CLID_DTurning(id__,0,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_STurning(id__,0,
+		dbisim(Clock_CLID_SMoving(id__,0,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av))
@@ -5640,7 +5640,7 @@ exports
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_DTurning(id__,0,
+		dbisim(Clock_CLID_STurning(id__,0,
 				          const_SimSMovement_PI,
 				          const_SimSMovement_lv,
 				          const_SimSMovement_av))
@@ -5649,7 +5649,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_SMoving,SMoving::entered,get_CLID_STurning,STurning::entered,get_CLID_DMoving,DMoving::entered,get_CLID_DTurning,DTurning::entered|}
+		stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_DTurning,DTurning::entered,get_CLID_SMoving,SMoving::entered,get_CLID_DMoving,DMoving::entered,get_CLID_STurning,STurning::entered|}
 		
 		
 		-- Shared memory

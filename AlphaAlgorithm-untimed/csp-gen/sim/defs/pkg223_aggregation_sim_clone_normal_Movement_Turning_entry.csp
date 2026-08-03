@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 16-05-2026 09:08:54
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 12:31:02
 --
 
 -- compileSelfContainedOperation
@@ -34,18 +34,18 @@ exports
 	channel get_neighboursF, set_neighboursF, setL_neighboursF, setR_neighboursF: core_boolean
 	
 	-- Shared variable channels
+	channel set_EXT_obstacleF: core_boolean
 	channel set_EXT_turned: core_boolean
 	channel set_EXT_n: core_nat
 	channel set_EXT_neighboursF: core_boolean
-	channel set_EXT_obstacleF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call
 	channel clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_fCall
+	channel clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call
 	
 	enterSS = {|
 	i::enter,
@@ -60,10 +60,10 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
+		set_EXT_obstacleF,
 		set_EXT_turned,
 		set_EXT_n,
-		set_EXT_neighboursF,
-		set_EXT_obstacleF
+		set_EXT_neighboursF
 	|}
 	
 	
@@ -108,8 +108,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
 				,registerRead
-	,	clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call,
-		clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_fCall
+	,	clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_fCall,
+		clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call
 		, share__
 		|}
 	
@@ -200,8 +200,8 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2(id__) = EDeadline(clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call,0)
 		CALL__clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_f(id__) = EDeadline(clone_normal_Movement_Turning_entry_j_2_2_t_2_2_op_j_2_2_fCall,0)
+		CALL__clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2(id__) = EDeadline(clone_normal_Movement_Turning_entry_i_t_op_i_j_2_2Call,0)
 		
 		-- END of Operation calls --
 	

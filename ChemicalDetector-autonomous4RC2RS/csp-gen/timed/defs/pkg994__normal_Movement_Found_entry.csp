@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 01-08-2026 20:29:30
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -41,8 +41,8 @@ exports
 	channel flag: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.Chemical_Angle
 	channel normal_Movement_Found_entry_j_2_2_t_2_2_opCall
+	channel moveCall: core_real.Chemical_Angle
 	
 	enterSS = {|
 	i::enter,
@@ -63,8 +63,8 @@ exports
 	sem__events = {|
 		terminate
 	,	flag
-	,	moveCall,
-		normal_Movement_Found_entry_j_2_2_t_2_2_opCall
+	,	normal_Movement_Found_entry_j_2_2_t_2_2_opCall,
+		moveCall
 		, share__
 		|}
 	
@@ -173,10 +173,10 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__normal_Movement_Found_entry_j_2_2_t_2_2_op(id__) = EDeadline(normal_Movement_Found_entry_j_2_2_t_2_2_opCall,0)
 		CALL__move(id__,
 					param_lv,
 					param_a) = EDeadline(moveCall.param_lv.param_a,0)
-		CALL__normal_Movement_Found_entry_j_2_2_t_2_2_op(id__) = EDeadline(normal_Movement_Found_entry_j_2_2_t_2_2_opCall,0)
 		
 		-- END of Operation calls --
 	

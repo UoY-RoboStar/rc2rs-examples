@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 06-05-2026 11:01:25
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:11
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -43,10 +43,10 @@ exports
 	channel takeoff: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitOpCall: core_nat
 	channel turnBackCall
 	channel moveCall: core_nat
 	channel normal_FinderM_Delivering_t3_op_i_t_opCall
+	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -69,10 +69,10 @@ exports
 	sem__events = {|
 		terminate
 	,	takeoff
-	,	waitOpCall,
-		turnBackCall,
+	,	turnBackCall,
 		moveCall,
-		normal_FinderM_Delivering_t3_op_i_t_opCall
+		normal_FinderM_Delivering_t3_op_i_t_opCall,
+		waitOpCall
 		, share__
 		|}
 	
@@ -228,10 +228,6 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__waitOp(id__,
-			    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
-			    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV,
-				param_i) 	= waitOpCall.param_i -> SKIP
 	CALL__turnBack(id__,
 			    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
 			    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV) 	= turnBackCall -> SKIP
@@ -242,6 +238,10 @@ exports
 	CALL__normal_FinderM_Delivering_t3_op_i_t_op(id__,
 			    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
 			    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV) 	= normal_FinderM_Delivering_t3_op_i_t_opCall -> SKIP
+	CALL__waitOp(id__,
+			    const_pkg213_main_normal_FinderM_Delivering_t3_op_TOP,
+			    const_pkg213_main_normal_FinderM_Delivering_t3_op_LV,
+				param_i) 	= waitOpCall.param_i -> SKIP
 	
 	-- END of Operation calls --
 	

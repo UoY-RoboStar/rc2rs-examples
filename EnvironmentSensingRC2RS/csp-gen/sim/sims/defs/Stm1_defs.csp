@@ -1,0 +1,172 @@
+module Stm1
+	--include "../../../timed/defs/MovementPkg.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|MovementPkg::Movement::stop.in,MovementPkg::Movement::resume.in,MovementPkg::Movement::obstacle.in,MovementPkg::Movement::odometer.in,MovementPkg::Movement::turn.in|}
+	OutputEvents = {|MovementPkg::Movement::flag.out|}
+	ExternalEvents = {|MovementPkg::Movement::stop.in,MovementPkg::Movement::resume.in,MovementPkg::Movement::obstacle.in,MovementPkg::Movement::odometer.in,MovementPkg::Movement::turn.in
+					   ,MovementPkg::Movement::flag.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_stop.Bool
+		| i_resume.Bool
+		| i_obstacle.Bool.Loc
+		| i_odometer.Bool.core_real
+		| i_turn.Bool.core_real
+	
+	datatype RegisterDataOutput = o_flag
+	
+	
+	nametype RegisterOutputs = {|
+	o_flag|}
+	
+	nametype RegisterInputs = {|
+	i_stop,
+	i_resume,
+	i_obstacle,
+	i_odometer,
+	i_turn|}
+	
+	datatype COutputEvents = COutput_flag
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_stop = registerRead.i_stop?b__ ->
+								if b__ then (MovementPkg::Movement::stop.in -> A1_stop [] A1_stop)
+									   else A1_stop
+		A1_resume = registerRead.i_resume?b__ ->
+								if b__ then (MovementPkg::Movement::resume.in -> A1_resume [] A1_resume)
+									   else A1_resume
+		A1_obstacle = registerRead.i_obstacle?b__.x__ ->
+								if b__ then (MovementPkg::Movement::obstacle.in.x__ -> A1_obstacle [] A1_obstacle)
+									   else A1_obstacle
+		A1_odometer = registerRead.i_odometer?b__.x__ ->
+								if b__ then (MovementPkg::Movement::odometer.in.x__ -> A1_odometer [] A1_odometer)
+									   else A1_odometer
+		A1_turn = registerRead.i_turn?b__.x__ ->
+								if b__ then (MovementPkg::Movement::turn.in.x__ -> A1_turn [] A1_turn)
+									   else A1_turn
+		
+														
+	within
+			     	A1_stop
+			     	 |||
+			     	A1_resume
+			     	 |||
+			     	A1_obstacle
+			     	 |||
+			     	A1_odometer
+			     	 |||
+			     	A1_turn
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_Stm1_Stm1) = let
+			
+			read(COutput_flag) = MovementPkg::Movement::flag.out -> registerWrite.o_flag -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_Stm1_Stm1); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_Stm1_Stm1) = let
+			A3 = ((registerRead.i_stop?x__ -> SKIP)
+				|||
+			(registerRead.i_resume?x__ -> SKIP)
+				|||
+			(registerRead.i_obstacle?x__ -> SKIP)
+				|||
+			(registerRead.i_odometer?x__ -> SKIP)
+				|||
+			(registerRead.i_turn?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_Stm1_Stm1);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_Stm1_Stm1) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_Stm1_Stm1))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_Stm1_Stm1)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_MovementPkg_Movement_lv,
+			    const_MovementPkg_Movement_evadeTime,
+			    const_MovementPkg_Movement_stuckDist,
+			    const_MovementPkg_Movement_outPeriod) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(MovementPkg::Movement::D__(id__,
+				    const_MovementPkg_Movement_lv,
+				    const_MovementPkg_Movement_evadeTime,
+				    const_MovementPkg_Movement_stuckDist,
+				    const_MovementPkg_Movement_outPeriod)\{|MovementPkg::Movement::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_Stm1_Stm1,
+			    const_MovementPkg_Movement_lv,
+			    const_MovementPkg_Movement_evadeTime,
+			    const_MovementPkg_Movement_stuckDist,
+			    const_MovementPkg_Movement_outPeriod) =
+		prioritise(
+			((TLFree(id__,
+					    const_MovementPkg_Movement_lv,
+					    const_MovementPkg_Movement_evadeTime,
+					    const_MovementPkg_Movement_stuckDist,
+					    const_MovementPkg_Movement_outPeriod) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_Stm1_Stm1)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_Stm1_Stm1,
+			    const_MovementPkg_Movement_lv,
+			    const_MovementPkg_Movement_evadeTime,
+			    const_MovementPkg_Movement_stuckDist,
+			    const_MovementPkg_Movement_outPeriod) =
+		prioritise(
+			((MovementPkg::Movement::D__(id__,
+					    const_MovementPkg_Movement_lv,
+					    const_MovementPkg_Movement_evadeTime,
+					    const_MovementPkg_Movement_stuckDist,
+					    const_MovementPkg_Movement_outPeriod)\{|MovementPkg::Movement::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_Stm1_Stm1)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_Stm1_Stm1,
+			    const_MovementPkg_Movement_lv,
+			    const_MovementPkg_Movement_evadeTime,
+			    const_MovementPkg_Movement_stuckDist,
+			    const_MovementPkg_Movement_outPeriod) = D__(id__,cycle_Stm1_Stm1,
+			    const_MovementPkg_Movement_lv,
+			    const_MovementPkg_Movement_evadeTime,
+			    const_MovementPkg_Movement_stuckDist,
+			    const_MovementPkg_Movement_outPeriod)
+
+endmodule

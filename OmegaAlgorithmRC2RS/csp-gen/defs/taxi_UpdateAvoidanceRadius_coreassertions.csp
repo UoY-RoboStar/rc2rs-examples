@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "taxi_UpdateAvoidanceRadius.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "taxi_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate taxi_OP_UpdateAvoidanceRadius
+P_taxi_OP_UpdateAvoidanceRadius = let
+	id__ = 0
+	
+	
+	
+	
+within
+	taxi::OP_UpdateAvoidanceRadius::O__(id__,
+			    const_taxi_UpdateAvoidanceRadius_avoidanceRadius1,
+			    const_taxi_UpdateAvoidanceRadius_avoidanceRadius2)
+assert P_taxi_OP_UpdateAvoidanceRadius :[deadlock-free]	
+assert P_taxi_OP_UpdateAvoidanceRadius;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_UpdateAvoidanceRadius :[deterministic]
+assert P_taxi_OP_UpdateAvoidanceRadius :[divergence-free]

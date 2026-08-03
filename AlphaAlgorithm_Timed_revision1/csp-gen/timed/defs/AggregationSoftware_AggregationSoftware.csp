@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 17-05-2026 11:35:47
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 28-07-2026 17:27:39
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -144,19 +144,21 @@ module AggregationSoftware_AggregationSoftware
 				localClockResets = {|clockReset.CLID_MBC|}
 				
 				
-				channel get_CLID_MovementAndAvoidance : core_clock_type 
-				channel get_CLID_Turning : core_clock_type 
 				channel get_CLID_MBC : core_clock_type 
+				channel get_CLID_Turning : core_clock_type 
+				channel get_CLID_MovementAndAvoidance : core_clock_type 
 				--channel increment__
 				
-				CLID_MovementAndAvoidance_clock_type(id__,
+				CLID_MBC_clock_type(id__,
 						          const_Movement_lv,
 						          const_Movement_av,
 						          const_Movement_MB,
 						          const_Movement_alpha) = 
 					let
 						max = (clock_type_max(Union({
-				{}
+				({(Minus(const_Movement_MB, Div(360, no_zero_div(const_Movement_av), core_real), core_real))|MB <- core_real,av <- core_real}),
+				{},
+				({const_Movement_MB|MB <- core_real})
 				}))+1)
 					ctype = {0..max}
 				within
@@ -175,16 +177,14 @@ module AggregationSoftware_AggregationSoftware
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_MBC_clock_type(id__,
+				CLID_MovementAndAvoidance_clock_type(id__,
 						          const_Movement_lv,
 						          const_Movement_av,
 						          const_Movement_MB,
 						          const_Movement_alpha) = 
 					let
 						max = (clock_type_max(Union({
-				({(Minus(const_Movement_MB, Div(360, no_zero_div(const_Movement_av), core_real), core_real))|MB <- core_real,av <- core_real}),
-				{},
-				({const_Movement_MB|MB <- core_real})
+				{}
 				}))+1)
 					ctype = {0..max}
 				within
@@ -678,25 +678,25 @@ module AggregationSoftware_AggregationSoftware
 									 	)\{|get_CLID_Avoid|}
 									 )
 									 ))
-									  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_n,setR_turned,clockResetR.CLID_MBC |} ]] 
-									  [[set_p <- setL_p,set_n <- setL_n,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setR_n,setR_turned,setR_p,clockResetR.CLID_MBC |} ]] 
+									  [[set_n <- setL_n,set_turned <- setL_turned,set_p <- setL_p,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
 									 )
 									 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-									 			,setL_p
 									 			,setL_n
 									 			,setL_turned
+									 			,setL_p
 									 			,clockResetL.CLID_MBC
-									 			,setR_p
-									 			 			,setR_n
+									 			,setR_n
 									 			 			,setR_turned
+									 			 			,setR_p
 									 			 			,clockResetR.CLID_MBC
 									 			|}) |]
 									 ((During)
-									  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_n,setL_turned,clockResetL.CLID_MBC |} ]]
-									  [[set_p <- setR_p,set_n <- setR_n,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_n,setL_turned,setL_p,clockResetL.CLID_MBC |} ]]
+									  [[set_n <- setR_n,set_turned <- setR_turned,set_p <- setR_p,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
 									 )
-									)[[setL_p <- set_p,setL_n <- set_n,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-									 [[setR_p <- set_p,setR_n <- set_n,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+									)[[setL_n <- set_n,setL_turned <- set_turned,setL_p <- set_p,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+									 [[setR_n <- set_n,setR_turned <- set_turned,setR_p <- set_p,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
 									)\union(enteredSS,{terminate}) 
 								)
 								During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -812,25 +812,25 @@ module AggregationSoftware_AggregationSoftware
 									 	)\{|get_CLID_Avoid|}
 									 )
 									 ))
-									  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_n,setR_turned,clockResetR.CLID_MBC |} ]] 
-									  [[set_p <- setL_p,set_n <- setL_n,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setR_n,setR_turned,setR_p,clockResetR.CLID_MBC |} ]] 
+									  [[set_n <- setL_n,set_turned <- setL_turned,set_p <- setL_p,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
 									 )
 									 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-									 			,setL_p
 									 			,setL_n
 									 			,setL_turned
+									 			,setL_p
 									 			,clockResetL.CLID_MBC
-									 			,setR_p
-									 			 			,setR_n
+									 			,setR_n
 									 			 			,setR_turned
+									 			 			,setR_p
 									 			 			,clockResetR.CLID_MBC
 									 			|}) |]
 									 ((During)
-									  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_n,setL_turned,clockResetL.CLID_MBC |} ]]
-									  [[set_p <- setR_p,set_n <- setR_n,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_n,setL_turned,setL_p,clockResetL.CLID_MBC |} ]]
+									  [[set_n <- setR_n,set_turned <- setR_turned,set_p <- setR_p,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
 									 )
-									)[[setL_p <- set_p,setL_n <- set_n,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-									 [[setR_p <- set_p,setR_n <- set_n,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+									)[[setL_n <- set_n,setL_turned <- set_turned,setL_p <- set_p,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+									 [[setR_n <- set_n,setR_turned <- set_turned,setR_p <- set_p,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
 									)\{terminate} 
 								)
 								During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1466,25 +1466,25 @@ module AggregationSoftware_AggregationSoftware
 									 	)\{|get_CLID_RandomTurn|}
 									 )
 									 ))
-									  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_n,setR_turned,clockResetR.CLID_MBC |} ]] 
-									  [[set_p <- setL_p,set_n <- setL_n,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setR_n,setR_turned,setR_p,clockResetR.CLID_MBC |} ]] 
+									  [[set_n <- setL_n,set_turned <- setL_turned,set_p <- setL_p,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
 									 )
 									 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-									 			,setL_p
 									 			,setL_n
 									 			,setL_turned
+									 			,setL_p
 									 			,clockResetL.CLID_MBC
-									 			,setR_p
-									 			 			,setR_n
+									 			,setR_n
 									 			 			,setR_turned
+									 			 			,setR_p
 									 			 			,clockResetR.CLID_MBC
 									 			|}) |]
 									 ((During)
-									  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_n,setL_turned,clockResetL.CLID_MBC |} ]]
-									  [[set_p <- setR_p,set_n <- setR_n,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_n,setL_turned,setL_p,clockResetL.CLID_MBC |} ]]
+									  [[set_n <- setR_n,set_turned <- setR_turned,set_p <- setR_p,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
 									 )
-									)[[setL_p <- set_p,setL_n <- set_n,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-									 [[setR_p <- set_p,setR_n <- set_n,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+									)[[setL_n <- set_n,setL_turned <- set_turned,setL_p <- set_p,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+									 [[setR_n <- set_n,setR_turned <- set_turned,setR_p <- set_p,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
 									)\union(enteredSS,{terminate}) 
 								)
 								During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1615,25 +1615,25 @@ module AggregationSoftware_AggregationSoftware
 									 	)\{|get_CLID_RandomTurn|}
 									 )
 									 ))
-									  [[ share__ <- x__ | x__ <- {| share__,setR_p,setR_n,setR_turned,clockResetR.CLID_MBC |} ]] 
-									  [[set_p <- setL_p,set_n <- setL_n,set_turned <- setL_turned,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setR_n,setR_turned,setR_p,clockResetR.CLID_MBC |} ]] 
+									  [[set_n <- setL_n,set_turned <- setL_turned,set_p <- setL_p,clockReset.CLID_MBC <- clockResetL.CLID_MBC]]
 									 )
 									 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-									 			,setL_p
 									 			,setL_n
 									 			,setL_turned
+									 			,setL_p
 									 			,clockResetL.CLID_MBC
-									 			,setR_p
-									 			 			,setR_n
+									 			,setR_n
 									 			 			,setR_turned
+									 			 			,setR_p
 									 			 			,clockResetR.CLID_MBC
 									 			|}) |]
 									 ((During)
-									  [[ share__ <- x__ | x__ <- {| share__,setL_p,setL_n,setL_turned,clockResetL.CLID_MBC |} ]]
-									  [[set_p <- setR_p,set_n <- setR_n,set_turned <- setR_turned,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_n,setL_turned,setL_p,clockResetL.CLID_MBC |} ]]
+									  [[set_n <- setR_n,set_turned <- setR_turned,set_p <- setR_p,clockReset.CLID_MBC <- clockResetR.CLID_MBC]]
 									 )
-									)[[setL_p <- set_p,setL_n <- set_n,setL_turned <- set_turned,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
-									 [[setR_p <- set_p,setR_n <- set_n,setR_turned <- set_turned,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
+									)[[setL_n <- set_n,setL_turned <- set_turned,setL_p <- set_p,clockResetL.CLID_MBC <- clockReset.CLID_MBC]]
+									 [[setR_n <- set_n,setR_turned <- set_turned,setR_p <- set_p,clockResetR.CLID_MBC <- clockReset.CLID_MBC]]
 									)\{terminate} 
 								)
 								During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1943,7 +1943,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Movement_MB,
 							    const_Movement_alpha) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,get_CLID_Turning,Turning::entered|}
+							stateClockSync = {|get_CLID_Turning,Turning::entered,get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered|}
 						 within
 							(MachineBody(id__,
 									    const_Movement_lv,
@@ -1963,7 +1963,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Movement_MB,
 							    const_Movement_alpha) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,get_CLID_Turning,Turning::entered|}
+							stateClockSync = {|get_CLID_Turning,Turning::entered,get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -1974,21 +1974,21 @@ module AggregationSoftware_AggregationSoftware
 													    const_Movement_av,
 													    const_Movement_MB,
 													    const_Movement_alpha)
-											[| {|get_CLID_Turning,Turning::entered,terminate|} |]
-											dbisim(Clock_CLID_Turning(id__,0,
+											[| {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,terminate|} |]
+											dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
 													          const_Movement_lv,
 													          const_Movement_av,
 													          const_Movement_MB,
 													          const_Movement_alpha))
-										)\{|get_CLID_Turning|}
+										)\{|get_CLID_MovementAndAvoidance|}
 									)
-									[| {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,terminate|} |]
-									dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
+									[| {|get_CLID_Turning,Turning::entered,terminate|} |]
+									dbisim(Clock_CLID_Turning(id__,0,
 											          const_Movement_lv,
 											          const_Movement_av,
 											          const_Movement_MB,
 											          const_Movement_alpha))
-								)\{|get_CLID_MovementAndAvoidance|}
+								)\{|get_CLID_Turning|}
 							)
 							) \ union(stateClockSync,enteredSS)
 						)
@@ -2159,7 +2159,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Movement_MB,
 							    const_Movement_alpha) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,get_CLID_Turning,Turning::entered|}
+							stateClockSync = {|get_CLID_Turning,Turning::entered,get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered|}
 						 within
 							(MachineBody_VS_O(id__,
 									    const_Movement_lv,
@@ -2179,7 +2179,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Movement_MB,
 							    const_Movement_alpha) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,get_CLID_Turning,Turning::entered|}
+							stateClockSync = {|get_CLID_Turning,Turning::entered,get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -2190,21 +2190,21 @@ module AggregationSoftware_AggregationSoftware
 													    const_Movement_av,
 													    const_Movement_MB,
 													    const_Movement_alpha)
-											[| {|get_CLID_Turning,Turning::entered,terminate|} |]
-											dbisim(Clock_CLID_Turning(id__,0,
+											[| {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,terminate|} |]
+											dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
 													          const_Movement_lv,
 													          const_Movement_av,
 													          const_Movement_MB,
 													          const_Movement_alpha))
-										)\{|get_CLID_Turning|}
+										)\{|get_CLID_MovementAndAvoidance|}
 									)
-									[| {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,terminate|} |]
-									dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
+									[| {|get_CLID_Turning,Turning::entered,terminate|} |]
+									dbisim(Clock_CLID_Turning(id__,0,
 											          const_Movement_lv,
 											          const_Movement_av,
 											          const_Movement_MB,
 											          const_Movement_alpha))
-								)\{|get_CLID_MovementAndAvoidance|}
+								)\{|get_CLID_Turning|}
 							)
 							) \ diff(union(stateClockSync,enteredSS),enteredSS)
 						)
@@ -2433,33 +2433,6 @@ module AggregationSoftware_AggregationSoftware
 					
 					clockSync = {|get_CLID_MBC,clockReset.CLID_MBC|}
 					
-					Clock_CLID_MovementAndAvoidance(id__,x__,
-							          const_Movement_lv,
-							          const_Movement_av,
-							          const_Movement_MB,
-							          const_Movement_alpha) = 
-						TimeOut_1(
-							MovementAndAvoidance::entered -> Clock_CLID_MovementAndAvoidance(id__,0,
-									          const_Movement_lv,
-									          const_Movement_av,
-									          const_Movement_MB,
-									          const_Movement_alpha)
-							[]
-							get_CLID_MovementAndAvoidance!x__ -> Clock_CLID_MovementAndAvoidance(id__,x__,
-									          const_Movement_lv,
-									          const_Movement_av,
-									          const_Movement_MB,
-									          const_Movement_alpha)
-							[]
-							terminate -> SKIP,Clock_CLID_MovementAndAvoidance(id__,clock_type_plus(x__,1,CLID_MovementAndAvoidance_clock_type(id__,
-									          const_Movement_lv,
-									          const_Movement_av,
-									          const_Movement_MB,
-									          const_Movement_alpha)),
-									          const_Movement_lv,
-									          const_Movement_av,
-									          const_Movement_MB,
-									          const_Movement_alpha))
 					Clock_CLID_Turning(id__,x__,
 							          const_Movement_lv,
 							          const_Movement_av,
@@ -2487,25 +2460,52 @@ module AggregationSoftware_AggregationSoftware
 									          const_Movement_av,
 									          const_Movement_MB,
 									          const_Movement_alpha))
+					Clock_CLID_MovementAndAvoidance(id__,x__,
+							          const_Movement_lv,
+							          const_Movement_av,
+							          const_Movement_MB,
+							          const_Movement_alpha) = 
+						TimeOut_1(
+							MovementAndAvoidance::entered -> Clock_CLID_MovementAndAvoidance(id__,0,
+									          const_Movement_lv,
+									          const_Movement_av,
+									          const_Movement_MB,
+									          const_Movement_alpha)
+							[]
+							get_CLID_MovementAndAvoidance!x__ -> Clock_CLID_MovementAndAvoidance(id__,x__,
+									          const_Movement_lv,
+									          const_Movement_av,
+									          const_Movement_MB,
+									          const_Movement_alpha)
+							[]
+							terminate -> SKIP,Clock_CLID_MovementAndAvoidance(id__,clock_type_plus(x__,1,CLID_MovementAndAvoidance_clock_type(id__,
+									          const_Movement_lv,
+									          const_Movement_av,
+									          const_Movement_MB,
+									          const_Movement_alpha)),
+									          const_Movement_lv,
+									          const_Movement_av,
+									          const_Movement_MB,
+									          const_Movement_alpha))
 					
 					StateClocks(id__,
 							          const_Movement_lv,
 							          const_Movement_av,
 							          const_Movement_MB,
-							          const_Movement_alpha) = dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
+							          const_Movement_alpha) = dbisim(Clock_CLID_Turning(id__,0,
 							          const_Movement_lv,
 							          const_Movement_av,
 							          const_Movement_MB,
 							          const_Movement_alpha))
 					[| { terminate } |] (
-					dbisim(Clock_CLID_Turning(id__,0,
+					dbisim(Clock_CLID_MovementAndAvoidance(id__,0,
 							          const_Movement_lv,
 							          const_Movement_av,
 							          const_Movement_MB,
 							          const_Movement_alpha))
 					)
 					
-					stateClockSync = {|get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered,get_CLID_Turning,Turning::entered|}
+					stateClockSync = {|get_CLID_Turning,Turning::entered,get_CLID_MovementAndAvoidance,MovementAndAvoidance::entered|}
 					
 					-- Shared memory
 					-- Shared memory variables
@@ -2819,12 +2819,12 @@ module AggregationSoftware_AggregationSoftware
 				localClockResets = {|clockReset.CLID_RCC|}
 				
 				
-				channel get_CLID_Broadcast : core_clock_type 
 				channel get_CLID_Receive : core_clock_type 
+				channel get_CLID_Broadcast : core_clock_type 
 				channel get_CLID_RCC : core_clock_type 
 				--channel increment__
 				
-				CLID_Broadcast_clock_type(id__,
+				CLID_Receive_clock_type(id__,
 						          const_Communication_id,
 						          const_Communication_RC) = 
 					let
@@ -2835,7 +2835,7 @@ module AggregationSoftware_AggregationSoftware
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Receive_clock_type(id__,
+				CLID_Broadcast_clock_type(id__,
 						          const_Communication_id,
 						          const_Communication_RC) = 
 					let
@@ -3117,12 +3117,12 @@ module AggregationSoftware_AggregationSoftware
 					Transitions(id__,
 							    const_Communication_id,
 							    const_Communication_RC) = ((let
-						Trans = share__choice(get_CLID_RCC?RCC:CLID_RCC_clock_type(id__,
+						Trans = share__choice(get_x?x -> get_CLID_RCC?RCC:CLID_RCC_clock_type(id__,
 								          const_Communication_id,
-								          const_Communication_RC) -> get_x?x -> TimeOut_1(
+								          const_Communication_RC) -> TimeOut_1(
 							 (share__ -> SKIP
 							 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Broadcast::enter -> SKIP))))
-							 [] dbisim((receive__!NID_Receive.in?x:{x|x <- {(x0__,x1__) | x0__ <- AggregationSoftware_ID,x1__ <- AggregationSoftware_ID}, (((tuple2_1(x)==const_Communication_id)) and ((RCC<const_Communication_RC)))} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_x?x -> share__choice(get_neighs?neighs -> true & (share__choice(set_neighs!set_toolkit_union(neighs,{tuple2_2(x)}) -> SKIP))))) ; Receive::enter -> SKIP)))
+							 [] dbisim((receive__!NID_Receive.in?x:{x|x <- {(x0__,x1__) | x0__ <- AggregationSoftware_ID,x1__ <- AggregationSoftware_ID}, (((tuple2_1(x)==const_Communication_id)) and ((RCC<const_Communication_RC)))} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_neighs?neighs -> share__choice(get_x?x -> true & (share__choice(set_neighs!set_toolkit_union(neighs,{tuple2_2(x)}) -> SKIP))))) ; Receive::enter -> SKIP)))
 							 [] dbisim((broadcast__!NID_Receive.in?y:{y|y <- AggregationSoftware_ID, (RCC<const_Communication_RC)} -> share__choice(set_y!y -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; Deadline(share__choice(get_y?y -> true&(share__choice(receive.out!(y,const_Communication_id) -> SKIP))),0) ; Receive::enter -> SKIP)))
 							 [] dbisim((true)&(internal__!NID_Broadcast -> SKIP ; (share__choice(clockReset.CLID_RCC -> SKIP) ; share__choice(SKIP))
 							 ; share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_neighs!{} -> SKIP))) ; Receive::enter -> SKIP)))
@@ -3188,21 +3188,21 @@ module AggregationSoftware_AggregationSoftware
 									 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 									 )
 									  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_y |} ]] 
-									  [[clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+									  [[set_x <- setL_x,clockReset.CLID_RCC <- clockResetL.CLID_RCC]]
 									 )
 									 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-									 			,clockResetL.CLID_RCC
 									 			,setL_x
+									 			,clockResetL.CLID_RCC
 									 			,setR_x
 									 			 			,setR_y
 									 			|}) |]
 									 ((i1::enter -> Transitions(id__,
 									 		    const_Communication_id,
 									 		    const_Communication_RC))
-									  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_RCC,setL_x |} ]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_x,clockResetL.CLID_RCC |} ]]
 									  [[set_x <- setR_x,set_y <- setR_y]]
 									 )
-									)[[clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+									)[[setL_x <- set_x,clockResetL.CLID_RCC <- clockReset.CLID_RCC]]
 									 [[setR_x <- set_x,setR_y <- set_y]]
 									)
 								)
@@ -3228,7 +3228,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Communication_id,
 							    const_Communication_RC) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+							stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 						 within
 							(MachineBody(id__,
 									    const_Communication_id,
@@ -3242,7 +3242,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Communication_id,
 							    const_Communication_RC) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+							stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -3251,17 +3251,17 @@ module AggregationSoftware_AggregationSoftware
 											MachineBody(id__,
 													    const_Communication_id,
 													    const_Communication_RC)
-											[| {|get_CLID_Receive,Receive::entered,terminate|} |]
-											dbisim(Clock_CLID_Receive(id__,0,
+											[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+											dbisim(Clock_CLID_Broadcast(id__,0,
 													          const_Communication_id,
 													          const_Communication_RC))
-										)\{|get_CLID_Receive|}
+										)\{|get_CLID_Broadcast|}
 									)
-									[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
-									dbisim(Clock_CLID_Broadcast(id__,0,
+									[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+									dbisim(Clock_CLID_Receive(id__,0,
 											          const_Communication_id,
 											          const_Communication_RC))
-								)\{|get_CLID_Broadcast|}
+								)\{|get_CLID_Receive|}
 							)
 							) \ union(stateClockSync,enteredSS)
 						)
@@ -3369,21 +3369,21 @@ module AggregationSoftware_AggregationSoftware
 									 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 									 )
 									  [[ share__ <- x__ | x__ <- {| share__,setR_x,setR_y |} ]] 
-									  [[clockReset.CLID_RCC <- clockResetL.CLID_RCC,set_x <- setL_x]]
+									  [[set_x <- setL_x,clockReset.CLID_RCC <- clockResetL.CLID_RCC]]
 									 )
 									 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-									 			,clockResetL.CLID_RCC
 									 			,setL_x
+									 			,clockResetL.CLID_RCC
 									 			,setR_x
 									 			 			,setR_y
 									 			|}) |]
 									 ((i1::enter -> Transitions(id__,
 									 		    const_Communication_id,
 									 		    const_Communication_RC))
-									  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_RCC,setL_x |} ]]
+									  [[ share__ <- x__ | x__ <- {| share__,setL_x,clockResetL.CLID_RCC |} ]]
 									  [[set_x <- setR_x,set_y <- setR_y]]
 									 )
-									)[[clockResetL.CLID_RCC <- clockReset.CLID_RCC,setL_x <- set_x]]
+									)[[setL_x <- set_x,clockResetL.CLID_RCC <- clockReset.CLID_RCC]]
 									 [[setR_x <- set_x,setR_y <- set_y]]
 									)
 								)
@@ -3409,7 +3409,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Communication_id,
 							    const_Communication_RC) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+							stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 						 within
 							(MachineBody_VS_O(id__,
 									    const_Communication_id,
@@ -3423,7 +3423,7 @@ module AggregationSoftware_AggregationSoftware
 							    const_Communication_id,
 							    const_Communication_RC) = 
 						dbisim((let
-							stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+							stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 						 within
 							(dbisim(
 								sbisim(
@@ -3432,17 +3432,17 @@ module AggregationSoftware_AggregationSoftware
 											MachineBody_VS_O(id__,
 													    const_Communication_id,
 													    const_Communication_RC)
-											[| {|get_CLID_Receive,Receive::entered,terminate|} |]
-											dbisim(Clock_CLID_Receive(id__,0,
+											[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
+											dbisim(Clock_CLID_Broadcast(id__,0,
 													          const_Communication_id,
 													          const_Communication_RC))
-										)\{|get_CLID_Receive|}
+										)\{|get_CLID_Broadcast|}
 									)
-									[| {|get_CLID_Broadcast,Broadcast::entered,terminate|} |]
-									dbisim(Clock_CLID_Broadcast(id__,0,
+									[| {|get_CLID_Receive,Receive::entered,terminate|} |]
+									dbisim(Clock_CLID_Receive(id__,0,
 											          const_Communication_id,
 											          const_Communication_RC))
-								)\{|get_CLID_Broadcast|}
+								)\{|get_CLID_Receive|}
 							)
 							) \ diff(union(stateClockSync,enteredSS),enteredSS)
 						)
@@ -3609,23 +3609,6 @@ module AggregationSoftware_AggregationSoftware
 					
 					clockSync = {|get_CLID_RCC,clockReset.CLID_RCC|}
 					
-					Clock_CLID_Broadcast(id__,x__,
-							          const_Communication_id,
-							          const_Communication_RC) = 
-						TimeOut_1(
-							Broadcast::entered -> Clock_CLID_Broadcast(id__,0,
-									          const_Communication_id,
-									          const_Communication_RC)
-							[]
-							get_CLID_Broadcast!x__ -> Clock_CLID_Broadcast(id__,x__,
-									          const_Communication_id,
-									          const_Communication_RC)
-							[]
-							terminate -> SKIP,Clock_CLID_Broadcast(id__,clock_type_plus(x__,1,CLID_Broadcast_clock_type(id__,
-									          const_Communication_id,
-									          const_Communication_RC)),
-									          const_Communication_id,
-									          const_Communication_RC))
 					Clock_CLID_Receive(id__,x__,
 							          const_Communication_id,
 							          const_Communication_RC) = 
@@ -3643,19 +3626,36 @@ module AggregationSoftware_AggregationSoftware
 									          const_Communication_RC)),
 									          const_Communication_id,
 									          const_Communication_RC))
+					Clock_CLID_Broadcast(id__,x__,
+							          const_Communication_id,
+							          const_Communication_RC) = 
+						TimeOut_1(
+							Broadcast::entered -> Clock_CLID_Broadcast(id__,0,
+									          const_Communication_id,
+									          const_Communication_RC)
+							[]
+							get_CLID_Broadcast!x__ -> Clock_CLID_Broadcast(id__,x__,
+									          const_Communication_id,
+									          const_Communication_RC)
+							[]
+							terminate -> SKIP,Clock_CLID_Broadcast(id__,clock_type_plus(x__,1,CLID_Broadcast_clock_type(id__,
+									          const_Communication_id,
+									          const_Communication_RC)),
+									          const_Communication_id,
+									          const_Communication_RC))
 					
 					StateClocks(id__,
 							          const_Communication_id,
-							          const_Communication_RC) = dbisim(Clock_CLID_Broadcast(id__,0,
+							          const_Communication_RC) = dbisim(Clock_CLID_Receive(id__,0,
 							          const_Communication_id,
 							          const_Communication_RC))
 					[| { terminate } |] (
-					dbisim(Clock_CLID_Receive(id__,0,
+					dbisim(Clock_CLID_Broadcast(id__,0,
 							          const_Communication_id,
 							          const_Communication_RC))
 					)
 					
-					stateClockSync = {|get_CLID_Broadcast,Broadcast::entered,get_CLID_Receive,Receive::entered|}
+					stateClockSync = {|get_CLID_Receive,Receive::entered,get_CLID_Broadcast,Broadcast::entered|}
 					
 					-- Shared memory
 					-- Shared memory variables

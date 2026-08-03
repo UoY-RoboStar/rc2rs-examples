@@ -1,0 +1,72 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 20-07-2026 13:09:20
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_taxi_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "ModTaxi_ctrlTaxi.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate ModTaxi_ctrlTaxi
+P_ModTaxi_ctrlTaxi = let
+	id__ = 0
+	
+	
+	
+		
+	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1 = const_Turn_angularSpeed1
+	const_ModTaxi_ctrlTaxi_op_ref0_rotate = const_Turn_rotate
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1 = const_UpdateAvoidanceRadius_avoidanceRadius1
+	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2 = const_UpdateAvoidanceRadius_avoidanceRadius2
+within
+	ModTaxi_ctrlTaxi::O__(id__,
+			    const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_angularSpeed1,
+			   	const_ModTaxi_ctrlTaxi_op_ref0_rotate,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius1,
+			   	const_ModTaxi_ctrlTaxi_op_ref1_avoidanceRadius2)
+
+assert P_ModTaxi_ctrlTaxi :[deadlock-free]	
+assert P_ModTaxi_ctrlTaxi;RUN({r__}) :[deadlock-free]
+assert P_ModTaxi_ctrlTaxi :[deterministic]
+assert P_ModTaxi_ctrlTaxi :[divergence-free]
+
+-- generate ModTaxi_ctrlTaxi_SwarmTaxisFSM
+P_ModTaxi_ctrlTaxi_SwarmTaxisFSM = let
+	id__ = 0
+	
+	
+	
+within
+	ModTaxi_ctrlTaxi::SwarmTaxisFSM::O__(
+		id__,
+		const_ModTaxi_ctrlTaxi_SwarmTaxisFSM_MoveForwardVal,
+		const_UpdateAvoidanceRadius_avoidanceRadius1,
+		const_UpdateAvoidanceRadius_avoidanceRadius2,
+		const_Turn_angularSpeed1,
+		const_Turn_rotate
+	)
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[deadlock-free]	
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM;RUN({r__}) :[deadlock-free]
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[deterministic]
+assert P_ModTaxi_ctrlTaxi_SwarmTaxisFSM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_ModTaxi_ctrlTaxi_SwarmTaxisFSM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ModTaxi_ctrlTaxi_SwarmTaxisFSM
+-- timed deadlock free
+assert prioritise(P_ModTaxi_ctrlTaxi[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ModTaxi_ctrlTaxi

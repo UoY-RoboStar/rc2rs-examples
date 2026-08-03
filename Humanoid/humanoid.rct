@@ -1,0 +1,35 @@
+diagram humanoid module Humanoid {
+	cref ctrl_ref0 = Head
+	cref ctrl_ref1 = Foot
+	robotic platform Robot {
+		event outOfBalanceLeft : Vector
+		event outOfBalanceRight : Vector
+		event wallDetected
+		turn()
+		Walk()
+		green5s()
+		red5s()
+		play()
+		movex(r: real)
+		movey(r: real)
+		movez(r: real)
+		leanforward()
+		step(d: Vector)
+		correct(v: Vector)
+	}
+	cref ctrl_ref2 = Foot
+connection ctrl_ref0 on liftFootLeft to ctrl_ref1 on liftFoot
+	connection ctrl_ref0 on liftFootRight to ctrl_ref2 on liftFoot
+	connection ctrl_ref2 on stepDone to ctrl_ref0 on stepDoneRight
+	connection ctrl_ref1 on stepDone to ctrl_ref0 on stepDoneLeft
+	connection ctrl_ref1 on leanOut to ctrl_ref2 on leanIn
+	connection ctrl_ref2 on leanOut to ctrl_ref1 on leanIn
+	connection ctrl_ref1 on stepDownOut to ctrl_ref2 on stepDownIn
+	connection ctrl_ref2 on stepDownOut to ctrl_ref1 on stepDownIn
+	connection Robot on outOfBalanceLeft to ctrl_ref1 on outOfBalance ( _async )
+	connection Robot on outOfBalanceRight to ctrl_ref2 on outOfBalance ( _async )
+	connection Robot on wallDetected to ctrl_ref0 on wallDetected ( _async )
+	cref ctrl_ref3 = Siren
+	connection ctrl_ref0 on startSiren to ctrl_ref3 on stopSiren ( _async )
+	connection ctrl_ref0 on stopSiren to ctrl_ref3 on startSiren ( _async )
+}

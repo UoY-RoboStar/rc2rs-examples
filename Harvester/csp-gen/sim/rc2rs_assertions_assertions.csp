@@ -1,31 +1,30 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:01
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:06
 --
 
 include "defs/state_timed_defs.csp"
-include "../timed/defs/pkg727_main_defs.csp"
+include "../defs/set-operations_defs.csp"
 include "defs/core_defs.csp"
-include "defs/pkg727_main_sim_defs.csp"
+include "rc2rs/robosim/defs/main_defs.csp"
 include "defs/sequence_toolkit_defs.csp"
 include "defs/pkg727_main_sim.csp"
+include "../timed/defs/setoperations.csp"
 include "sims/defs/NormalForm_defs.csp"
-include "../timed/defs/main_defs.csp"
+include "../defs/main_defs.csp"
 include "../timed/defs/pkg727_main.csp"
-include "defs/function_toolkit_defs.csp"
 include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
 include "../timed/defs/main.csp"
 include "defs/core_timed_defs.csp"
 include "sims/defs/RC_defs.csp"
+include "../rc2rs/robochart/defs/main_defs.csp"
 include "defs/set_toolkit_defs.csp"
-include "../timed/defs/setoperations_defs.csp"
 include "instantiations.csp"
 include "defs/relation_toolkit_defs.csp"
 
 channel r__
-
-transparent chase
 
 -- A1 - schedulable
 assert let 
@@ -63,6 +62,7 @@ assert prioritise(let
 	
 	
 	
+	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_hideTime = const_pkg727_main_sim_AppleHarvestControl_hideTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_approachTime = const_pkg727_main_sim_AppleHarvestControl_approachTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_graspTime = const_pkg727_main_sim_AppleHarvestControl_graspTime
@@ -71,7 +71,6 @@ assert prioritise(let
 	const_pkg727_main_sim_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_sim_AppleHarvestControl_pickDeadl
 	const_pkg727_main_sim_ControlArm_stm_ref0_homePos = const_pkg727_main_sim_AppleHarvestControl_homePos
 	const_pkg727_main_sim_ControlArm_stm_ref0_storagePos = const_pkg727_main_sim_AppleHarvestControl_storagePos
-	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 		
 within
 	pkg727_main_sim::Harvester::D__(id__,cycle_pkg727_main_sim_Harvester_Harvester,
@@ -88,12 +87,12 @@ within
 -- A3 - refinement
 assert let
 	rename_in_NormalForm(NormalForm::i_takePic.x__.y__) = pkg727_main_sim::Harvester::i_takePic.x__.y__
-	rename_out_NormalForm(NormalForm::o_move.jp) = pkg727_main_sim::Harvester::o_move.jp
-	rename_out_NormalForm(NormalForm::o_pick) = pkg727_main_sim::Harvester::o_pick
-	rename_out_NormalForm(NormalForm::o_hideArm) = pkg727_main_sim::Harvester::o_hideArm
-	rename_out_NormalForm(NormalForm::o_drop.jp) = pkg727_main_sim::Harvester::o_drop.jp
 	rename_out_NormalForm(NormalForm::o_grasp.jp) = pkg727_main_sim::Harvester::o_grasp.jp
+	rename_out_NormalForm(NormalForm::o_move.jp) = pkg727_main_sim::Harvester::o_move.jp
 	rename_out_NormalForm(NormalForm::o_goHome) = pkg727_main_sim::Harvester::o_goHome
+	rename_out_NormalForm(NormalForm::o_pick) = pkg727_main_sim::Harvester::o_pick
+	rename_out_NormalForm(NormalForm::o_drop.jp) = pkg727_main_sim::Harvester::o_drop.jp
+	rename_out_NormalForm(NormalForm::o_hideArm) = pkg727_main_sim::Harvester::o_hideArm
 within
 	prioritise(let 
 		cycle_NormalForm_NormalForm = 1
@@ -130,6 +129,7 @@ within
 	
 	
 	
+	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_hideTime = const_pkg727_main_sim_AppleHarvestControl_hideTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_approachTime = const_pkg727_main_sim_AppleHarvestControl_approachTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_graspTime = const_pkg727_main_sim_AppleHarvestControl_graspTime
@@ -138,7 +138,6 @@ within
 	const_pkg727_main_sim_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_sim_AppleHarvestControl_pickDeadl
 	const_pkg727_main_sim_ControlArm_stm_ref0_homePos = const_pkg727_main_sim_AppleHarvestControl_homePos
 	const_pkg727_main_sim_ControlArm_stm_ref0_storagePos = const_pkg727_main_sim_AppleHarvestControl_storagePos
-	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 		
 within
 	pkg727_main_sim::Harvester::D__(id__,cycle_pkg727_main_sim_Harvester_Harvester,
@@ -155,12 +154,12 @@ within
 -- A4 - refinement
 assert let
 	rename_in_Harvester(pkg727_main_sim::Harvester::i_takePic.x__.y__) = NormalForm::i_takePic.x__.y__
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_grasp.jp) = NormalForm::o_grasp.jp
 	rename_out_Harvester(pkg727_main_sim::Harvester::o_goHome) = NormalForm::o_goHome
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_move.jp) = NormalForm::o_move.jp
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_hideArm) = NormalForm::o_hideArm
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_pick) = NormalForm::o_pick
 	rename_out_Harvester(pkg727_main_sim::Harvester::o_drop.jp) = NormalForm::o_drop.jp
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_hideArm) = NormalForm::o_hideArm
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_move.jp) = NormalForm::o_move.jp
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_pick) = NormalForm::o_pick
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_grasp.jp) = NormalForm::o_grasp.jp
 within
 	prioritise(let 
 		cycle_pkg727_main_sim_Harvester_Harvester = 1
@@ -168,6 +167,7 @@ within
 		
 		
 		
+		const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_hideTime = const_pkg727_main_sim_AppleHarvestControl_hideTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_approachTime = const_pkg727_main_sim_AppleHarvestControl_approachTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_graspTime = const_pkg727_main_sim_AppleHarvestControl_graspTime
@@ -176,7 +176,6 @@ within
 		const_pkg727_main_sim_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_sim_AppleHarvestControl_pickDeadl
 		const_pkg727_main_sim_ControlArm_stm_ref0_homePos = const_pkg727_main_sim_AppleHarvestControl_homePos
 		const_pkg727_main_sim_ControlArm_stm_ref0_storagePos = const_pkg727_main_sim_AppleHarvestControl_storagePos
-		const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 			
 	within
 		pkg727_main_sim::Harvester::D__(id__,cycle_pkg727_main_sim_Harvester_Harvester,
@@ -251,12 +250,12 @@ within
 -- A6 - refinement
 assert let
 	rename_in_RC(RC::i_takePic.x__.y__) = pkg727_main_sim::Harvester::i_takePic.x__.y__
+	rename_out_RC(RC::o_drop.jp) = pkg727_main_sim::Harvester::o_drop.jp
+	rename_out_RC(RC::o_pick) = pkg727_main_sim::Harvester::o_pick
 	rename_out_RC(RC::o_hideArm) = pkg727_main_sim::Harvester::o_hideArm
 	rename_out_RC(RC::o_move.jp) = pkg727_main_sim::Harvester::o_move.jp
 	rename_out_RC(RC::o_grasp.jp) = pkg727_main_sim::Harvester::o_grasp.jp
-	rename_out_RC(RC::o_pick) = pkg727_main_sim::Harvester::o_pick
 	rename_out_RC(RC::o_goHome) = pkg727_main_sim::Harvester::o_goHome
-	rename_out_RC(RC::o_drop.jp) = pkg727_main_sim::Harvester::o_drop.jp
 within
 	prioritise(let 
 		cycle_RC_RC = 1
@@ -293,6 +292,7 @@ within
 	
 	
 	
+	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_hideTime = const_pkg727_main_sim_AppleHarvestControl_hideTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_approachTime = const_pkg727_main_sim_AppleHarvestControl_approachTime
 	const_pkg727_main_sim_ControlArm_stm_ref0_graspTime = const_pkg727_main_sim_AppleHarvestControl_graspTime
@@ -301,7 +301,6 @@ within
 	const_pkg727_main_sim_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_sim_AppleHarvestControl_pickDeadl
 	const_pkg727_main_sim_ControlArm_stm_ref0_homePos = const_pkg727_main_sim_AppleHarvestControl_homePos
 	const_pkg727_main_sim_ControlArm_stm_ref0_storagePos = const_pkg727_main_sim_AppleHarvestControl_storagePos
-	const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 		
 within
 	pkg727_main_sim::Harvester::D__(id__,cycle_pkg727_main_sim_Harvester_Harvester,
@@ -318,12 +317,12 @@ within
 -- A7 - refinement
 assert let
 	rename_in_Harvester(pkg727_main_sim::Harvester::i_takePic.x__.y__) = RC::i_takePic.x__.y__
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_grasp.jp) = RC::o_grasp.jp
 	rename_out_Harvester(pkg727_main_sim::Harvester::o_goHome) = RC::o_goHome
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_move.jp) = RC::o_move.jp
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_hideArm) = RC::o_hideArm
-	rename_out_Harvester(pkg727_main_sim::Harvester::o_pick) = RC::o_pick
 	rename_out_Harvester(pkg727_main_sim::Harvester::o_drop.jp) = RC::o_drop.jp
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_hideArm) = RC::o_hideArm
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_move.jp) = RC::o_move.jp
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_pick) = RC::o_pick
+	rename_out_Harvester(pkg727_main_sim::Harvester::o_grasp.jp) = RC::o_grasp.jp
 within
 	prioritise(let 
 		cycle_pkg727_main_sim_Harvester_Harvester = 1
@@ -331,6 +330,7 @@ within
 		
 		
 		
+		const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_hideTime = const_pkg727_main_sim_AppleHarvestControl_hideTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_approachTime = const_pkg727_main_sim_AppleHarvestControl_approachTime
 		const_pkg727_main_sim_ControlArm_stm_ref0_graspTime = const_pkg727_main_sim_AppleHarvestControl_graspTime
@@ -339,7 +339,6 @@ within
 		const_pkg727_main_sim_ControlArm_stm_ref0_pickDeadl = const_pkg727_main_sim_AppleHarvestControl_pickDeadl
 		const_pkg727_main_sim_ControlArm_stm_ref0_homePos = const_pkg727_main_sim_AppleHarvestControl_homePos
 		const_pkg727_main_sim_ControlArm_stm_ref0_storagePos = const_pkg727_main_sim_AppleHarvestControl_storagePos
-		const_pkg727_main_sim_ControlArm_stm_ref2_goHTime = const_pkg727_main_sim_GoHome_goHTime
 			
 	within
 		pkg727_main_sim::Harvester::D__(id__,cycle_pkg727_main_sim_Harvester_Harvester,

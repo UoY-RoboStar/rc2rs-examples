@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -38,12 +38,12 @@ exports
 	channel get_startIKSolverF, set_startIKSolverF, setL_startIKSolverF, setR_startIKSolverF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_p2: main_JointsPos
-	channel set_EXT_startIKSolverF: core_boolean
 	channel set_EXT_p3: main_JointsPos
+	channel set_EXT_p2: main_JointsPos
+	channel set_EXT_apple: setoperations_Coord3D
 	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
 	channel set_EXT_p1: main_JointsPos
-	channel set_EXT_apple: setoperations_Coord3D
+	channel set_EXT_startIKSolverF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -68,12 +68,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_p2,
-		set_EXT_startIKSolverF,
 		set_EXT_p3,
+		set_EXT_p2,
+		set_EXT_apple,
 		set_EXT_positions,
 		set_EXT_p1,
-		set_EXT_apple
+		set_EXT_startIKSolverF
 	|}
 	
 	
@@ -265,7 +265,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__) = ((let
-			Trans = share__choice(get_p2?p2 -> get_p3?p3 -> get_p1?p1 -> TimeOut_1(
+			Trans = share__choice(get_p3?p3 -> get_p2?p2 -> get_p1?p1 -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; t_initialJunction_::enter -> SKIP))))
 				 [] dbisim(((((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))))&(internal__!NID_t_initialJunction_ -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; t_thenJ_::enter -> SKIP))))
@@ -341,17 +341,17 @@ exports
 						 [[t_elseJ_::interrupt <- x__ | x__ <- {|internal__.NID_t_elseJ_|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_p2 <- setL_p2,set_p3 <- setL_p3,set_p1 <- setL_p1]]
+						  [[set_p3 <- setL_p3,set_p2 <- setL_p2,set_p1 <- setL_p1]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_p2
 						 			,setL_p3
+						 			,setL_p2
 						 			,setL_p1
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p3,setL_p1 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p3,setL_p2,setL_p1 |} ]]
 						 )
-						)[[setL_p2 <- set_p2,setL_p3 <- set_p3,setL_p1 <- set_p1]]
+						)[[setL_p3 <- set_p3,setL_p2 <- set_p2,setL_p1 <- set_p1]]
 						)
 					)
 					 \ hideSet)
@@ -437,17 +437,17 @@ exports
 						 [[t_elseJ_::interrupt <- x__ | x__ <- {|internal__.NID_t_elseJ_|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_p2 <- setL_p2,set_p3 <- setL_p3,set_p1 <- setL_p1]]
+						  [[set_p3 <- setL_p3,set_p2 <- setL_p2,set_p1 <- setL_p1]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_p2
 						 			,setL_p3
+						 			,setL_p2
 						 			,setL_p1
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p3,setL_p1 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p3,setL_p2,setL_p1 |} ]]
 						 )
-						)[[setL_p2 <- set_p2,setL_p3 <- set_p3,setL_p1 <- set_p1]]
+						)[[setL_p3 <- set_p3,setL_p2 <- set_p2,setL_p1 <- set_p1]]
 						)
 					)
 					 \ hideSet)

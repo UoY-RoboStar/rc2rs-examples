@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 13:39:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "foot_controller.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate foot_controller
+P_foot_controller = let
+	id__ = 0
+	
+	
+	
+within
+	foot_controller::O__(
+		id__
+	)
+assert P_foot_controller :[deadlock-free]	
+assert P_foot_controller;RUN({r__}) :[deadlock-free]
+assert P_foot_controller :[deterministic]
+assert P_foot_controller :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_controller[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_controller

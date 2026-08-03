@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 14-05-2026 19:42:45
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 01-08-2026 20:37:15
 --
 
 -- compileSelfContainedOperation
@@ -37,12 +37,12 @@ exports
 	channel get_obstacleF, set_obstacleF, setL_obstacleF, setR_obstacleF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_obstacleF: core_boolean
-	channel set_EXT_odometerF: core_boolean
-	channel set_EXT_d0: core_real
-	channel set_EXT_stopF: core_boolean
 	channel set_EXT_resumeF: core_boolean
 	channel set_EXT_turnF: core_boolean
+	channel set_EXT_stopF: core_boolean
+	channel set_EXT_d0: core_real
+	channel set_EXT_obstacleF: core_boolean
+	channel set_EXT_odometerF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -50,8 +50,8 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2Call
-	channel clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1Call: core_nat
 	channel clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5Call
+	channel clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1Call: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -67,12 +67,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_obstacleF,
-		set_EXT_odometerF,
-		set_EXT_d0,
-		set_EXT_stopF,
 		set_EXT_resumeF,
-		set_EXT_turnF
+		set_EXT_turnF,
+		set_EXT_stopF,
+		set_EXT_d0,
+		set_EXT_obstacleF,
+		set_EXT_odometerF
 	|}
 	
 	
@@ -119,8 +119,8 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 	,	clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2Call,
-		clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1Call,
-		clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5Call
+		clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5Call,
+		clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1Call
 		, share__
 		|}
 	
@@ -248,11 +248,11 @@ exports
 		-- context of the Controller module, and therefore within scope of the state machine module.
 		CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2(id__,
 				    const_pkg994__sim_clone_normal_Movement_Avoiding_entry_evadeTime) = EDeadline(clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2Call,0)
+		CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5(id__,
+				    const_pkg994__sim_clone_normal_Movement_Avoiding_entry_evadeTime) = EDeadline(clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5Call,0)
 		CALL__clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1(id__,
 				    const_pkg994__sim_clone_normal_Movement_Avoiding_entry_evadeTime,
 					param_i) = EDeadline(clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1Call.param_i,0)
-		CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5(id__,
-				    const_pkg994__sim_clone_normal_Movement_Avoiding_entry_evadeTime) = EDeadline(clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5Call,0)
 		
 		-- END of Operation calls --
 	

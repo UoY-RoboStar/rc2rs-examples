@@ -1,11 +1,12 @@
+package SourceAnalysisPkg
 
-
-
+ 
+ 
 stm SourceAnalysis {
-	
+	 
 	var gs : Seq( real )
 			event s : Seq( real ) //Seq can be treated as vector
-	event resume
+	event resume 
 	
 	
 	const thr : real
@@ -30,7 +31,7 @@ initial i1
 	}
 	transition t3 {
 		from Analysis
-		to NoSource
+		to NoSource 
 		
 		condition analysis ( gs ) == Status::noSource
 		action 
@@ -42,24 +43,23 @@ initial i1
 		
 		condition analysis ( gs ) == Status::sourceD
 	}
-	final j1
+	final j1 
 	state Reading {
 	}
-	transition t8 {
+	transition t8 { 
 		from SourceDetected
 		to j1
 	
 		condition gt ( intensity (gs), thr )
-		action 
-	send stop
+		action send stop
 	}
 	transition t9a {
 		from SourceDetected
 		to Reading
 		
 		condition 
-		
-		
+		 
+		 
 		not gt ( intensity ( gs ) , thr )
 		action 
 	
@@ -72,3 +72,4 @@ initial i1
 		trigger s ? gs
 	}
 }
+

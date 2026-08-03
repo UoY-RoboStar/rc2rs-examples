@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -32,8 +32,8 @@ exports
 	channel get_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f, set_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f, setL_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f, setR_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f: core_boolean
 	channel set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f: core_boolean
+	channel set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -55,8 +55,8 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f,
-		set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f
+		set_EXT_exec_ms_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f,
+		set_EXT_exec_ds_clone_deadlineAction_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op_t_i_f
 	|}
 	
 	
@@ -65,11 +65,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_S0 : core_clock_type 
 	channel get_CLID_S1 : core_clock_type 
+	channel get_CLID_S0 : core_clock_type 
 	--channel increment__
 	
-	CLID_S0_clock_type(id__) = 
+	CLID_S1_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -78,7 +78,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_S1_clock_type(id__) = 
+	CLID_S0_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -409,7 +409,7 @@ exports
 		
 		Behaviour(id__) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S0,S0::entered,get_CLID_S1,S1::entered|}
+				stateClockSync = {|get_CLID_S1,S1::entered,get_CLID_S0,S0::entered|}
 			 within
 				(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
 			)
@@ -493,7 +493,7 @@ exports
 		
 		Behaviour_VS_O(id__) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S0,S0::entered,get_CLID_S1,S1::entered|}
+				stateClockSync = {|get_CLID_S1,S1::entered,get_CLID_S0,S0::entered|}
 			 within
 				(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -539,13 +539,6 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_S0(id__,x__) = 
-			TimeOut_1(
-				S0::entered -> Clock_CLID_S0(id__,0)
-				[]
-				get_CLID_S0!x__ -> Clock_CLID_S0(id__,x__)
-				[]
-				terminate -> SKIP,Clock_CLID_S0(id__,clock_type_plus(x__,1,CLID_S0_clock_type(id__))))
 		Clock_CLID_S1(id__,x__) = 
 			TimeOut_1(
 				S1::entered -> Clock_CLID_S1(id__,0)
@@ -553,13 +546,20 @@ exports
 				get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
+		Clock_CLID_S0(id__,x__) = 
+			TimeOut_1(
+				S0::entered -> Clock_CLID_S0(id__,0)
+				[]
+				get_CLID_S0!x__ -> Clock_CLID_S0(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_S0(id__,clock_type_plus(x__,1,CLID_S0_clock_type(id__))))
 		
-		StateClocks(id__) = dbisim(Clock_CLID_S0(id__,0))
+		StateClocks(id__) = dbisim(Clock_CLID_S1(id__,0))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_S1(id__,0))
+		dbisim(Clock_CLID_S0(id__,0))
 		)
 		
-		stateClockSync = {|get_CLID_S0,S0::entered,get_CLID_S1,S1::entered|}
+		stateClockSync = {|get_CLID_S1,S1::entered,get_CLID_S0,S0::entered|}
 		
 		}
 			endmodule

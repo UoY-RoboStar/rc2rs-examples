@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:58:32
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 24-06-2026 14:28:47
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -593,11 +593,11 @@ module CMovement
 				localClockResets = {||}
 				
 				
-				channel get_CLID_f : core_clock_type 
 				channel get_CLID_MBC : core_clock_type 
+				channel get_CLID_f : core_clock_type 
 				--channel increment__
 				
-				CLID_f_clock_type(id__) = 
+				CLID_MBC_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				}))+1)
@@ -605,7 +605,7 @@ module CMovement
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_MBC_clock_type(id__) = 
+				CLID_f_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				}))+1)
@@ -2242,10 +2242,19 @@ module CMovement
 				localClockResets = {|clockReset.CLID_C|}
 				
 				
+				channel get_CLID_Waiting : core_clock_type 
 				channel get_CLID_f : core_clock_type 
 				channel get_CLID_C : core_clock_type 
-				channel get_CLID_Waiting : core_clock_type 
 				--channel increment__
+				
+				CLID_Waiting_clock_type(id__) = 
+					let
+						max = (clock_type_max(Union({
+				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
 				CLID_f_clock_type(id__) = 
 					let
@@ -2260,15 +2269,6 @@ module CMovement
 					let
 						max = (clock_type_max(Union({
 				({param_i|param_i <- core_nat})
-				}))+1)
-					ctype = {0..max}
-				within
-					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-				
-				CLID_Waiting_clock_type(id__) = 
-					let
-						max = (clock_type_max(Union({
-				{}
 				}))+1)
 					ctype = {0..max}
 				within
@@ -4487,11 +4487,11 @@ module CMovement
 				localClockResets = {||}
 				
 				
-				channel get_CLID_f : core_clock_type 
 				channel get_CLID_MBC : core_clock_type 
+				channel get_CLID_f : core_clock_type 
 				--channel increment__
 				
-				CLID_f_clock_type(id__) = 
+				CLID_MBC_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				}))+1)
@@ -4499,7 +4499,7 @@ module CMovement
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_MBC_clock_type(id__) = 
+				CLID_f_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				}))+1)
@@ -5694,8 +5694,8 @@ module CMovement
 				
 				
 				channel get_CLID_C : core_clock_type 
-				channel get_CLID_Waiting : core_clock_type 
 				channel get_CLID_f : core_clock_type 
+				channel get_CLID_Waiting : core_clock_type 
 				--channel increment__
 				
 				CLID_C_clock_type(id__) = 
@@ -5707,7 +5707,7 @@ module CMovement
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_Waiting_clock_type(id__) = 
+				CLID_f_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -5716,7 +5716,7 @@ module CMovement
 				within
 					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
-				CLID_f_clock_type(id__) = 
+				CLID_Waiting_clock_type(id__) = 
 					let
 						max = (clock_type_max(Union({
 				{}
@@ -6506,24 +6506,10 @@ module CMovement
 				localClockResets = {|clockReset.CLID_MBC|}
 				
 				
-				channel get_CLID_MBC : core_clock_type 
 				channel get_CLID_Moving : core_clock_type 
+				channel get_CLID_MBC : core_clock_type 
 				channel get_CLID_Turning : core_clock_type 
 				--channel increment__
-				
-				CLID_MBC_clock_type(id__,
-						          const_pkg224_SimFW_SMovement_lv,
-						          const_pkg224_SimFW_SMovement_PI,
-						          const_pkg224_SimFW_SMovement_av) = 
-					let
-						max = (clock_type_max(Union({
-				OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),
-				OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)
-				,({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|av <- core_real,PI <- core_real})
-				}))+1)
-					ctype = {0..max}
-				within
-					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 				
 				CLID_Moving_clock_type(id__,
 						          const_pkg224_SimFW_SMovement_lv,
@@ -6532,6 +6518,20 @@ module CMovement
 					let
 						max = (clock_type_max(Union({
 				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+				
+				CLID_MBC_clock_type(id__,
+						          const_pkg224_SimFW_SMovement_lv,
+						          const_pkg224_SimFW_SMovement_PI,
+						          const_pkg224_SimFW_SMovement_av) = 
+					let
+						max = (clock_type_max(Union({
+				OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),
+				OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)
+				,({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|PI <- core_real,av <- core_real})
 				}))+1)
 					ctype = {0..max}
 				within
@@ -7489,24 +7489,6 @@ module CMovement
 								param_lv,
 								param_av) = EDeadline(moveCall.param_lv.param_av,0)
 					
-					CALL__normal_SMovement_Turning_entry(id__,
-							    const_pkg224_SimFW_SMovement_lv,
-							    const_pkg224_SimFW_SMovement_PI,
-							    const_pkg224_SimFW_SMovement_av,
-							    const_pkg224_SimFW_normal_SMovement_Turning_entry_av) = (OP_normal_SMovement_Turning_entry::O__(id__,
-							    const_pkg224_SimFW_normal_SMovement_Turning_entry_av))
-					[[
-						OP_normal_SMovement_Turning_entry::moveCall <- moveCall
-					]]
-					CALL__clone_normal_SMovement_Turning_entry(id__,
-							    const_pkg224_SimFW_SMovement_lv,
-							    const_pkg224_SimFW_SMovement_PI,
-							    const_pkg224_SimFW_SMovement_av,
-							    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av) = (OP_clone_normal_SMovement_Turning_entry::O__(id__,
-							    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av))
-					[[
-						OP_clone_normal_SMovement_Turning_entry::moveCall <- moveCall
-					]]
 					CALL__clone_normal_SMovement_Moving_entry(id__,
 							    const_pkg224_SimFW_SMovement_lv,
 							    const_pkg224_SimFW_SMovement_PI,
@@ -7516,32 +7498,14 @@ module CMovement
 					[[
 						OP_clone_normal_SMovement_Moving_entry::moveCall <- moveCall
 					]]
-					CALL__clone_normal_SMovement_Moving_t2_op(id__,
-							    const_pkg224_SimFW_SMovement_lv,
-							    const_pkg224_SimFW_SMovement_PI,
-							    const_pkg224_SimFW_SMovement_av) = (OP_clone_normal_SMovement_Moving_t2_op::O__(id__))
-					[[
-						OP_clone_normal_SMovement_Moving_t2_op::stopCall <- stopCall
-					]]
-					[[
-						OP_clone_normal_SMovement_Moving_t2_op::clockReset.OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC <- clockReset.CLID_MBC
-					]]
-					[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.x__ <- get_CLID_MBC.x__ 
-						| x__ <- diff(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),{clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))}) ]]
-					[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.(clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))) <- get_CLID_MBC.x__
-						| x__ <- union({clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))},
-										diff(CLID_MBC_clock_type(id__,
-												          const_pkg224_SimFW_SMovement_lv,
-												          const_pkg224_SimFW_SMovement_PI,
-												          const_pkg224_SimFW_SMovement_av),OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
-					CALL__normal_SMovement_Moving_entry(id__,
+					CALL__normal_SMovement_Turning_entry(id__,
 							    const_pkg224_SimFW_SMovement_lv,
 							    const_pkg224_SimFW_SMovement_PI,
 							    const_pkg224_SimFW_SMovement_av,
-							    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv) = (OP_normal_SMovement_Moving_entry::O__(id__,
-							    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv))
+							    const_pkg224_SimFW_normal_SMovement_Turning_entry_av) = (OP_normal_SMovement_Turning_entry::O__(id__,
+							    const_pkg224_SimFW_normal_SMovement_Turning_entry_av))
 					[[
-						OP_normal_SMovement_Moving_entry::moveCall <- moveCall
+						OP_normal_SMovement_Turning_entry::moveCall <- moveCall
 					]]
 					CALL__normal_SMovement_Moving_t2_op(id__,
 							    const_pkg224_SimFW_SMovement_lv,
@@ -7561,6 +7525,42 @@ module CMovement
 												          const_pkg224_SimFW_SMovement_lv,
 												          const_pkg224_SimFW_SMovement_PI,
 												          const_pkg224_SimFW_SMovement_av),OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
+					CALL__clone_normal_SMovement_Turning_entry(id__,
+							    const_pkg224_SimFW_SMovement_lv,
+							    const_pkg224_SimFW_SMovement_PI,
+							    const_pkg224_SimFW_SMovement_av,
+							    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av) = (OP_clone_normal_SMovement_Turning_entry::O__(id__,
+							    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av))
+					[[
+						OP_clone_normal_SMovement_Turning_entry::moveCall <- moveCall
+					]]
+					CALL__normal_SMovement_Moving_entry(id__,
+							    const_pkg224_SimFW_SMovement_lv,
+							    const_pkg224_SimFW_SMovement_PI,
+							    const_pkg224_SimFW_SMovement_av,
+							    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv) = (OP_normal_SMovement_Moving_entry::O__(id__,
+							    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv))
+					[[
+						OP_normal_SMovement_Moving_entry::moveCall <- moveCall
+					]]
+					CALL__clone_normal_SMovement_Moving_t2_op(id__,
+							    const_pkg224_SimFW_SMovement_lv,
+							    const_pkg224_SimFW_SMovement_PI,
+							    const_pkg224_SimFW_SMovement_av) = (OP_clone_normal_SMovement_Moving_t2_op::O__(id__))
+					[[
+						OP_clone_normal_SMovement_Moving_t2_op::stopCall <- stopCall
+					]]
+					[[
+						OP_clone_normal_SMovement_Moving_t2_op::clockReset.OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC <- clockReset.CLID_MBC
+					]]
+					[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.x__ <- get_CLID_MBC.x__ 
+						| x__ <- diff(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),{clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))}) ]]
+					[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.(clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))) <- get_CLID_MBC.x__
+						| x__ <- union({clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))},
+										diff(CLID_MBC_clock_type(id__,
+												          const_pkg224_SimFW_SMovement_lv,
+												          const_pkg224_SimFW_SMovement_PI,
+												          const_pkg224_SimFW_SMovement_av),OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
 					-- END of Operation calls --
 				
 					-- STM processes
@@ -9136,11 +9136,11 @@ endmodule
 			localClockResets = {||}
 			
 			
-			channel get_CLID_f : core_clock_type 
 			channel get_CLID_MBC : core_clock_type 
+			channel get_CLID_f : core_clock_type 
 			--channel increment__
 			
-			CLID_f_clock_type(id__) = 
+			CLID_MBC_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			}))+1)
@@ -9148,7 +9148,7 @@ endmodule
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_MBC_clock_type(id__) = 
+			CLID_f_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			}))+1)
@@ -10785,10 +10785,19 @@ endmodule
 			localClockResets = {|clockReset.CLID_C|}
 			
 			
+			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_f : core_clock_type 
 			channel get_CLID_C : core_clock_type 
-			channel get_CLID_Waiting : core_clock_type 
 			--channel increment__
+			
+			CLID_Waiting_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_f_clock_type(id__) = 
 				let
@@ -10803,15 +10812,6 @@ endmodule
 				let
 					max = (clock_type_max(Union({
 			({param_i|param_i <- core_nat})
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_Waiting_clock_type(id__) = 
-				let
-					max = (clock_type_max(Union({
-			{}
 			}))+1)
 				ctype = {0..max}
 			within
@@ -13030,11 +13030,11 @@ endmodule
 			localClockResets = {||}
 			
 			
-			channel get_CLID_f : core_clock_type 
 			channel get_CLID_MBC : core_clock_type 
+			channel get_CLID_f : core_clock_type 
 			--channel increment__
 			
-			CLID_f_clock_type(id__) = 
+			CLID_MBC_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			}))+1)
@@ -13042,7 +13042,7 @@ endmodule
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_MBC_clock_type(id__) = 
+			CLID_f_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			}))+1)
@@ -14237,8 +14237,8 @@ endmodule
 			
 			
 			channel get_CLID_C : core_clock_type 
-			channel get_CLID_Waiting : core_clock_type 
 			channel get_CLID_f : core_clock_type 
+			channel get_CLID_Waiting : core_clock_type 
 			--channel increment__
 			
 			CLID_C_clock_type(id__) = 
@@ -14250,7 +14250,7 @@ endmodule
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_Waiting_clock_type(id__) = 
+			CLID_f_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -14259,7 +14259,7 @@ endmodule
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_f_clock_type(id__) = 
+			CLID_Waiting_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -15049,24 +15049,10 @@ endmodule
 			localClockResets = {|clockReset.CLID_MBC|}
 			
 			
-			channel get_CLID_MBC : core_clock_type 
 			channel get_CLID_Moving : core_clock_type 
+			channel get_CLID_MBC : core_clock_type 
 			channel get_CLID_Turning : core_clock_type 
 			--channel increment__
-			
-			CLID_MBC_clock_type(id__,
-					          const_pkg224_SimFW_SMovement_lv,
-					          const_pkg224_SimFW_SMovement_PI,
-					          const_pkg224_SimFW_SMovement_av) = 
-				let
-					max = (clock_type_max(Union({
-			OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),
-			OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)
-			,({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|av <- core_real,PI <- core_real})
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
 			CLID_Moving_clock_type(id__,
 					          const_pkg224_SimFW_SMovement_lv,
@@ -15075,6 +15061,20 @@ endmodule
 				let
 					max = (clock_type_max(Union({
 			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_MBC_clock_type(id__,
+					          const_pkg224_SimFW_SMovement_lv,
+					          const_pkg224_SimFW_SMovement_PI,
+					          const_pkg224_SimFW_SMovement_av) = 
+				let
+					max = (clock_type_max(Union({
+			OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),
+			OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)
+			,({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|PI <- core_real,av <- core_real})
 			}))+1)
 				ctype = {0..max}
 			within
@@ -16032,24 +16032,6 @@ endmodule
 							param_lv,
 							param_av) = EDeadline(moveCall.param_lv.param_av,0)
 				
-				CALL__normal_SMovement_Turning_entry(id__,
-						    const_pkg224_SimFW_SMovement_lv,
-						    const_pkg224_SimFW_SMovement_PI,
-						    const_pkg224_SimFW_SMovement_av,
-						    const_pkg224_SimFW_normal_SMovement_Turning_entry_av) = (OP_normal_SMovement_Turning_entry::O__(id__,
-						    const_pkg224_SimFW_normal_SMovement_Turning_entry_av))
-				[[
-					OP_normal_SMovement_Turning_entry::moveCall <- moveCall
-				]]
-				CALL__clone_normal_SMovement_Turning_entry(id__,
-						    const_pkg224_SimFW_SMovement_lv,
-						    const_pkg224_SimFW_SMovement_PI,
-						    const_pkg224_SimFW_SMovement_av,
-						    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av) = (OP_clone_normal_SMovement_Turning_entry::O__(id__,
-						    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av))
-				[[
-					OP_clone_normal_SMovement_Turning_entry::moveCall <- moveCall
-				]]
 				CALL__clone_normal_SMovement_Moving_entry(id__,
 						    const_pkg224_SimFW_SMovement_lv,
 						    const_pkg224_SimFW_SMovement_PI,
@@ -16059,32 +16041,14 @@ endmodule
 				[[
 					OP_clone_normal_SMovement_Moving_entry::moveCall <- moveCall
 				]]
-				CALL__clone_normal_SMovement_Moving_t2_op(id__,
-						    const_pkg224_SimFW_SMovement_lv,
-						    const_pkg224_SimFW_SMovement_PI,
-						    const_pkg224_SimFW_SMovement_av) = (OP_clone_normal_SMovement_Moving_t2_op::O__(id__))
-				[[
-					OP_clone_normal_SMovement_Moving_t2_op::stopCall <- stopCall
-				]]
-				[[
-					OP_clone_normal_SMovement_Moving_t2_op::clockReset.OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC <- clockReset.CLID_MBC
-				]]
-				[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.x__ <- get_CLID_MBC.x__ 
-					| x__ <- diff(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),{clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))}) ]]
-				[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.(clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))) <- get_CLID_MBC.x__
-					| x__ <- union({clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))},
-									diff(CLID_MBC_clock_type(id__,
-											          const_pkg224_SimFW_SMovement_lv,
-											          const_pkg224_SimFW_SMovement_PI,
-											          const_pkg224_SimFW_SMovement_av),OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
-				CALL__normal_SMovement_Moving_entry(id__,
+				CALL__normal_SMovement_Turning_entry(id__,
 						    const_pkg224_SimFW_SMovement_lv,
 						    const_pkg224_SimFW_SMovement_PI,
 						    const_pkg224_SimFW_SMovement_av,
-						    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv) = (OP_normal_SMovement_Moving_entry::O__(id__,
-						    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv))
+						    const_pkg224_SimFW_normal_SMovement_Turning_entry_av) = (OP_normal_SMovement_Turning_entry::O__(id__,
+						    const_pkg224_SimFW_normal_SMovement_Turning_entry_av))
 				[[
-					OP_normal_SMovement_Moving_entry::moveCall <- moveCall
+					OP_normal_SMovement_Turning_entry::moveCall <- moveCall
 				]]
 				CALL__normal_SMovement_Moving_t2_op(id__,
 						    const_pkg224_SimFW_SMovement_lv,
@@ -16104,6 +16068,42 @@ endmodule
 											          const_pkg224_SimFW_SMovement_lv,
 											          const_pkg224_SimFW_SMovement_PI,
 											          const_pkg224_SimFW_SMovement_av),OP_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
+				CALL__clone_normal_SMovement_Turning_entry(id__,
+						    const_pkg224_SimFW_SMovement_lv,
+						    const_pkg224_SimFW_SMovement_PI,
+						    const_pkg224_SimFW_SMovement_av,
+						    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av) = (OP_clone_normal_SMovement_Turning_entry::O__(id__,
+						    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av))
+				[[
+					OP_clone_normal_SMovement_Turning_entry::moveCall <- moveCall
+				]]
+				CALL__normal_SMovement_Moving_entry(id__,
+						    const_pkg224_SimFW_SMovement_lv,
+						    const_pkg224_SimFW_SMovement_PI,
+						    const_pkg224_SimFW_SMovement_av,
+						    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv) = (OP_normal_SMovement_Moving_entry::O__(id__,
+						    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv))
+				[[
+					OP_normal_SMovement_Moving_entry::moveCall <- moveCall
+				]]
+				CALL__clone_normal_SMovement_Moving_t2_op(id__,
+						    const_pkg224_SimFW_SMovement_lv,
+						    const_pkg224_SimFW_SMovement_PI,
+						    const_pkg224_SimFW_SMovement_av) = (OP_clone_normal_SMovement_Moving_t2_op::O__(id__))
+				[[
+					OP_clone_normal_SMovement_Moving_t2_op::stopCall <- stopCall
+				]]
+				[[
+					OP_clone_normal_SMovement_Moving_t2_op::clockReset.OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC <- clockReset.CLID_MBC
+				]]
+				[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.x__ <- get_CLID_MBC.x__ 
+					| x__ <- diff(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__),{clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))}) ]]
+				[[ OP_clone_normal_SMovement_Moving_t2_op::get_CLID_MBC.(clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))) <- get_CLID_MBC.x__
+					| x__ <- union({clock_type_max(OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__))},
+									diff(CLID_MBC_clock_type(id__,
+											          const_pkg224_SimFW_SMovement_lv,
+											          const_pkg224_SimFW_SMovement_PI,
+											          const_pkg224_SimFW_SMovement_av),OP_clone_normal_SMovement_Moving_t2_op::CLID_MBC_clock_type(id__)))]]
 				-- END of Operation calls --
 			
 				-- STM processes
@@ -16930,8 +16930,8 @@ exports
 	channel normal_SMovement_Turning_entryCall
 	channel stopCall
 	channel normal_SMovement_Moving_t2_opCall
-	channel clone_normal_SMovement_Moving_t2_opCall
 	channel moveCall: core_real.core_real
+	channel clone_normal_SMovement_Moving_t2_opCall
 	channel clone_normal_SMovement_Moving_entryCall
 	
 	enterSS = {|
@@ -16959,8 +16959,8 @@ exports
 		normal_SMovement_Turning_entryCall,
 		stopCall,
 		normal_SMovement_Moving_t2_opCall,
-		clone_normal_SMovement_Moving_t2_opCall,
 		moveCall,
+		clone_normal_SMovement_Moving_t2_opCall,
 		clone_normal_SMovement_Moving_entryCall
 		|}
 	datatype ClockSet = 
@@ -16971,22 +16971,10 @@ exports
 	localClockResets = {|clockReset.CLID_MBC|}
 	
 	
-	channel get_CLID_MBC : core_clock_type 
 	channel get_CLID_Moving : core_clock_type 
+	channel get_CLID_MBC : core_clock_type 
 	channel get_CLID_Turning : core_clock_type 
 	--channel increment__
-	
-	CLID_MBC_clock_type(id__,
-			          const_pkg224_SimFW_SMovement_lv,
-			          const_pkg224_SimFW_SMovement_PI,
-			          const_pkg224_SimFW_SMovement_av) = 
-		let
-			max = (clock_type_max(Union({
-	({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|av <- core_real,PI <- core_real})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Moving_clock_type(id__,
 			          const_pkg224_SimFW_SMovement_lv,
@@ -16995,6 +16983,18 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_MBC_clock_type(id__,
+			          const_pkg224_SimFW_SMovement_lv,
+			          const_pkg224_SimFW_SMovement_PI,
+			          const_pkg224_SimFW_SMovement_av) = 
+		let
+			max = (clock_type_max(Union({
+	({Div(const_pkg224_SimFW_SMovement_PI, no_zero_div(const_pkg224_SimFW_SMovement_av), core_real)|PI <- core_real,av <- core_real})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -17957,16 +17957,16 @@ exports
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,
 				    const_pkg224_SimFW_SMovement_av) = EDeadline(normal_SMovement_Moving_t2_opCall,0)
-		CALL__clone_normal_SMovement_Moving_t2_op(id__,
-				    const_pkg224_SimFW_SMovement_lv,
-				    const_pkg224_SimFW_SMovement_PI,
-				    const_pkg224_SimFW_SMovement_av) = EDeadline(clone_normal_SMovement_Moving_t2_opCall,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,
 				    const_pkg224_SimFW_SMovement_av,
 					param_lv,
 					param_av) = EDeadline(moveCall.param_lv.param_av,0)
+		CALL__clone_normal_SMovement_Moving_t2_op(id__,
+				    const_pkg224_SimFW_SMovement_lv,
+				    const_pkg224_SimFW_SMovement_PI,
+				    const_pkg224_SimFW_SMovement_av) = EDeadline(clone_normal_SMovement_Moving_t2_opCall,0)
 		CALL__clone_normal_SMovement_Moving_entry(id__,
 				    const_pkg224_SimFW_SMovement_lv,
 				    const_pkg224_SimFW_SMovement_PI,
@@ -18616,8 +18616,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel waitOpCall: core_nat
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	f::enter,
@@ -18637,8 +18637,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		waitOpCall
+	,	waitOpCall,
+		moveCall
 		, share__
 		|}
 	
@@ -18757,13 +18757,13 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__waitOp(id__,
+				    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
+					param_i) = EDeadline(waitOpCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
 					param_lv,
 					param_av) = EDeadline(moveCall.param_lv.param_av,0)
-		CALL__waitOp(id__,
-				    const_pkg224_SimFW_normal_SMovement_Moving_entry_lv,
-					param_i) = EDeadline(waitOpCall.param_i,0)
 		
 		-- END of Operation calls --
 	
@@ -19101,8 +19101,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel stopCall
 	channel waitOpCall: core_nat
+	channel stopCall
 	
 	enterSS = {|
 	i::enter,
@@ -19122,8 +19122,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	stopCall,
-		waitOpCall
+	,	waitOpCall,
+		stopCall
 		, share__
 		|}
 	datatype ClockSet = 
@@ -19134,11 +19134,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_MBC : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
-	CLID_f_clock_type(id__) = 
+	CLID_MBC_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -19146,7 +19146,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_MBC_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -19243,9 +19243,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__stop(id__) = EDeadline(stopCall,0)
 		CALL__waitOp(id__,
 					param_i) = EDeadline(waitOpCall.param_i,0)
+		CALL__stop(id__) = EDeadline(stopCall,0)
 		
 		-- END of Operation calls --
 	
@@ -19521,8 +19521,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.core_real
 	channel waitOpCall: core_nat
+	channel moveCall: core_real.core_real
 	
 	enterSS = {|
 	f::enter,
@@ -19542,8 +19542,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		waitOpCall
+	,	waitOpCall,
+		moveCall
 		, share__
 		|}
 	
@@ -19662,13 +19662,13 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__waitOp(id__,
+				    const_pkg224_SimFW_normal_SMovement_Turning_entry_av,
+					param_i) = EDeadline(waitOpCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_normal_SMovement_Turning_entry_av,
 					param_lv,
 					param_av) = EDeadline(moveCall.param_lv.param_av,0)
-		CALL__waitOp(id__,
-				    const_pkg224_SimFW_normal_SMovement_Turning_entry_av,
-					param_i) = EDeadline(waitOpCall.param_i,0)
 		
 		-- END of Operation calls --
 	
@@ -20887,10 +20887,19 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
+	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_f : core_clock_type 
 	channel get_CLID_C : core_clock_type 
-	channel get_CLID_Waiting : core_clock_type 
 	--channel increment__
+	
+	CLID_Waiting_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_f_clock_type(id__) = 
 		let
@@ -20905,15 +20914,6 @@ exports
 		let
 			max = (clock_type_max(Union({
 	({param_i|param_i <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_Waiting_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	{}
 	}))+1)
 		ctype = {0..max}
 	within
@@ -22280,9 +22280,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel waitOpCall: core_nat
 	channel moveCall: core_real.core_real
 	channel clone_waitOp_j_2_4_fCall: core_nat
-	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -22302,9 +22302,9 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		clone_waitOp_j_2_4_fCall,
-		waitOpCall
+	,	waitOpCall,
+		moveCall,
+		clone_waitOp_j_2_4_fCall
 		, share__
 		|}
 	
@@ -22423,6 +22423,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__waitOp(id__,
+				    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av,
+					param_i) = EDeadline(waitOpCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av,
 					param_lv,
@@ -22430,9 +22433,6 @@ exports
 		CALL__clone_waitOp_j_2_4_f(id__,
 				    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av,
 					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
-		CALL__waitOp(id__,
-				    const_pkg224_SimFW_clone_normal_SMovement_Turning_entry_av,
-					param_i) = EDeadline(waitOpCall.param_i,0)
 		
 		-- END of Operation calls --
 	
@@ -22770,9 +22770,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel waitOpCall: core_nat
 	channel moveCall: core_real.core_real
 	channel clone_waitOp_j_2_2_fCall: core_nat
-	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -22792,9 +22792,9 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		clone_waitOp_j_2_2_fCall,
-		waitOpCall
+	,	waitOpCall,
+		moveCall,
+		clone_waitOp_j_2_2_fCall
 		, share__
 		|}
 	
@@ -22913,6 +22913,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__waitOp(id__,
+				    const_pkg224_SimFW_clone_normal_SMovement_Moving_entry_lv,
+					param_i) = EDeadline(waitOpCall.param_i,0)
 		CALL__move(id__,
 				    const_pkg224_SimFW_clone_normal_SMovement_Moving_entry_lv,
 					param_lv,
@@ -22920,9 +22923,6 @@ exports
 		CALL__clone_waitOp_j_2_2_f(id__,
 				    const_pkg224_SimFW_clone_normal_SMovement_Moving_entry_lv,
 					param_i) = EDeadline(clone_waitOp_j_2_2_fCall.param_i,0)
-		CALL__waitOp(id__,
-				    const_pkg224_SimFW_clone_normal_SMovement_Moving_entry_lv,
-					param_i) = EDeadline(waitOpCall.param_i,0)
 		
 		-- END of Operation calls --
 	
@@ -23260,8 +23260,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_waitOp_j_2_4_fCall: core_nat
 	channel stopCall
+	channel clone_waitOp_j_2_4_fCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -23281,8 +23281,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	clone_waitOp_j_2_4_fCall,
-		stopCall
+	,	stopCall,
+		clone_waitOp_j_2_4_fCall
 		, share__
 		|}
 	datatype ClockSet = 
@@ -23293,11 +23293,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_MBC : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
-	CLID_f_clock_type(id__) = 
+	CLID_MBC_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -23305,7 +23305,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_MBC_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	}))+1)
@@ -23402,9 +23402,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__stop(id__) = EDeadline(stopCall,0)
 		CALL__clone_waitOp_j_2_4_f(id__,
 					param_i) = EDeadline(clone_waitOp_j_2_4_fCall.param_i,0)
-		CALL__stop(id__) = EDeadline(stopCall,0)
 		
 		-- END of Operation calls --
 	
@@ -24571,8 +24571,8 @@ exports
 	
 	
 	channel get_CLID_C : core_clock_type 
-	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
 	--channel increment__
 	
 	CLID_C_clock_type(id__) = 
@@ -24584,7 +24584,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Waiting_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -24593,7 +24593,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_Waiting_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -25430,12 +25430,12 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_C : core_clock_type 
 	--channel increment__
 	
-	CLID_Waiting_clock_type(id__) = 
+	CLID_f_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -25444,7 +25444,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__) = 
+	CLID_Waiting_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}

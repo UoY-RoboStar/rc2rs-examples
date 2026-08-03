@@ -1,0 +1,58 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 15:11:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "siren_Siren.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "siren_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate siren_Siren
+P_siren_Siren = let
+	id__ = 0
+	
+	
+	
+		
+within
+	siren_Siren::O__(id__)
+
+assert P_siren_Siren :[deadlock-free]	
+assert P_siren_Siren;RUN({r__}) :[deadlock-free]
+assert P_siren_Siren :[deterministic]
+assert P_siren_Siren :[divergence-free]
+
+-- generate siren_Siren_stm_ref1
+P_siren_Siren_stm_ref1 = let
+	id__ = 0
+	
+	
+	
+within
+	siren_Siren::stm_ref1::O__(
+		id__
+	)
+assert P_siren_Siren_stm_ref1 :[deadlock-free]	
+assert P_siren_Siren_stm_ref1;RUN({r__}) :[deadlock-free]
+assert P_siren_Siren_stm_ref1 :[deterministic]
+assert P_siren_Siren_stm_ref1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_siren_Siren_stm_ref1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_siren_Siren_stm_ref1
+-- timed deadlock free
+assert prioritise(P_siren_Siren[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_siren_Siren

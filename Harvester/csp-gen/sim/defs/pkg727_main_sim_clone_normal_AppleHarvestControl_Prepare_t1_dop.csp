@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 10:48:05
 --
 
 -- compileSelfContainedOperation
@@ -35,8 +35,8 @@ exports
 	
 	-- Shared variable channels
 	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
+	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_exec_ds_AppleHarvestControl_Prepare: core_boolean
 	channel set_EXT_exec_ms_AppleHarvestControl_Prepare: core_boolean
 	
@@ -60,8 +60,8 @@ exports
 	
 	shared_variable_events = {|
 		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
 		set_EXT_endGoHomeF,
+		set_EXT_takePicF,
 		set_EXT_exec_ds_AppleHarvestControl_Prepare,
 		set_EXT_exec_ms_AppleHarvestControl_Prepare
 	|}
@@ -464,27 +464,27 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_endGoHomeF,setR_takePicF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
+						  [[set_endIKSolverF <- setL_endIKSolverF,set_endGoHomeF <- setL_endGoHomeF,set_takePicF <- setL_takePicF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
 						 			,setL_endIKSolverF
-						 			,setL_takePicF
 						 			,setL_endGoHomeF
+						 			,setL_takePicF
 						 			,setL_exec_ds_AppleHarvestControl_Prepare
 						 			,setL_exec_ms_AppleHarvestControl_Prepare
 						 			,setR_endIKSolverF
-						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
+						 			 			,setR_takePicF
 						 			 			,setR_exec_ds_AppleHarvestControl_Prepare
 						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_endGoHomeF,setL_takePicF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
+						  [[set_endIKSolverF <- setR_endIKSolverF,set_endGoHomeF <- setR_endGoHomeF,set_takePicF <- setR_takePicF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						)[[setL_endIKSolverF <- set_endIKSolverF,setL_endGoHomeF <- set_endGoHomeF,setL_takePicF <- set_takePicF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						 [[setR_endIKSolverF <- set_endIKSolverF,setR_endGoHomeF <- set_endGoHomeF,setR_takePicF <- set_takePicF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -565,27 +565,27 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_endGoHomeF,setR_takePicF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
+						  [[set_endIKSolverF <- setL_endIKSolverF,set_endGoHomeF <- setL_endGoHomeF,set_takePicF <- setL_takePicF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
 						 			,setL_endIKSolverF
-						 			,setL_takePicF
 						 			,setL_endGoHomeF
+						 			,setL_takePicF
 						 			,setL_exec_ds_AppleHarvestControl_Prepare
 						 			,setL_exec_ms_AppleHarvestControl_Prepare
 						 			,setR_endIKSolverF
-						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
+						 			 			,setR_takePicF
 						 			 			,setR_exec_ds_AppleHarvestControl_Prepare
 						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_endGoHomeF,setL_takePicF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
+						  [[set_endIKSolverF <- setR_endIKSolverF,set_endGoHomeF <- setR_endGoHomeF,set_takePicF <- setR_takePicF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						)[[setL_endIKSolverF <- set_endIKSolverF,setL_endGoHomeF <- set_endGoHomeF,setL_takePicF <- set_takePicF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						 [[setR_endIKSolverF <- set_endIKSolverF,setR_endGoHomeF <- set_endGoHomeF,setR_takePicF <- set_takePicF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

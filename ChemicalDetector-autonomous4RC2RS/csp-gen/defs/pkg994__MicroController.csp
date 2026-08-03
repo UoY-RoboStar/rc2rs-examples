@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 01-08-2026 20:29:23
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -28,9 +28,9 @@
 		
 		
 		-- declaring call and ret events for undefined operations
+		channel shortRandomWalkCall
 		channel moveCall: core_real.Chemical_Angle
 		channel randomWalkCall
-		channel shortRandomWalkCall
 		
 		-- declaring controller termination channel
 		channel terminate
@@ -44,9 +44,9 @@
 			stop,
 			resume,
 			odometer
-		,	moveCall,
-			randomWalkCall,
-			shortRandomWalkCall
+		,	shortRandomWalkCall,
+			moveCall,
+			randomWalkCall
 		|}
 
 		-- defined operations
@@ -569,10 +569,8 @@
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
 			
-			CALL__waitOp(id__,
-					    const_pkg994__normal_Movement_Avoiding_entry_evadeTime,
-						param_i) = (OP_waitOp::O__(id__,
-						param_i))
+			CALL__normal_Movement_Avoiding_entry_j_3_3_t_3_3_op(id__,
+					    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = (OP_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op::O__(id__))
 			CALL__normal_Movement_Avoiding_entry_i_t_op(id__,
 					    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = (OP_normal_Movement_Avoiding_entry_i_t_op::O__(id__))
 			[[
@@ -582,8 +580,10 @@
 				OP_normal_Movement_Avoiding_entry_i_t_op::get_d0 <- get_d0,
 				OP_normal_Movement_Avoiding_entry_i_t_op::set_d0 <- set_d0
 			]]
-			CALL__normal_Movement_Avoiding_entry_j_3_3_t_3_3_op(id__,
-					    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = (OP_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op::O__(id__))
+			CALL__waitOp(id__,
+					    const_pkg994__normal_Movement_Avoiding_entry_evadeTime,
+						param_i) = (OP_waitOp::O__(id__,
+						param_i))
 			-- END of Operation calls --
 			
 			-- STM processes
@@ -5292,6 +5292,8 @@
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
 			
+			CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5(id__,
+					    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime) = (OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5::O__(id__))
 			CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2(id__,
 					    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime) = (OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2::O__(id__))
 			[[
@@ -5305,8 +5307,6 @@
 					    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime,
 						param_i) = (OP_clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1::O__(id__,
 						param_i))
-			CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5(id__,
-					    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime) = (OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5::O__(id__))
 			-- END of Operation calls --
 			
 			-- STM processes
@@ -7764,9 +7764,9 @@
 			channel flag: InOut
 			
 			-- Declaring call and ret events for undefined operations
+			channel shortRandomWalkCall
 			channel moveCall: core_real.Chemical_Angle
 			channel randomWalkCall
-			channel shortRandomWalkCall
 			
 			enterSS = {|
 			i1::enter,
@@ -7805,9 +7805,9 @@
 				turn,
 				stop,
 				flag
-			,	moveCall,
-				randomWalkCall,
-				shortRandomWalkCall
+			,	shortRandomWalkCall,
+				moveCall,
+				randomWalkCall
 				|}
 		
 			-- Nodes --
@@ -8091,25 +8091,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8206,25 +8206,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8513,25 +8513,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8630,25 +8630,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8928,25 +8928,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9043,25 +9043,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9383,25 +9383,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9499,25 +9499,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9799,25 +9799,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9916,25 +9916,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10207,25 +10207,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10315,25 +10315,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10614,25 +10614,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10730,25 +10730,25 @@
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-						  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_d1,setR_a,setR_l,setR_d0 |} ]] 
+						  [[set_d1 <- setL_d1,set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_d0
-						 			,setL_a
 						 			,setL_d1
+						 			,setL_a
 						 			,setL_l
-						 			,setR_d0
+						 			,setL_d0
+						 			,setR_d1
 						 			 			,setR_a
-						 			 			,setR_d1
 						 			 			,setR_l
+						 			 			,setR_d0
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-						  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_a,setL_l,setL_d0 |} ]]
+						  [[set_d1 <- setR_d1,set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0]]
 						 )
-						)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-						 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+						)[[setL_d1 <- set_d1,setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0]]
+						 [[setR_d1 <- set_d1,setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10788,6 +10788,12 @@
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
+			CALL__shortRandomWalk(id__,
+					    const_pkg994__Movement_lv,
+					    const_pkg994__Movement_evadeTime,
+					    const_pkg994__Movement_stuckPeriod,
+					    const_pkg994__Movement_stuckDist,
+					    const_pkg994__Movement_outPeriod) 	= shortRandomWalkCall -> SKIP
 			CALL__move(id__,
 					    const_pkg994__Movement_lv,
 					    const_pkg994__Movement_evadeTime,
@@ -10802,26 +10808,7 @@
 					    const_pkg994__Movement_stuckPeriod,
 					    const_pkg994__Movement_stuckDist,
 					    const_pkg994__Movement_outPeriod) 	= randomWalkCall -> SKIP
-			CALL__shortRandomWalk(id__,
-					    const_pkg994__Movement_lv,
-					    const_pkg994__Movement_evadeTime,
-					    const_pkg994__Movement_stuckPeriod,
-					    const_pkg994__Movement_stuckDist,
-					    const_pkg994__Movement_outPeriod) 	= shortRandomWalkCall -> SKIP
 			
-			CALL__clone_normal_Movement_TryingAgain_t11_op(id__,
-					    const_pkg994__Movement_lv,
-					    const_pkg994__Movement_evadeTime,
-					    const_pkg994__Movement_stuckPeriod,
-					    const_pkg994__Movement_stuckDist,
-					    const_pkg994__Movement_outPeriod) = (OP_clone_normal_Movement_TryingAgain_t11_op::O__(id__))
-			[[
-				OP_clone_normal_Movement_TryingAgain_t11_op::odometer <- odometer
-			]]
-			[[
-				OP_clone_normal_Movement_TryingAgain_t11_op::get_d1 <- get_d1,
-				OP_clone_normal_Movement_TryingAgain_t11_op::set_d1 <- set_d1
-			]]
 			CALL__clone_normal_Movement_Avoiding_entry(id__,
 					    const_pkg994__Movement_lv,
 					    const_pkg994__Movement_evadeTime,
@@ -10847,6 +10834,19 @@
 					    const_pkg994__clone_normal_Movement_GettingOut_entry_outPeriod))
 			[[
 				OP_clone_normal_Movement_GettingOut_entry::shortRandomWalkCall <- shortRandomWalkCall
+			]]
+			CALL__clone_normal_Movement_TryingAgain_t11_op(id__,
+					    const_pkg994__Movement_lv,
+					    const_pkg994__Movement_evadeTime,
+					    const_pkg994__Movement_stuckPeriod,
+					    const_pkg994__Movement_stuckDist,
+					    const_pkg994__Movement_outPeriod) = (OP_clone_normal_Movement_TryingAgain_t11_op::O__(id__))
+			[[
+				OP_clone_normal_Movement_TryingAgain_t11_op::odometer <- odometer
+			]]
+			[[
+				OP_clone_normal_Movement_TryingAgain_t11_op::get_d1 <- get_d1,
+				OP_clone_normal_Movement_TryingAgain_t11_op::set_d1 <- set_d1
 			]]
 			CALL__clone_normal_Movement_Found_entry(id__,
 					    const_pkg994__Movement_lv,
@@ -10928,7 +10928,7 @@
 					    const_pkg994__Movement_stuckPeriod,
 					    const_pkg994__Movement_stuckDist,
 					    const_pkg994__Movement_outPeriod) = ((let
-				Trans = share__choice(get_d0?d0 -> get_d1?d1 -> (
+				Trans = share__choice(get_d1?d1 -> get_d0?d0 -> (
 					((share__ -> SKIP
 					 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Waiting::enter -> SKIP))))
 					 	 [] dbisim((true)&(turn__!NID_Waiting.in?a:{a|a <- Chemical_Angle, true} -> share__choice(set_a!a -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Going::enter -> SKIP)))
@@ -11093,11 +11093,11 @@
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
+							  [[set_d1 <- setL_d1,set_d0 <- setL_d0]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-							 			,setL_d0
 							 			,setL_d1
+							 			,setL_d0
 							 			,setR_a
 							 			 			,setR_l
 							 			|}) |]
@@ -11107,10 +11107,10 @@
 							 		    const_pkg994__Movement_stuckPeriod,
 							 		    const_pkg994__Movement_stuckDist,
 							 		    const_pkg994__Movement_outPeriod))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_d0 |} ]]
 							  [[set_a <- setR_a,set_l <- setR_l]]
 							 )
-							)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							)[[setL_d1 <- set_d1,setL_d0 <- set_d0]]
 							 [[setR_a <- set_a,setR_l <- set_l]]
 							)
 						)
@@ -11335,11 +11335,11 @@
 							 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
+							  [[set_d1 <- setL_d1,set_d0 <- setL_d0]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-							 			,setL_d0
 							 			,setL_d1
+							 			,setL_d0
 							 			,setR_a
 							 			 			,setR_l
 							 			|}) |]
@@ -11349,10 +11349,10 @@
 							 		    const_pkg994__Movement_stuckPeriod,
 							 		    const_pkg994__Movement_stuckDist,
 							 		    const_pkg994__Movement_outPeriod))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_d0 |} ]]
 							  [[set_a <- setR_a,set_l <- setR_l]]
 							 )
-							)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							)[[setL_d1 <- set_d1,setL_d0 <- set_d0]]
 							 [[setR_a <- set_a,setR_l <- set_l]]
 							)
 						)
@@ -11604,11 +11604,11 @@
 		endmodule
 		
 			-- undefined operations
+			CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
 			CALL__move(id__,
 					    param_lv,
 					    param_a) 	= moveCall.param_lv.param_a -> SKIP
 			CALL__randomWalk(id__) 	= randomWalkCall -> SKIP
-			CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
 			
 			-- declaring controller memory
 			Memory(id__) = SKIP
@@ -11639,9 +11639,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
 						stm_ref0::moveCall <- moveCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -11689,9 +11689,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
 						stm_ref0::moveCall <- moveCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -11739,9 +11739,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
 						stm_ref0::moveCall <- moveCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|
@@ -11790,9 +11790,9 @@
 						stm_ref0::resume <- resume,
 						stm_ref0::stop <- stop,
 						stm_ref0::odometer <- odometer,
+						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
 						stm_ref0::moveCall <- moveCall,
-						stm_ref0::randomWalkCall <- randomWalkCall,
-						stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+						stm_ref0::randomWalkCall <- randomWalkCall
 					]]
 				)
 					[|

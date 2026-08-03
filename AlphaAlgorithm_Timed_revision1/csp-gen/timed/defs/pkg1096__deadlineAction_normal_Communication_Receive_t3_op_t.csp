@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 17-05-2026 11:35:47
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 28-07-2026 17:27:40
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel receive: InOut.{(x0__,x1__) | x0__ <- AggregationSoftware_ID,x1__ <- AggregationSoftware_ID}
 	
 	-- Declaring call and ret events for undefined operations
-	channel deadlineCheckCall: core_nat
 	channel normal_deadlineAction_normal_Communication_Receive_t3_op_tCall
+	channel deadlineCheckCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -69,8 +69,8 @@ exports
 		terminate
 	,	set_EXT_y, set_y
 	,	receive
-	,	deadlineCheckCall,
-		normal_deadlineAction_normal_Communication_Receive_t3_op_tCall
+	,	normal_deadlineAction_normal_Communication_Receive_t3_op_tCall,
+		deadlineCheckCall
 		, share__
 		|}
 	
@@ -641,11 +641,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__normal_deadlineAction_normal_Communication_Receive_t3_op_t(id__,
+				    const_pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t_id) = EDeadline(normal_deadlineAction_normal_Communication_Receive_t3_op_tCall,0)
 		CALL__deadlineCheck(id__,
 				    const_pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t_id,
 					param_d) = EDeadline(deadlineCheckCall.param_d,0)
-		CALL__normal_deadlineAction_normal_Communication_Receive_t3_op_t(id__,
-				    const_pkg1096__deadlineAction_normal_Communication_Receive_t3_op_t_id) = EDeadline(normal_deadlineAction_normal_Communication_Receive_t3_op_tCall,0)
 		
 		-- END of Operation calls --
 	

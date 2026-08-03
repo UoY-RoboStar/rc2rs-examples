@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 07-07-2026 13:02:49
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -50,9 +50,9 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel waitIntervalCall: core_nat.core_nat
+	channel normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall
 	channel RotationPIDCall: core_real
 	channel deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall: core_nat
-	channel normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall
 	
 	enterSS = {|
 	i::enter,
@@ -82,9 +82,9 @@ exports
 		set_EXT_rotationOutput, set_rotationOutput
 	,	gyroZ
 	,	waitIntervalCall,
+		normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall,
 		RotationPIDCall,
-		deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall,
-		normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall
+		deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall
 		, share__
 		|}
 	
@@ -259,14 +259,14 @@ exports
 				    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
 					param_m,
 					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
+		CALL__normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = EDeadline(normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall,0)
 		CALL__RotationPID(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
 					param_diff) = EDeadline(RotationPIDCall.param_diff,0)
 		CALL__deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
 					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall.param_d,0)
-		CALL__normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget) = EDeadline(normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall,0)
 		
 		-- END of Operation calls --
 	

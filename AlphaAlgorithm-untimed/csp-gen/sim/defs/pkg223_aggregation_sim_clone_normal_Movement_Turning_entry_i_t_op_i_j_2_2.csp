@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 16-05-2026 09:08:54
+-- RoboSim generator version 3.0.0.202506101340
+-- Automatically generated on 07-07-2026 12:31:02
 --
 
 -- compileSelfContainedOperation
@@ -33,9 +33,9 @@ exports
 	channel get_neighboursF, set_neighboursF, setL_neighboursF, setR_neighboursF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_neighboursF: core_boolean
-	channel set_EXT_obstacleF: core_boolean
 	channel set_EXT_n: core_nat
+	channel set_EXT_obstacleF: core_boolean
+	channel set_EXT_neighboursF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -56,9 +56,9 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_neighboursF,
+		set_EXT_n,
 		set_EXT_obstacleF,
-		set_EXT_n
+		set_EXT_neighboursF
 	|}
 	
 	
@@ -206,7 +206,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__) = ((let
-			Trans = share__choice(get_neighboursF?neighboursF -> get_neighbours?neighbours -> TimeOut_1(
+			Trans = share__choice(get_neighbours?neighbours -> get_neighboursF?neighboursF -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; j::enter -> SKIP))))
 				 [] dbisim((((member(neighbours,{true.n | n <- core_nat}) and neighboursF)))&(internal__!NID_j -> SKIP ; get_neighbours?b__?x__ -> set_n!x__ -> SKIP

@@ -1,0 +1,369 @@
+channel Siren_SirenS_internal__: Siren_SirenS_TIDS
+
+ShowEvents_Siren_SirenS(P,E) = P[[ Siren_SirenS_entered.x.y <- Siren_SirenS_enteredV.y | Siren_SirenS_entered.x.y <- E]]
+							 [[	Siren_SirenS_enter.x.y <- Siren_SirenS_enterV.y | Siren_SirenS_enter.x.y <- E]]
+							 [[ Siren_SirenS_exit.x.y <- Siren_SirenS_exitV.y | Siren_SirenS_exit.x.y <- E]]
+							 [[ Siren_SirenS_exited.x.y <- Siren_SirenS_exitedV.y | Siren_SirenS_exited.x.y <- E ]]
+
+channel Siren_SirenS_enteredV, Siren_SirenS_enterV, Siren_SirenS_exitV, Siren_SirenS_exitedV : Siren_SirenS_SIDS
+channel Siren_SirenS_enter, Siren_SirenS_entered: Siren_SirenS_SIDS.Siren_SirenS_SIDS
+channel Siren_SirenS_exit,Siren_SirenS_exited: Siren_SirenS_SIDS.Siren_SirenS_SIDS
+
+
+-- declaring identifiers of state and final states
+Siren_SirenS_SIDS = {
+	"Siren_SirenS",
+	"Siren_SirenS_Stopped",
+	"Siren_SirenS_s1",
+	"Siren_SirenS_s1_Red",
+	"Siren_SirenS_s1_Green"
+}
+
+-- declaring identifiers of transitions
+Siren_SirenS_TIDS = {
+	"__NULLTRANSITION__",
+	"Siren_SirenS_s1_t1",
+	"Siren_SirenS_s1_t2",
+	"Siren_SirenS_t1",
+	"Siren_SirenS_t2"
+}
+
+-- declaring state machine events
+channel Siren_SirenS_stopSiren__:Siren_SirenS_TIDS
+channel Siren_SirenS_stopSiren
+channel Siren_SirenS_startSiren__:Siren_SirenS_TIDS
+channel Siren_SirenS_startSiren
+
+channel Siren_SirenS_terminate
+
+-- declaring all states
+CS_Siren_SirenS_Stopped_sync = {|
+	Siren_SirenS_enter.y.x, 
+	Siren_SirenS_entered.y.x, 
+	Siren_SirenS_exit.y.x, 
+	Siren_SirenS_exited.y.x,
+	Siren_SirenS_enter.x.y, 
+	Siren_SirenS_entered.x.y, 
+	Siren_SirenS_exit.x.y, 
+	Siren_SirenS_exited.x.y |
+	x <- {"Siren_SirenS_Stopped","Siren_SirenS_s1"},
+	y <- {"Siren_SirenS_Stopped"}
+|}
+
+
+
+Siren_SirenS_Stopped_triggers = {|
+	Siren_SirenS_internal__."Siren_SirenS_t1"
+|}
+		   
+S_Siren_SirenS_Stopped = let
+	T_Siren_SirenS_t1	= Siren_SirenS_internal__!"Siren_SirenS_t1" ->  Siren_SirenS_enter!"Siren_SirenS_Stopped"!"Siren_SirenS_s1" -> Siren_SirenS_entered!"Siren_SirenS_Stopped"!"Siren_SirenS_s1" ->
+	S_Siren_SirenS_Stopped
+	
+
+	S_Siren_SirenS_Stopped_execute(o__) = 
+	SKIP; 
+	Siren_SirenS_entered!o__!"Siren_SirenS_Stopped" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Siren_SirenS_t1
+	   											    []
+	   											    Siren_SirenS_internal__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_Stopped"})!"Siren_SirenS_Stopped" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_Stopped" -> SKIP);
+	   											      	S_Siren_SirenS_Stopped
+	   											    [] Siren_SirenS_stopSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_Stopped"})!"Siren_SirenS_Stopped" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_Stopped" -> SKIP);
+	   											      	S_Siren_SirenS_Stopped
+	   											    [] Siren_SirenS_startSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_Stopped"})!"Siren_SirenS_Stopped" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_Stopped" -> SKIP);
+	   											      	S_Siren_SirenS_Stopped
+	   											    )
+	   										)
+within
+Siren_SirenS_enter?x:diff(Siren_SirenS_SIDS,{"Siren_SirenS_Stopped"})!"Siren_SirenS_Stopped" -> ( 
+	S_Siren_SirenS_Stopped_execute(x)) 
+CS_Siren_SirenS_s1_sync = {|
+	Siren_SirenS_enter.y.x, 
+	Siren_SirenS_entered.y.x, 
+	Siren_SirenS_exit.y.x, 
+	Siren_SirenS_exited.y.x,
+	Siren_SirenS_enter.x.y, 
+	Siren_SirenS_entered.x.y, 
+	Siren_SirenS_exit.x.y, 
+	Siren_SirenS_exited.x.y |
+	x <- {"Siren_SirenS_Stopped","Siren_SirenS_s1"},
+	y <- {"Siren_SirenS_s1"}
+|}
+
+
+Siren_SirenS_s1_int_int = {|
+	Siren_SirenS_stopSiren__."Siren_SirenS_s1_t1",
+	Siren_SirenS_startSiren__."Siren_SirenS_s1_t1",
+Siren_SirenS_internal__."Siren_SirenS_s1_t1",
+	Siren_SirenS_stopSiren__."Siren_SirenS_s1_t2",
+	Siren_SirenS_startSiren__."Siren_SirenS_s1_t2",
+Siren_SirenS_internal__."Siren_SirenS_s1_t2"
+|}
+
+
+Siren_SirenS_s1_int_triggers = {|
+	Siren_SirenS_internal__."Siren_SirenS_s1_t1",
+	Siren_SirenS_internal__."Siren_SirenS_s1_t2"
+|}
+		   
+
+T_Siren_SirenS_s1_t0	= Siren_SirenS_enter!"Siren_SirenS_s1"!"Siren_SirenS_s1_Red" -> Siren_SirenS_entered!"Siren_SirenS_s1"!"Siren_SirenS_s1_Red" ->
+SKIP
+
+S_Siren_SirenS_s1_Red_R = S_Siren_SirenS_s1_Red
+ 		[|diff(Siren_SirenS_s1_int_int,Siren_SirenS_s1_Red_triggers)|]
+ 		SKIP
+ 		
+S_Siren_SirenS_s1_Green_R = S_Siren_SirenS_s1_Green
+ 		[|diff(Siren_SirenS_s1_int_int,Siren_SirenS_s1_Green_triggers)|]
+ 		SKIP
+ 		
+S_Siren_SirenS_s1 = ShowEvents_Siren_SirenS(S_Siren_SirenS_s1_aux
+	[|union(diff(Siren_SirenS_int_int, Siren_SirenS_s1_int_triggers),
+		{|Siren_SirenS_enter.x.y,
+			Siren_SirenS_entered.x.y,
+			Siren_SirenS_exit.x.y,
+			Siren_SirenS_exited.x.y |
+			x <- diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}),
+			y <- {"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}
+	|})|]
+	ShowEvents_Siren_SirenS(S_Siren_SirenS_s1_Red_R
+	  [|inter(CS_Siren_SirenS_s1_Red_sync,CS_Siren_SirenS_s1_Green_sync)|]
+	 S_Siren_SirenS_s1_Green_R,inter(CS_Siren_SirenS_s1_Red_sync,CS_Siren_SirenS_s1_Green_sync))\inter(CS_Siren_SirenS_s1_Red_sync,CS_Siren_SirenS_s1_Green_sync)
+		,{|Siren_SirenS_enter.x.y,
+			Siren_SirenS_entered.x.y,
+			Siren_SirenS_exit.x.y,
+			Siren_SirenS_exited.x.y |
+			x <- diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}),
+			y <- {"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}
+		|})\{|Siren_SirenS_enter.x.y,
+						Siren_SirenS_entered.x.y,
+						Siren_SirenS_exit.x.y,
+						Siren_SirenS_exited.x.y |
+						x <- diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}),
+						y <- {"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"}
+				|}
+
+Siren_SirenS_s1_triggers = {|
+	Siren_SirenS_internal__."Siren_SirenS_t2",
+	Siren_SirenS_internal__."Siren_SirenS_s1_t1",
+	Siren_SirenS_internal__."Siren_SirenS_s1_t2"
+|}
+		   
+S_Siren_SirenS_s1_aux = let
+	T_Siren_SirenS_t2	= Siren_SirenS_internal__!"Siren_SirenS_t2" ->  Siren_SirenS_exit!"Siren_SirenS_s1"?z:{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"} ->
+	Siren_SirenS_exited!"Siren_SirenS_s1"!z -> 
+		SKIP;Siren_SirenS_enter!"Siren_SirenS_s1"!"Siren_SirenS_Stopped" -> Siren_SirenS_entered!"Siren_SirenS_s1"!"Siren_SirenS_Stopped" ->
+	S_Siren_SirenS_s1_aux
+	
+
+	S_Siren_SirenS_s1_aux_execute(o__) = 
+	SKIP; 
+	I_Siren_SirenS_s1_i0;
+	Siren_SirenS_entered!o__!"Siren_SirenS_s1" ->
+	   (playCall -> playRet -> SKIP
+	   										; STOP /\ (
+	   											    T_Siren_SirenS_t2
+	   											    []
+	   											    Siren_SirenS_internal__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t2","Siren_SirenS_s1_t1","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1"})!"Siren_SirenS_s1" -> (
+	   											      	Siren_SirenS_exit!"Siren_SirenS_s1"?z:{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"} ->
+	   											      	Siren_SirenS_exited!"Siren_SirenS_s1"!z -> 
+	   											      		SKIP;
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1" -> SKIP);
+	   											      	S_Siren_SirenS_s1_aux
+	   											    [] Siren_SirenS_stopSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t2","Siren_SirenS_s1_t1","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1"})!"Siren_SirenS_s1" -> (
+	   											      	Siren_SirenS_exit!"Siren_SirenS_s1"?z:{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"} ->
+	   											      	Siren_SirenS_exited!"Siren_SirenS_s1"!z -> 
+	   											      		SKIP;
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1" -> SKIP);
+	   											      	S_Siren_SirenS_s1_aux
+	   											    [] Siren_SirenS_startSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_t2","Siren_SirenS_s1_t1","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1"})!"Siren_SirenS_s1" -> (
+	   											      	Siren_SirenS_exit!"Siren_SirenS_s1"?z:{"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"} ->
+	   											      	Siren_SirenS_exited!"Siren_SirenS_s1"!z -> 
+	   											      		SKIP;
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1" -> SKIP);
+	   											      	S_Siren_SirenS_s1_aux
+	   											    )
+	   										)
+within
+Siren_SirenS_enter?x:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1"})!"Siren_SirenS_s1" -> ( 
+	S_Siren_SirenS_s1_aux_execute(x)) 
+CS_Siren_SirenS_s1_Red_sync = {|
+	Siren_SirenS_enter.y.x, 
+	Siren_SirenS_entered.y.x, 
+	Siren_SirenS_exit.y.x, 
+	Siren_SirenS_exited.y.x,
+	Siren_SirenS_enter.x.y, 
+	Siren_SirenS_entered.x.y, 
+	Siren_SirenS_exit.x.y, 
+	Siren_SirenS_exited.x.y |
+	x <- {"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"},
+	y <- {"Siren_SirenS_s1_Red"}
+|}
+
+
+
+Siren_SirenS_s1_Red_triggers = {|
+	Siren_SirenS_internal__."Siren_SirenS_s1_t1"
+|}
+		   
+S_Siren_SirenS_s1_Red = let
+	T_Siren_SirenS_s1_t1	= Siren_SirenS_internal__!"Siren_SirenS_s1_t1" ->  Siren_SirenS_enter!"Siren_SirenS_s1_Red"!"Siren_SirenS_s1_Green" -> Siren_SirenS_entered!"Siren_SirenS_s1_Red"!"Siren_SirenS_s1_Green" ->
+	S_Siren_SirenS_s1_Red
+	
+
+	S_Siren_SirenS_s1_Red_execute(o__) = 
+	green5sCall -> green5sRet -> SKIP; 
+	Siren_SirenS_entered!o__!"Siren_SirenS_s1_Red" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Siren_SirenS_s1_t1
+	   											    []
+	   											    Siren_SirenS_internal__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red"})!"Siren_SirenS_s1_Red" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Red" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Red
+	   											    [] Siren_SirenS_stopSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red"})!"Siren_SirenS_s1_Red" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Red" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Red
+	   											    [] Siren_SirenS_startSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t1"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red"})!"Siren_SirenS_s1_Red" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Red" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Red
+	   											    )
+	   										)
+within
+Siren_SirenS_enter?x:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Red"})!"Siren_SirenS_s1_Red" -> ( 
+	S_Siren_SirenS_s1_Red_execute(x)) 
+CS_Siren_SirenS_s1_Green_sync = {|
+	Siren_SirenS_enter.y.x, 
+	Siren_SirenS_entered.y.x, 
+	Siren_SirenS_exit.y.x, 
+	Siren_SirenS_exited.y.x,
+	Siren_SirenS_enter.x.y, 
+	Siren_SirenS_entered.x.y, 
+	Siren_SirenS_exit.x.y, 
+	Siren_SirenS_exited.x.y |
+	x <- {"Siren_SirenS_s1_Red","Siren_SirenS_s1_Green"},
+	y <- {"Siren_SirenS_s1_Green"}
+|}
+
+
+
+Siren_SirenS_s1_Green_triggers = {|
+	Siren_SirenS_internal__."Siren_SirenS_s1_t2"
+|}
+		   
+S_Siren_SirenS_s1_Green = let
+	T_Siren_SirenS_s1_t2	= Siren_SirenS_internal__!"Siren_SirenS_s1_t2" ->  Siren_SirenS_enter!"Siren_SirenS_s1_Green"!"Siren_SirenS_s1_Red" -> Siren_SirenS_entered!"Siren_SirenS_s1_Green"!"Siren_SirenS_s1_Red" ->
+	S_Siren_SirenS_s1_Green
+	
+
+	S_Siren_SirenS_s1_Green_execute(o__) = 
+	red5sCall -> red5sRet -> SKIP; 
+	Siren_SirenS_entered!o__!"Siren_SirenS_s1_Green" ->
+	   (SKIP
+	   										; STOP /\ (
+	   											    T_Siren_SirenS_s1_t2
+	   											    []
+	   											    Siren_SirenS_internal__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Green"})!"Siren_SirenS_s1_Green" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Green" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Green
+	   											    [] Siren_SirenS_stopSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Green"})!"Siren_SirenS_s1_Green" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Green" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Green
+	   											    [] Siren_SirenS_startSiren__?x:diff(Siren_SirenS_TIDS,{"__NULLTRANSITION__","Siren_SirenS_s1_t2"}) ->
+	   											      Siren_SirenS_exit?y:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Green"})!"Siren_SirenS_s1_Green" -> (
+	   											      	Siren_SirenS_exited!y!"Siren_SirenS_s1_Green" -> SKIP);
+	   											      	S_Siren_SirenS_s1_Green
+	   											    )
+	   										)
+within
+Siren_SirenS_enter?x:diff(Siren_SirenS_SIDS,{"Siren_SirenS_s1_Green"})!"Siren_SirenS_s1_Green" -> ( 
+	S_Siren_SirenS_s1_Green_execute(x)) 
+
+I_Siren_SirenS_i0 = T_Siren_SirenS_t0
+I_Siren_SirenS_s1_i0 = T_Siren_SirenS_s1_t0
+
+
+
+Siren_SirenS_int_int = {|
+	Siren_SirenS_stopSiren__."Siren_SirenS_s1_t1",
+	Siren_SirenS_startSiren__."Siren_SirenS_s1_t1",
+Siren_SirenS_internal__."Siren_SirenS_s1_t1",
+	Siren_SirenS_stopSiren__."Siren_SirenS_s1_t2",
+	Siren_SirenS_startSiren__."Siren_SirenS_s1_t2",
+Siren_SirenS_internal__."Siren_SirenS_s1_t2",
+	Siren_SirenS_stopSiren__."Siren_SirenS_t1",
+	Siren_SirenS_startSiren__."Siren_SirenS_t1",
+Siren_SirenS_internal__."Siren_SirenS_t1",
+	Siren_SirenS_stopSiren__."Siren_SirenS_t2",
+	Siren_SirenS_startSiren__."Siren_SirenS_t2",
+Siren_SirenS_internal__."Siren_SirenS_t2"
+|}
+
+
+T_Siren_SirenS_t0	= Siren_SirenS_enter!"Siren_SirenS"!"Siren_SirenS_Stopped" -> Siren_SirenS_entered!"Siren_SirenS"!"Siren_SirenS_Stopped" ->
+SKIP
+
+S_Siren_SirenS_Stopped_R = S_Siren_SirenS_Stopped
+ 		[|diff(Siren_SirenS_int_int,Siren_SirenS_Stopped_triggers)|]
+ 		SKIP
+ 		
+S_Siren_SirenS_s1_R = S_Siren_SirenS_s1
+ 		[|diff(Siren_SirenS_int_int,Siren_SirenS_s1_triggers)|]
+ 		SKIP
+ 		
+STM_Siren_SirenS = ShowEvents_Siren_SirenS(I_Siren_SirenS_i0
+[|{|Siren_SirenS_enter.x.y,
+		Siren_SirenS_entered.x.y,
+		Siren_SirenS_exit.x.y,
+		Siren_SirenS_exited.x.y |
+		x <- diff(Siren_SirenS_SIDS,{"Siren_SirenS_Stopped","Siren_SirenS_s1"}),
+		y <- {"Siren_SirenS_Stopped","Siren_SirenS_s1"}
+|}|]
+ShowEvents_Siren_SirenS(S_Siren_SirenS_Stopped_R
+  [|inter(CS_Siren_SirenS_Stopped_sync,CS_Siren_SirenS_s1_sync)|]
+ S_Siren_SirenS_s1_R,inter(CS_Siren_SirenS_Stopped_sync,CS_Siren_SirenS_s1_sync))\inter(CS_Siren_SirenS_Stopped_sync,CS_Siren_SirenS_s1_sync)
+ 	,{|Siren_SirenS_enter,Siren_SirenS_entered,
+ 	Siren_SirenS_exit,Siren_SirenS_exited|})\{|Siren_SirenS_enter,Siren_SirenS_entered,
+  Siren_SirenS_exit,Siren_SirenS_exited|}
+-- memory process
+Memory_Siren_SirenS = (
+	Siren_SirenS_internal__!"Siren_SirenS_s1_t1" -> Memory_Siren_SirenS
+	  []
+	Siren_SirenS_internal__!"Siren_SirenS_s1_t2" -> Memory_Siren_SirenS
+	  []
+	Siren_SirenS_internal__!"Siren_SirenS_t1" -> Memory_Siren_SirenS
+	  []
+	Siren_SirenS_internal__!"Siren_SirenS_t2" -> Memory_Siren_SirenS
+	)
+-- main process
+Siren_SirenS_aux = ((STM_Siren_SirenS
+	[|union(
+		{||},
+		{|Siren_SirenS_internal__."Siren_SirenS_s1_t1",
+		Siren_SirenS_internal__."Siren_SirenS_s1_t2",
+		Siren_SirenS_internal__."Siren_SirenS_t1",
+		Siren_SirenS_internal__."Siren_SirenS_t2"|}
+	)|]
+	Memory_Siren_SirenS
+)[[Siren_SirenS_stopSiren__.x <- Siren_SirenS_stopSiren, Siren_SirenS_startSiren__.x <- Siren_SirenS_startSiren| x<-Siren_SirenS_TIDS]]\{||})
+[|{|Siren_SirenS_terminate|}|>SKIP\{|Siren_SirenS_terminate, Siren_SirenS_internal__|}
+
+Siren_SirenS = Siren_SirenS_aux \ {|Siren_SirenS_enteredV, Siren_SirenS_enterV, Siren_SirenS_exitV, Siren_SirenS_exitedV|}
+Siren_SirenS_VS = Siren_SirenS_aux

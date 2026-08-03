@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 20-07-2026 13:09:19
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_taxi_defs.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "MoveForward.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate OP_MoveForward
+P_OP_MoveForward = let
+	id__ = 0
+	
+	param_i = 0
+	
+	
+	
+within
+	OP_MoveForward::O__(id__,
+				param_i)
+assert P_OP_MoveForward :[deadlock-free]	
+assert P_OP_MoveForward;RUN({r__}) :[deadlock-free]
+assert P_OP_MoveForward :[deterministic]
+assert P_OP_MoveForward :[divergence-free]

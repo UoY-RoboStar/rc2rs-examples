@@ -1,0 +1,156 @@
+package
+autonomous_vehicle_system
+import lutz::*
+import data_logging::*
+import bacs::*
+import utility::*
+interface SpeedControl {
+	setSpeed( kilometersPerHour : Speed) 
+setParkingBrake( brake : BrakeState)
+}
+interface FourWheelSteering {
+	setFrontSteering( degrees : Angle) setRearSteering( degrees : Angle) 
+}
+module
+AutonomousVehicle {
+robotic platform Vehicle {
+
+	
+
+	
+
+
+	
+	event latlng : LatLngHeadingFix
+	
+
+	
+
+	
+
+	
+event deadmanshandle : DeadMansHandleReading
+
+event rc_in : Gamepad
+	
+	event route : Seq( GpsPathPoint )
+provides SpeedControl provides FourWheelSteering
+provides FaultDetection provides AuxiliaryControl
+	
+	
+	
+	
+	event instruction : UICode
+	
+	
+	event faultDetectResponse : Handshake
+	
+	event configGoal : ConfigGoalGeneration
+	event powertrain : Powertrain
+	event eps : Eps
+	
+	
+	
+	event eps_inboard : Steer
+	
+	event eps_outboard : Steer
+	
+	event epb : ParkBrake
+	event battery : Battery
+	
+	event control_command1 : ControlCommand1
+	event status : Status
+	event indicator : Indicator
+	provides State
+	event configController : ConfigGamepad
+		event configAutonomousDemand : AutoDemandConfig
+		
+		event configGeofence : ConfigGeofence
+		event configDeadMansController : ConfigDeadMans
+	provides Logging
+	event configAgeCheck : ConfigAgeChecker
+	event configBrakeTime : real
+	}
+	cref ctrl_ref_ctrlAutonomousControl = B_acs
+	cref ctrl_ref_ctrlVehicle = Lutz
+connection Vehicle on deadmanshandle to ctrl_ref_ctrlAutonomousControl on deadmanshandle (
+	_async )
+	connection Vehicle on latlng to ctrl_ref_ctrlAutonomousControl on latlng ( _async )
+	connection Vehicle on route to ctrl_ref_ctrlAutonomousControl on route ( _async )
+	connection Vehicle on rc_in to ctrl_ref_ctrlAutonomousControl on rc_in (
+	_async )
+	connection ctrl_ref_ctrlAutonomousControl on output_pod_demand to ctrl_ref_ctrlVehicle on output_pod_demand ( _async )
+	connection ctrl_ref_ctrlAutonomousControl on auxiliary_demand to ctrl_ref_ctrlVehicle on auxiliary_demand ( _async )
+	
+	
+	
+	
+	
+connection ctrl_ref_ctrlVehicle on instruction to Vehicle on instruction (
+	_async )
+	
+
+
+	connection Vehicle on faultDetectResponse to ctrl_ref_ctrlVehicle on
+	acs_handshake ( _async )
+
+	
+	
+	connection Vehicle on configGoal to ctrl_ref_ctrlAutonomousControl on
+	configGoal ( _async )
+
+
+	
+	
+
+	
+	connection ctrl_ref_ctrlVehicle on pod_state to ctrl_ref_ctrlAutonomousControl
+	on pod_state ( _async )
+connection Vehicle on eps_outboard to ctrl_ref_ctrlVehicle on eps_outboard
+	( _async )
+	connection Vehicle on epb to ctrl_ref_ctrlVehicle on epb (
+	_async )
+	connection Vehicle on status to ctrl_ref_ctrlVehicle on status (
+	_async )
+	connection Vehicle on battery to ctrl_ref_ctrlVehicle on battery (
+	_async )
+	connection Vehicle on powertrain to ctrl_ref_ctrlVehicle on powertrain
+	( _async )
+	connection Vehicle on eps to ctrl_ref_ctrlVehicle on eps ( _async )
+	connection Vehicle on control_command1 to ctrl_ref_ctrlVehicle on
+	control_command1 ( _async )
+	connection Vehicle on eps_inboard to ctrl_ref_ctrlVehicle on eps_inboard
+	( _async )
+connection Vehicle on indicator to ctrl_ref_ctrlVehicle on indicator (
+	_async )
+connection Vehicle on configController to ctrl_ref_ctrlAutonomousControl
+	on configController ( _async )
+	connection Vehicle on configAutonomousDemand to
+	ctrl_ref_ctrlAutonomousControl on configAutonomousDemand ( _async )
+	
+	connection Vehicle on configDeadMansController to
+	ctrl_ref_ctrlAutonomousControl on configDeadMansController ( _async )
+connection Vehicle on configAgeCheck to ctrl_ref_ctrlAutonomousControl on
+	configAgeCheck ( _async )
+connection Vehicle on configGeofence to ctrl_ref_ctrlAutonomousControl on
+	configGeofence ( _async )
+connection Vehicle on configBrakeTime to ctrl_ref_ctrlAutonomousControl on
+	configBrakeTime ( _async )
+}
+interface FaultDetection {
+	sendHandshakeResponse( message : Handshake)
+
+}
+interface AuxiliaryControl {
+	setAuxiliaries( newState : AuxiliaryDemand)
+}
+interface State {
+	requestState(newState : VehicleState)
+}
+interface Logging {
+	LogEnvironmentPointCloud( eventToLog : Seq( Point2d )) LogEnvironmentObjects(
+	objectsToLog : Seq( DetectedObject )) LogEnvironmentImage( imageToLog :
+	StereoImage) LogEarlyWarning( warningToLog : DriverWarning)
+}
+function GetSystemTime() : real {
+}

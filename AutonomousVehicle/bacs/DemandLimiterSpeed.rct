@@ -1,0 +1,71 @@
+package bacs::DemandLimiterSpeed
+import sequence_toolkit::*
+stm DemandLimiterSpeed {
+	var newDemand : PodDemand
+	var currentSpeedLimit : SpeedLimit
+	var speedLimitDisabled : boolean
+	const ZERO_SPEED : real
+	
+	
+	
+	
+	
+	event geofence_limit : SpeedLimit
+	
+	event pod_demand : PodDemand
+	
+	event pod_demand_geo_limited : PodDemand
+	
+	state Ready {
+	}
+	state LimitSpeed {
+		entry newDemand . speed = MinSpeed ( < realToSpeed(currentSpeedLimit.speedLimit) , newDemand . speed >
+		)
+	}
+	initial i0
+	state Initialise {
+		entry currentSpeedLimit.speedLimit = ZERO_SPEED ; speedLimitDisabled = false
+	}
+	junction j0
+	junction j1
+	transition t3 {
+		from j0
+		to Ready
+		action pod_demand_geo_limited ! newDemand
+	}
+	transition t4 {
+		from i0
+		to Initialise
+	}
+	transition t0 {
+		from Ready
+		to j1
+		trigger pod_demand ? newDemand
+	}
+	transition t1 {
+		from Initialise
+		to Ready
+		}
+	transition t2 {
+		from j1
+		to LimitSpeed
+		condition not speedLimitDisabled
+	}
+	transition t5 {
+		from LimitSpeed
+		to j0
+	}
+	transition t6 {
+		from j1
+		to j0
+		condition speedLimitDisabled
+	}
+	transition t7 {
+		from Ready
+		to Ready
+		trigger geofence_limit ? currentSpeedLimit
+	}
+
+}
+function MinSpeed( speedsToSearch : Seq( Speed )) : Speed {
+}

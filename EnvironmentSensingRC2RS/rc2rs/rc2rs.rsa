@@ -1,22 +1,45 @@
-simulation NormalForm of pkg1126_EnvironmentalSensing::EnvironmentalSensing{
+simulation RC of main::EnvironmentalSensing{
 	cycleDef cycle==1
 }
+
+ /*
+  * Schedulability verification
+  */
+assertion A1: RC is schedulable 
+
+
+simulation RC1 of MicroControllerPkg::MicroController{
+	cycleDef cycle==1
+}
+
+assertion A2: RC1 is schedulable 
+
+simulation RC2 of MainControllerPkg::MainController{
+	cycleDef cycle==1
+}
+
+assertion A3: RC2 is schedulable 
+
+
+simulation NormalForm of pre_pkg_main::EnvironmentalSensing{
+	cycleDef cycle==1
+} 
  
  /*
   * Schedulability verification
   */
-assertion A1: NormalForm is schedulable 
+assertion A4: NormalForm is schedulable 
   
 
  /*
   * The RoboSim model is deadlock-free.
   */
-assertion A2: pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing is deadlock-free 
+assertion A5: pre_pkg_main_sim::EnvironmentalSensing is deadlock-free 
   
  
  /*
   * Conformance verification
   */
-assertion A3: pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing refines NormalForm in the failures divergences model with cycleDef of pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing set to 1, and cycleDef of NormalForm set to 1 
-assertion A4: NormalForm refines pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing in the failures divergences model with cycleDef of pkg1126_EnvironmentalSensing_sim::EnvironmentalSensing set to 1, and cycleDef of NormalForm set to 1 
+assertion A6: pre_pkg_main_sim::EnvironmentalSensing refines RC in the failures divergences model with cycleDef of pre_pkg_main_sim::EnvironmentalSensing set to 1, and cycleDef of RC set to 1 
+assertion A7: RC refines pre_pkg_main_sim::EnvironmentalSensing in the failures divergences model with cycleDef of pre_pkg_main_sim::EnvironmentalSensing set to 1, and cycleDef of RC set to 1 
  

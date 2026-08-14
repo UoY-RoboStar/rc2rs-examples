@@ -8,70 +8,70 @@ exports
 	
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
-	InputEvents = {|pkg994_ChemicalDetector::ChemicalDetector::odometer.in,pkg994_ChemicalDetector::ChemicalDetector::gas.in,pkg994_ChemicalDetector::ChemicalDetector::obstacle.in|}
-	OutputEvents = {|pkg994_ChemicalDetector::ChemicalDetector::moveCall,pkg994_ChemicalDetector::ChemicalDetector::flag.out,pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::shortRandomWalkCall|}
-	ExternalEvents = {|pkg994_ChemicalDetector::ChemicalDetector::odometer.in,pkg994_ChemicalDetector::ChemicalDetector::gas.in,pkg994_ChemicalDetector::ChemicalDetector::obstacle.in
-					   ,pkg994_ChemicalDetector::ChemicalDetector::moveCall,pkg994_ChemicalDetector::ChemicalDetector::flag.out,pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::shortRandomWalkCall|}
+	InputEvents = {|pkg994_ChemicalDetector::ChemicalDetector::obstacle.in,pkg994_ChemicalDetector::ChemicalDetector::gas.in,pkg994_ChemicalDetector::ChemicalDetector::odometer.in|}
+	OutputEvents = {|pkg994_ChemicalDetector::ChemicalDetector::moveCall,pkg994_ChemicalDetector::ChemicalDetector::shortRandomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::flag.out|}
+	ExternalEvents = {|pkg994_ChemicalDetector::ChemicalDetector::obstacle.in,pkg994_ChemicalDetector::ChemicalDetector::gas.in,pkg994_ChemicalDetector::ChemicalDetector::odometer.in
+					   ,pkg994_ChemicalDetector::ChemicalDetector::moveCall,pkg994_ChemicalDetector::ChemicalDetector::shortRandomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall,pkg994_ChemicalDetector::ChemicalDetector::flag.out|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
-	datatype RegisterDataInput = i_odometer.Bool.core_real
+	datatype RegisterDataInput = i_obstacle.Bool.Location_Loc
 		| i_gas.Bool.LSeq(Chemical_GasSensor,2)
-		| i_obstacle.Bool.Location_Loc
+		| i_odometer.Bool.core_real
 	
 	datatype RegisterDataOutput = o_move.core_real.Chemical_Angle
-		| o_flag
-		| o_randomWalk
 		| o_shortRandomWalk
+		| o_randomWalk
+		| o_flag
 	
 	
 	nametype RegisterOutputs = {|
 	o_move,
-	o_flag,
+	o_shortRandomWalk,
 	o_randomWalk,
-	o_shortRandomWalk|}
+	o_flag|}
 	
 	nametype RegisterInputs = {|
-	i_odometer,
+	i_obstacle,
 	i_gas,
-	i_obstacle|}
+	i_odometer|}
 	
 	datatype COutputEvents = COutput_move
-		| COutput_flag
-		| COutput_randomWalk
 		| COutput_shortRandomWalk
+		| COutput_randomWalk
+		| COutput_flag
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
 	
 	A1 =
 	let
-		A1_odometer = registerRead.i_odometer?b__.x__ ->
-								if b__ then (pkg994_ChemicalDetector::ChemicalDetector::odometer.in.x__ -> A1_odometer [] A1_odometer)
-									   else A1_odometer
-		A1_gas = registerRead.i_gas?b__.x__ ->
-								if b__ then (pkg994_ChemicalDetector::ChemicalDetector::gas.in.x__ -> A1_gas [] A1_gas)
-									   else A1_gas
 		A1_obstacle = registerRead.i_obstacle?b__.x__ ->
 								if b__ then (pkg994_ChemicalDetector::ChemicalDetector::obstacle.in.x__ -> A1_obstacle [] A1_obstacle)
 									   else A1_obstacle
+		A1_gas = registerRead.i_gas?b__.x__ ->
+								if b__ then (pkg994_ChemicalDetector::ChemicalDetector::gas.in.x__ -> A1_gas [] A1_gas)
+									   else A1_gas
+		A1_odometer = registerRead.i_odometer?b__.x__ ->
+								if b__ then (pkg994_ChemicalDetector::ChemicalDetector::odometer.in.x__ -> A1_odometer [] A1_odometer)
+									   else A1_odometer
 		
 														
 	within
-			     	A1_odometer
+			     	A1_obstacle
 			     	 |||
 			     	A1_gas
 			     	 |||
-			     	A1_obstacle
+			     	A1_odometer
 							
 	TA1 = A1 /\ terminate -> SKIP 
 	
 	TA2(cycle_NormalForm_NormalForm) = let
 			
 			read(COutput_move) = pkg994_ChemicalDetector::ChemicalDetector::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
-			read(COutput_flag) = pkg994_ChemicalDetector::ChemicalDetector::flag.out -> registerWrite.o_flag -> SKIP
-			read(COutput_randomWalk) = pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall -> registerWrite.o_randomWalk -> SKIP
 			read(COutput_shortRandomWalk) = pkg994_ChemicalDetector::ChemicalDetector::shortRandomWalkCall -> registerWrite.o_shortRandomWalk -> SKIP
+			read(COutput_randomWalk) = pkg994_ChemicalDetector::ChemicalDetector::randomWalkCall -> registerWrite.o_randomWalk -> SKIP
+			read(COutput_flag) = pkg994_ChemicalDetector::ChemicalDetector::flag.out -> registerWrite.o_flag -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))
@@ -81,11 +81,11 @@ exports
 		  	A2(COutputEvents)
 					
 	TA3(cycle_NormalForm_NormalForm) = let
-			A3 = ((registerRead.i_odometer?x__ -> SKIP)
+			A3 = ((registerRead.i_obstacle?x__ -> SKIP)
 				|||
 			(registerRead.i_gas?x__ -> SKIP)
 				|||
-			(registerRead.i_obstacle?x__ -> SKIP));
+			(registerRead.i_odometer?x__ -> SKIP));
 				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
 		  within
 		  	A3

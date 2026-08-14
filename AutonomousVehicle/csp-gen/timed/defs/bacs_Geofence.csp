@@ -1,0 +1,822 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_Geofence
+exports
+
+
+
+
+module Geofence
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_Initialise|
+	              NID_Spin|
+	              NID_GpsCallback|
+	              NID_i0
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_currentConfiguration, set_currentConfiguration, setL_currentConfiguration, setR_currentConfiguration: ConfigGeofence
+	channel get_msg, set_msg, setL_msg, setR_msg: LatLngHeadingFix
+	channel get_speedLimit, set_speedLimit, setL_speedLimit, setR_speedLimit: SpeedLimit
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel latlng__: NIDS.InOut.LatLngHeadingFix
+	channel latlng: InOut.LatLngHeadingFix
+	channel geofence_limit__: NIDS.InOut.SpeedLimit
+	channel geofence_limit: InOut.SpeedLimit
+	channel configuration__: NIDS.InOut.ConfigGeofence
+	channel configuration: InOut.ConfigGeofence
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	Initialise::enter,
+	Spin::enter,
+	GpsCallback::enter,
+	i0::enter
+	|}
+	
+	enteredSS = 	{|
+	Initialise::entered,
+	Spin::entered,
+	GpsCallback::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	latlng,
+		geofence_limit,
+		configuration
+		|}
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Spin : core_clock_type 
+	channel get_CLID_Initialise : core_clock_type 
+	channel get_CLID_GpsCallback : core_clock_type 
+	--channel increment__
+	
+	CLID_Spin_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Initialise_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_GpsCallback_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: Initialise
+		module Initialise
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Spin
+		module Spin
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: GpsCallback
+		module GpsCallback
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_header(speedLimit,update_Header_stamp(SpeedLimit_header(speedLimit),Header_stamp(LatLngHeadingFix_header(msg)))) -> SKIP)))));share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> share__choice(get_currentConfiguration?currentConfiguration -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,bacs_Geofence_GeoFenceLocalMaxSpeed(msg,ConfigGeofence_fence(currentConfiguration),ConfigGeofence_maxSpeed(currentConfiguration))) -> SKIP)))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_header(speedLimit,update_Header_stamp(SpeedLimit_header(speedLimit),Header_stamp(LatLngHeadingFix_header(msg)))) -> SKIP)))));share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> share__choice(get_currentConfiguration?currentConfiguration -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,bacs_Geofence_GeoFenceLocalMaxSpeed(msg,ConfigGeofence_fence(currentConfiguration),ConfigGeofence_maxSpeed(currentConfiguration))) -> SKIP)))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__) = ((let
+			Trans = TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+				 [] dbisim((true)&(configuration__!NID_Initialise.in?currentConfiguration:{currentConfiguration|currentConfiguration <- ConfigGeofence, true} -> share__choice(set_currentConfiguration!currentConfiguration -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Spin::enter -> SKIP)))
+				 [] dbisim((true)&(latlng__!NID_Spin.in?msg:{msg|msg <- LatLngHeadingFix, true} -> share__choice(set_msg!msg -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; GpsCallback::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_GpsCallback -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_speedLimit?speedLimit -> true&(share__choice(geofence_limit.out!speedLimit -> SKIP))) ; Spin::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Initialise::enter,
+					Spin::enter,
+					GpsCallback::enter,
+					i0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,configuration__.NID_Initialise.in,latlng__.NID_Spin.in,internal__.NID_GpsCallback|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Initialise::D__(id__)
+						   [| { share__, terminate } |] (
+						   Spin::D__(id__)
+						   [| { share__, terminate } |] (
+						   GpsCallback::D__(id__)
+						   [| { share__, terminate } |] (
+						   i0::D__(id__)
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,configuration__.NID_Initialise.in|}]]
+						 [[Spin::interrupt <- x__ | x__ <- {|interrupt,latlng__.NID_Spin.in|}]]
+						 [[GpsCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_GpsCallback|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_msg,setR_currentConfiguration |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setR_msg
+						 			 			,setR_currentConfiguration
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						  [[set_msg <- setR_msg,set_currentConfiguration <- setR_currentConfiguration]]
+						 )
+						)
+						 [[setR_msg <- set_msg,setR_currentConfiguration <- set_currentConfiguration]]
+						)
+					)
+					 \ hideSet)
+					[[
+						latlng__.x____ <- latlng,
+						geofence_limit__.x____ <- geofence_limit,
+						configuration__.x____ <- configuration
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Spin,Spin::entered,get_CLID_Initialise,Initialise::entered,get_CLID_GpsCallback,GpsCallback::entered|}
+			 within
+				(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Spin,Spin::entered,get_CLID_Initialise,Initialise::entered,get_CLID_GpsCallback,GpsCallback::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody(id__)
+										[| {|get_CLID_GpsCallback,GpsCallback::entered,terminate|} |]
+										dbisim(Clock_CLID_GpsCallback(id__,0))
+									)\{|get_CLID_GpsCallback|}
+								)
+								[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+								dbisim(Clock_CLID_Initialise(id__,0))
+							)\{|get_CLID_Initialise|}
+						)
+						[| {|get_CLID_Spin,Spin::entered,terminate|} |]
+						dbisim(Clock_CLID_Spin(id__,0))
+					)\{|get_CLID_Spin|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__) = 
+			((let
+				getsetLocalChannels = {|get_currentConfiguration,set_currentConfiguration,
+				get_msg,set_msg,
+				get_speedLimit,set_speedLimit|}
+				clockSync = {||}
+			within
+				(Behaviour(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									IteratedBehaviour(id__)
+									[| {|get_speedLimit,set_speedLimit,terminate|} |]
+									Memory_speedLimit(((0,0,""),0))
+								)\{|get_speedLimit,set_speedLimit|}
+							)
+							[| {|get_msg,set_msg,terminate|} |]
+							Memory_msg((0,0,(0,0,"")))
+						)\{|get_msg,set_msg|}
+					)
+					[| {|get_currentConfiguration,set_currentConfiguration,terminate|} |]
+					Memory_currentConfiguration((<>,0))
+				)\{|get_currentConfiguration,set_currentConfiguration|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Initialise::enter,
+					Spin::enter,
+					GpsCallback::enter,
+					i0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,configuration__.NID_Initialise.in,latlng__.NID_Spin.in,internal__.NID_GpsCallback|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Initialise::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   Spin::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   GpsCallback::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   i0::VS_O__(id__)
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,configuration__.NID_Initialise.in|}]]
+						 [[Spin::interrupt <- x__ | x__ <- {|interrupt,latlng__.NID_Spin.in|}]]
+						 [[GpsCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_GpsCallback|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_msg,setR_currentConfiguration |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setR_msg
+						 			 			,setR_currentConfiguration
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						  [[set_msg <- setR_msg,set_currentConfiguration <- setR_currentConfiguration]]
+						 )
+						)
+						 [[setR_msg <- set_msg,setR_currentConfiguration <- set_currentConfiguration]]
+						)
+					)
+					 \ hideSet)
+					[[
+						latlng__.x____ <- latlng,
+						geofence_limit__.x____ <- geofence_limit,
+						configuration__.x____ <- configuration
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Spin,Spin::entered,get_CLID_Initialise,Initialise::entered,get_CLID_GpsCallback,GpsCallback::entered|}
+			 within
+				(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Spin,Spin::entered,get_CLID_Initialise,Initialise::entered,get_CLID_GpsCallback,GpsCallback::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody_VS_O(id__)
+										[| {|get_CLID_GpsCallback,GpsCallback::entered,terminate|} |]
+										dbisim(Clock_CLID_GpsCallback(id__,0))
+									)\{|get_CLID_GpsCallback|}
+								)
+								[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+								dbisim(Clock_CLID_Initialise(id__,0))
+							)\{|get_CLID_Initialise|}
+						)
+						[| {|get_CLID_Spin,Spin::entered,terminate|} |]
+						dbisim(Clock_CLID_Spin(id__,0))
+					)\{|get_CLID_Spin|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__) = 
+			dbisim((let
+				getsetLocalChannels = {|get_currentConfiguration,set_currentConfiguration,
+				get_msg,set_msg,
+				get_speedLimit,set_speedLimit|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									IteratedBehaviour_VS_O(id__)
+									[| {|get_speedLimit,set_speedLimit,terminate|} |]
+									Memory_speedLimit(((0,0,""),0))
+								)\{|get_speedLimit,set_speedLimit|}
+							)
+							[| {|get_msg,set_msg,terminate|} |]
+							Memory_msg((0,0,(0,0,"")))
+						)\{|get_msg,set_msg|}
+					)
+					[| {|get_currentConfiguration,set_currentConfiguration,terminate|} |]
+					Memory_currentConfiguration((<>,0))
+				)\{|get_currentConfiguration,set_currentConfiguration|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_currentConfiguration(currentConfiguration) =
+			get_currentConfiguration!currentConfiguration -> Memory_currentConfiguration(currentConfiguration)
+			[]
+			set_currentConfiguration?x__ -> Memory_currentConfiguration(x__)
+			[]
+			terminate -> SKIP
+		Memory_msg(msg) =
+			get_msg!msg -> Memory_msg(msg)
+			[]
+			set_msg?x__ -> Memory_msg(x__)
+			[]
+			terminate -> SKIP
+		Memory_speedLimit(speedLimit) =
+			get_speedLimit!speedLimit -> Memory_speedLimit(speedLimit)
+			[]
+			set_speedLimit?x__ -> Memory_speedLimit(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__) = Memory_currentConfiguration((<>,0))
+		[| { terminate } |] (
+		Memory_msg((0,0,(0,0,"")))
+		[| { terminate } |] (
+		Memory_speedLimit(((0,0,""),0))
+		)
+		)
+		
+		getsetLocalChannels = {|get_currentConfiguration,set_currentConfiguration,get_msg,set_msg,get_speedLimit,set_speedLimit|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__) = STM_VS_O(id__) \ localClockResets
+		D__(id__) = timed_priority(STM(id__) \ union(internal_events,localClockResets))
+		O__(id__) = dbisim(D__(id__))
+		VS__(id__) = FVS__(id__)
+		VS_O__(id__) = dbisim(FVS__(id__))
+		HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+		FVS_C__(id__) = dbisim(timed_priority(STM(id__) \ internal_events))
+		HUP__(id__) = timed_priority(O__(id__) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Spin(id__,x__) = 
+			TimeOut_1(
+				Spin::entered -> Clock_CLID_Spin(id__,0)
+				[]
+				get_CLID_Spin!x__ -> Clock_CLID_Spin(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Spin(id__,clock_type_plus(x__,1,CLID_Spin_clock_type(id__))))
+		Clock_CLID_Initialise(id__,x__) = 
+			TimeOut_1(
+				Initialise::entered -> Clock_CLID_Initialise(id__,0)
+				[]
+				get_CLID_Initialise!x__ -> Clock_CLID_Initialise(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Initialise(id__,clock_type_plus(x__,1,CLID_Initialise_clock_type(id__))))
+		Clock_CLID_GpsCallback(id__,x__) = 
+			TimeOut_1(
+				GpsCallback::entered -> Clock_CLID_GpsCallback(id__,0)
+				[]
+				get_CLID_GpsCallback!x__ -> Clock_CLID_GpsCallback(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_GpsCallback(id__,clock_type_plus(x__,1,CLID_GpsCallback_clock_type(id__))))
+		
+		StateClocks(id__) = dbisim(Clock_CLID_Spin(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Initialise(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_GpsCallback(id__,0))
+		)
+		)
+		
+		stateClockSync = {|get_CLID_Spin,Spin::entered,get_CLID_Initialise,Initialise::entered,get_CLID_GpsCallback,GpsCallback::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule
+
+
+endmodule

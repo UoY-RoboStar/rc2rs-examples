@@ -1,0 +1,3116 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_AgeChecker_AgeChecker
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_SpinOnce|
+	              NID_i0|
+	              NID_Initialise|
+	              NID_CheckAge|
+	              NID_DemandCallback|
+	              NID_Sleep
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_demand, set_demand, setL_demand, setR_demand: PodDemand
+	channel get_newDemand, set_newDemand, setL_newDemand, setR_newDemand: PodDemand
+	channel get_age, set_age, setL_age, setR_age: core_real
+	channel get_executingCheckAge, set_executingCheckAge, setL_executingCheckAge, setR_executingCheckAge: core_boolean
+	channel get_rate, set_rate, setL_rate, setR_rate: core_int
+	channel get_ageToStartRamp, set_ageToStartRamp, setL_ageToStartRamp, setR_ageToStartRamp: core_real
+	channel get_ageToStop, set_ageToStop, setL_ageToStop, setR_ageToStop: core_real
+	channel get_retrievedConfiguration, set_retrievedConfiguration, setL_retrievedConfiguration, setR_retrievedConfiguration: ConfigAgeChecker
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel pod_demand_limited__: NIDS.InOut.PodDemand
+	channel pod_demand_limited: InOut.PodDemand
+	channel pod_demand_age_checked__: NIDS.InOut.PodDemand
+	channel pod_demand_age_checked: InOut.PodDemand
+	channel config__: NIDS.InOut.ConfigAgeChecker
+	channel config: InOut.ConfigAgeChecker
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	SpinOnce::enter,
+	i0::enter,
+	Initialise::enter,
+	CheckAge::enter,
+	DemandCallback::enter,
+	Sleep::enter
+	|}
+	
+	enteredSS = 	{|
+	SpinOnce::entered,
+	Initialise::entered,
+	CheckAge::entered,
+	DemandCallback::entered,
+	Sleep::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	pod_demand_limited,
+		pod_demand_age_checked,
+		config
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: SpinOnce
+	module SpinOnce
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Initialise
+	module Initialise
+	
+	enterSS = 
+			{|			i0::enter,
+				j0::enter,
+				f0::enter
+			|}
+	enteredSS = 
+			{|			f0::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i0|
+		              NID_j0|
+		              NID_f0
+		
+		channel internal__ : NIDS
+		channel pod_demand_limited__: NIDS.InOut.PodDemand
+		channel pod_demand_age_checked__: NIDS.InOut.PodDemand
+		channel config__: NIDS.InOut.ConfigAgeChecker
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: f0
+		module f0
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			--	Rule: behaviours(Node)
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+					
+					Entering 	= entered -> SKIP ; Active
+					Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+					Interrupted	= share__choice(exit -> exited -> Inactive)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_rate!ConfigAgeChecker_rate(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_ageToStartRamp!ConfigAgeChecker_ageToStartRamp(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_ageToStop!ConfigAgeChecker_ageToStop(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_executingCheckAge!false -> SKIP)));true&(share__choice(config.in?retrievedConfiguration -> (SStop /\ set_retrievedConfiguration!retrievedConfiguration -> SKIP)));SKIP;SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i0::enter,
+				 	j0::enter,
+				 	f0::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i0,internal__.NID_j0,internal__.NID_j0|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i0::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   f0::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		 )
+				 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_retrievedConfiguration <- setL_retrievedConfiguration]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_retrievedConfiguration
+				 		|}) |]
+				 		 ((i0::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_retrievedConfiguration |} ]]
+				 		 )
+				 		)[[setL_retrievedConfiguration <- set_retrievedConfiguration]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_rate!ConfigAgeChecker_rate(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_ageToStartRamp!ConfigAgeChecker_ageToStartRamp(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_ageToStop!ConfigAgeChecker_ageToStop(const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_executingCheckAge!false -> SKIP)));true&(share__choice(config.in?retrievedConfiguration -> (SStop /\ set_retrievedConfiguration!retrievedConfiguration -> SKIP)));SKIP;SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i0::enter,
+				 	j0::enter,
+				 	f0::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i0,internal__.NID_j0,internal__.NID_j0|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i0::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   f0::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		 )
+				 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_retrievedConfiguration <- setL_retrievedConfiguration]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_retrievedConfiguration
+				 		|}) |]
+				 		 ((i0::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_retrievedConfiguration |} ]]
+				 		 )
+				 		)[[setL_retrievedConfiguration <- set_retrievedConfiguration]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = ((let
+			Trans = share__choice(get_retrievedConfiguration?retrievedConfiguration -> (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+				 	 [] dbisim(((not (ConfigAgeChecker_retrieved(retrievedConfiguration))))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; f0::enter -> SKIP))))
+				 	 [] dbisim((ConfigAgeChecker_retrieved(retrievedConfiguration))&(internal__!NID_j0 -> SKIP ;  ((share__choice(share__choice(get_retrievedConfiguration?retrievedConfiguration -> true & (share__choice(set_rate!ConfigAgeChecker_rate(retrievedConfiguration) -> SKIP))));share__choice(share__choice(get_retrievedConfiguration?retrievedConfiguration -> true & (share__choice(set_ageToStartRamp!ConfigAgeChecker_ageToStartRamp(retrievedConfiguration) -> SKIP))));share__choice(share__choice(get_retrievedConfiguration?retrievedConfiguration -> true & (share__choice(set_ageToStop!ConfigAgeChecker_ageToStop(retrievedConfiguration) -> SKIP)))) ; f0::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: CheckAge
+	module CheckAge
+	
+	enterSS = 
+			{|			RampDown::enter,
+				Stop::enter,
+				initialCheckAge::enter,
+				finalCheckAge::enter,
+				checkAgeOut::enter,
+				j0::enter,
+				j1::enter,
+				PrepareNewDemand::enter
+			|}
+	enteredSS = 
+			{|			RampDown::entered,
+				Stop::entered,
+				finalCheckAge::entered,
+				PrepareNewDemand::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_RampDown|
+		              NID_Stop|
+		              NID_initialCheckAge|
+		              NID_finalCheckAge|
+		              NID_checkAgeOut|
+		              NID_j0|
+		              NID_j1|
+		              NID_PrepareNewDemand
+		
+		channel internal__ : NIDS
+		channel pod_demand_limited__: NIDS.InOut.PodDemand
+		channel pod_demand_age_checked__: NIDS.InOut.PodDemand
+		channel config__: NIDS.InOut.ConfigAgeChecker
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: RampDown
+		module RampDown
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_age?age -> share__choice(get_ageToStartRamp?ageToStartRamp -> share__choice(get_ageToStop?ageToStop -> share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> (Minus(ageToStop, ageToStartRamp, core_real)) != 0 & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,RealToSpeed(Div(Mult(SpeedToReal(PodDemand_speed(demand)), (Minus(ageToStop, age, core_real)), core_real), (Minus(ageToStop, ageToStartRamp, core_real)), core_real))) -> SKIP)))))))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_age?age -> share__choice(get_ageToStartRamp?ageToStartRamp -> share__choice(get_ageToStop?ageToStop -> share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> (Minus(ageToStop, ageToStartRamp, core_real)) != 0 & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,RealToSpeed(Div(Mult(SpeedToReal(PodDemand_speed(demand)), (Minus(ageToStop, age, core_real)), core_real), (Minus(ageToStop, ageToStartRamp, core_real)), core_real))) -> SKIP)))))))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Stop
+		module Stop
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,const_bacs_AgeChecker_AgeChecker_ZERO_SPEED) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,const_bacs_AgeChecker_AgeChecker_ZERO_STEER) -> SKIP)))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,const_bacs_AgeChecker_AgeChecker_ZERO_SPEED) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,const_bacs_AgeChecker_AgeChecker_ZERO_STEER) -> SKIP)))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: initialCheckAge
+		module initialCheckAge
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: finalCheckAge
+		module finalCheckAge
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			--	Rule: behaviours(Node)
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+					
+					Entering 	= entered -> SKIP ; Active
+					Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+					Interrupted	= share__choice(exit -> exited -> Inactive)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: checkAgeOut
+		module checkAgeOut
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j1
+		module j1
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: PrepareNewDemand
+		module PrepareNewDemand
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_header(newDemand,PodDemand_header(demand)) -> SKIP)))));share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_source(newDemand,PodDemand_source(demand)) -> SKIP)))));share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,PodDemand_driveByWireRequest(demand)) -> SKIP))))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_header(newDemand,PodDemand_header(demand)) -> SKIP)))));share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_source(newDemand,PodDemand_source(demand)) -> SKIP)))));share__choice(share__choice(get_newDemand?newDemand -> share__choice(get_demand?demand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,PodDemand_driveByWireRequest(demand)) -> SKIP))))) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_executingCheckAge!true -> SKIP)));share__choice(share__choice(get_demand?demand -> true & (share__choice(set_age!Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), core_real) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	RampDown::enter,
+				 	Stop::enter,
+				 	initialCheckAge::enter,
+				 	finalCheckAge::enter,
+				 	checkAgeOut::enter,
+				 	j0::enter,
+				 	j1::enter,
+				 	PrepareNewDemand::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_j0,internal__.NID_RampDown,internal__.NID_Stop,internal__.NID_checkAgeOut,internal__.NID_PrepareNewDemand,internal__.NID_j0,internal__.NID_initialCheckAge,internal__.NID_j1,internal__.NID_PrepareNewDemand|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   RampDown::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   Stop::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   initialCheckAge::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   finalCheckAge::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   checkAgeOut::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j1::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   PrepareNewDemand::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[RampDown::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RampDown|}]]
+				 		 [[Stop::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Stop|}]]
+				 		 [[finalCheckAge::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[PrepareNewDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareNewDemand,internal__.NID_PrepareNewDemand|}]]
+				 		 [[initialCheckAge::interrupt <- x__ | x__ <- {|internal__.NID_initialCheckAge|}]]
+				 		 [[checkAgeOut::interrupt <- x__ | x__ <- {|internal__.NID_checkAgeOut|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_ageToStop <- setL_ageToStop]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_age
+				 		 			,setL_ageToStartRamp
+				 		 			,setL_ageToStop
+				 		|}) |]
+				 		 ((initialCheckAge::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_ageToStop |} ]]
+				 		 )
+				 		)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_ageToStop <- set_ageToStop]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_executingCheckAge!true -> SKIP)));share__choice(share__choice(get_demand?demand -> true & (share__choice(set_age!Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), core_real) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	RampDown::enter,
+				 	Stop::enter,
+				 	initialCheckAge::enter,
+				 	finalCheckAge::enter,
+				 	checkAgeOut::enter,
+				 	j0::enter,
+				 	j1::enter,
+				 	PrepareNewDemand::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_j0,internal__.NID_RampDown,internal__.NID_Stop,internal__.NID_checkAgeOut,internal__.NID_PrepareNewDemand,internal__.NID_j0,internal__.NID_initialCheckAge,internal__.NID_j1,internal__.NID_PrepareNewDemand|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   RampDown::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   Stop::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   initialCheckAge::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   finalCheckAge::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   checkAgeOut::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j1::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   PrepareNewDemand::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[RampDown::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RampDown|}]]
+				 		 [[Stop::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Stop|}]]
+				 		 [[finalCheckAge::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[PrepareNewDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareNewDemand,internal__.NID_PrepareNewDemand|}]]
+				 		 [[initialCheckAge::interrupt <- x__ | x__ <- {|internal__.NID_initialCheckAge|}]]
+				 		 [[checkAgeOut::interrupt <- x__ | x__ <- {|internal__.NID_checkAgeOut|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_ageToStop <- setL_ageToStop]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_age
+				 		 			,setL_ageToStartRamp
+				 		 			,setL_ageToStop
+				 		|}) |]
+				 		 ((initialCheckAge::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_ageToStop |} ]]
+				 		 )
+				 		)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_ageToStop <- set_ageToStop]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = ((let
+			Trans = share__choice(get_age?age -> get_ageToStartRamp?ageToStartRamp -> get_ageToStop?ageToStop -> (
+				((share__ -> SKIP
+				 [] dbisim(((age>ageToStartRamp))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; PrepareNewDemand::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_RampDown -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; checkAgeOut::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_Stop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; checkAgeOut::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_checkAgeOut -> SKIP ;  ((share__choice(get_newDemand?newDemand -> true&(share__choice(pod_demand_age_checked.out!newDemand -> SKIP))) ; j1::enter -> SKIP))))
+				 	 [] dbisim(((age>=ageToStop))&(internal__!NID_PrepareNewDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Stop::enter -> SKIP)))
+				 	 [] dbisim(((not ((age>ageToStartRamp))))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; j1::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_initialCheckAge -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_j1 -> SKIP ;  ((share__choice(true & (share__choice(set_executingCheckAge!false -> SKIP))) ; finalCheckAge::enter -> SKIP))))
+				 	 [] dbisim(((age<ageToStop))&(internal__!NID_PrepareNewDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; RampDown::enter -> SKIP)))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: DemandCallback
+	module DemandCallback
+	
+	enterSS = 
+			{|			initialDemandCallback::enter,
+				finalDemandCallback::enter,
+				j0::enter,
+				j1::enter
+			|}
+	enteredSS = 
+			{|			finalDemandCallback::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_initialDemandCallback|
+		              NID_finalDemandCallback|
+		              NID_j0|
+		              NID_j1
+		
+		channel internal__ : NIDS
+		channel pod_demand_limited__: NIDS.InOut.PodDemand
+		channel pod_demand_age_checked__: NIDS.InOut.PodDemand
+		channel config__: NIDS.InOut.ConfigAgeChecker
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: initialDemandCallback
+		module initialDemandCallback
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: finalDemandCallback
+		module finalDemandCallback
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			--	Rule: behaviours(Node)
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+					
+					Entering 	= entered -> SKIP ; Active
+					Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+					Interrupted	= share__choice(exit -> exited -> Inactive)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j1
+		module j1
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = D__(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_demand?demand -> true & (share__choice(set_age!Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), core_real) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	initialDemandCallback::enter,
+				 	finalDemandCallback::enter,
+				 	j0::enter,
+				 	j1::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_j1,internal__.NID_j1,internal__.NID_j0,internal__.NID_initialDemandCallback|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   initialDemandCallback::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   finalDemandCallback::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j1::D__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[finalDemandCallback::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[initialDemandCallback::interrupt <- x__ | x__ <- {|internal__.NID_initialDemandCallback|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_age
+				 		 			,setL_ageToStartRamp
+				 		|}) |]
+				 		 ((initialDemandCallback::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp |} ]]
+				 		 )
+				 		)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_demand?demand -> true & (share__choice(set_age!Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), core_real) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	initialDemandCallback::enter,
+				 	finalDemandCallback::enter,
+				 	j0::enter,
+				 	j1::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_j1,internal__.NID_j1,internal__.NID_j0,internal__.NID_initialDemandCallback|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   initialDemandCallback::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   finalDemandCallback::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j0::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   [| { share__, terminate } |] (
+				 		   j1::VS_O__(id__,
+				 		   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		   		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[finalDemandCallback::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[initialDemandCallback::interrupt <- x__ | x__ <- {|internal__.NID_initialDemandCallback|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+				 		 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_age
+				 		 			,setL_ageToStartRamp
+				 		|}) |]
+				 		 ((initialDemandCallback::enter -> Transitions(id__,
+				 		 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				 		 		    const_bacs_AgeChecker_AgeChecker_RATE,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				 		 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp |} ]]
+				 		 )
+				 		)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		pod_demand_limited__.x____ <- pod_demand_limited,
+				 		pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+				 		config__.x____ <- config
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_age,setR_ageToStartRamp,setR_newDemand,setR_ageToStop,setR_rate,setR_retrievedConfiguration,setR_executingCheckAge,setR_demand |} ]] 
+				  [[set_age <- setL_age,set_ageToStartRamp <- setL_ageToStartRamp,set_newDemand <- setL_newDemand,set_ageToStop <- setL_ageToStop,set_rate <- setL_rate,set_retrievedConfiguration <- setL_retrievedConfiguration,set_executingCheckAge <- setL_executingCheckAge,set_demand <- setL_demand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_age
+				 			,setL_ageToStartRamp
+				 			,setL_newDemand
+				 			,setL_ageToStop
+				 			,setL_rate
+				 			,setL_retrievedConfiguration
+				 			,setL_executingCheckAge
+				 			,setL_demand
+				 			,setR_age
+				 			 			,setR_ageToStartRamp
+				 			 			,setR_newDemand
+				 			 			,setR_ageToStop
+				 			 			,setR_rate
+				 			 			,setR_retrievedConfiguration
+				 			 			,setR_executingCheckAge
+				 			 			,setR_demand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_age,setL_ageToStartRamp,setL_newDemand,setL_ageToStop,setL_rate,setL_retrievedConfiguration,setL_executingCheckAge,setL_demand |} ]]
+				  [[set_age <- setR_age,set_ageToStartRamp <- setR_ageToStartRamp,set_newDemand <- setR_newDemand,set_ageToStop <- setR_ageToStop,set_rate <- setR_rate,set_retrievedConfiguration <- setR_retrievedConfiguration,set_executingCheckAge <- setR_executingCheckAge,set_demand <- setR_demand]]
+				 )
+				)[[setL_age <- set_age,setL_ageToStartRamp <- set_ageToStartRamp,setL_newDemand <- set_newDemand,setL_ageToStop <- set_ageToStop,setL_rate <- set_rate,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_executingCheckAge <- set_executingCheckAge,setL_demand <- set_demand]]
+				 [[setR_age <- set_age,setR_ageToStartRamp <- set_ageToStartRamp,setR_newDemand <- set_newDemand,setR_ageToStop <- set_ageToStop,setR_rate <- set_rate,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_executingCheckAge <- set_executingCheckAge,setR_demand <- set_demand]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = ((let
+			Trans = share__choice(get_age?age -> get_ageToStartRamp?ageToStartRamp -> (
+				((share__ -> SKIP
+				 [] dbisim(((age<=ageToStartRamp))&(internal__!NID_j1 -> SKIP ;  ((share__choice(get_demand?demand -> true&(share__choice(pod_demand_age_checked.out!demand -> SKIP))) ; j0::enter -> SKIP))))
+				 	 [] dbisim(((age>ageToStartRamp))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; finalDemandCallback::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_initialDemandCallback -> SKIP ;  ((SKIP ; j1::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Sleep
+	module Sleep
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+						    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+						    const_bacs_AgeChecker_AgeChecker_RATE,
+						    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+						    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+						    const_bacs_AgeChecker_AgeChecker_RATE,
+						    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+						    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = ((let
+		Trans = share__choice(get_executingCheckAge?executingCheckAge -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(pod_demand_limited__!NID_SpinOnce.in?demand:{demand|demand <- PodDemand, true} -> share__choice(set_demand!demand -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DemandCallback::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_DemandCallback -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_SpinOnce -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckAge::enter -> SKIP)))
+			 	 [] dbisim(((not (executingCheckAge)))&(internal__!NID_CheckAge -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Sleep::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Sleep -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				SpinOnce::enter,
+				i0::enter,
+				Initialise::enter,
+				CheckAge::enter,
+				DemandCallback::enter,
+				Sleep::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Initialise,pod_demand_limited__.NID_SpinOnce.in,internal__.NID_DemandCallback,internal__.NID_SpinOnce,internal__.NID_CheckAge,internal__.NID_Sleep|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   SpinOnce::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Initialise::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   CheckAge::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DemandCallback::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Sleep::D__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[SpinOnce::interrupt <- x__ | x__ <- {|interrupt,pod_demand_limited__.NID_SpinOnce.in,internal__.NID_SpinOnce|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[CheckAge::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAge|}]]
+					 [[DemandCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DemandCallback|}]]
+					 [[Sleep::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Sleep|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_demand |} ]] 
+					  [[set_executingCheckAge <- setL_executingCheckAge]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_executingCheckAge
+					 			,setR_demand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					 		    const_bacs_AgeChecker_AgeChecker_RATE,
+					 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_executingCheckAge |} ]]
+					  [[set_demand <- setR_demand]]
+					 )
+					)[[setL_executingCheckAge <- set_executingCheckAge]]
+					 [[setR_demand <- set_demand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					pod_demand_limited__.x____ <- pod_demand_limited,
+					pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+					config__.x____ <- config
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		((
+			(Behaviour(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		Behaviour(id__,
+																				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+																				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+																				    const_bacs_AgeChecker_AgeChecker_RATE,
+																				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+																		[| {|get_retrievedConfiguration,set_retrievedConfiguration,terminate|} |]
+																		Memory_retrievedConfiguration((0,0,0,true))
+																	)\{|get_retrievedConfiguration,set_retrievedConfiguration|}
+																)
+																[| {|get_ageToStop,set_ageToStop,terminate|} |]
+																Memory_ageToStop(0)
+															)\{|get_ageToStop,set_ageToStop|}
+														)
+														[| {|get_ageToStartRamp,set_ageToStartRamp,terminate|} |]
+														Memory_ageToStartRamp(0)
+													)\{|get_ageToStartRamp,set_ageToStartRamp|}
+												)
+												[| {|get_rate,set_rate,terminate|} |]
+												Memory_rate(0)
+											)\{|get_rate,set_rate|}
+										)
+										[| {|get_executingCheckAge,set_executingCheckAge,terminate|} |]
+										Memory_executingCheckAge(true)
+									)\{|get_executingCheckAge,set_executingCheckAge|}
+								)
+								[| {|get_age,set_age,terminate|} |]
+								Memory_age(0)
+							)\{|get_age,set_age|}
+						)
+						[| {|get_newDemand,set_newDemand,terminate|} |]
+						Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+					)\{|get_newDemand,set_newDemand|}
+				)
+				[| {|get_demand,set_demand,terminate|} |]
+				Memory_demand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_demand,set_demand|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				SpinOnce::enter,
+				i0::enter,
+				Initialise::enter,
+				CheckAge::enter,
+				DemandCallback::enter,
+				Sleep::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Initialise,pod_demand_limited__.NID_SpinOnce.in,internal__.NID_DemandCallback,internal__.NID_SpinOnce,internal__.NID_CheckAge,internal__.NID_Sleep|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   SpinOnce::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Initialise::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   CheckAge::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DemandCallback::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Sleep::VS_O__(id__,
+					   		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					   		    const_bacs_AgeChecker_AgeChecker_RATE,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					   		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[SpinOnce::interrupt <- x__ | x__ <- {|interrupt,pod_demand_limited__.NID_SpinOnce.in,internal__.NID_SpinOnce|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[CheckAge::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAge|}]]
+					 [[DemandCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DemandCallback|}]]
+					 [[Sleep::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Sleep|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_demand |} ]] 
+					  [[set_executingCheckAge <- setL_executingCheckAge]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_executingCheckAge
+					 			,setR_demand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					 		    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					 		    const_bacs_AgeChecker_AgeChecker_RATE,
+					 		    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					 		    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_executingCheckAge |} ]]
+					  [[set_demand <- setR_demand]]
+					 )
+					)[[setL_executingCheckAge <- set_executingCheckAge]]
+					 [[setR_demand <- set_demand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					pod_demand_limited__.x____ <- pod_demand_limited,
+					pod_demand_age_checked__.x____ <- pod_demand_age_checked,
+					config__.x____ <- config
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+				    const_bacs_AgeChecker_AgeChecker_RATE,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+					    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+					    const_bacs_AgeChecker_AgeChecker_RATE,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+					    const_bacs_AgeChecker_AgeChecker_ZERO_STEER))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		Behaviour_VS_O(id__,
+																				    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+																				    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+																				    const_bacs_AgeChecker_AgeChecker_RATE,
+																				    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+																				    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+																		[| {|get_retrievedConfiguration,set_retrievedConfiguration,terminate|} |]
+																		Memory_retrievedConfiguration((0,0,0,true))
+																	)\{|get_retrievedConfiguration,set_retrievedConfiguration|}
+																)
+																[| {|get_ageToStop,set_ageToStop,terminate|} |]
+																Memory_ageToStop(0)
+															)\{|get_ageToStop,set_ageToStop|}
+														)
+														[| {|get_ageToStartRamp,set_ageToStartRamp,terminate|} |]
+														Memory_ageToStartRamp(0)
+													)\{|get_ageToStartRamp,set_ageToStartRamp|}
+												)
+												[| {|get_rate,set_rate,terminate|} |]
+												Memory_rate(0)
+											)\{|get_rate,set_rate|}
+										)
+										[| {|get_executingCheckAge,set_executingCheckAge,terminate|} |]
+										Memory_executingCheckAge(true)
+									)\{|get_executingCheckAge,set_executingCheckAge|}
+								)
+								[| {|get_age,set_age,terminate|} |]
+								Memory_age(0)
+							)\{|get_age,set_age|}
+						)
+						[| {|get_newDemand,set_newDemand,terminate|} |]
+						Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+					)\{|get_newDemand,set_newDemand|}
+				)
+				[| {|get_demand,set_demand,terminate|} |]
+				Memory_demand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_demand,set_demand|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_demand(demand) =
+		get_demand!demand -> Memory_demand(demand)
+		[]
+		set_demand?x__ -> Memory_demand(x__)
+		[]
+		terminate -> SKIP
+	Memory_newDemand(newDemand) =
+		get_newDemand!newDemand -> Memory_newDemand(newDemand)
+		[]
+		set_newDemand?x__ -> Memory_newDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_age(age) =
+		get_age!age -> Memory_age(age)
+		[]
+		set_age?x__ -> Memory_age(x__)
+		[]
+		terminate -> SKIP
+	Memory_executingCheckAge(executingCheckAge) =
+		get_executingCheckAge!executingCheckAge -> Memory_executingCheckAge(executingCheckAge)
+		[]
+		set_executingCheckAge?x__ -> Memory_executingCheckAge(x__)
+		[]
+		terminate -> SKIP
+	Memory_rate(rate) =
+		get_rate!rate -> Memory_rate(rate)
+		[]
+		set_rate?x__ -> Memory_rate(x__)
+		[]
+		terminate -> SKIP
+	Memory_ageToStartRamp(ageToStartRamp) =
+		get_ageToStartRamp!ageToStartRamp -> Memory_ageToStartRamp(ageToStartRamp)
+		[]
+		set_ageToStartRamp?x__ -> Memory_ageToStartRamp(x__)
+		[]
+		terminate -> SKIP
+	Memory_ageToStop(ageToStop) =
+		get_ageToStop!ageToStop -> Memory_ageToStop(ageToStop)
+		[]
+		set_ageToStop?x__ -> Memory_ageToStop(x__)
+		[]
+		terminate -> SKIP
+	Memory_retrievedConfiguration(retrievedConfiguration) =
+		get_retrievedConfiguration!retrievedConfiguration -> Memory_retrievedConfiguration(retrievedConfiguration)
+		[]
+		set_retrievedConfiguration?x__ -> Memory_retrievedConfiguration(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = Memory_demand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+	[| { terminate } |] (
+	Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+	[| { terminate } |] (
+	Memory_age(0)
+	[| { terminate } |] (
+	Memory_executingCheckAge(true)
+	[| { terminate } |] (
+	Memory_rate(0)
+	[| { terminate } |] (
+	Memory_ageToStartRamp(0)
+	[| { terminate } |] (
+	Memory_ageToStop(0)
+	[| { terminate } |] (
+	Memory_retrievedConfiguration((0,0,0,true))
+	)
+	)
+	)
+	)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_demand,set_demand,get_newDemand,set_newDemand,get_age,set_age,get_executingCheckAge,set_executingCheckAge,get_rate,set_rate,get_ageToStartRamp,set_ageToStartRamp,get_ageToStop,set_ageToStop,get_retrievedConfiguration,set_retrievedConfiguration|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = STM_VS_O(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+	
+	D__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = STM(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) \ internal_events
+	O__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = sbisim(diamond(D__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)))
+	VS__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = FVS__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)
+	VS_O__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = sbisim(diamond(FVS__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER)))
+	HEXT__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = O__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = O__(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+			    const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+			    const_bacs_AgeChecker_AgeChecker_RATE,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+			    const_bacs_AgeChecker_AgeChecker_ZERO_STEER) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule

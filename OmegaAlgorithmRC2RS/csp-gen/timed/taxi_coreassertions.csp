@@ -1,0 +1,248 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "taxicsp"
+
+-- generate taxi_SwarmTaxisFSM
+P_taxi_SwarmTaxisFSM = let
+	id__ = 0
+	
+	
+	
+within
+	taxi::SwarmTaxisFSM::O__(
+		id__,
+		const_taxi_SwarmTaxisFSM_MoveForwardVal
+	)
+assert P_taxi_SwarmTaxisFSM :[deadlock-free]	
+assert P_taxi_SwarmTaxisFSM;RUN({r__}) :[deadlock-free]
+assert P_taxi_SwarmTaxisFSM :[deterministic]
+assert P_taxi_SwarmTaxisFSM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_SwarmTaxisFSM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_SwarmTaxisFSM
+
+-- generate taxi_OP_Turn
+P_taxi_OP_Turn = let
+	id__ = 0
+	
+	
+	
+	
+within
+	taxi::OP_Turn::O__(id__,
+			    const_taxi_Turn_angularSpeed1,
+			    const_taxi_Turn_rotate)
+assert P_taxi_OP_Turn :[deadlock-free]	
+assert P_taxi_OP_Turn;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_Turn :[deterministic]
+assert P_taxi_OP_Turn :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_Turn[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_Turn
+-- generate taxi_OP_UpdateAvoidanceRadius
+P_taxi_OP_UpdateAvoidanceRadius = let
+	id__ = 0
+	
+	
+	
+	
+within
+	taxi::OP_UpdateAvoidanceRadius::O__(id__,
+			    const_taxi_UpdateAvoidanceRadius_avoidanceRadius1,
+			    const_taxi_UpdateAvoidanceRadius_avoidanceRadius2)
+assert P_taxi_OP_UpdateAvoidanceRadius :[deadlock-free]	
+assert P_taxi_OP_UpdateAvoidanceRadius;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_UpdateAvoidanceRadius :[deterministic]
+assert P_taxi_OP_UpdateAvoidanceRadius :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_UpdateAvoidanceRadius[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_UpdateAvoidanceRadius
+-- generate taxi_OP_MoveForward
+P_taxi_OP_MoveForward = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	taxi::OP_MoveForward::O__(id__,
+				param_j)
+assert P_taxi_OP_MoveForward :[deadlock-free]	
+assert P_taxi_OP_MoveForward;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_MoveForward :[deterministic]
+assert P_taxi_OP_MoveForward :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_MoveForward[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_MoveForward
+-- generate taxi_OP_RotateClockwise
+P_taxi_OP_RotateClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	taxi::OP_RotateClockwise::O__(id__,
+				param_j)
+assert P_taxi_OP_RotateClockwise :[deadlock-free]	
+assert P_taxi_OP_RotateClockwise;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_RotateClockwise :[deterministic]
+assert P_taxi_OP_RotateClockwise :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_RotateClockwise[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_RotateClockwise
+-- generate taxi_OP_RotateAntiClockwise
+P_taxi_OP_RotateAntiClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	taxi::OP_RotateAntiClockwise::O__(id__,
+				param_j)
+assert P_taxi_OP_RotateAntiClockwise :[deadlock-free]	
+assert P_taxi_OP_RotateAntiClockwise;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_RotateAntiClockwise :[deterministic]
+assert P_taxi_OP_RotateAntiClockwise :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_RotateAntiClockwise[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_RotateAntiClockwise
+
+-- generate taxi_ctrlTaxi
+P_taxi_ctrlTaxi = let
+	id__ = 0
+	
+	
+	
+	const_taxi_ctrlTaxi_stm1_MoveForwardVal = const_taxi_SwarmTaxisFSM_MoveForwardVal
+		
+	const_taxi_ctrlTaxi_op1_angularSpeed1 = const_taxi_Turn_angularSpeed1
+	const_taxi_ctrlTaxi_op1_rotate = const_taxi_Turn_rotate
+	const_taxi_ctrlTaxi_op5_avoidanceRadius1 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius1
+	const_taxi_ctrlTaxi_op5_avoidanceRadius2 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius2
+within
+	taxi::ctrlTaxi::O__(id__,
+			    const_taxi_ctrlTaxi_stm1_MoveForwardVal,
+			   	const_taxi_ctrlTaxi_op1_angularSpeed1,
+			   	const_taxi_ctrlTaxi_op1_rotate,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius1,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius2)
+
+assert P_taxi_ctrlTaxi :[deadlock-free]	
+assert P_taxi_ctrlTaxi;RUN({r__}) :[deadlock-free]
+assert P_taxi_ctrlTaxi :[deterministic]
+assert P_taxi_ctrlTaxi :[divergence-free]
+
+-- generate taxi_ctrlTaxi_stm1
+P_taxi_ctrlTaxi_stm1 = let
+	id__ = 0
+	
+	
+	
+within
+	taxi::ctrlTaxi::stm1::O__(
+		id__,
+		const_taxi_SwarmTaxisFSM_MoveForwardVal,
+		const_taxi_UpdateAvoidanceRadius_avoidanceRadius1,
+		const_taxi_UpdateAvoidanceRadius_avoidanceRadius2,
+		const_taxi_Turn_angularSpeed1,
+		const_taxi_Turn_rotate
+	)
+assert P_taxi_ctrlTaxi_stm1 :[deadlock-free]	
+assert P_taxi_ctrlTaxi_stm1;RUN({r__}) :[deadlock-free]
+assert P_taxi_ctrlTaxi_stm1 :[deterministic]
+assert P_taxi_ctrlTaxi_stm1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_ctrlTaxi_stm1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_ctrlTaxi_stm1
+-- timed deadlock free
+assert prioritise(P_taxi_ctrlTaxi[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_ctrlTaxi
+
+-- generate taxi_ModTaxi
+P_taxi_ModTaxi = let
+	id__ = 0
+	
+	
+	
+	const_taxi_ctrlTaxi_stm1_MoveForwardVal = const_taxi_SwarmTaxisFSM_MoveForwardVal
+		
+	const_taxi_ctrlTaxi_op1_angularSpeed1 = const_taxi_Turn_angularSpeed1
+	const_taxi_ctrlTaxi_op1_rotate = const_taxi_Turn_rotate
+	const_taxi_ctrlTaxi_op5_avoidanceRadius1 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius1
+	const_taxi_ctrlTaxi_op5_avoidanceRadius2 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius2
+	
+within
+	taxi::ModTaxi::O__(id__,
+			    const_taxi_ctrlTaxi_stm1_MoveForwardVal,
+			   	const_taxi_ctrlTaxi_op1_angularSpeed1,
+			   	const_taxi_ctrlTaxi_op1_rotate,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius1,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius2)
+assert P_taxi_ModTaxi :[deadlock-free]	
+assert P_taxi_ModTaxi;RUN({r__}) :[deadlock-free]
+assert P_taxi_ModTaxi :[deterministic]
+assert P_taxi_ModTaxi :[divergence-free]
+
+-- generate taxi_ModTaxi_ctrl1
+P_taxi_ModTaxi_ctrl1 = let
+	id__ = 0
+	
+	
+	
+	const_taxi_ctrlTaxi_stm1_MoveForwardVal = const_taxi_SwarmTaxisFSM_MoveForwardVal
+		
+	const_taxi_ctrlTaxi_op1_angularSpeed1 = const_taxi_Turn_angularSpeed1
+	const_taxi_ctrlTaxi_op1_rotate = const_taxi_Turn_rotate
+	const_taxi_ctrlTaxi_op5_avoidanceRadius1 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius1
+	const_taxi_ctrlTaxi_op5_avoidanceRadius2 = const_taxi_UpdateAvoidanceRadius_avoidanceRadius2
+within
+	taxi::ModTaxi::ctrl1::O__(id__,
+			    const_taxi_ctrlTaxi_stm1_MoveForwardVal,
+			   	const_taxi_ctrlTaxi_op1_angularSpeed1,
+			   	const_taxi_ctrlTaxi_op1_rotate,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius1,
+			   	const_taxi_ctrlTaxi_op5_avoidanceRadius2)
+
+assert P_taxi_ModTaxi_ctrl1 :[deadlock-free]	
+assert P_taxi_ModTaxi_ctrl1;RUN({r__}) :[deadlock-free]
+assert P_taxi_ModTaxi_ctrl1 :[deterministic]
+assert P_taxi_ModTaxi_ctrl1 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_taxi_ModTaxi_ctrl1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_ModTaxi_ctrl1
+-- timed deadlock free
+assert prioritise(P_taxi_ModTaxi[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_ModTaxi

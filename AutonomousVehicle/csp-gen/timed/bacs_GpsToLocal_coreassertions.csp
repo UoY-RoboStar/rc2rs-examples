@@ -1,0 +1,33 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacs_GpsToLocalcsp"
+
+-- generate bacs_GpsToLocal_GpsToLocal
+P_bacs_GpsToLocal_GpsToLocal = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_GpsToLocal::GpsToLocal::O__(
+		id__
+	)
+assert P_bacs_GpsToLocal_GpsToLocal :[deadlock-free]	
+assert P_bacs_GpsToLocal_GpsToLocal;RUN({r__}) :[deadlock-free]
+assert P_bacs_GpsToLocal_GpsToLocal :[deterministic]
+assert P_bacs_GpsToLocal_GpsToLocal :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_GpsToLocal_GpsToLocal[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_GpsToLocal_GpsToLocal
+
+
+

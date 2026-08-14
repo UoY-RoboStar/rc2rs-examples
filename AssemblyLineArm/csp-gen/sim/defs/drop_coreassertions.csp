@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 13:00:30
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "drop.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_drop
+P_OP_drop = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_drop::O__(id__)
+assert P_OP_drop :[deadlock-free]	
+assert P_OP_drop;RUN({r__}) :[deadlock-free]
+assert P_OP_drop :[deterministic]
+assert P_OP_drop :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_drop[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_drop

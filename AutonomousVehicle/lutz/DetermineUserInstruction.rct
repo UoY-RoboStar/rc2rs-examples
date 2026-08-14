@@ -1,0 +1,243 @@
+package lutz::DetermineUserInstruction
+import lutz::*
+operation DetermineUserInstruction( readyState: VehicleReadyState, currentSession:SessionControl,  podStatus : Status,
+	podPowertrain : Powertrain, podEps : Eps, podEpsInboard : Steer, podEpsOutboard : Steer,
+	podParkBrake : ParkBrake, podBattery : Battery, podControlCommand1 : ControlCommand1, podHandshake:Handshake
+) {
+	var next : SessionControl
+	event instruction : UICode
+	event session : SessionControl
+	event readyStateOut : VehicleReadyState
+
+	var newInstruction : boolean * UICode
+	var newReadyState : VehicleReadyState
+	var newInstructionAndSession : boolean * UICode * SessionControl
+	state Off {
+
+	during newInstruction = KeyPostionManual ( podBattery.ignitionManual )
+	}
+	state Manual {
+
+	during newInstruction = KeyPositionAutonomous ( podBattery.ignitionAuto )
+
+	}
+	state NoSession {
+	during next . requestedState = VehicleState::NEW_SESSION ; next . sesionId = 0
+	}
+	state NewSession {
+	during newReadyState = GetSessionValidState ( currentSession, podEps, podPowertrain, podStatus, podParkBrake, podHandshake ) ;
+		newInstructionAndSession = MakeSessionValid ( newReadyState , currentSession
+		)
+	}
+	state Primed {
+	}
+	state Autonomous {
+	}
+	state Error {
+	during newReadyState = GetErrorTrue ( podStatus ) ; newInstruction
+		= MakeErrorFalse ( newReadyState )
+	}
+	state Override {
+	}
+	state EmergencyStop {
+	during newReadyState = GetEstopState ( podBattery, podStatus ) ;
+		newInstruction = GetEstopReason ( newReadyState ) ; newInstruction =
+		MakeEstopFalse ( newReadyState )
+	}
+	state CheckSteeringCentered {
+	}
+	state SteeringCentering {
+	}
+	junction j0
+	final f0
+	initial i0
+	transition t0 {
+		from Ready
+		to Off
+	}
+	transition t1 {
+		from Ready
+		to Override
+		condition podStatus . systemState == VehicleState::OVERRIDE
+	}
+	transition t2 {
+		from Off
+		to j0
+	condition not newInstruction [ 1 ]
+	}
+	transition t4 {
+		from Override
+		to j0
+	}
+	transition t5 {
+		from Ready
+		to Manual
+		condition podStatus . systemState == VehicleState::MANUAL
+	}
+	transition t6 {
+		from Ready
+		to Autonomous
+	}
+	transition t7 {
+		from Ready
+		to Error
+		condition podStatus . systemState == VehicleState::ERROR
+	}
+	transition t8 {
+		from Ready
+		to Primed
+	}
+	transition t9 {
+		from Ready
+		to CheckSteeringCentered
+	}
+	transition t10 {
+		from Ready
+		to EmergencyStop
+		condition podStatus . systemState == VehicleState::EMERGENCY_STOP
+	}
+	transition t11 {
+		from Ready
+		to NoSession
+	}
+	transition t12 {
+		from Ready
+		to SteeringCentering
+	}
+	transition t13 {
+		from Autonomous
+		to j0
+	}
+	transition t14 {
+		from Primed
+		to j0
+	}
+	transition t15 {
+		from CheckSteeringCentered
+		to j0
+	}
+	transition t16 {
+		from SteeringCentering
+		to j0
+	}
+	transition t17 {
+		from NewSession
+		to PrepareSession
+	condition not newInstructionAndSession [ 1 ]
+	}
+	transition t18 {
+		from NoSession
+		to UpdateSession
+	}
+	transition t19 {
+		from EmergencyStop
+		to UpdateReadyState
+	}
+	transition t20 {
+		from Error
+		to UpdateReadyState
+	}
+	transition t21 {
+		from Manual
+		to j0
+	condition not newInstruction [ 1 ]
+	}
+	state UpdateSession {
+		during session ! next
+	}
+	state UpdateUserInstruction {
+		during instruction ! ( newInstruction [ 2 ] )
+	}
+	state UpdateReadyState {
+		during readyStateOut ! newReadyState
+	}
+	state PrepareUserInstruction {
+		during newInstruction =
+		GetUserInstructionFromUserInstructionAndSessionControl (
+		newInstructionAndSession )
+	}
+	state PrepareSession {
+		during next = GetSessionControlFromUserInstructionAndSessionControl (
+		newInstructionAndSession )
+	}
+	transition t22 {
+		from Off
+		to UpdateUserInstruction
+		condition newInstruction [ 1 ]
+	}
+	transition t23 {
+		from Manual
+		to UpdateUserInstruction
+		condition newInstruction [ 1 ]
+	}
+	transition t24 {
+		from UpdateUserInstruction
+		to f0
+	}
+	transition t3 {
+		from j0
+		to f0
+	}
+	transition t25 {
+		from UpdateReadyState
+		to UpdateUserInstruction
+		condition newInstruction [ 1 ]
+	}
+	transition t26 {
+		from UpdateReadyState
+		to f0
+		condition not newInstruction [ 1 ]
+	}
+	transition t27 {
+		from UpdateSession
+		to f0
+	}
+	transition t28 {
+		from NewSession
+		to PrepareUserInstruction
+		condition newInstructionAndSession [ 1 ]
+	}
+	transition t29 {
+		from Ready
+		to NewSession
+	}
+	transition t30 {
+		from PrepareUserInstruction
+		to UpdateUserInstruction
+	}
+	transition t31 {
+		from PrepareSession
+		to UpdateSession
+	}
+state Ready {
+	}
+	transition t32 {
+		from i0
+		to Ready
+	}
+}
+
+function GetErrorTrue( status : Status) : VehicleReadyState {
+}
+function MakeErrorFalse( readyState : VehicleReadyState) : boolean *
+UICode {
+}
+function GetEstopState(battery:Battery, status:Status) : VehicleReadyState {
+}
+function GetEstopReason( readyState : VehicleReadyState) : boolean *
+UICode {
+}
+function MakeEstopFalse( readyState : VehicleReadyState) : boolean *
+UICode {
+}
+function GetSessionValidState(currentSession:SessionControl, eps:Eps, powertrain: Powertrain, status:Status, parkBrake:ParkBrake, handshake:Handshake) : VehicleReadyState {
+}
+function MakeSessionValid( readyState : VehicleReadyState , currentSession :
+SessionControl) : boolean * UICode * SessionControl {
+}
+function GetUserInstructionFromUserInstructionAndSessionControl( combined :
+boolean * UICode * SessionControl) : boolean * UICode {
+}
+function GetSessionControlFromUserInstructionAndSessionControl( combined :
+boolean * UICode * SessionControl) : SessionControl {
+}

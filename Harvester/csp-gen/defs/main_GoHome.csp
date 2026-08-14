@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -42,11 +42,11 @@ exports
 	channel endGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel hideArmCall
-	channel moveCall: main_JointsPos
 	channel graspCall: main_JointsPos
+	channel moveCall: main_JointsPos
 	channel goHomeCall
 	channel pickCall
+	channel hideArmCall
 	channel dropCall: main_JointsPos
 	
 	enterSS = {|
@@ -70,11 +70,11 @@ exports
 		terminate
 	,	startGoHome,
 		endGoHome
-	,	hideArmCall,
+	,	graspCall,
 		moveCall,
-		graspCall,
 		goHomeCall,
 		pickCall,
+		hideArmCall,
 		dropCall
 		|}
 
@@ -256,18 +256,18 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__hideArm(id__,
-			    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
-	CALL__move(id__,
-			    const_main_GoHome_goHTime,
-				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__grasp(id__,
 			    const_main_GoHome_goHTime,
 				param_jp) 	= graspCall.param_jp -> SKIP
+	CALL__move(id__,
+			    const_main_GoHome_goHTime,
+				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__goHome(id__,
 			    const_main_GoHome_goHTime) 	= goHomeCall -> SKIP
 	CALL__pick(id__,
 			    const_main_GoHome_goHTime) 	= pickCall -> SKIP
+	CALL__hideArm(id__,
+			    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
 	CALL__drop(id__,
 			    const_main_GoHome_goHTime,
 				param_jp) 	= dropCall.param_jp -> SKIP

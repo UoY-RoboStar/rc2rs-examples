@@ -1,0 +1,8 @@
+simulation RC of main::AggregationSoftware {
+	cycleDef cycle ==1
+}
+
+assertion A1 : RC is schedulable
+
+assertion A2: pre_pkg_main_sim::AggregationSoftware refines RC  in the traces model with cycleDef of RC set to 1, and cycleDef of pre_pkg_main_sim::AggregationSoftware set to 1 
+assertion A3: RC refines pre_pkg_main_sim::AggregationSoftware  in the traces model with cycleDef of RC set to 1, and cycleDef of pre_pkg_main_sim::AggregationSoftware set to 1 

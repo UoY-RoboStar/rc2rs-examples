@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 04-08-2026 16:51:11
 --
 
 -- compileSelfContainedOperation
@@ -34,10 +34,10 @@ exports
 	channel get_takePicF, set_takePicF, setL_takePicF, setR_takePicF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_nextApple: setoperations_Coord3D
 	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
+	channel set_EXT_nextApple: setoperations_Coord3D
 	channel set_EXT_positions: Function(setoperations_Coord3D, {(x0__,x1__,x2__) | x0__ <- main_JointsPos,x1__ <- main_JointsPos,x2__ <- main_JointsPos})
+	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
@@ -48,8 +48,8 @@ exports
 	channel pickCall
 	channel dropCall: main_JointsPos
 	channel moveCall: main_JointsPos
-	channel clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall: core_nat
 	channel graspCall: main_JointsPos
+	channel clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -63,10 +63,10 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_nextApple,
 		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
+		set_EXT_nextApple,
 		set_EXT_positions,
+		set_EXT_takePicF,
 		set_EXT_endGoHomeF
 	|}
 	
@@ -101,17 +101,17 @@ exports
 	
 	-- declaring registerRead/Write datatypes
 	
-	datatype RegisterDataOutput = o_pick
-		| o_grasp.main_JointsPos
-		| o_drop.main_JointsPos
+	datatype RegisterDataOutput = o_grasp.main_JointsPos
+		| o_pick
 		| o_move.main_JointsPos
+		| o_drop.main_JointsPos
 	
 	
 	nametype RegisterOutputs = {|
-	o_pick,
 	o_grasp,
-	o_drop,
-	o_move|}
+	o_pick,
+	o_move,
+	o_drop|}
 		
 	nametype RegisterInputs = {||}
 	
@@ -125,8 +125,8 @@ exports
 	,	pickCall,
 		dropCall,
 		moveCall,
-		clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall,
-		graspCall
+		graspCall,
+		clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall
 		, share__
 		|}
 	
@@ -244,13 +244,6 @@ exports
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
 					param_jp) = EDeadline(registerWrite.o_move.param_jp,0)
-		CALL__clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(id__,
-				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
-				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
-				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
-				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
-					param_d) = EDeadline(clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall.param_d,0)
 		CALL__grasp(id__,
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
@@ -258,6 +251,13 @@ exports
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
 					param_jp) = EDeadline(registerWrite.o_grasp.param_jp,0)
+		CALL__clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(id__,
+				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
+				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
+				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
+				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
+				    const_pkg727_main_sim_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
+					param_d) = EDeadline(clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall.param_d,0)
 		
 		-- END of Operation calls --
 	

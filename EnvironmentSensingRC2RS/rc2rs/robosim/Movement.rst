@@ -1,8 +1,8 @@
-package pkg1126__sim interface req_normal_Movement_AvoidingAgain_t13_op_clocks {
+package pre_pkg_MovementPkg_sim interface req_normal_Movement_AvoidingAgain_t12_op_clocks {
 	clock T
 }
 
-interface req_normal_Movement_AvoidingAgain_t12_op_clocks {
+interface req_normal_Movement_Exploring_t21_op_clocks {
 	clock T
 }
 
@@ -10,48 +10,48 @@ interface I_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_
 	clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 ( )
 }
 
-interface IctrEvars_Movement {
-	var turnF : boolean = true , odometerF : boolean = true , obstacleF : boolean = true , resumeF : boolean = true , stopF : boolean = true
-}
-
 interface I_events_normal_Movement_Avoiding_entry_inpEvs {
 	event odometer : real
 }
 
-interface req_normal_Movement_Avoiding_entry_platformOps_clone_normal_Movement_Avoiding_entry {
-	changeDirection ( l : Loc )
+interface IctrEvars_Movement {
+	var odometerF : boolean = true , stopF : boolean = true , obstacleF : boolean = true , turnF : boolean = true , resumeF : boolean = true
 }
 
 interface req_normal_Movement_Avoiding_entry_localVars {
 	var l : Loc , d0 : real
 }
 
-interface req_normal_Movement_Found_entry_platformOps_clone_normal_Movement_Found_entry {
-	stop ( )
-}
-
-interface I_events_normal_Movement_Found_entry_outEvs {
-	event flag
-}
-
-interface I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2_softwareOps_clone_normal_Movement_Found_entry {
-	clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 ( )
-}
-
-interface req_normal_Movement_Exploring_t21_op_clocks {
-	clock T
+interface req_normal_Movement_Avoiding_entry_platformOps_clone_normal_Movement_Avoiding_entry {
+	changeDirection ( l : Loc )
 }
 
 interface req_normal_Movement_Going_t6_op_clocks {
 	clock T
 }
 
-interface req_normal_Movement_TryingAgain_t11_op_localVars {
-	var d1 : real
+interface I_events_normal_Movement_Found_entry_outEvs {
+	event flag
+}
+
+interface req_normal_Movement_Found_entry_platformOps_clone_normal_Movement_Found_entry {
+	stopOp ( )
+}
+
+interface I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2_softwareOps_clone_normal_Movement_Found_entry {
+	clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 ( )
+}
+
+interface req_normal_Movement_AvoidingAgain_t13_op_clocks {
+	clock T
 }
 
 interface I_events_normal_Movement_TryingAgain_t11_op_inpEvs {
 	event odometer : real
+}
+
+interface req_normal_Movement_TryingAgain_t11_op_localVars {
+	var d1 : real
 }
 
 interface I_req_normal_Movement_Avoiding_entry_i_t_localVars {
@@ -66,30 +66,6 @@ interface I_events_normal_Movement_Found_entry_j_2_3_t_2_3_outEvs {
 	event flag
 }
 
-interface I_clone_normal_Movement_AvoidingAgain_t13_op_softwareOps_Movement {
-	clone_normal_Movement_AvoidingAgain_t13_op ( )
-}
-
-interface I_clone_normal_Movement_Exploring_t21_op_softwareOps_Movement {
-	clone_normal_Movement_Exploring_t21_op ( )
-}
-
-interface I_outEvs_Movement {
-	event flag
-}
-
-interface Operations_platformOps_Movement {
-	stop ( )
-	moveForward ( )
-	reverse ( )
-	moveTowards ( a : real )
-	changeDirection ( l : Loc )
-}
-
-interface I_clone_normal_Movement_TryingAgain_t11_op_softwareOps_Movement {
-	clone_normal_Movement_TryingAgain_t11_op ( )
-}
-
 interface I_inpEvs_Movement {
 	event obstacle : Loc
 	event odometer : real
@@ -98,8 +74,12 @@ interface I_inpEvs_Movement {
 	event stop
 }
 
-interface I_clone_normal_Movement_Avoiding_entry_softwareOps_Movement {
-	clone_normal_Movement_Avoiding_entry ( )
+interface I_clone_normal_Movement_TryingAgain_t11_op_softwareOps_Movement {
+	clone_normal_Movement_TryingAgain_t11_op ( )
+}
+
+interface I_clone_normal_Movement_AvoidingAgain_t13_op_softwareOps_Movement {
+	clone_normal_Movement_AvoidingAgain_t13_op ( )
 }
 
 interface I_clone_normal_Movement_AvoidingAgain_t12_op_softwareOps_Movement {
@@ -110,12 +90,32 @@ interface I_clone_normal_Movement_Found_entry_softwareOps_Movement {
 	clone_normal_Movement_Found_entry ( )
 }
 
+interface I_clone_normal_Movement_Exploring_t21_op_softwareOps_Movement {
+	clone_normal_Movement_Exploring_t21_op ( )
+}
+
+interface I_outEvs_Movement {
+	event flag
+}
+
+interface I_clone_normal_Movement_Avoiding_entry_softwareOps_Movement {
+	clone_normal_Movement_Avoiding_entry ( )
+}
+
 interface I_clone_normal_Movement_Going_t6_op_softwareOps_Movement {
 	clone_normal_Movement_Going_t6_op ( )
 }
 
+interface Operations_platformOps_Movement {
+	stopOp ( )
+	moveForward ( )
+	reverse ( )
+	moveTowards ( a : real )
+	changeDirection ( l : Loc )
+}
+
 stm Movement {
-	uses IctrEvars_Movement requires I_clone_normal_Movement_AvoidingAgain_t13_op_softwareOps_Movement requires I_clone_normal_Movement_AvoidingAgain_t12_op_softwareOps_Movement requires I_clone_normal_Movement_Avoiding_entry_softwareOps_Movement requires I_clone_normal_Movement_Found_entry_softwareOps_Movement requires I_clone_normal_Movement_Exploring_t21_op_softwareOps_Movement requires I_clone_normal_Movement_Going_t6_op_softwareOps_Movement requires I_clone_normal_Movement_TryingAgain_t11_op_softwareOps_Movement const lv : real , evadeTime : int , stuckDist : real , outPeriod : int
+	uses IctrEvars_Movement requires I_clone_normal_Movement_AvoidingAgain_t12_op_softwareOps_Movement requires I_clone_normal_Movement_Exploring_t21_op_softwareOps_Movement requires I_clone_normal_Movement_Avoiding_entry_softwareOps_Movement requires I_clone_normal_Movement_Going_t6_op_softwareOps_Movement requires I_clone_normal_Movement_Found_entry_softwareOps_Movement requires I_clone_normal_Movement_AvoidingAgain_t13_op_softwareOps_Movement requires I_clone_normal_Movement_TryingAgain_t11_op_softwareOps_Movement const lv : real , evadeTime : int , stuckDist : real , outPeriod : int
 	var a : real , d0 : real , d1 : real
 	var l : Loc
 	clock T
@@ -134,8 +134,8 @@ stm Movement {
 		transition tEmptyCycle_Movement_Exploring_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( ( ( true /\ ( ( $ turn ? a /\ turnF ) ) ) \/ ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) ) \/ ( true /\ ( ( $ resume /\ resumeF ) ) ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			condition not ( ( ( ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) \/ ( true /\ ( ( $ resume /\ resumeF ) ) ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) ) \/ ( true /\ ( ( $ turn ? a /\ turnF ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry $ moveForward ( )
 	}
@@ -150,8 +150,8 @@ stm Movement {
 		transition tEmptyCycle_Movement_Avoiding_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( ( since ( T ) > evadeTime /\ ( ( $ turn ? a /\ turnF ) ) ) \/ ( since ( T ) > evadeTime /\ ( ( $ resume /\ resumeF ) ) ) ) \/ ( since ( T ) > evadeTime /\ ( ( $ stop /\ stopF ) ) ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			condition not ( ( ( since ( T ) > evadeTime /\ ( ( $ resume /\ resumeF ) ) ) \/ ( since ( T ) > evadeTime /\ ( ( $ turn ? a /\ turnF ) ) ) ) \/ ( since ( T ) > evadeTime /\ ( ( $ stop /\ stopF ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry clone_normal_Movement_Avoiding_entry ( )
 	}
@@ -166,8 +166,8 @@ stm Movement {
 		transition tEmptyCycle_Movement_Going_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( ( true /\ ( ( $ turn ? a /\ turnF ) ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) ) \/ ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			condition not ( ( ( true /\ ( ( $ stop /\ stopF ) ) ) \/ ( true /\ ( ( $ turn ? a /\ turnF ) ) ) ) \/ ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry $ moveTowards ( a )
 	}
@@ -183,7 +183,7 @@ stm Movement {
 			from EmptyCycle
 			to EmptyCycle
 			condition not ( true )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry clone_normal_Movement_Found_entry ( )
 	}
@@ -199,8 +199,8 @@ stm Movement {
 		transition tEmptyCycle_Movement_TryingAgain_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( ( ( true /\ ( ( $ turn ? a /\ turnF ) ) ) \/ ( true /\ ( ( $ resume /\ resumeF ) ) ) ) \/ ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			condition not ( ( ( ( true /\ ( ( $ resume /\ resumeF ) ) ) \/ ( true /\ ( ( $ turn ? a /\ turnF ) ) ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) ) \/ ( true /\ ( ( $ obstacle ? l /\ obstacleF ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry $ moveTowards ( a )
 	}
@@ -215,10 +215,8 @@ stm Movement {
 		transition tEmptyCycle_Movement_AvoidingAgain_EmptyCycle {
 			from EmptyCycle
 			to EmptyCycle
-			condition not ( ( ( ( true /\ ( ( $ stop /\ stopF ) ) ) \/ ( d1 - d0 <= stuckDist ) ) 
-				\/ ( true /\ ( ( $ resume /\ resumeF ) ) )
-			) \/ ( d1 - d0 > stuckDist ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			condition not ( ( ( ( d1 - d0 > stuckDist ) \/ ( d1 - d0 <= stuckDist ) ) \/ ( true /\ ( ( $ stop /\ stopF ) ) ) ) \/ ( true /\ ( ( $ resume /\ resumeF ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 	}
 	state GettingOut {
@@ -233,7 +231,7 @@ stm Movement {
 			from EmptyCycle
 			to EmptyCycle
 			condition not ( ( ( since ( T ) > outPeriod /\ ( ( $ resume /\ resumeF ) ) ) \/ ( since ( T ) > outPeriod /\ ( ( $ stop /\ stopF ) ) ) ) \/ ( since ( T ) > outPeriod /\ ( ( $ turn ? a /\ turnF ) ) ) )
-			action exec ; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+			action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
 		}
 		entry $ reverse ( )
 	}
@@ -241,17 +239,11 @@ stm Movement {
 		from i1
 		to Exploring
 	}
-	transition t2 {
-		from Exploring
-		to Going
-		condition ( $ turn ? a /\ turnF )
-		action turnF = false
-	}
 	transition t21 {
 		from Exploring
 		to Avoiding
 		condition ( $ obstacle ? l /\ obstacleF )
-		action obstacleF = false
+		action clone_normal_Movement_Exploring_t21_op ( ) ; obstacleF = false
 	}
 	transition t0 {
 		from Exploring
@@ -265,10 +257,10 @@ stm Movement {
 		condition ( $ stop /\ stopF )
 		action stopF = false
 	}
-	transition t7 {
-		from Avoiding
-		to TryingAgain
-		condition ( $ turn ? a /\ turnF ) /\ since ( T ) > evadeTime
+	transition t2 {
+		from Exploring
+		to Going
+		condition ( $ turn ? a /\ turnF )
 		action turnF = false
 	}
 	transition t19 {
@@ -277,10 +269,22 @@ stm Movement {
 		condition ( $ resume /\ resumeF ) /\ since ( T ) > evadeTime
 		action resumeF = false
 	}
+	transition t7 {
+		from Avoiding
+		to TryingAgain
+		condition ( $ turn ? a /\ turnF ) /\ since ( T ) > evadeTime
+		action turnF = false
+	}
 	transition t18 {
 		from Avoiding
 		to Found
 		condition ( $ stop /\ stopF ) /\ since ( T ) > evadeTime
+		action stopF = false
+	}
+	transition t4 {
+		from Going
+		to Found
+		condition ( $ stop /\ stopF )
 		action stopF = false
 	}
 	transition t3 {
@@ -289,27 +293,15 @@ stm Movement {
 		condition ( $ turn ? a /\ turnF )
 		action turnF = false
 	}
-	transition t4 {
-		from Going
-		to Found
-		condition ( $ stop /\ stopF )
-		action stopF = false
-	}
 	transition t6 {
 		from Going
 		to Avoiding
 		condition ( $ obstacle ? l /\ obstacleF )
-		action obstacleF = false
+		action clone_normal_Movement_Going_t6_op ( ) ; obstacleF = false
 	}
 	transition t5 {
 		from Found
 		to j1
-	}
-	transition t8 {
-		from TryingAgain
-		to TryingAgain
-		condition ( $ turn ? a /\ turnF )
-		action turnF = false
 	}
 	transition t10 {
 		from TryingAgain
@@ -317,11 +309,11 @@ stm Movement {
 		condition ( $ resume /\ resumeF )
 		action resumeF = false
 	}
-	transition t11 {
+	transition t8 {
 		from TryingAgain
-		to AvoidingAgain
-		condition ( $ obstacle ? l /\ obstacleF )
-		action obstacleF = false
+		to TryingAgain
+		condition ( $ turn ? a /\ turnF )
+		action turnF = false
 	}
 	transition t9 {
 		from TryingAgain
@@ -329,27 +321,35 @@ stm Movement {
 		condition ( $ stop /\ stopF )
 		action stopF = false
 	}
+	transition t11 {
+		from TryingAgain
+		to AvoidingAgain
+		condition ( $ obstacle ? l /\ obstacleF )
+		action clone_normal_Movement_TryingAgain_t11_op ( ) ; obstacleF = false
+	}
+	transition t12 {
+		from AvoidingAgain
+		to Avoiding
+		condition d1 - d0 > stuckDist
+		action clone_normal_Movement_AvoidingAgain_t12_op ( )
+	}
+	transition t13 {
+		from AvoidingAgain
+		to GettingOut
+		condition d1 - d0 <= stuckDist
+		action clone_normal_Movement_AvoidingAgain_t13_op ( )
+	}
 	transition t17 {
 		from AvoidingAgain
 		to Found
 		condition ( $ stop /\ stopF )
 		action stopF = false
 	}
-	transition t13 {
-		from AvoidingAgain
-		to GettingOut
-		condition d1 - d0 <= stuckDist
-	}
 	transition t22 {
 		from AvoidingAgain
 		to Exploring
 		condition ( $ resume /\ resumeF )
 		action resumeF = false
-	}
-	transition t12 {
-		from AvoidingAgain
-		to Avoiding
-		condition d1 - d0 > stuckDist
 	}
 	transition t14 {
 		from GettingOut
@@ -371,8 +371,8 @@ stm Movement {
 	}
 }
 
-operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t13_op_clocks requires IctrEvars_Movement initial i
+operation clone_normal_Movement_AvoidingAgain_t12_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t12_op_clocks requires IctrEvars_Movement initial i
 	final f
 	transition t {
 		from i
@@ -383,8 +383,8 @@ operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
 	output context { }
 }
 
-operation clone_normal_Movement_AvoidingAgain_t12_op ( ) {
-	requires req_normal_Movement_AvoidingAgain_t12_op_clocks requires IctrEvars_Movement initial i
+operation clone_normal_Movement_Exploring_t21_op ( ) {
+	requires req_normal_Movement_Exploring_t21_op_clocks requires IctrEvars_Movement initial i
 	final f
 	transition t {
 		from i
@@ -413,36 +413,6 @@ operation clone_normal_Movement_Avoiding_entry ( ) {
 	output context { requires req_normal_Movement_Avoiding_entry_platformOps_clone_normal_Movement_Avoiding_entry }
 }
 
-operation clone_normal_Movement_Found_entry ( ) {
-	requires I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2_softwareOps_clone_normal_Movement_Found_entry requires IctrEvars_Movement initial i
-	junction j_2_3
-	final f
-	transition t {
-		from i
-		to j_2_3
-		action $ stop ( )
-	}
-	transition t_2_3 {
-		from j_2_3
-		to f
-		action clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 ( )
-	}
-	input context { }
-	output context { uses I_events_normal_Movement_Found_entry_outEvs requires req_normal_Movement_Found_entry_platformOps_clone_normal_Movement_Found_entry }
-}
-
-operation clone_normal_Movement_Exploring_t21_op ( ) {
-	requires req_normal_Movement_Exploring_t21_op_clocks requires IctrEvars_Movement initial i
-	final f
-	transition t {
-		from i
-		to f
-		action # T
-	}
-	input context { }
-	output context { }
-}
-
 operation clone_normal_Movement_Going_t6_op ( ) {
 	requires req_normal_Movement_Going_t6_op_clocks requires IctrEvars_Movement initial i
 	final f
@@ -455,25 +425,55 @@ operation clone_normal_Movement_Going_t6_op ( ) {
 	output context { }
 }
 
+operation clone_normal_Movement_Found_entry ( ) {
+	requires I_clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2_softwareOps_clone_normal_Movement_Found_entry requires IctrEvars_Movement initial i
+	junction j_2_3
+	final f
+	transition t {
+		from i
+		to j_2_3
+		action $ stopOp ( )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action clone_clone_normal_Movement_Found_entry_normal_Movement_Found_entry_j_2_3_t_2_3_op_j_2_3_f_2 ( )
+	}
+	input context { }
+	output context { uses I_events_normal_Movement_Found_entry_outEvs requires req_normal_Movement_Found_entry_platformOps_clone_normal_Movement_Found_entry }
+}
+
+operation clone_normal_Movement_AvoidingAgain_t13_op ( ) {
+	requires req_normal_Movement_AvoidingAgain_t13_op_clocks requires IctrEvars_Movement initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # T
+	}
+	input context { }
+	output context { }
+}
+
 operation clone_normal_Movement_TryingAgain_t11_op ( ) {
 	requires req_normal_Movement_TryingAgain_t11_op_localVars requires IctrEvars_Movement initial i
-	final f
 	junction j
-	transition t {
+	final f
+	transition tr1 {
 		from i
 		to j
 	}
-	transition t2{
-		from j
-		to f
-		condition $ odometer ? d1
-		action odometerF = false
-	}
-	transition t3{
+	transition tr2 {
 		from j
 		to j
-		condition not  $ odometer
-		action exec; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+		condition not ( $ odometer /\ odometerF )
+		action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
+	}
+	transition tr3 {
+		from j
+		to f
+		condition ( $ odometer ? d1 /\ odometerF )
+		action odometerF = false
 	}
 	input context { uses I_events_normal_Movement_TryingAgain_t11_op_inpEvs }
 	output context { }
@@ -481,23 +481,23 @@ operation clone_normal_Movement_TryingAgain_t11_op ( ) {
 
 operation clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_2_2_1 ( ) {
 	requires I_req_normal_Movement_Avoiding_entry_i_t_localVars requires IctrEvars_Movement initial i
-	final f
 	junction j
-	transition t {
+	final f
+	transition tr1 {
 		from i
 		to j
 	}
-	transition t2{
-		from j
-		to f
-		condition $ odometer ? d0
-		action odometerF = false
-	}
-	transition t3{
+	transition tr2 {
 		from j
 		to j
-		condition not  $ odometer
-		action exec; ( stopF = true ; ( resumeF = true ; ( obstacleF = true ; ( odometerF = true ; turnF = true ) ) ) )
+		condition not ( $ odometer /\ odometerF )
+		action exec ; ( resumeF = true ; ( turnF = true ; ( obstacleF = true ; ( stopF = true ; odometerF = true ) ) ) )
+	}
+	transition tr3 {
+		from j
+		to f
+		condition ( $ odometer ? d0 /\ odometerF )
+		action odometerF = false
 	}
 	input context { uses I_events_normal_Movement_Avoiding_entry_i_t_inpEvs }
 	output context { }

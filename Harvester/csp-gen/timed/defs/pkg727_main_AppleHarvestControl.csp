@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -57,24 +57,24 @@ exports
 	channel endGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel pickCall
-	channel clone_normal_AppleHarvestControl_j0_t7_opCall
-	channel dropCall: main_JointsPos
-	channel clone_normal_AppleHarvestControl_Prepare_entryCall
-	channel clone_normal_AppleHarvestControl_Prepare_t1_dopCall
-	channel clone_normal_AppleHarvestControl_LocalizeFruit_entryCall
-	channel NearestNeighbourCall
+	channel clone_normal_AppleHarvestControl_GetApple_entryCall
 	channel clone_NearestNeighbourCall
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall
-	channel hideArmCall
-	channel goHomeCall
+	channel clone_normal_AppleHarvestControl_GetApple_exitCall
+	channel pickCall
+	channel CHTBACall: main_Image
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_opCall
 	channel graspCall: main_JointsPos
-	channel CHTBACall: main_Image
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_opCall
 	channel moveCall: main_JointsPos
-	channel clone_normal_AppleHarvestControl_GetApple_entryCall
-	channel clone_normal_AppleHarvestControl_GetApple_exitCall
+	channel clone_normal_AppleHarvestControl_LocalizeFruit_entryCall
+	channel clone_normal_AppleHarvestControl_Prepare_t1_dopCall
+	channel goHomeCall
+	channel clone_normal_AppleHarvestControl_Prepare_entryCall
+	channel hideArmCall
+	channel clone_normal_AppleHarvestControl_j0_t7_opCall
+	channel NearestNeighbourCall
+	channel dropCall: main_JointsPos
 	
 	enterSS = {|
 	i0::enter,
@@ -107,24 +107,24 @@ exports
 		endIKSolver,
 		startGoHome,
 		endGoHome
-	,	pickCall,
-		clone_normal_AppleHarvestControl_j0_t7_opCall,
-		dropCall,
-		clone_normal_AppleHarvestControl_Prepare_entryCall,
-		clone_normal_AppleHarvestControl_Prepare_t1_dopCall,
-		clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,
-		NearestNeighbourCall,
+	,	clone_normal_AppleHarvestControl_GetApple_entryCall,
 		clone_NearestNeighbourCall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall,
-		hideArmCall,
-		goHomeCall,
+		clone_normal_AppleHarvestControl_GetApple_exitCall,
+		pickCall,
+		CHTBACall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_opCall,
 		graspCall,
-		CHTBACall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_opCall,
 		moveCall,
-		clone_normal_AppleHarvestControl_GetApple_entryCall,
-		clone_normal_AppleHarvestControl_GetApple_exitCall
+		clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,
+		clone_normal_AppleHarvestControl_Prepare_t1_dopCall,
+		goHomeCall,
+		clone_normal_AppleHarvestControl_Prepare_entryCall,
+		hideArmCall,
+		clone_normal_AppleHarvestControl_j0_t7_opCall,
+		NearestNeighbourCall,
+		dropCall
 		|}
 	
 	channel clockReset, clockResetL, clockResetR 
@@ -132,46 +132,12 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_GetApple : core_clock_type 
-	channel get_CLID_GoingHome : core_clock_type 
 	channel get_CLID_Next : core_clock_type 
 	channel get_CLID_LocalizeFruit : core_clock_type 
+	channel get_CLID_GoingHome : core_clock_type 
 	channel get_CLID_Prepare : core_clock_type 
+	channel get_CLID_GetApple : core_clock_type 
 	--channel increment__
-	
-	CLID_GetApple_clock_type(id__,
-			          const_pkg727_main_AppleHarvestControl_hideTime,
-			          const_pkg727_main_AppleHarvestControl_approachTime,
-			          const_pkg727_main_AppleHarvestControl_graspTime,
-			          const_pkg727_main_AppleHarvestControl_dropTime,
-			          const_pkg727_main_AppleHarvestControl_pickTime,
-			          const_pkg727_main_AppleHarvestControl_pickDeadl,
-			          const_pkg727_main_AppleHarvestControl_homePos,
-			          const_pkg727_main_AppleHarvestControl_storagePos) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_GoingHome_clock_type(id__,
-			          const_pkg727_main_AppleHarvestControl_hideTime,
-			          const_pkg727_main_AppleHarvestControl_approachTime,
-			          const_pkg727_main_AppleHarvestControl_graspTime,
-			          const_pkg727_main_AppleHarvestControl_dropTime,
-			          const_pkg727_main_AppleHarvestControl_pickTime,
-			          const_pkg727_main_AppleHarvestControl_pickDeadl,
-			          const_pkg727_main_AppleHarvestControl_homePos,
-			          const_pkg727_main_AppleHarvestControl_storagePos) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Next_clock_type(id__,
 			          const_pkg727_main_AppleHarvestControl_hideTime,
@@ -207,7 +173,41 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
+	CLID_GoingHome_clock_type(id__,
+			          const_pkg727_main_AppleHarvestControl_hideTime,
+			          const_pkg727_main_AppleHarvestControl_approachTime,
+			          const_pkg727_main_AppleHarvestControl_graspTime,
+			          const_pkg727_main_AppleHarvestControl_dropTime,
+			          const_pkg727_main_AppleHarvestControl_pickTime,
+			          const_pkg727_main_AppleHarvestControl_pickDeadl,
+			          const_pkg727_main_AppleHarvestControl_homePos,
+			          const_pkg727_main_AppleHarvestControl_storagePos) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
 	CLID_Prepare_clock_type(id__,
+			          const_pkg727_main_AppleHarvestControl_hideTime,
+			          const_pkg727_main_AppleHarvestControl_approachTime,
+			          const_pkg727_main_AppleHarvestControl_graspTime,
+			          const_pkg727_main_AppleHarvestControl_dropTime,
+			          const_pkg727_main_AppleHarvestControl_pickTime,
+			          const_pkg727_main_AppleHarvestControl_pickDeadl,
+			          const_pkg727_main_AppleHarvestControl_homePos,
+			          const_pkg727_main_AppleHarvestControl_storagePos) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_GetApple_clock_type(id__,
 			          const_pkg727_main_AppleHarvestControl_hideTime,
 			          const_pkg727_main_AppleHarvestControl_approachTime,
 			          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -609,27 +609,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -764,27 +764,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -949,64 +949,32 @@ exports
 			channel startGoHome__: NIDS.InOut
 			channel endGoHome__: NIDS.InOut
 			
+			channel get_CLID_SolvingAndMoving : core_clock_type 
+			channel get_CLID_EmptyCycle : core_clock_type 
+			channel get_CLID_Done : core_clock_type 
+			channel get_CLID_Solving : core_clock_type 
 			channel get_CLID_Start : core_clock_type 
 			channel get_CLID_Moved : core_clock_type 
-			channel get_CLID_Solving : core_clock_type 
-			channel get_CLID_SolvingAndMoving : core_clock_type 
-			channel get_CLID_Done : core_clock_type 
-			channel get_CLID_EmptyCycle : core_clock_type 
 			channel get_CLID_Solved : core_clock_type 
 			--channel increment__
 			
-			CLID_Start_clock_type(id__,
-					          const_pkg727_main_AppleHarvestControl_hideTime,
-					          const_pkg727_main_AppleHarvestControl_approachTime,
-					          const_pkg727_main_AppleHarvestControl_graspTime,
-					          const_pkg727_main_AppleHarvestControl_dropTime,
-					          const_pkg727_main_AppleHarvestControl_pickTime,
-					          const_pkg727_main_AppleHarvestControl_pickDeadl,
-					          const_pkg727_main_AppleHarvestControl_homePos,
-					          const_pkg727_main_AppleHarvestControl_storagePos) = 
-				let
-					max = (clock_type_max(Union({
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_Moved_clock_type(id__,
-					          const_pkg727_main_AppleHarvestControl_hideTime,
-					          const_pkg727_main_AppleHarvestControl_approachTime,
-					          const_pkg727_main_AppleHarvestControl_graspTime,
-					          const_pkg727_main_AppleHarvestControl_dropTime,
-					          const_pkg727_main_AppleHarvestControl_pickTime,
-					          const_pkg727_main_AppleHarvestControl_pickDeadl,
-					          const_pkg727_main_AppleHarvestControl_homePos,
-					          const_pkg727_main_AppleHarvestControl_storagePos) = 
-				let
-					max = (clock_type_max(Union({
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
-			CLID_Solving_clock_type(id__,
-					          const_pkg727_main_AppleHarvestControl_hideTime,
-					          const_pkg727_main_AppleHarvestControl_approachTime,
-					          const_pkg727_main_AppleHarvestControl_graspTime,
-					          const_pkg727_main_AppleHarvestControl_dropTime,
-					          const_pkg727_main_AppleHarvestControl_pickTime,
-					          const_pkg727_main_AppleHarvestControl_pickDeadl,
-					          const_pkg727_main_AppleHarvestControl_homePos,
-					          const_pkg727_main_AppleHarvestControl_storagePos) = 
-				let
-					max = (clock_type_max(Union({
-			}))+1)
-				ctype = {0..max}
-			within
-				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-			
 			CLID_SolvingAndMoving_clock_type(id__,
+					          const_pkg727_main_AppleHarvestControl_hideTime,
+					          const_pkg727_main_AppleHarvestControl_approachTime,
+					          const_pkg727_main_AppleHarvestControl_graspTime,
+					          const_pkg727_main_AppleHarvestControl_dropTime,
+					          const_pkg727_main_AppleHarvestControl_pickTime,
+					          const_pkg727_main_AppleHarvestControl_pickDeadl,
+					          const_pkg727_main_AppleHarvestControl_homePos,
+					          const_pkg727_main_AppleHarvestControl_storagePos) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_EmptyCycle_clock_type(id__,
 					          const_pkg727_main_AppleHarvestControl_hideTime,
 					          const_pkg727_main_AppleHarvestControl_approachTime,
 					          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -1038,7 +1006,39 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_EmptyCycle_clock_type(id__,
+			CLID_Solving_clock_type(id__,
+					          const_pkg727_main_AppleHarvestControl_hideTime,
+					          const_pkg727_main_AppleHarvestControl_approachTime,
+					          const_pkg727_main_AppleHarvestControl_graspTime,
+					          const_pkg727_main_AppleHarvestControl_dropTime,
+					          const_pkg727_main_AppleHarvestControl_pickTime,
+					          const_pkg727_main_AppleHarvestControl_pickDeadl,
+					          const_pkg727_main_AppleHarvestControl_homePos,
+					          const_pkg727_main_AppleHarvestControl_storagePos) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Start_clock_type(id__,
+					          const_pkg727_main_AppleHarvestControl_hideTime,
+					          const_pkg727_main_AppleHarvestControl_approachTime,
+					          const_pkg727_main_AppleHarvestControl_graspTime,
+					          const_pkg727_main_AppleHarvestControl_dropTime,
+					          const_pkg727_main_AppleHarvestControl_pickTime,
+					          const_pkg727_main_AppleHarvestControl_pickDeadl,
+					          const_pkg727_main_AppleHarvestControl_homePos,
+					          const_pkg727_main_AppleHarvestControl_storagePos) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Moved_clock_type(id__,
 					          const_pkg727_main_AppleHarvestControl_hideTime,
 					          const_pkg727_main_AppleHarvestControl_approachTime,
 					          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -1444,27 +1444,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1579,27 +1579,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2026,27 +2026,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2161,27 +2161,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2608,27 +2608,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2743,27 +2743,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3190,27 +3190,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3325,27 +3325,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3772,27 +3772,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3907,27 +3907,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4354,27 +4354,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4489,27 +4489,27 @@ exports
 							 	)\{|get_CLID_EmptyCycle|}
 							 )
 							 ))
-							  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-							  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+							  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_localized
 							 			,setL_apples
-							 			,setL_nextApple
 							 			,setL_img
+							 			,setL_nextApple
+							 			,setL_localized
 							 			,setL_positions
-							 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setR_apples
 							 			 			,setR_img
+							 			 			,setR_nextApple
+							 			 			,setR_localized
 							 			 			,setR_positions
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-							  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+							  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 							 )
-							)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-							 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+							)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+							 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4935,8 +4935,8 @@ exports
 						 																          const_pkg727_main_AppleHarvestControl_storagePos))
 						 													)\{|get_CLID_Solved|}
 						 												)
-						 												[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
-						 												dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 												[| {|get_CLID_Moved,Moved::entered,terminate|} |]
+						 												dbisim(Clock_CLID_Moved(id__,0,
 						 														          const_pkg727_main_AppleHarvestControl_hideTime,
 						 														          const_pkg727_main_AppleHarvestControl_approachTime,
 						 														          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -4945,10 +4945,10 @@ exports
 						 														          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 														          const_pkg727_main_AppleHarvestControl_homePos,
 						 														          const_pkg727_main_AppleHarvestControl_storagePos))
-						 											)\{|get_CLID_EmptyCycle|}
+						 											)\{|get_CLID_Moved|}
 						 										)
-						 										[| {|get_CLID_Done,Done::entered,terminate|} |]
-						 										dbisim(Clock_CLID_Done(id__,0,
+						 										[| {|get_CLID_Start,Start::entered,terminate|} |]
+						 										dbisim(Clock_CLID_Start(id__,0,
 						 												          const_pkg727_main_AppleHarvestControl_hideTime,
 						 												          const_pkg727_main_AppleHarvestControl_approachTime,
 						 												          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -4957,10 +4957,10 @@ exports
 						 												          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 												          const_pkg727_main_AppleHarvestControl_homePos,
 						 												          const_pkg727_main_AppleHarvestControl_storagePos))
-						 									)\{|get_CLID_Done|}
+						 									)\{|get_CLID_Start|}
 						 								)
-						 								[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
-						 								dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+						 								[| {|get_CLID_Solving,Solving::entered,terminate|} |]
+						 								dbisim(Clock_CLID_Solving(id__,0,
 						 										          const_pkg727_main_AppleHarvestControl_hideTime,
 						 										          const_pkg727_main_AppleHarvestControl_approachTime,
 						 										          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -4969,10 +4969,10 @@ exports
 						 										          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 										          const_pkg727_main_AppleHarvestControl_homePos,
 						 										          const_pkg727_main_AppleHarvestControl_storagePos))
-						 							)\{|get_CLID_SolvingAndMoving|}
+						 							)\{|get_CLID_Solving|}
 						 						)
-						 						[| {|get_CLID_Solving,Solving::entered,terminate|} |]
-						 						dbisim(Clock_CLID_Solving(id__,0,
+						 						[| {|get_CLID_Done,Done::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Done(id__,0,
 						 								          const_pkg727_main_AppleHarvestControl_hideTime,
 						 								          const_pkg727_main_AppleHarvestControl_approachTime,
 						 								          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -4981,10 +4981,10 @@ exports
 						 								          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 								          const_pkg727_main_AppleHarvestControl_homePos,
 						 								          const_pkg727_main_AppleHarvestControl_storagePos))
-						 					)\{|get_CLID_Solving|}
+						 					)\{|get_CLID_Done|}
 						 				)
-						 				[| {|get_CLID_Moved,Moved::entered,terminate|} |]
-						 				dbisim(Clock_CLID_Moved(id__,0,
+						 				[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 				dbisim(Clock_CLID_EmptyCycle(id__,0,
 						 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						 						          const_pkg727_main_AppleHarvestControl_approachTime,
 						 						          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -4993,10 +4993,10 @@ exports
 						 						          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 						          const_pkg727_main_AppleHarvestControl_homePos,
 						 						          const_pkg727_main_AppleHarvestControl_storagePos))
-						 			)\{|get_CLID_Moved|}
+						 			)\{|get_CLID_EmptyCycle|}
 						 		)
-						 		[| {|get_CLID_Start,Start::entered,terminate|} |]
-						 		dbisim(Clock_CLID_Start(id__,0,
+						 		[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
+						 		dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 						 				          const_pkg727_main_AppleHarvestControl_hideTime,
 						 				          const_pkg727_main_AppleHarvestControl_approachTime,
 						 				          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5005,30 +5005,30 @@ exports
 						 				          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 				          const_pkg727_main_AppleHarvestControl_homePos,
 						 				          const_pkg727_main_AppleHarvestControl_storagePos))
-						 	)\{|get_CLID_Start|}
+						 	)\{|get_CLID_SolvingAndMoving|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5245,8 +5245,8 @@ exports
 						 																          const_pkg727_main_AppleHarvestControl_storagePos))
 						 													)\{|get_CLID_Solved|}
 						 												)
-						 												[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
-						 												dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 												[| {|get_CLID_Moved,Moved::entered,terminate|} |]
+						 												dbisim(Clock_CLID_Moved(id__,0,
 						 														          const_pkg727_main_AppleHarvestControl_hideTime,
 						 														          const_pkg727_main_AppleHarvestControl_approachTime,
 						 														          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5255,10 +5255,10 @@ exports
 						 														          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 														          const_pkg727_main_AppleHarvestControl_homePos,
 						 														          const_pkg727_main_AppleHarvestControl_storagePos))
-						 											)\{|get_CLID_EmptyCycle|}
+						 											)\{|get_CLID_Moved|}
 						 										)
-						 										[| {|get_CLID_Done,Done::entered,terminate|} |]
-						 										dbisim(Clock_CLID_Done(id__,0,
+						 										[| {|get_CLID_Start,Start::entered,terminate|} |]
+						 										dbisim(Clock_CLID_Start(id__,0,
 						 												          const_pkg727_main_AppleHarvestControl_hideTime,
 						 												          const_pkg727_main_AppleHarvestControl_approachTime,
 						 												          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5267,10 +5267,10 @@ exports
 						 												          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 												          const_pkg727_main_AppleHarvestControl_homePos,
 						 												          const_pkg727_main_AppleHarvestControl_storagePos))
-						 									)\{|get_CLID_Done|}
+						 									)\{|get_CLID_Start|}
 						 								)
-						 								[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
-						 								dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+						 								[| {|get_CLID_Solving,Solving::entered,terminate|} |]
+						 								dbisim(Clock_CLID_Solving(id__,0,
 						 										          const_pkg727_main_AppleHarvestControl_hideTime,
 						 										          const_pkg727_main_AppleHarvestControl_approachTime,
 						 										          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5279,10 +5279,10 @@ exports
 						 										          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 										          const_pkg727_main_AppleHarvestControl_homePos,
 						 										          const_pkg727_main_AppleHarvestControl_storagePos))
-						 							)\{|get_CLID_SolvingAndMoving|}
+						 							)\{|get_CLID_Solving|}
 						 						)
-						 						[| {|get_CLID_Solving,Solving::entered,terminate|} |]
-						 						dbisim(Clock_CLID_Solving(id__,0,
+						 						[| {|get_CLID_Done,Done::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Done(id__,0,
 						 								          const_pkg727_main_AppleHarvestControl_hideTime,
 						 								          const_pkg727_main_AppleHarvestControl_approachTime,
 						 								          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5291,10 +5291,10 @@ exports
 						 								          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 								          const_pkg727_main_AppleHarvestControl_homePos,
 						 								          const_pkg727_main_AppleHarvestControl_storagePos))
-						 					)\{|get_CLID_Solving|}
+						 					)\{|get_CLID_Done|}
 						 				)
-						 				[| {|get_CLID_Moved,Moved::entered,terminate|} |]
-						 				dbisim(Clock_CLID_Moved(id__,0,
+						 				[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 				dbisim(Clock_CLID_EmptyCycle(id__,0,
 						 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						 						          const_pkg727_main_AppleHarvestControl_approachTime,
 						 						          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5303,10 +5303,10 @@ exports
 						 						          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 						          const_pkg727_main_AppleHarvestControl_homePos,
 						 						          const_pkg727_main_AppleHarvestControl_storagePos))
-						 			)\{|get_CLID_Moved|}
+						 			)\{|get_CLID_EmptyCycle|}
 						 		)
-						 		[| {|get_CLID_Start,Start::entered,terminate|} |]
-						 		dbisim(Clock_CLID_Start(id__,0,
+						 		[| {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,terminate|} |]
+						 		dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 						 				          const_pkg727_main_AppleHarvestControl_hideTime,
 						 				          const_pkg727_main_AppleHarvestControl_approachTime,
 						 				          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5315,30 +5315,30 @@ exports
 						 				          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 				          const_pkg727_main_AppleHarvestControl_homePos,
 						 				          const_pkg727_main_AppleHarvestControl_storagePos))
-						 	)\{|get_CLID_Start|}
+						 	)\{|get_CLID_SolvingAndMoving|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5408,6 +5408,194 @@ exports
 				
 				
 				-- Clocks
+				Clock_CLID_SolvingAndMoving(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						SolvingAndMoving::entered -> Clock_CLID_SolvingAndMoving(id__,0,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_SolvingAndMoving!x__ -> Clock_CLID_SolvingAndMoving(id__,x__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_SolvingAndMoving(id__,clock_type_plus(x__,1,CLID_SolvingAndMoving_clock_type(id__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)),
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos))
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)),
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos))
+				Clock_CLID_Done(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						Done::entered -> Clock_CLID_Done(id__,0,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_Done!x__ -> Clock_CLID_Done(id__,x__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_Done(id__,clock_type_plus(x__,1,CLID_Done_clock_type(id__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)),
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos))
+				Clock_CLID_Solving(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos) = 
+					TimeOut_1(
+						Solving::entered -> Clock_CLID_Solving(id__,0,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						get_CLID_Solving!x__ -> Clock_CLID_Solving(id__,x__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)
+						[]
+						terminate -> SKIP,Clock_CLID_Solving(id__,clock_type_plus(x__,1,CLID_Solving_clock_type(id__,
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos)),
+								          const_pkg727_main_AppleHarvestControl_hideTime,
+								          const_pkg727_main_AppleHarvestControl_approachTime,
+								          const_pkg727_main_AppleHarvestControl_graspTime,
+								          const_pkg727_main_AppleHarvestControl_dropTime,
+								          const_pkg727_main_AppleHarvestControl_pickTime,
+								          const_pkg727_main_AppleHarvestControl_pickDeadl,
+								          const_pkg727_main_AppleHarvestControl_homePos,
+								          const_pkg727_main_AppleHarvestControl_storagePos))
 				Clock_CLID_Start(id__,x__,
 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						          const_pkg727_main_AppleHarvestControl_approachTime,
@@ -5502,194 +5690,6 @@ exports
 								          const_pkg727_main_AppleHarvestControl_pickDeadl,
 								          const_pkg727_main_AppleHarvestControl_homePos,
 								          const_pkg727_main_AppleHarvestControl_storagePos))
-				Clock_CLID_Solving(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						Solving::entered -> Clock_CLID_Solving(id__,0,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_Solving!x__ -> Clock_CLID_Solving(id__,x__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_Solving(id__,clock_type_plus(x__,1,CLID_Solving_clock_type(id__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)),
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos))
-				Clock_CLID_SolvingAndMoving(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						SolvingAndMoving::entered -> Clock_CLID_SolvingAndMoving(id__,0,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_SolvingAndMoving!x__ -> Clock_CLID_SolvingAndMoving(id__,x__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_SolvingAndMoving(id__,clock_type_plus(x__,1,CLID_SolvingAndMoving_clock_type(id__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)),
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos))
-				Clock_CLID_Done(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						Done::entered -> Clock_CLID_Done(id__,0,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_Done!x__ -> Clock_CLID_Done(id__,x__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_Done(id__,clock_type_plus(x__,1,CLID_Done_clock_type(id__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)),
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos))
-				Clock_CLID_EmptyCycle(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos) = 
-					TimeOut_1(
-						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)
-						[]
-						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos)),
-								          const_pkg727_main_AppleHarvestControl_hideTime,
-								          const_pkg727_main_AppleHarvestControl_approachTime,
-								          const_pkg727_main_AppleHarvestControl_graspTime,
-								          const_pkg727_main_AppleHarvestControl_dropTime,
-								          const_pkg727_main_AppleHarvestControl_pickTime,
-								          const_pkg727_main_AppleHarvestControl_pickDeadl,
-								          const_pkg727_main_AppleHarvestControl_homePos,
-								          const_pkg727_main_AppleHarvestControl_storagePos))
 				Clock_CLID_Solved(id__,x__,
 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						          const_pkg727_main_AppleHarvestControl_approachTime,
@@ -5746,7 +5746,7 @@ exports
 						          const_pkg727_main_AppleHarvestControl_pickTime,
 						          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_Start(id__,0,
+						          const_pkg727_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_SolvingAndMoving(id__,0,
 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						          const_pkg727_main_AppleHarvestControl_approachTime,
 						          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5756,27 +5756,7 @@ exports
 						          const_pkg727_main_AppleHarvestControl_homePos,
 						          const_pkg727_main_AppleHarvestControl_storagePos))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_Moved(id__,0,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos))
-				[| { terminate } |] (
-				dbisim(Clock_CLID_Solving(id__,0,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos))
-				[| { terminate } |] (
-				dbisim(Clock_CLID_SolvingAndMoving(id__,0,
+				dbisim(Clock_CLID_EmptyCycle(id__,0,
 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						          const_pkg727_main_AppleHarvestControl_approachTime,
 						          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5796,7 +5776,27 @@ exports
 						          const_pkg727_main_AppleHarvestControl_homePos,
 						          const_pkg727_main_AppleHarvestControl_storagePos))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_EmptyCycle(id__,0,
+				dbisim(Clock_CLID_Solving(id__,0,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_Start(id__,0,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_Moved(id__,0,
 						          const_pkg727_main_AppleHarvestControl_hideTime,
 						          const_pkg727_main_AppleHarvestControl_approachTime,
 						          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5822,7 +5822,7 @@ exports
 				)
 				)
 				
-				stateClockSync = {|get_CLID_Start,Start::entered,get_CLID_Moved,Moved::entered,get_CLID_Solving,Solving::entered,get_CLID_SolvingAndMoving,SolvingAndMoving::entered,get_CLID_Done,Done::entered,get_CLID_EmptyCycle,EmptyCycle::entered,get_CLID_Solved,Solved::entered|}
+				stateClockSync = {|get_CLID_SolvingAndMoving,SolvingAndMoving::entered,get_CLID_EmptyCycle,EmptyCycle::entered,get_CLID_Done,Done::entered,get_CLID_Solving,Solving::entered,get_CLID_Start,Start::entered,get_CLID_Moved,Moved::entered,get_CLID_Solved,Solved::entered|}
 			}
 		
 		endmodule
@@ -6160,27 +6160,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -6305,27 +6305,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -6772,27 +6772,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -6927,27 +6927,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -7421,27 +7421,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -7556,27 +7556,27 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-						  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+						  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_localized
 						 			,setL_apples
-						 			,setL_nextApple
 						 			,setL_img
+						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
-						 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setR_apples
 						 			 			,setR_img
+						 			 			,setR_nextApple
+						 			 			,setR_localized
 						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-						  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+						  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 						 )
-						)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-						 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+						)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+						 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -7690,7 +7690,7 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__pick(id__,
+		CALL__clone_normal_AppleHarvestControl_GetApple_entry(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
 				    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -7698,62 +7698,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickTime,
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(pickCall,0)
-		CALL__clone_normal_AppleHarvestControl_j0_t7_op(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_j0_t7_opCall,0)
-		CALL__drop(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos,
-					param_jp) = EDeadline(dropCall.param_jp,0)
-		CALL__clone_normal_AppleHarvestControl_Prepare_entry(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_Prepare_entryCall,0)
-		CALL__clone_normal_AppleHarvestControl_Prepare_t1_dop(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_Prepare_t1_dopCall,0)
-		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,0)
-		CALL__NearestNeighbour(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(NearestNeighbourCall,0)
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_GetApple_entryCall,0)
 		CALL__clone_NearestNeighbour(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -7772,7 +7717,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall,0)
-		CALL__hideArm(id__,
+		CALL__clone_normal_AppleHarvestControl_GetApple_exit(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
 				    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -7780,8 +7725,8 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickTime,
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(hideArmCall,0)
-		CALL__goHome(id__,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_GetApple_exitCall,0)
+		CALL__pick(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
 				    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -7789,7 +7734,17 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickTime,
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(goHomeCall,0)
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(pickCall,0)
+		CALL__CHTBA(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos,
+					param_img) = EDeadline(CHTBACall.param_img,0)
 		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_op(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -7809,16 +7764,6 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos,
 					param_jp) = EDeadline(graspCall.param_jp,0)
-		CALL__CHTBA(id__,
-				    const_pkg727_main_AppleHarvestControl_hideTime,
-				    const_pkg727_main_AppleHarvestControl_approachTime,
-				    const_pkg727_main_AppleHarvestControl_graspTime,
-				    const_pkg727_main_AppleHarvestControl_dropTime,
-				    const_pkg727_main_AppleHarvestControl_pickTime,
-				    const_pkg727_main_AppleHarvestControl_pickDeadl,
-				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos,
-					param_img) = EDeadline(CHTBACall.param_img,0)
 		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -7838,7 +7783,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos,
 					param_jp) = EDeadline(moveCall.param_jp,0)
-		CALL__clone_normal_AppleHarvestControl_GetApple_entry(id__,
+		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
 				    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -7846,8 +7791,8 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickTime,
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_GetApple_entryCall,0)
-		CALL__clone_normal_AppleHarvestControl_GetApple_exit(id__,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,0)
+		CALL__clone_normal_AppleHarvestControl_Prepare_t1_dop(id__,
 				    const_pkg727_main_AppleHarvestControl_hideTime,
 				    const_pkg727_main_AppleHarvestControl_approachTime,
 				    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -7855,7 +7800,62 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickTime,
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
-				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_GetApple_exitCall,0)
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_Prepare_t1_dopCall,0)
+		CALL__goHome(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(goHomeCall,0)
+		CALL__clone_normal_AppleHarvestControl_Prepare_entry(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_Prepare_entryCall,0)
+		CALL__hideArm(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(hideArmCall,0)
+		CALL__clone_normal_AppleHarvestControl_j0_t7_op(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(clone_normal_AppleHarvestControl_j0_t7_opCall,0)
+		CALL__NearestNeighbour(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos) = EDeadline(NearestNeighbourCall,0)
+		CALL__drop(id__,
+				    const_pkg727_main_AppleHarvestControl_hideTime,
+				    const_pkg727_main_AppleHarvestControl_approachTime,
+				    const_pkg727_main_AppleHarvestControl_graspTime,
+				    const_pkg727_main_AppleHarvestControl_dropTime,
+				    const_pkg727_main_AppleHarvestControl_pickTime,
+				    const_pkg727_main_AppleHarvestControl_pickDeadl,
+				    const_pkg727_main_AppleHarvestControl_homePos,
+				    const_pkg727_main_AppleHarvestControl_storagePos,
+					param_jp) = EDeadline(dropCall.param_jp,0)
 		
 		-- END of Operation calls --
 	
@@ -7946,7 +7946,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_pickDeadl,
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = ((let
-			Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> TimeOut_1(
+			Trans = share__choice(get_nextApple?nextApple -> get_localized?localized -> get_positions?positions -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 				 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -8104,11 +8104,11 @@ exports
 						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-						  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+						  [[set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-						 			,setL_localized
 						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
 						 			,setR_img
 						 			|}) |]
@@ -8121,10 +8121,10 @@ exports
 						 		    const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 		    const_pkg727_main_AppleHarvestControl_homePos,
 						 		    const_pkg727_main_AppleHarvestControl_storagePos))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_localized,setL_positions |} ]]
 						  [[set_img <- setR_img]]
 						 )
-						)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+						)[[setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
 						 [[setR_img <- set_img]]
 						)
 					)
@@ -8164,7 +8164,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Prepare,Prepare::entered|}
+				stateClockSync = {|get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_GetApple,GetApple::entered|}
 			 within
 				(MachineBody(id__,
 						    const_pkg727_main_AppleHarvestControl_hideTime,
@@ -8196,7 +8196,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Prepare,Prepare::entered|}
+				stateClockSync = {|get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_GetApple,GetApple::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -8217,8 +8217,8 @@ exports
 																    const_pkg727_main_AppleHarvestControl_pickDeadl,
 																    const_pkg727_main_AppleHarvestControl_homePos,
 																    const_pkg727_main_AppleHarvestControl_storagePos)
-														[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
-														dbisim(Clock_CLID_Prepare(id__,0,
+														[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
+														dbisim(Clock_CLID_GetApple(id__,0,
 																          const_pkg727_main_AppleHarvestControl_hideTime,
 																          const_pkg727_main_AppleHarvestControl_approachTime,
 																          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8227,10 +8227,10 @@ exports
 																          const_pkg727_main_AppleHarvestControl_pickDeadl,
 																          const_pkg727_main_AppleHarvestControl_homePos,
 																          const_pkg727_main_AppleHarvestControl_storagePos))
-													)\{|get_CLID_Prepare|}
+													)\{|get_CLID_GetApple|}
 												)
-												[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
-												dbisim(Clock_CLID_LocalizeFruit(id__,0,
+												[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
+												dbisim(Clock_CLID_Prepare(id__,0,
 														          const_pkg727_main_AppleHarvestControl_hideTime,
 														          const_pkg727_main_AppleHarvestControl_approachTime,
 														          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8239,10 +8239,10 @@ exports
 														          const_pkg727_main_AppleHarvestControl_pickDeadl,
 														          const_pkg727_main_AppleHarvestControl_homePos,
 														          const_pkg727_main_AppleHarvestControl_storagePos))
-											)\{|get_CLID_LocalizeFruit|}
+											)\{|get_CLID_Prepare|}
 										)
-										[| {|get_CLID_Next,Next::entered,terminate|} |]
-										dbisim(Clock_CLID_Next(id__,0,
+										[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
+										dbisim(Clock_CLID_GoingHome(id__,0,
 												          const_pkg727_main_AppleHarvestControl_hideTime,
 												          const_pkg727_main_AppleHarvestControl_approachTime,
 												          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8251,10 +8251,10 @@ exports
 												          const_pkg727_main_AppleHarvestControl_pickDeadl,
 												          const_pkg727_main_AppleHarvestControl_homePos,
 												          const_pkg727_main_AppleHarvestControl_storagePos))
-									)\{|get_CLID_Next|}
+									)\{|get_CLID_GoingHome|}
 								)
-								[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
-								dbisim(Clock_CLID_GoingHome(id__,0,
+								[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
+								dbisim(Clock_CLID_LocalizeFruit(id__,0,
 										          const_pkg727_main_AppleHarvestControl_hideTime,
 										          const_pkg727_main_AppleHarvestControl_approachTime,
 										          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8263,10 +8263,10 @@ exports
 										          const_pkg727_main_AppleHarvestControl_pickDeadl,
 										          const_pkg727_main_AppleHarvestControl_homePos,
 										          const_pkg727_main_AppleHarvestControl_storagePos))
-							)\{|get_CLID_GoingHome|}
+							)\{|get_CLID_LocalizeFruit|}
 						)
-						[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
-						dbisim(Clock_CLID_GetApple(id__,0,
+						[| {|get_CLID_Next,Next::entered,terminate|} |]
+						dbisim(Clock_CLID_Next(id__,0,
 								          const_pkg727_main_AppleHarvestControl_hideTime,
 								          const_pkg727_main_AppleHarvestControl_approachTime,
 								          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8275,7 +8275,7 @@ exports
 								          const_pkg727_main_AppleHarvestControl_pickDeadl,
 								          const_pkg727_main_AppleHarvestControl_homePos,
 								          const_pkg727_main_AppleHarvestControl_storagePos))
-					)\{|get_CLID_GetApple|}
+					)\{|get_CLID_Next|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -8501,11 +8501,11 @@ exports
 						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-						  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+						  [[set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-						 			,setL_localized
 						 			,setL_nextApple
+						 			,setL_localized
 						 			,setL_positions
 						 			,setR_img
 						 			|}) |]
@@ -8518,10 +8518,10 @@ exports
 						 		    const_pkg727_main_AppleHarvestControl_pickDeadl,
 						 		    const_pkg727_main_AppleHarvestControl_homePos,
 						 		    const_pkg727_main_AppleHarvestControl_storagePos))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_localized,setL_positions |} ]]
 						  [[set_img <- setR_img]]
 						 )
-						)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+						)[[setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
 						 [[setR_img <- set_img]]
 						)
 					)
@@ -8561,7 +8561,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Prepare,Prepare::entered|}
+				stateClockSync = {|get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_GetApple,GetApple::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 						    const_pkg727_main_AppleHarvestControl_hideTime,
@@ -8593,7 +8593,7 @@ exports
 				    const_pkg727_main_AppleHarvestControl_homePos,
 				    const_pkg727_main_AppleHarvestControl_storagePos) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Prepare,Prepare::entered|}
+				stateClockSync = {|get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_GetApple,GetApple::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -8614,8 +8614,8 @@ exports
 																    const_pkg727_main_AppleHarvestControl_pickDeadl,
 																    const_pkg727_main_AppleHarvestControl_homePos,
 																    const_pkg727_main_AppleHarvestControl_storagePos)
-														[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
-														dbisim(Clock_CLID_Prepare(id__,0,
+														[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
+														dbisim(Clock_CLID_GetApple(id__,0,
 																          const_pkg727_main_AppleHarvestControl_hideTime,
 																          const_pkg727_main_AppleHarvestControl_approachTime,
 																          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8624,10 +8624,10 @@ exports
 																          const_pkg727_main_AppleHarvestControl_pickDeadl,
 																          const_pkg727_main_AppleHarvestControl_homePos,
 																          const_pkg727_main_AppleHarvestControl_storagePos))
-													)\{|get_CLID_Prepare|}
+													)\{|get_CLID_GetApple|}
 												)
-												[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
-												dbisim(Clock_CLID_LocalizeFruit(id__,0,
+												[| {|get_CLID_Prepare,Prepare::entered,terminate|} |]
+												dbisim(Clock_CLID_Prepare(id__,0,
 														          const_pkg727_main_AppleHarvestControl_hideTime,
 														          const_pkg727_main_AppleHarvestControl_approachTime,
 														          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8636,10 +8636,10 @@ exports
 														          const_pkg727_main_AppleHarvestControl_pickDeadl,
 														          const_pkg727_main_AppleHarvestControl_homePos,
 														          const_pkg727_main_AppleHarvestControl_storagePos))
-											)\{|get_CLID_LocalizeFruit|}
+											)\{|get_CLID_Prepare|}
 										)
-										[| {|get_CLID_Next,Next::entered,terminate|} |]
-										dbisim(Clock_CLID_Next(id__,0,
+										[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
+										dbisim(Clock_CLID_GoingHome(id__,0,
 												          const_pkg727_main_AppleHarvestControl_hideTime,
 												          const_pkg727_main_AppleHarvestControl_approachTime,
 												          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8648,10 +8648,10 @@ exports
 												          const_pkg727_main_AppleHarvestControl_pickDeadl,
 												          const_pkg727_main_AppleHarvestControl_homePos,
 												          const_pkg727_main_AppleHarvestControl_storagePos))
-									)\{|get_CLID_Next|}
+									)\{|get_CLID_GoingHome|}
 								)
-								[| {|get_CLID_GoingHome,GoingHome::entered,terminate|} |]
-								dbisim(Clock_CLID_GoingHome(id__,0,
+								[| {|get_CLID_LocalizeFruit,LocalizeFruit::entered,terminate|} |]
+								dbisim(Clock_CLID_LocalizeFruit(id__,0,
 										          const_pkg727_main_AppleHarvestControl_hideTime,
 										          const_pkg727_main_AppleHarvestControl_approachTime,
 										          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8660,10 +8660,10 @@ exports
 										          const_pkg727_main_AppleHarvestControl_pickDeadl,
 										          const_pkg727_main_AppleHarvestControl_homePos,
 										          const_pkg727_main_AppleHarvestControl_storagePos))
-							)\{|get_CLID_GoingHome|}
+							)\{|get_CLID_LocalizeFruit|}
 						)
-						[| {|get_CLID_GetApple,GetApple::entered,terminate|} |]
-						dbisim(Clock_CLID_GetApple(id__,0,
+						[| {|get_CLID_Next,Next::entered,terminate|} |]
+						dbisim(Clock_CLID_Next(id__,0,
 								          const_pkg727_main_AppleHarvestControl_hideTime,
 								          const_pkg727_main_AppleHarvestControl_approachTime,
 								          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -8672,7 +8672,7 @@ exports
 								          const_pkg727_main_AppleHarvestControl_pickDeadl,
 								          const_pkg727_main_AppleHarvestControl_homePos,
 								          const_pkg727_main_AppleHarvestControl_storagePos))
-					)\{|get_CLID_GetApple|}
+					)\{|get_CLID_Next|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -8988,100 +8988,6 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_GetApple(id__,x__,
-				          const_pkg727_main_AppleHarvestControl_hideTime,
-				          const_pkg727_main_AppleHarvestControl_approachTime,
-				          const_pkg727_main_AppleHarvestControl_graspTime,
-				          const_pkg727_main_AppleHarvestControl_dropTime,
-				          const_pkg727_main_AppleHarvestControl_pickTime,
-				          const_pkg727_main_AppleHarvestControl_pickDeadl,
-				          const_pkg727_main_AppleHarvestControl_homePos,
-				          const_pkg727_main_AppleHarvestControl_storagePos) = 
-			TimeOut_1(
-				GetApple::entered -> Clock_CLID_GetApple(id__,0,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)
-				[]
-				get_CLID_GetApple!x__ -> Clock_CLID_GetApple(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)
-				[]
-				terminate -> SKIP,Clock_CLID_GetApple(id__,clock_type_plus(x__,1,CLID_GetApple_clock_type(id__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)),
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos))
-		Clock_CLID_GoingHome(id__,x__,
-				          const_pkg727_main_AppleHarvestControl_hideTime,
-				          const_pkg727_main_AppleHarvestControl_approachTime,
-				          const_pkg727_main_AppleHarvestControl_graspTime,
-				          const_pkg727_main_AppleHarvestControl_dropTime,
-				          const_pkg727_main_AppleHarvestControl_pickTime,
-				          const_pkg727_main_AppleHarvestControl_pickDeadl,
-				          const_pkg727_main_AppleHarvestControl_homePos,
-				          const_pkg727_main_AppleHarvestControl_storagePos) = 
-			TimeOut_1(
-				GoingHome::entered -> Clock_CLID_GoingHome(id__,0,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)
-				[]
-				get_CLID_GoingHome!x__ -> Clock_CLID_GoingHome(id__,x__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)
-				[]
-				terminate -> SKIP,Clock_CLID_GoingHome(id__,clock_type_plus(x__,1,CLID_GoingHome_clock_type(id__,
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos)),
-						          const_pkg727_main_AppleHarvestControl_hideTime,
-						          const_pkg727_main_AppleHarvestControl_approachTime,
-						          const_pkg727_main_AppleHarvestControl_graspTime,
-						          const_pkg727_main_AppleHarvestControl_dropTime,
-						          const_pkg727_main_AppleHarvestControl_pickTime,
-						          const_pkg727_main_AppleHarvestControl_pickDeadl,
-						          const_pkg727_main_AppleHarvestControl_homePos,
-						          const_pkg727_main_AppleHarvestControl_storagePos))
 		Clock_CLID_Next(id__,x__,
 				          const_pkg727_main_AppleHarvestControl_hideTime,
 				          const_pkg727_main_AppleHarvestControl_approachTime,
@@ -9176,6 +9082,53 @@ exports
 						          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						          const_pkg727_main_AppleHarvestControl_homePos,
 						          const_pkg727_main_AppleHarvestControl_storagePos))
+		Clock_CLID_GoingHome(id__,x__,
+				          const_pkg727_main_AppleHarvestControl_hideTime,
+				          const_pkg727_main_AppleHarvestControl_approachTime,
+				          const_pkg727_main_AppleHarvestControl_graspTime,
+				          const_pkg727_main_AppleHarvestControl_dropTime,
+				          const_pkg727_main_AppleHarvestControl_pickTime,
+				          const_pkg727_main_AppleHarvestControl_pickDeadl,
+				          const_pkg727_main_AppleHarvestControl_homePos,
+				          const_pkg727_main_AppleHarvestControl_storagePos) = 
+			TimeOut_1(
+				GoingHome::entered -> Clock_CLID_GoingHome(id__,0,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)
+				[]
+				get_CLID_GoingHome!x__ -> Clock_CLID_GoingHome(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)
+				[]
+				terminate -> SKIP,Clock_CLID_GoingHome(id__,clock_type_plus(x__,1,CLID_GoingHome_clock_type(id__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)),
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos))
 		Clock_CLID_Prepare(id__,x__,
 				          const_pkg727_main_AppleHarvestControl_hideTime,
 				          const_pkg727_main_AppleHarvestControl_approachTime,
@@ -9223,6 +9176,53 @@ exports
 						          const_pkg727_main_AppleHarvestControl_pickDeadl,
 						          const_pkg727_main_AppleHarvestControl_homePos,
 						          const_pkg727_main_AppleHarvestControl_storagePos))
+		Clock_CLID_GetApple(id__,x__,
+				          const_pkg727_main_AppleHarvestControl_hideTime,
+				          const_pkg727_main_AppleHarvestControl_approachTime,
+				          const_pkg727_main_AppleHarvestControl_graspTime,
+				          const_pkg727_main_AppleHarvestControl_dropTime,
+				          const_pkg727_main_AppleHarvestControl_pickTime,
+				          const_pkg727_main_AppleHarvestControl_pickDeadl,
+				          const_pkg727_main_AppleHarvestControl_homePos,
+				          const_pkg727_main_AppleHarvestControl_storagePos) = 
+			TimeOut_1(
+				GetApple::entered -> Clock_CLID_GetApple(id__,0,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)
+				[]
+				get_CLID_GetApple!x__ -> Clock_CLID_GetApple(id__,x__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)
+				[]
+				terminate -> SKIP,Clock_CLID_GetApple(id__,clock_type_plus(x__,1,CLID_GetApple_clock_type(id__,
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos)),
+						          const_pkg727_main_AppleHarvestControl_hideTime,
+						          const_pkg727_main_AppleHarvestControl_approachTime,
+						          const_pkg727_main_AppleHarvestControl_graspTime,
+						          const_pkg727_main_AppleHarvestControl_dropTime,
+						          const_pkg727_main_AppleHarvestControl_pickTime,
+						          const_pkg727_main_AppleHarvestControl_pickDeadl,
+						          const_pkg727_main_AppleHarvestControl_homePos,
+						          const_pkg727_main_AppleHarvestControl_storagePos))
 		
 		StateClocks(id__,
 				          const_pkg727_main_AppleHarvestControl_hideTime,
@@ -9232,27 +9232,7 @@ exports
 				          const_pkg727_main_AppleHarvestControl_pickTime,
 				          const_pkg727_main_AppleHarvestControl_pickDeadl,
 				          const_pkg727_main_AppleHarvestControl_homePos,
-				          const_pkg727_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_GetApple(id__,0,
-				          const_pkg727_main_AppleHarvestControl_hideTime,
-				          const_pkg727_main_AppleHarvestControl_approachTime,
-				          const_pkg727_main_AppleHarvestControl_graspTime,
-				          const_pkg727_main_AppleHarvestControl_dropTime,
-				          const_pkg727_main_AppleHarvestControl_pickTime,
-				          const_pkg727_main_AppleHarvestControl_pickDeadl,
-				          const_pkg727_main_AppleHarvestControl_homePos,
-				          const_pkg727_main_AppleHarvestControl_storagePos))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_GoingHome(id__,0,
-				          const_pkg727_main_AppleHarvestControl_hideTime,
-				          const_pkg727_main_AppleHarvestControl_approachTime,
-				          const_pkg727_main_AppleHarvestControl_graspTime,
-				          const_pkg727_main_AppleHarvestControl_dropTime,
-				          const_pkg727_main_AppleHarvestControl_pickTime,
-				          const_pkg727_main_AppleHarvestControl_pickDeadl,
-				          const_pkg727_main_AppleHarvestControl_homePos,
-				          const_pkg727_main_AppleHarvestControl_storagePos))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_Next(id__,0,
+				          const_pkg727_main_AppleHarvestControl_storagePos) = dbisim(Clock_CLID_Next(id__,0,
 				          const_pkg727_main_AppleHarvestControl_hideTime,
 				          const_pkg727_main_AppleHarvestControl_approachTime,
 				          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -9272,7 +9252,27 @@ exports
 				          const_pkg727_main_AppleHarvestControl_homePos,
 				          const_pkg727_main_AppleHarvestControl_storagePos))
 		[| { terminate } |] (
+		dbisim(Clock_CLID_GoingHome(id__,0,
+				          const_pkg727_main_AppleHarvestControl_hideTime,
+				          const_pkg727_main_AppleHarvestControl_approachTime,
+				          const_pkg727_main_AppleHarvestControl_graspTime,
+				          const_pkg727_main_AppleHarvestControl_dropTime,
+				          const_pkg727_main_AppleHarvestControl_pickTime,
+				          const_pkg727_main_AppleHarvestControl_pickDeadl,
+				          const_pkg727_main_AppleHarvestControl_homePos,
+				          const_pkg727_main_AppleHarvestControl_storagePos))
+		[| { terminate } |] (
 		dbisim(Clock_CLID_Prepare(id__,0,
+				          const_pkg727_main_AppleHarvestControl_hideTime,
+				          const_pkg727_main_AppleHarvestControl_approachTime,
+				          const_pkg727_main_AppleHarvestControl_graspTime,
+				          const_pkg727_main_AppleHarvestControl_dropTime,
+				          const_pkg727_main_AppleHarvestControl_pickTime,
+				          const_pkg727_main_AppleHarvestControl_pickDeadl,
+				          const_pkg727_main_AppleHarvestControl_homePos,
+				          const_pkg727_main_AppleHarvestControl_storagePos))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_GetApple(id__,0,
 				          const_pkg727_main_AppleHarvestControl_hideTime,
 				          const_pkg727_main_AppleHarvestControl_approachTime,
 				          const_pkg727_main_AppleHarvestControl_graspTime,
@@ -9286,7 +9286,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_GetApple,GetApple::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_Prepare,Prepare::entered|}
+		stateClockSync = {|get_CLID_Next,Next::entered,get_CLID_LocalizeFruit,LocalizeFruit::entered,get_CLID_GoingHome,GoingHome::entered,get_CLID_Prepare,Prepare::entered,get_CLID_GetApple,GetApple::entered|}
 		
 		-- Shared memory
 		-- Shared memory variables

@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "state_timed_defs.csp"
+include "bacs_Brake.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate bacs_Brake
+P_bacs_Brake = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_Brake::O__(
+		id__
+	)
+assert P_bacs_Brake :[deadlock-free]	
+assert P_bacs_Brake;RUN({r__}) :[deadlock-free]
+assert P_bacs_Brake :[deterministic]
+assert P_bacs_Brake :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_Brake[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_Brake

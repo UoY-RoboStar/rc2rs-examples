@@ -1,0 +1,184 @@
+datatype PodDemand {
+	steer : Angle
+	speed : Speed
+	brake : BrakeState
+	abdicate : boolean
+	source : DemandSource
+	driveByWireRequest : boolean
+	header : Header
+}
+datatype AuxiliaryDemand {
+	signalLeft : boolean
+	signalRight : boolean
+	soundHorn : boolean
+time : Time
+header:Header
+}
+datatype LatLngHeadingFix {
+	latitude : real
+	longitude : real
+header : Header
+}
+datatype Gamepad {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+leftStickX : real
+	leftStickY : real
+	rightStickX : real
+	rightStickY : real
+	leftSwitch : ThreePositionSwitch
+	rightSwitch : ThreePositionSwitch
+	dial : real
+centreSwitch : ThreePositionSwitch
+}
+datatype DeadMansHandleReading {
+	analogReading : int
+	header : Header
+}
+datatype StereoImage {
+	left : Image
+	right : Image
+}
+datatype Point3d {
+	xyz : real * real * real
+}
+datatype Image {
+	pixel : Seq( nat * nat )
+}
+datatype PointCloud {
+	timestamp : nat
+	points : Seq( Point3d )
+}
+datatype DetectedObject {
+	position : Point2d
+	classification : ObjectClassifier
+	classificationQuality : nat
+	velocityRelative : Point2d
+	velocityAbsolute : Point2d
+}
+enumeration ObjectClassifier { UNCLASSIFIED UNKNOWN PEDESTRIAN BIKE MOTORBIKE
+CAR VAN TRUCK } datatype Point2d {
+	xy : nat * nat
+}
+datatype DriverWarning {
+	numberOfObstacles : nat
+	forwardCollision : boolean
+	laneDepartureLeft : boolean
+	laneDepartureRight : boolean
+}
+datatype GpsPathPoint {
+	position : LatLngHeadingFix
+	heading : real
+	auxillary : AuxiliaryDemand
+curvature : real
+maxSpeed : Speed
+}
+enumeration BrakeState { BRAKE_ON BRAKE_OFF BRAKE_DONT_CARE } 
+datatype Auxiliaries {
+	leftIndicator : boolean
+	rightIndicator : boolean
+	soundHorn : boolean
+}
+datatype Pose2DStamped {
+x : real
+	y : real
+	theta : real
+}
+datatype Goal {
+	curvature : real
+	maxSpeed : real
+pose : Pose2DStamped
+}
+
+datatype ConfigGoalGeneration {
+	speed : real
+	lowSpeed : real
+}
+datatype AutoDemandConfig {
+brakeDelay : nat
+maxOffset : Distance
+}
+type Angle
+type Speed
+type Time
+datatype ConfigGamepad {
+	SteeringDeadband : Deadband
+	ThrottleDeadband : Deadband
+	MaximumSpeed : Speed
+}
+type Deadband
+enumeration DemandSource { DEMAND_AUTONOMOUS_CONTROL DEMAND_DRIVE_BY_WIRE DEMAND_GAMEPAD}
+
+datatype ConfigDeadMans {
+    rangeMin : real
+	rangeMax : real
+retrieved : boolean
+}
+type AnalogueValue
+datatype GeofenceRectangle {
+	location1 : LatLngHeadingFix
+	location2 : LatLngHeadingFix
+	maxSpeed : Speed
+}
+
+datatype ConfigAgeChecker {
+	rate : int
+	ageToStartRamp : real
+	ageToStop : real
+	retrieved : boolean
+}
+
+type Ratio
+interface SystemConstants {
+	const ZERO_SPEED : Speed
+	const MINIMIM_SPEED : Speed
+	const MAXIMUM_SPEED : Speed
+const ZERO_STEER : Angle
+}
+type Distance
+type ThreePositionSwitch
+datatype Header {
+	stamp : real
+	seq : nat
+	frameId : string
+}
+datatype SpeedLimit {
+	header : Header
+	speedLimit : real
+}
+datatype ConfigGeofence {
+	fence : Seq( GeofenceRectangle )
+	maxSpeed : Speed
+}
+function SpeedCompareLessThan( a : Speed , b : Speed) : boolean {
+}
+function LocationCompareEqual( a : LatLngHeadingFix , b : LatLngHeadingFix) : boolean {
+}
+function realToSpeed( speedValue : real) : Speed {
+}
+function realToRatio( ratioValue : real) : Ratio {
+}
+
+function natToSpeed( speedValue : nat) : Speed {
+}
+function natToRatio( ratioValue : nat) : Ratio {
+}
+
+function SpeedToReal (speedValue:Speed):real{
+}
+function RealToSpeed (speedValue:real):Speed{
+}

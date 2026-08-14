@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 14-05-2026 19:42:45
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 14-08-2026 15:26:44
 --
 
 -- compileSelfContainedOperation
@@ -35,12 +35,12 @@ exports
 	channel get_obstacleF, set_obstacleF, setL_obstacleF, setR_obstacleF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_obstacleF: core_boolean
+	channel set_EXT_turnF: core_boolean
+	channel set_EXT_resumeF: core_boolean
 	channel set_EXT_d0: core_real
 	channel set_EXT_odometerF: core_boolean
+	channel set_EXT_obstacleF: core_boolean
 	channel set_EXT_stopF: core_boolean
-	channel set_EXT_resumeF: core_boolean
-	channel set_EXT_turnF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -60,12 +60,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_obstacleF,
+		set_EXT_turnF,
+		set_EXT_resumeF,
 		set_EXT_d0,
 		set_EXT_odometerF,
-		set_EXT_stopF,
-		set_EXT_resumeF,
-		set_EXT_turnF
+		set_EXT_obstacleF,
+		set_EXT_stopF
 	|}
 	
 	

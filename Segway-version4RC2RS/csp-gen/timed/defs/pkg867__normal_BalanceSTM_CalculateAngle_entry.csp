@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -52,11 +52,11 @@ exports
 	channel gyroX: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitIntervalCall: core_nat.core_nat
+	channel enableInterruptsCall
+	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call: core_nat
 	channel AnglePIDCall: core_real.core_real
 	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call: core_nat
-	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call: core_nat
-	channel enableInterruptsCall
+	channel waitIntervalCall: core_nat.core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -87,11 +87,11 @@ exports
 		set_EXT_angleOutput, set_angleOutput
 	,	angle,
 		gyroX
-	,	waitIntervalCall,
+	,	enableInterruptsCall,
+		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
 		AnglePIDCall,
 		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call,
-		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
-		enableInterruptsCall
+		waitIntervalCall
 		, share__
 		|}
 	
@@ -288,10 +288,11 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__waitInterval(id__,
+		CALL__enableInterrupts(id__,
+				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget) = EDeadline(enableInterruptsCall,0)
+		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
-					param_m,
-					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
+					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d,0)
 		CALL__AnglePID(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 					param_newError,
@@ -299,11 +300,10 @@ exports
 		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call.param_d,0)
-		CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
+		CALL__waitInterval(id__,
 				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
-					param_d) = EDeadline(deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d,0)
-		CALL__enableInterrupts(id__,
-				    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget) = EDeadline(enableInterruptsCall,0)
+					param_m,
+					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
 		
 		-- END of Operation calls --
 	
@@ -337,7 +337,7 @@ exports
 				 		    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 				 			0
 				 		) ; j_3_19::enter -> SKIP))))
-				 [] dbisim((true)&(internal__!NID_j_3_19 -> SKIP ;  ((share__choice(get_currGyroX?currGyroX -> share__choice(get_currAngle?currAngle -> true&CALL__AnglePID(
+				 [] dbisim((true)&(internal__!NID_j_3_19 -> SKIP ;  ((share__choice(get_currAngle?currAngle -> share__choice(get_currGyroX?currGyroX -> true&CALL__AnglePID(
 				 			id__,
 				 		    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 				 			currAngle,

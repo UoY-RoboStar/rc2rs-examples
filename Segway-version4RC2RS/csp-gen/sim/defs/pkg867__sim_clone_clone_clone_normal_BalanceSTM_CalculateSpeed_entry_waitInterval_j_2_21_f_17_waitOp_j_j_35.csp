@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 15:50:32
 --
 
 -- compileSelfContainedOperation
@@ -35,11 +35,11 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_angleF: core_boolean
 	channel set_EXT_gyroXF: core_boolean
 	channel set_EXT_leftMotorVelocityF: core_boolean
+	channel set_EXT_gyroZF: core_boolean
 	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_angleF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -61,11 +61,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
+		set_EXT_angleF,
 		set_EXT_gyroXF,
 		set_EXT_leftMotorVelocityF,
-		set_EXT_rightMotorVelocityF,
-		set_EXT_angleF
+		set_EXT_gyroZF,
+		set_EXT_rightMotorVelocityF
 	|}
 	
 	datatype ClockSet = 
@@ -76,10 +76,19 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
+	channel get_CLID_f : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_C : core_clock_type 
-	channel get_CLID_f : core_clock_type 
 	--channel increment__
+	
+	CLID_f_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Waiting_clock_type(id__) = 
 		let
@@ -95,15 +104,6 @@ exports
 			max = (clock_type_max(Union({
 	({param_i|param_i <- core_nat}),
 	({param_i|param_i <- core_nat})
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_f_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	{}
 	}))+1)
 		ctype = {0..max}
 	within
@@ -393,29 +393,29 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_gyroXF,setR_leftMotorVelocityF,clockResetR.CLID_C,setR_rightMotorVelocityF,setR_angleF |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_gyroXF <- setL_gyroXF,set_leftMotorVelocityF <- setL_leftMotorVelocityF,clockReset.CLID_C <- clockResetL.CLID_C,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_angleF <- setL_angleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angleF,setR_gyroXF,setR_leftMotorVelocityF,clockResetR.CLID_C,setR_gyroZF,setR_rightMotorVelocityF |} ]] 
+						  [[set_angleF <- setL_angleF,set_gyroXF <- setL_gyroXF,set_leftMotorVelocityF <- setL_leftMotorVelocityF,clockReset.CLID_C <- clockResetL.CLID_C,set_gyroZF <- setL_gyroZF,set_rightMotorVelocityF <- setL_rightMotorVelocityF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
+						 			,setL_angleF
 						 			,setL_gyroXF
 						 			,setL_leftMotorVelocityF
 						 			,clockResetL.CLID_C
+						 			,setL_gyroZF
 						 			,setL_rightMotorVelocityF
-						 			,setL_angleF
-						 			,setR_gyroZF
+						 			,setR_angleF
 						 			 			,setR_gyroXF
 						 			 			,setR_leftMotorVelocityF
 						 			 			,clockResetR.CLID_C
+						 			 			,setR_gyroZF
 						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_angleF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_gyroXF,setL_leftMotorVelocityF,clockResetL.CLID_C,setL_rightMotorVelocityF,setL_angleF |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_gyroXF <- setR_gyroXF,set_leftMotorVelocityF <- setR_leftMotorVelocityF,clockReset.CLID_C <- clockResetR.CLID_C,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_angleF <- setR_angleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angleF,setL_gyroXF,setL_leftMotorVelocityF,clockResetL.CLID_C,setL_gyroZF,setL_rightMotorVelocityF |} ]]
+						  [[set_angleF <- setR_angleF,set_gyroXF <- setR_gyroXF,set_leftMotorVelocityF <- setR_leftMotorVelocityF,clockReset.CLID_C <- clockResetR.CLID_C,set_gyroZF <- setR_gyroZF,set_rightMotorVelocityF <- setR_rightMotorVelocityF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_gyroXF <- set_gyroXF,setL_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetL.CLID_C <- clockReset.CLID_C,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_angleF <- set_angleF]]
-						 [[setR_gyroZF <- set_gyroZF,setR_gyroXF <- set_gyroXF,setR_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetR.CLID_C <- clockReset.CLID_C,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_angleF <- set_angleF]]
+						)[[setL_angleF <- set_angleF,setL_gyroXF <- set_gyroXF,setL_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetL.CLID_C <- clockReset.CLID_C,setL_gyroZF <- set_gyroZF,setL_rightMotorVelocityF <- set_rightMotorVelocityF]]
+						 [[setR_angleF <- set_angleF,setR_gyroXF <- set_gyroXF,setR_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetR.CLID_C <- clockReset.CLID_C,setR_gyroZF <- set_gyroZF,setR_rightMotorVelocityF <- set_rightMotorVelocityF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -491,29 +491,29 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_gyroZF,setR_gyroXF,setR_leftMotorVelocityF,clockResetR.CLID_C,setR_rightMotorVelocityF,setR_angleF |} ]] 
-						  [[set_gyroZF <- setL_gyroZF,set_gyroXF <- setL_gyroXF,set_leftMotorVelocityF <- setL_leftMotorVelocityF,clockReset.CLID_C <- clockResetL.CLID_C,set_rightMotorVelocityF <- setL_rightMotorVelocityF,set_angleF <- setL_angleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angleF,setR_gyroXF,setR_leftMotorVelocityF,clockResetR.CLID_C,setR_gyroZF,setR_rightMotorVelocityF |} ]] 
+						  [[set_angleF <- setL_angleF,set_gyroXF <- setL_gyroXF,set_leftMotorVelocityF <- setL_leftMotorVelocityF,clockReset.CLID_C <- clockResetL.CLID_C,set_gyroZF <- setL_gyroZF,set_rightMotorVelocityF <- setL_rightMotorVelocityF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_gyroZF
+						 			,setL_angleF
 						 			,setL_gyroXF
 						 			,setL_leftMotorVelocityF
 						 			,clockResetL.CLID_C
+						 			,setL_gyroZF
 						 			,setL_rightMotorVelocityF
-						 			,setL_angleF
-						 			,setR_gyroZF
+						 			,setR_angleF
 						 			 			,setR_gyroXF
 						 			 			,setR_leftMotorVelocityF
 						 			 			,clockResetR.CLID_C
+						 			 			,setR_gyroZF
 						 			 			,setR_rightMotorVelocityF
-						 			 			,setR_angleF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_gyroZF,setL_gyroXF,setL_leftMotorVelocityF,clockResetL.CLID_C,setL_rightMotorVelocityF,setL_angleF |} ]]
-						  [[set_gyroZF <- setR_gyroZF,set_gyroXF <- setR_gyroXF,set_leftMotorVelocityF <- setR_leftMotorVelocityF,clockReset.CLID_C <- clockResetR.CLID_C,set_rightMotorVelocityF <- setR_rightMotorVelocityF,set_angleF <- setR_angleF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angleF,setL_gyroXF,setL_leftMotorVelocityF,clockResetL.CLID_C,setL_gyroZF,setL_rightMotorVelocityF |} ]]
+						  [[set_angleF <- setR_angleF,set_gyroXF <- setR_gyroXF,set_leftMotorVelocityF <- setR_leftMotorVelocityF,clockReset.CLID_C <- clockResetR.CLID_C,set_gyroZF <- setR_gyroZF,set_rightMotorVelocityF <- setR_rightMotorVelocityF]]
 						 )
-						)[[setL_gyroZF <- set_gyroZF,setL_gyroXF <- set_gyroXF,setL_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetL.CLID_C <- clockReset.CLID_C,setL_rightMotorVelocityF <- set_rightMotorVelocityF,setL_angleF <- set_angleF]]
-						 [[setR_gyroZF <- set_gyroZF,setR_gyroXF <- set_gyroXF,setR_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetR.CLID_C <- clockReset.CLID_C,setR_rightMotorVelocityF <- set_rightMotorVelocityF,setR_angleF <- set_angleF]]
+						)[[setL_angleF <- set_angleF,setL_gyroXF <- set_gyroXF,setL_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetL.CLID_C <- clockReset.CLID_C,setL_gyroZF <- set_gyroZF,setL_rightMotorVelocityF <- set_rightMotorVelocityF]]
+						 [[setR_angleF <- set_angleF,setR_gyroXF <- set_gyroXF,setR_leftMotorVelocityF <- set_leftMotorVelocityF,clockResetR.CLID_C <- clockReset.CLID_C,setR_gyroZF <- set_gyroZF,setR_rightMotorVelocityF <- set_rightMotorVelocityF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 15:50:32
 --
 
 -- compileSelfContainedOperation
@@ -39,23 +39,23 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_angleF: core_boolean
 	channel set_EXT_gyroXF: core_boolean
-	channel set_EXT_leftMotorVelocityF: core_boolean
 	channel set_EXT_speedCount: core_nat
+	channel set_EXT_leftMotorVelocityF: core_boolean
+	channel set_EXT_gyroZF: core_boolean
 	channel set_EXT_rotationCount: core_nat
 	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_angleF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call
-	channel clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18Call: core_nat
 	channel clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15Call
+	channel clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18Call: core_nat
 	channel clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11Call
+	channel clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call
 	
 	enterSS = {|
 	i::enter,
@@ -72,13 +72,13 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
+		set_EXT_angleF,
 		set_EXT_gyroXF,
-		set_EXT_leftMotorVelocityF,
 		set_EXT_speedCount,
+		set_EXT_leftMotorVelocityF,
+		set_EXT_gyroZF,
 		set_EXT_rotationCount,
-		set_EXT_rightMotorVelocityF,
-		set_EXT_angleF
+		set_EXT_rightMotorVelocityF
 	|}
 	
 	datatype ClockSet = 
@@ -89,11 +89,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_f : core_clock_type 
 	channel get_CLID_loopTimer : core_clock_type 
+	channel get_CLID_f : core_clock_type 
 	--channel increment__
 	
-	CLID_f_clock_type(id__,
+	CLID_loopTimer_clock_type(id__,
 			          const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = 
 		let
 			max = (clock_type_max(Union({
@@ -102,7 +102,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_loopTimer_clock_type(id__,
+	CLID_f_clock_type(id__,
 			          const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = 
 		let
 			max = (clock_type_max(Union({
@@ -130,10 +130,10 @@ exports
 	
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
-	,	clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call,
+	,	clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15Call,
 		clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18Call,
-		clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15Call,
-		clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11Call
+		clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11Call,
+		clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call
 		, share__
 		|}
 	
@@ -285,15 +285,15 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8(id__,
-				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call,0)
+		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15(id__,
+				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15Call,0)
 		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay,
 					param_i) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_waitOp_j_3_9_j_2_16_18Call.param_i,0)
-		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15(id__,
-				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_i_t_op_i_j_4_3_15Call,0)
 		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_2_16_t_2_16_op_j_2_16_f_11Call,0)
+		CALL__clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8(id__,
+				    const_pkg867__sim_clone_normal_BalanceSTM_Initialisation_entry_startupDelay) = EDeadline(clone_clone_normal_BalanceSTM_Initialisation_entry_normal_BalanceSTM_Initialisation_entry_j_4_3_t_4_3_op_j_4_3_j_3_9_8Call,0)
 		
 		-- END of Operation calls --
 	

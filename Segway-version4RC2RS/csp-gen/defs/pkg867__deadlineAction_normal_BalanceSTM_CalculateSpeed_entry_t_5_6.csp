@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel rightMotorVelocity: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel deadlineCheckCall: core_nat
 	channel normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call
+	channel deadlineCheckCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -69,8 +69,8 @@ exports
 		terminate
 	,	set_EXT_currRightVel, set_currRightVel
 	,	rightMotorVelocity
-	,	deadlineCheckCall,
-		normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call
+	,	normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call,
+		deadlineCheckCall
 		, share__
 		|}
 	
@@ -338,21 +338,21 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currRightVel,setR_g |} ]] 
-				  [[set_currRightVel <- setL_currRightVel,set_g <- setL_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currRightVel |} ]] 
+				  [[set_g <- setL_g,set_currRightVel <- setL_currRightVel]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currRightVel
 				 			,setL_g
-				 			,setR_currRightVel
-				 			 			,setR_g
+				 			,setL_currRightVel
+				 			,setR_g
+				 			 			,setR_currRightVel
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currRightVel,setL_g |} ]]
-				  [[set_currRightVel <- setR_currRightVel,set_g <- setR_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currRightVel |} ]]
+				  [[set_g <- setR_g,set_currRightVel <- setR_currRightVel]]
 				 )
-				)[[setL_currRightVel <- set_currRightVel,setL_g <- set_g]]
-				 [[setR_currRightVel <- set_currRightVel,setR_g <- set_g]]
+				)[[setL_g <- set_g,setL_currRightVel <- set_currRightVel]]
+				 [[setR_g <- set_g,setR_currRightVel <- set_currRightVel]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -430,21 +430,21 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_currRightVel,setR_g |} ]] 
-				  [[set_currRightVel <- setL_currRightVel,set_g <- setL_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currRightVel |} ]] 
+				  [[set_g <- setL_g,set_currRightVel <- setL_currRightVel]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_currRightVel
 				 			,setL_g
-				 			,setR_currRightVel
-				 			 			,setR_g
+				 			,setL_currRightVel
+				 			,setR_g
+				 			 			,setR_currRightVel
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_currRightVel,setL_g |} ]]
-				  [[set_currRightVel <- setR_currRightVel,set_g <- setR_g]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currRightVel |} ]]
+				  [[set_g <- setR_g,set_currRightVel <- setR_currRightVel]]
 				 )
-				)[[setL_currRightVel <- set_currRightVel,setL_g <- set_g]]
-				 [[setR_currRightVel <- set_currRightVel,setR_g <- set_g]]
+				)[[setL_g <- set_g,setL_currRightVel <- set_currRightVel]]
+				 [[setR_g <- set_g,setR_currRightVel <- set_currRightVel]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -512,9 +512,9 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call -> SKIP
 	CALL__deadlineCheck(id__,
 				param_d) 	= deadlineCheckCall.param_d -> SKIP
-	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call -> SKIP
 	
 	-- END of Operation calls --
 	

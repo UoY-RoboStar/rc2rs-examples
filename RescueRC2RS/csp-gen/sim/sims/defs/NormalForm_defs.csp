@@ -8,70 +8,70 @@ exports
 	
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
-	InputEvents = {|pkg213_main::Rescue::switchOn.in,pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in|}
-	OutputEvents = {|pkg213_main::Rescue::takeoff.out,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::land.out|}
-	ExternalEvents = {|pkg213_main::Rescue::switchOn.in,pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in
-					   ,pkg213_main::Rescue::takeoff.out,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::land.out|}
+	InputEvents = {|pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in,pkg213_main::Rescue::switchOn.in|}
+	OutputEvents = {|pkg213_main::Rescue::land.out,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::takeoff.out|}
+	ExternalEvents = {|pkg213_main::Rescue::found.in,pkg213_main::Rescue::origin.in,pkg213_main::Rescue::switchOn.in
+					   ,pkg213_main::Rescue::land.out,pkg213_main::Rescue::moveCall,pkg213_main::Rescue::turnBackCall,pkg213_main::Rescue::takeoff.out|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
-	datatype RegisterDataInput = i_switchOn.Bool
-		| i_found.Bool
+	datatype RegisterDataInput = i_found.Bool
 		| i_origin.Bool
+		| i_switchOn.Bool
 	
-	datatype RegisterDataOutput = o_takeoff
-		| o_turnBack
+	datatype RegisterDataOutput = o_land
 		| o_move.core_nat
-		| o_land
+		| o_turnBack
+		| o_takeoff
 	
 	
 	nametype RegisterOutputs = {|
-	o_takeoff,
-	o_turnBack,
+	o_land,
 	o_move,
-	o_land|}
+	o_turnBack,
+	o_takeoff|}
 	
 	nametype RegisterInputs = {|
-	i_switchOn,
 	i_found,
-	i_origin|}
+	i_origin,
+	i_switchOn|}
 	
-	datatype COutputEvents = COutput_takeoff
-		| COutput_turnBack
+	datatype COutputEvents = COutput_land
 		| COutput_move
-		| COutput_land
+		| COutput_turnBack
+		| COutput_takeoff
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
 	
 	A1 =
 	let
-		A1_switchOn = registerRead.i_switchOn?b__ ->
-								if b__ then (pkg213_main::Rescue::switchOn.in -> A1_switchOn [] A1_switchOn)
-									   else A1_switchOn
 		A1_found = registerRead.i_found?b__ ->
 								if b__ then (pkg213_main::Rescue::found.in -> A1_found [] A1_found)
 									   else A1_found
 		A1_origin = registerRead.i_origin?b__ ->
 								if b__ then (pkg213_main::Rescue::origin.in -> A1_origin [] A1_origin)
 									   else A1_origin
+		A1_switchOn = registerRead.i_switchOn?b__ ->
+								if b__ then (pkg213_main::Rescue::switchOn.in -> A1_switchOn [] A1_switchOn)
+									   else A1_switchOn
 		
 														
 	within
-			     	A1_switchOn
-			     	 |||
 			     	A1_found
 			     	 |||
 			     	A1_origin
+			     	 |||
+			     	A1_switchOn
 							
 	TA1 = A1 /\ terminate -> SKIP 
 	
 	TA2(cycle_NormalForm_NormalForm) = let
 			
-			read(COutput_takeoff) = pkg213_main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
-			read(COutput_turnBack) = pkg213_main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
-			read(COutput_move) = pkg213_main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
 			read(COutput_land) = pkg213_main::Rescue::land.out -> registerWrite.o_land -> SKIP
+			read(COutput_move) = pkg213_main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_turnBack) = pkg213_main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
+			read(COutput_takeoff) = pkg213_main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))
@@ -81,11 +81,11 @@ exports
 		  	A2(COutputEvents)
 					
 	TA3(cycle_NormalForm_NormalForm) = let
-			A3 = ((registerRead.i_switchOn?x__ -> SKIP)
+			A3 = ((registerRead.i_found?x__ -> SKIP)
 				|||
-			(registerRead.i_found?x__ -> SKIP)
+			(registerRead.i_origin?x__ -> SKIP)
 				|||
-			(registerRead.i_origin?x__ -> SKIP));
+			(registerRead.i_switchOn?x__ -> SKIP));
 				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
 		  within
 		  	A3

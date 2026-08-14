@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "lutz_LutzState_LutzState.csp"
+include "state_timed_defs.csp"
+include "lutz_LutzState_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate lutz_LutzState_LutzState
+P_lutz_LutzState_LutzState = let
+	id__ = 0
+	
+	
+	
+within
+	lutz_LutzState_LutzState::O__(
+		id__
+	)
+assert P_lutz_LutzState_LutzState :[deadlock-free]	
+assert P_lutz_LutzState_LutzState;RUN({r__}) :[deadlock-free]
+assert P_lutz_LutzState_LutzState :[deterministic]
+assert P_lutz_LutzState_LutzState :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_lutz_LutzState_LutzState[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_lutz_LutzState_LutzState

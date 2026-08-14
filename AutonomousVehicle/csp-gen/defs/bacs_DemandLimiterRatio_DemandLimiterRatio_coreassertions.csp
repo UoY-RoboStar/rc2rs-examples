@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacs_DemandLimiterRatio_DemandLimiterRatio.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "bacs_DemandLimiterRatio_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate bacs_DemandLimiterRatio_DemandLimiterRatio
+P_bacs_DemandLimiterRatio_DemandLimiterRatio = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_DemandLimiterRatio_DemandLimiterRatio::O__(
+		id__,
+		const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+	)
+assert P_bacs_DemandLimiterRatio_DemandLimiterRatio :[deadlock-free]	
+assert P_bacs_DemandLimiterRatio_DemandLimiterRatio;RUN({r__}) :[deadlock-free]
+assert P_bacs_DemandLimiterRatio_DemandLimiterRatio :[deterministic]
+assert P_bacs_DemandLimiterRatio_DemandLimiterRatio :[divergence-free]

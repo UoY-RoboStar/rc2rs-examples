@@ -1,0 +1,59 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "function_toolkit_defs.csp"
+include "lutz_VehicleControl_defs.csp"
+include "relation_toolkit_defs.csp"
+include "bacs_AgeChecker_defs.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "state_timed_defs.csp"
+include "lutz_SessionControl_defs.csp"
+include "autonomous_vehicle_system_defs.csp"
+include "lutz_LutzState_defs.csp"
+include "lutz_FaultDetection_defs.csp"
+include "../instantiations.csp"
+include "lutz_defs.csp"
+include "data_logging_defs.csp"
+include "set_toolkit_defs.csp"
+include "core_timed_defs.csp"
+include "bacs_AgeChecker_AgeChecker.csp"
+include "sequence_toolkit_defs.csp"
+include "lutz_DetermineUserInstruction_defs.csp"
+include "utility_defs.csp"
+include "robochart_defs.csp"
+
+transparent wbisim
+channel r__
+-- generate bacs_AgeChecker_AgeChecker
+P_bacs_AgeChecker_AgeChecker = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_AgeChecker_AgeChecker::O__(
+		id__,
+		const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+		const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+		const_bacs_AgeChecker_AgeChecker_RATE,
+		const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+		const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+		const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+		const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+	)
+assert P_bacs_AgeChecker_AgeChecker :[deadlock-free]	
+assert P_bacs_AgeChecker_AgeChecker;RUN({r__}) :[deadlock-free]
+assert P_bacs_AgeChecker_AgeChecker :[deterministic]
+assert P_bacs_AgeChecker_AgeChecker :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_AgeChecker_AgeChecker[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_AgeChecker_AgeChecker

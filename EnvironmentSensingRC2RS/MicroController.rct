@@ -1,24 +1,26 @@
-import EnvironmentalSensing::*
+package MicroControllerPkg
+import main::*
+
+ 
 controller MicroController {
 	
-	
+	 
 	
 	
 	event turn : real
 	
-	event obstacle : Loc
+	event obstacle : Loc 
 	event flag
 	event stop
 	
 	event resume
-	event odometer : real
+	event odometer : real 
 	requires Operations
-sref stm_ref0 = Movement
+sref stm_ref0 = MovementPkg::Movement
 	
 	
-	
-	
-	
+	  
+
 	
 connection MicroController on turn to stm_ref0 on turn
 	

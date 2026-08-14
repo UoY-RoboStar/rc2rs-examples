@@ -1,0 +1,254 @@
+package bacs
+import autonomous_vehicle_system::*  
+import sequence_toolkit::* 
+import bacs::AgeChecker::*
+import bacs::AuxiliarySwitch::*
+import bacs::AutoDemand::*
+import bacs::DeadMansHandle::*
+import bacs::ControlSwitch::*
+import bacs::TurnigyJoy::*
+import bacs::Geofence::*
+import bacs::PathReplay::*
+import bacs::GpsToLocal::*
+import bacs::DemandLimiterSpeed::*
+import bacs::DemandLimiterRatio::*
+
+operation SetOrigin( newOrigin : AutoDemandConfig) {
+}
+import utility::*
+
+controller B_acs {
+
+	event rc_in : Gamepad
+	
+	
+event deadmanshandle : DeadMansHandleReading
+	
+event latlng : LatLngHeadingFix
+event route : Seq( GpsPathPoint )
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	event output_pod_demand : PodDemand
+	
+	event auxiliary_demand : AuxiliaryDemand
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	sref stm_ref3 = DemandLimiterSpeed
+
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	connection B_acs on deadmanshandle to stm_ref2 on deadmanshandle
+
+connection stm_ref4 on resultantDemand to B_acs on auxiliary_demand (
+	_async )
+sref stm_ref2 = DeadMansHandle
+
+	
+	
+
+	
+	connection stm_ref5 on turnigy_auxiliary_demand to stm_ref4 on turnigy_pod_demand ( _async )
+sref stm_ref4 = AuxiliarySwitch
+
+	
+	
+
+event pod_state : PodState
+	
+	
+
+connection B_acs on rc_in to stm_ref5 on rc_in
+	
+	
+connection B_acs on configGoal to stm_ref1 on config
+
+connection B_acs on route to stm_ref1 on route
+	
+	
+	
+	
+connection stm_ref1 on auxiliary_demand to stm_ref4 on auxiliary_demand ( _async
+	)
+sref stm_ref5 = TurnigyJoy
+
+connection stm_ref0 on location2 to stm_ref1 on location ( _async )
+connection B_acs on latlng to stm_ref10 on locationIn
+sref stm_ref1 = PathReplay
+
+	
+	connection stm_ref5 on turnigy_pod_demand to stm_ref6 on turnigy_pod_demand ( _async )
+connection stm_ref7 on demand to stm_ref6 on demand ( _async )
+sref stm_ref0 = GpsToLocal
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	connection stm_ref0 on location1 to stm_ref7 on location ( _async )
+sref stm_ref6 = ControlSwitch
+
+
+
+
+	
+	
+	
+	connection B_acs on pod_state to stm_ref7 on pod_state
+
+event configGoal : ConfigGoalGeneration
+sref stm_ref7 = AutoDemand
+
+	connection stm_ref8 on geofence_limit to stm_ref3 on geofence_limit ( _async )
+connection stm_ref6 on pod_demand to stm_ref3 on pod_demand ( _async )
+	connection stm_ref3 on pod_demand_geo_limited to stm_ref9 on pod_demand_geo_limited ( _async )
+	connection stm_ref9 on pod_demand_limited to stm_ref11 on pod_demand_limited ( _async )
+sref stm_ref8 = Geofence
+	sref stm_ref9 = DemandLimiterRatio
+
+
+
+
+	
+	
+	
+	connection stm_ref10 on locationOut2 to stm_ref0 on latlng ( _async )
+	connection stm_ref10 on locationOut1 to stm_ref8 on latlng
+( _async )
+connection stm_ref1 on goal to stm_ref7 on goal ( _async )
+	connection stm_ref1 on routeOrigin to stm_ref0 on origin ( _async )
+event configController : ConfigGamepad
+	event configAutonomousDemand : AutoDemandConfig
+	
+	event configGeofence : ConfigGeofence
+	event configDeadMansController : ConfigDeadMans
+	connection B_acs on configAutonomousDemand to stm_ref7 on
+	configuration
+	connection B_acs on configController to stm_ref5 on config
+	connection B_acs on configDeadMansController to stm_ref2 on
+	configuration
+	
+connection stm_ref11 on pod_demand_age_checked to stm_ref12 on pod_demand_age_checked
+	
+( _async )
+	event configAgeCheck : ConfigAgeChecker
+	connection B_acs on configAgeCheck to stm_ref11 on config
+uses SystemConstants
+sref stm_ref10 = LocationDistributor
+	connection stm_ref2 on speed_limit to stm_ref9 on speed_limit ( _async )
+sref stm_ref11 = AgeChecker
+	connection B_acs on configGeofence to stm_ref8 on configuration
+event configBrakeTime : real
+	sref stm_ref12 = bacs::Brake
+	connection stm_ref12 on output_pod_demand to B_acs on output_pod_demand (
+	_async )
+	connection B_acs on configBrakeTime to stm_ref12 on configBrakeTime ( _async )
+}
+function deadManHandlePositionToSpeedLimit( handlePosition : nat) : nat {
+}
+function ConvertLocationToLocalLocation( location : LatLngHeadingFix, origin:LatLngHeadingFix) : Pose2DStamped {
+}
+function ConvertPointRouteToOriginPoint( point : GpsPathPoint) : GpsPathPoint {
+}
+function SortRouteToCurrentLocation( location : Pose2DStamped , route : Seq(
+GpsPathPoint )) : Seq( GpsPathPoint ) {
+}
+function ConvertPointRouteToGoal( route : GpsPathPoint) : Goal {
+}
+function DemandGoalReached( currentLocation : Pose2DStamped , goalPoint : GpsPathPoint
+, config : ConfigGoalGeneration) : boolean {
+}
+function CalculateSteer(  config : AutoDemandConfig , objective : Goal , position :
+Pose2DStamped) : Angle {
+}
+function CalculateSpeed( config : AutoDemandConfig , objective : Goal , steerDemand
+: Angle) : Speed {
+}
+function PathGoalReached(  objective : Goal , location : Pose2DStamped , config
+: AutoDemandConfig) : boolean {
+}
+function ZeroSpeed() : Speed {
+}
+function ZeroSteering() : Angle {
+}
+function VehicleStopped( vehicleState : PodState , demand : PodDemand
+, objective : Goal) : boolean {
+}
+function ConvertPointRouteToAuxiliaryDemand( route : GpsPathPoint) :
+AuxiliaryDemand {
+}
+function GamepadCalculateSpeed( gamepadValues : Gamepad, config:ConfigGamepad) : Speed {
+}
+function GamepadCalculateSteer( gamepadValues : Gamepad, config:ConfigGamepad) : Angle {
+}
+function GamepadCalculateAuxiliaryDemand( gamepadValues : Gamepad, config:ConfigGamepad) :
+AuxiliaryDemand {
+}
+function ZeroVehicleDemand() : PodDemand {
+}
+function DeadmanPositionToRatio( position : DeadMansHandleReading , config :
+ConfigDeadMans) : Ratio {
+}
+function GamepadGetAbdication( gamepadValues : Gamepad) : boolean {
+}
+function GamepadGetAutonomousRequest( gamepadValues : Gamepad) : boolean {
+}
+function CombineAuxiliaryDemands( demands : Seq( AuxiliaryDemand )) :
+AuxiliaryDemand {
+}
+function TimeCompareLessThan( a : Time , b : Time) : boolean {
+}
+function TimeCompareGreaterThan( a : Time , b : Time) : boolean {
+}
+function TimeCompareGreaterThanEqual( a : Time , b : Time) : boolean {
+}
+function TimeCompareLessThanEqual( a : Time , b : Time) : boolean {
+}
+function TimeCompareEqual( a : Time , b : Time) : boolean {
+}
+function TimeSubtract( a : Time , b : Time) : Time {
+}

@@ -1,0 +1,39 @@
+package 
+utility
+
+datatype VehicleStatus {
+	speedKilometersPerHour : Speed
+}controller StatusDistributor {
+	event statusIn : boolean
+	event statusOut1 : boolean
+	event statusOut2 : boolean
+	stm distribute {
+		var status : boolean
+		event statusIn : boolean
+		event statusOut1 : boolean
+		event statusOut2 : boolean
+		state distribute {
+			entry statusOut1 ! status ; statusOut2 ! status
+		}
+		initial i0
+		state Initialise {
+		}
+		transition t0 {
+			from distribute
+			to distribute
+			trigger statusIn ? status
+		}
+		transition t1 {
+			from Initialise
+			to distribute
+			trigger statusIn ? status
+		}
+		transition t2 {
+			from i0
+			to Initialise
+		}
+	}
+	connection StatusDistributor on statusIn to distribute on statusIn
+	connection distribute on statusOut1 to StatusDistributor on statusOut1
+	connection distribute on statusOut2 to StatusDistributor on statusOut2
+}

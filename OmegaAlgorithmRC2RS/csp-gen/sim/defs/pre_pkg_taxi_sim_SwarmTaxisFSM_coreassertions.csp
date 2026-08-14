@@ -1,0 +1,37 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 31-07-2026 17:43:09
+--
+
+include "pre_pkg_taxi_sim_SwarmTaxisFSM.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_taxi_sim_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_taxi_sim_SwarmTaxisFSM
+P_pre_pkg_taxi_sim_SwarmTaxisFSM = let
+	cycle_pre_pkg_taxi_sim_SwarmTaxisFSM_SwarmTaxisFSM = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg_taxi_sim_SwarmTaxisFSM::O__(
+		id__,
+		const_pre_pkg_taxi_sim_SwarmTaxisFSM_MoveForwardVal
+	)
+assert P_pre_pkg_taxi_sim_SwarmTaxisFSM :[deadlock-free]	
+assert P_pre_pkg_taxi_sim_SwarmTaxisFSM;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_taxi_sim_SwarmTaxisFSM :[deterministic]
+assert P_pre_pkg_taxi_sim_SwarmTaxisFSM :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_taxi_sim_SwarmTaxisFSM[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_taxi_sim_SwarmTaxisFSM

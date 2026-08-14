@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -57,24 +57,24 @@ exports
 	channel endGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel pickCall
-	channel clone_normal_AppleHarvestControl_j0_t7_opCall
-	channel dropCall: main_JointsPos
-	channel clone_normal_AppleHarvestControl_Prepare_entryCall
-	channel clone_normal_AppleHarvestControl_Prepare_t1_dopCall
-	channel clone_normal_AppleHarvestControl_LocalizeFruit_entryCall
-	channel NearestNeighbourCall
+	channel clone_normal_AppleHarvestControl_GetApple_entryCall
 	channel clone_NearestNeighbourCall
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall
-	channel hideArmCall
-	channel goHomeCall
+	channel clone_normal_AppleHarvestControl_GetApple_exitCall
+	channel pickCall
+	channel CHTBACall: main_Image
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_opCall
 	channel graspCall: main_JointsPos
-	channel CHTBACall: main_Image
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_opCall
 	channel moveCall: main_JointsPos
-	channel clone_normal_AppleHarvestControl_GetApple_entryCall
-	channel clone_normal_AppleHarvestControl_GetApple_exitCall
+	channel clone_normal_AppleHarvestControl_LocalizeFruit_entryCall
+	channel clone_normal_AppleHarvestControl_Prepare_t1_dopCall
+	channel goHomeCall
+	channel clone_normal_AppleHarvestControl_Prepare_entryCall
+	channel hideArmCall
+	channel clone_normal_AppleHarvestControl_j0_t7_opCall
+	channel NearestNeighbourCall
+	channel dropCall: main_JointsPos
 	
 	enterSS = {|
 	i0::enter,
@@ -107,24 +107,24 @@ exports
 		endIKSolver,
 		startGoHome,
 		endGoHome
-	,	pickCall,
-		clone_normal_AppleHarvestControl_j0_t7_opCall,
-		dropCall,
-		clone_normal_AppleHarvestControl_Prepare_entryCall,
-		clone_normal_AppleHarvestControl_Prepare_t1_dopCall,
-		clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,
-		NearestNeighbourCall,
+	,	clone_normal_AppleHarvestControl_GetApple_entryCall,
 		clone_NearestNeighbourCall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall,
-		hideArmCall,
-		goHomeCall,
+		clone_normal_AppleHarvestControl_GetApple_exitCall,
+		pickCall,
+		CHTBACall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_opCall,
 		graspCall,
-		CHTBACall,
 		clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_opCall,
 		moveCall,
-		clone_normal_AppleHarvestControl_GetApple_entryCall,
-		clone_normal_AppleHarvestControl_GetApple_exitCall
+		clone_normal_AppleHarvestControl_LocalizeFruit_entryCall,
+		clone_normal_AppleHarvestControl_Prepare_t1_dopCall,
+		goHomeCall,
+		clone_normal_AppleHarvestControl_Prepare_entryCall,
+		hideArmCall,
+		clone_normal_AppleHarvestControl_j0_t7_opCall,
+		NearestNeighbourCall,
+		dropCall
 		|}
 
 	-- Nodes --
@@ -452,27 +452,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -593,27 +593,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1023,27 +1023,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1144,27 +1144,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1465,27 +1465,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1586,27 +1586,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1907,27 +1907,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2028,27 +2028,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2349,27 +2349,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2470,27 +2470,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2791,27 +2791,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2912,27 +2912,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3233,27 +3233,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\union(enteredSS,{terminate}) 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3354,27 +3354,27 @@ exports
 					 	]]
 					 )
 					 )
-					  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-					  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+					  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-					 			,setL_localized
 					 			,setL_apples
-					 			,setL_nextApple
 					 			,setL_img
+					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
-					 			,setR_localized
-					 			 			,setR_apples
-					 			 			,setR_nextApple
+					 			,setR_apples
 					 			 			,setR_img
+					 			 			,setR_nextApple
+					 			 			,setR_localized
 					 			 			,setR_positions
 					 			|}) |]
 					 ((During)
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-					  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+					  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 					 )
-					)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-					 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+					)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+					 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 					)\{terminate} 
 				)
 				During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3685,27 +3685,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3897,27 +3897,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4265,27 +4265,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4396,27 +4396,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4737,27 +4737,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4878,27 +4878,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5244,27 +5244,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5365,27 +5365,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_localized,setR_apples,setR_nextApple,setR_img,setR_positions |} ]] 
-				  [[set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_img <- setL_img,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_apples,setR_img,setR_nextApple,setR_localized,setR_positions |} ]] 
+				  [[set_apples <- setL_apples,set_img <- setL_img,set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_localized
 				 			,setL_apples
-				 			,setL_nextApple
 				 			,setL_img
+				 			,setL_nextApple
+				 			,setL_localized
 				 			,setL_positions
-				 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setR_apples
 				 			 			,setR_img
+				 			 			,setR_nextApple
+				 			 			,setR_localized
 				 			 			,setR_positions
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_apples,setL_nextApple,setL_img,setL_positions |} ]]
-				  [[set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_img <- setR_img,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_apples,setL_img,setL_nextApple,setL_localized,setL_positions |} ]]
+				  [[set_apples <- setR_apples,set_img <- setR_img,set_nextApple <- setR_nextApple,set_localized <- setR_localized,set_positions <- setR_positions]]
 				 )
-				)[[setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_img <- set_img,setL_positions <- set_positions]]
-				 [[setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_img <- set_img,setR_positions <- set_positions]]
+				)[[setL_apples <- set_apples,setL_img <- set_img,setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
+				 [[setR_apples <- set_apples,setR_img <- set_img,setR_nextApple <- set_nextApple,setR_localized <- set_localized,setR_positions <- set_positions]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -5428,7 +5428,7 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__pick(id__,
+	CALL__clone_normal_AppleHarvestControl_GetApple_entry(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
 			    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5436,62 +5436,7 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickTime,
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= pickCall -> SKIP
-	CALL__clone_normal_AppleHarvestControl_j0_t7_op(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_j0_t7_opCall -> SKIP
-	CALL__drop(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos,
-				param_jp) 	= dropCall.param_jp -> SKIP
-	CALL__clone_normal_AppleHarvestControl_Prepare_entry(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_Prepare_entryCall -> SKIP
-	CALL__clone_normal_AppleHarvestControl_Prepare_t1_dop(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_Prepare_t1_dopCall -> SKIP
-	CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_LocalizeFruit_entryCall -> SKIP
-	CALL__NearestNeighbour(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= NearestNeighbourCall -> SKIP
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_GetApple_entryCall -> SKIP
 	CALL__clone_NearestNeighbour(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -5510,7 +5455,7 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
 			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_LocalizeFruit_Start_t1_opCall -> SKIP
-	CALL__hideArm(id__,
+	CALL__clone_normal_AppleHarvestControl_GetApple_exit(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
 			    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5518,8 +5463,8 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickTime,
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
-	CALL__goHome(id__,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_GetApple_exitCall -> SKIP
+	CALL__pick(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
 			    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5527,7 +5472,17 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickTime,
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= goHomeCall -> SKIP
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= pickCall -> SKIP
+	CALL__CHTBA(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos,
+				param_img) 	= CHTBACall.param_img -> SKIP
 	CALL__clone_normal_AppleHarvestControl_LocalizeFruit_Done_t7_op(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -5547,16 +5502,6 @@ exports
 			    const_pkg727_main_AppleHarvestControl_homePos,
 			    const_pkg727_main_AppleHarvestControl_storagePos,
 				param_jp) 	= graspCall.param_jp -> SKIP
-	CALL__CHTBA(id__,
-			    const_pkg727_main_AppleHarvestControl_hideTime,
-			    const_pkg727_main_AppleHarvestControl_approachTime,
-			    const_pkg727_main_AppleHarvestControl_graspTime,
-			    const_pkg727_main_AppleHarvestControl_dropTime,
-			    const_pkg727_main_AppleHarvestControl_pickTime,
-			    const_pkg727_main_AppleHarvestControl_pickDeadl,
-			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos,
-				param_img) 	= CHTBACall.param_img -> SKIP
 	CALL__clone_normal_AppleHarvestControl_LocalizeFruit_Solving_t2_op(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
@@ -5576,7 +5521,7 @@ exports
 			    const_pkg727_main_AppleHarvestControl_homePos,
 			    const_pkg727_main_AppleHarvestControl_storagePos,
 				param_jp) 	= moveCall.param_jp -> SKIP
-	CALL__clone_normal_AppleHarvestControl_GetApple_entry(id__,
+	CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
 			    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5584,8 +5529,8 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickTime,
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_GetApple_entryCall -> SKIP
-	CALL__clone_normal_AppleHarvestControl_GetApple_exit(id__,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_LocalizeFruit_entryCall -> SKIP
+	CALL__clone_normal_AppleHarvestControl_Prepare_t1_dop(id__,
 			    const_pkg727_main_AppleHarvestControl_hideTime,
 			    const_pkg727_main_AppleHarvestControl_approachTime,
 			    const_pkg727_main_AppleHarvestControl_graspTime,
@@ -5593,7 +5538,62 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickTime,
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
-			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_GetApple_exitCall -> SKIP
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_Prepare_t1_dopCall -> SKIP
+	CALL__goHome(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= goHomeCall -> SKIP
+	CALL__clone_normal_AppleHarvestControl_Prepare_entry(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_Prepare_entryCall -> SKIP
+	CALL__hideArm(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
+	CALL__clone_normal_AppleHarvestControl_j0_t7_op(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= clone_normal_AppleHarvestControl_j0_t7_opCall -> SKIP
+	CALL__NearestNeighbour(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos) 	= NearestNeighbourCall -> SKIP
+	CALL__drop(id__,
+			    const_pkg727_main_AppleHarvestControl_hideTime,
+			    const_pkg727_main_AppleHarvestControl_approachTime,
+			    const_pkg727_main_AppleHarvestControl_graspTime,
+			    const_pkg727_main_AppleHarvestControl_dropTime,
+			    const_pkg727_main_AppleHarvestControl_pickTime,
+			    const_pkg727_main_AppleHarvestControl_pickDeadl,
+			    const_pkg727_main_AppleHarvestControl_homePos,
+			    const_pkg727_main_AppleHarvestControl_storagePos,
+				param_jp) 	= dropCall.param_jp -> SKIP
 	
 	-- END of Operation calls --
 	
@@ -5684,7 +5684,7 @@ exports
 			    const_pkg727_main_AppleHarvestControl_pickDeadl,
 			    const_pkg727_main_AppleHarvestControl_homePos,
 			    const_pkg727_main_AppleHarvestControl_storagePos) = ((let
-		Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> (
+		Trans = share__choice(get_nextApple?nextApple -> get_localized?localized -> get_positions?positions -> (
 			((share__ -> SKIP
 			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 			 	 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -5842,11 +5842,11 @@ exports
 					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-					  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+					  [[set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-					 			,setL_localized
 					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
 					 			,setR_img
 					 			|}) |]
@@ -5859,10 +5859,10 @@ exports
 					 		    const_pkg727_main_AppleHarvestControl_pickDeadl,
 					 		    const_pkg727_main_AppleHarvestControl_homePos,
 					 		    const_pkg727_main_AppleHarvestControl_storagePos))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_localized,setL_positions |} ]]
 					  [[set_img <- setR_img]]
 					 )
-					)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+					)[[setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
 					 [[setR_img <- set_img]]
 					)
 				)
@@ -6123,11 +6123,11 @@ exports
 					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-					  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+					  [[set_nextApple <- setL_nextApple,set_localized <- setL_localized,set_positions <- setL_positions]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-					 			,setL_localized
 					 			,setL_nextApple
+					 			,setL_localized
 					 			,setL_positions
 					 			,setR_img
 					 			|}) |]
@@ -6140,10 +6140,10 @@ exports
 					 		    const_pkg727_main_AppleHarvestControl_pickDeadl,
 					 		    const_pkg727_main_AppleHarvestControl_homePos,
 					 		    const_pkg727_main_AppleHarvestControl_storagePos))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_localized,setL_positions |} ]]
 					  [[set_img <- setR_img]]
 					 )
-					)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+					)[[setL_nextApple <- set_nextApple,setL_localized <- set_localized,setL_positions <- set_positions]]
 					 [[setR_img <- set_img]]
 					)
 				)

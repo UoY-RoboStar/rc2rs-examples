@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,12 +44,12 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
+	channel deadlineCheckCall: core_nat
+	channel dropCall: main_JointsPos
 	channel graspCall: main_JointsPos
 	channel pickCall
-	channel dropCall: main_JointsPos
-	channel normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall
-	channel deadlineCheckCall: core_nat
 	channel moveCall: main_JointsPos
+	channel normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall
 	
 	enterSS = {|
 	S0::enter,
@@ -74,12 +74,12 @@ exports
 		terminate
 	,	set_EXT_positions, set_positions,
 		set_EXT_nextApple, set_nextApple
-	,	graspCall,
-		pickCall,
+	,	deadlineCheckCall,
 		dropCall,
-		normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall,
-		deadlineCheckCall,
-		moveCall
+		graspCall,
+		pickCall,
+		moveCall,
+		normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall
 		, share__
 		|}
 	
@@ -88,11 +88,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_S0 : core_clock_type 
 	channel get_CLID_f : core_clock_type 
+	channel get_CLID_S0 : core_clock_type 
 	--channel increment__
 	
-	CLID_S0_clock_type(id__,
+	CLID_f_clock_type(id__,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
@@ -105,7 +105,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_f_clock_type(id__,
+	CLID_S0_clock_type(id__,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
 			          const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
@@ -448,23 +448,23 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_positions,setR_nextApple |} ]] 
-						  [[set_g <- setL_g,set_positions <- setL_positions,set_nextApple <- setL_nextApple]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_nextApple,setR_positions |} ]] 
+						  [[set_g <- setL_g,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
 						 			,setL_g
-						 			,setL_positions
 						 			,setL_nextApple
+						 			,setL_positions
 						 			,setR_g
-						 			 			,setR_positions
 						 			 			,setR_nextApple
+						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_positions,setL_nextApple |} ]]
-						  [[set_g <- setR_g,set_positions <- setR_positions,set_nextApple <- setR_nextApple]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_nextApple,setL_positions |} ]]
+						  [[set_g <- setR_g,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
 						 )
-						)[[setL_g <- set_g,setL_positions <- set_positions,setL_nextApple <- set_nextApple]]
-						 [[setR_g <- set_g,setR_positions <- set_positions,setR_nextApple <- set_nextApple]]
+						)[[setL_g <- set_g,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+						 [[setR_g <- set_g,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -572,23 +572,23 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_positions,setR_nextApple |} ]] 
-						  [[set_g <- setL_g,set_positions <- setL_positions,set_nextApple <- setL_nextApple]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_nextApple,setR_positions |} ]] 
+						  [[set_g <- setL_g,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
 						 			,setL_g
-						 			,setL_positions
 						 			,setL_nextApple
+						 			,setL_positions
 						 			,setR_g
-						 			 			,setR_positions
 						 			 			,setR_nextApple
+						 			 			,setR_positions
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_positions,setL_nextApple |} ]]
-						  [[set_g <- setR_g,set_positions <- setR_positions,set_nextApple <- setR_nextApple]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_nextApple,setL_positions |} ]]
+						  [[set_g <- setR_g,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
 						 )
-						)[[setL_g <- set_g,setL_positions <- set_positions,setL_nextApple <- set_nextApple]]
-						 [[setR_g <- set_g,setR_positions <- set_positions,setR_nextApple <- set_nextApple]]
+						)[[setL_g <- set_g,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+						 [[setR_g <- set_g,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -768,6 +768,18 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__deadlineCheck(id__,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime,
+					param_d) = EDeadline(deadlineCheckCall.param_d,0)
+		CALL__drop(id__,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime,
+					param_jp) = EDeadline(dropCall.param_jp,0)
 		CALL__grasp(id__,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
@@ -779,29 +791,17 @@ exports
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime) = EDeadline(pickCall,0)
-		CALL__drop(id__,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime,
-					param_jp) = EDeadline(dropCall.param_jp,0)
-		CALL__normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t(id__,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime) = EDeadline(normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall,0)
-		CALL__deadlineCheck(id__,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
-				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime,
-					param_d) = EDeadline(deadlineCheckCall.param_d,0)
 		CALL__move(id__,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
 				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime,
 					param_jp) = EDeadline(moveCall.param_jp,0)
+		CALL__normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t(id__,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_pickTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_graspTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_dropTime,
+				    const_pkg727_main_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_approachTime) = EDeadline(normal_deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall,0)
 		
 		-- END of Operation calls --
 	

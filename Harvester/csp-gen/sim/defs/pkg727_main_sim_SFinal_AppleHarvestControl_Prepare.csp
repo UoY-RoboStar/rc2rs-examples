@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 04-08-2026 16:51:11
 --
 
 -- compileSelfContainedOperation
@@ -36,12 +36,12 @@ exports
 	channel get_inact_AppleHarvestControl_Prepare, set_inact_AppleHarvestControl_Prepare, setL_inact_AppleHarvestControl_Prepare, setR_inact_AppleHarvestControl_Prepare: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_endIKSolverF: core_boolean
-	channel set_EXT_takePicF: core_boolean
-	channel set_EXT_inact_AppleHarvestControl_Prepare: core_boolean
-	channel set_EXT_endGoHomeF: core_boolean
 	channel set_EXT_exec_ds_AppleHarvestControl_Prepare: core_boolean
+	channel set_EXT_endIKSolverF: core_boolean
 	channel set_EXT_exec_ms_AppleHarvestControl_Prepare: core_boolean
+	channel set_EXT_inact_AppleHarvestControl_Prepare: core_boolean
+	channel set_EXT_takePicF: core_boolean
+	channel set_EXT_endGoHomeF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -63,12 +63,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
-		set_EXT_inact_AppleHarvestControl_Prepare,
-		set_EXT_endGoHomeF,
 		set_EXT_exec_ds_AppleHarvestControl_Prepare,
-		set_EXT_exec_ms_AppleHarvestControl_Prepare
+		set_EXT_endIKSolverF,
+		set_EXT_exec_ms_AppleHarvestControl_Prepare,
+		set_EXT_inact_AppleHarvestControl_Prepare,
+		set_EXT_takePicF,
+		set_EXT_endGoHomeF
 	|}
 	
 	
@@ -276,7 +276,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__) = ((let
-			Trans = share__choice(get_inact_AppleHarvestControl_Prepare?inact_AppleHarvestControl_Prepare -> get_exec_ds_AppleHarvestControl_Prepare?exec_ds_AppleHarvestControl_Prepare -> TimeOut_1(
+			Trans = share__choice(get_exec_ds_AppleHarvestControl_Prepare?exec_ds_AppleHarvestControl_Prepare -> get_inact_AppleHarvestControl_Prepare?inact_AppleHarvestControl_Prepare -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; S1::enter -> SKIP))))
 				 [] dbisim((((inact_AppleHarvestControl_Prepare or exec_ds_AppleHarvestControl_Prepare)))&(internal__!NID_S1 -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -339,16 +339,16 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_inact_AppleHarvestControl_Prepare <- setL_inact_AppleHarvestControl_Prepare,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare]]
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_inact_AppleHarvestControl_Prepare <- setL_inact_AppleHarvestControl_Prepare]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_inact_AppleHarvestControl_Prepare
 						 			,setL_exec_ds_AppleHarvestControl_Prepare
+						 			,setL_inact_AppleHarvestControl_Prepare
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_AppleHarvestControl_Prepare,setL_exec_ds_AppleHarvestControl_Prepare |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_AppleHarvestControl_Prepare,setL_inact_AppleHarvestControl_Prepare |} ]]
 						 )
-						)[[setL_inact_AppleHarvestControl_Prepare <- set_inact_AppleHarvestControl_Prepare,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare]]
+						)[[setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_inact_AppleHarvestControl_Prepare <- set_inact_AppleHarvestControl_Prepare]]
 						)
 					)
 					 \ hideSet)
@@ -424,16 +424,16 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_inact_AppleHarvestControl_Prepare <- setL_inact_AppleHarvestControl_Prepare,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare]]
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_inact_AppleHarvestControl_Prepare <- setL_inact_AppleHarvestControl_Prepare]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_inact_AppleHarvestControl_Prepare
 						 			,setL_exec_ds_AppleHarvestControl_Prepare
+						 			,setL_inact_AppleHarvestControl_Prepare
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_inact_AppleHarvestControl_Prepare,setL_exec_ds_AppleHarvestControl_Prepare |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_AppleHarvestControl_Prepare,setL_inact_AppleHarvestControl_Prepare |} ]]
 						 )
-						)[[setL_inact_AppleHarvestControl_Prepare <- set_inact_AppleHarvestControl_Prepare,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare]]
+						)[[setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_inact_AppleHarvestControl_Prepare <- set_inact_AppleHarvestControl_Prepare]]
 						)
 					)
 					 \ hideSet)

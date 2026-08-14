@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacs_Geofence_Geofence.csp"
+include "core_timed_defs.csp"
+include "bacs_Geofence_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate bacs_Geofence_Geofence
+P_bacs_Geofence_Geofence = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_Geofence_Geofence::O__(
+		id__
+	)
+assert P_bacs_Geofence_Geofence :[deadlock-free]	
+assert P_bacs_Geofence_Geofence;RUN({r__}) :[deadlock-free]
+assert P_bacs_Geofence_Geofence :[deterministic]
+assert P_bacs_Geofence_Geofence :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_Geofence_Geofence[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_Geofence_Geofence

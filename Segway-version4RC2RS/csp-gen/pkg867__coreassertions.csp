@@ -1,13 +1,13 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:35
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
 --
 
-include "pkg867_.csp"
+include "pkg867_csp"
 
 -- generate pkg867__BalanceSTM
 P_pkg867__BalanceSTM = let
@@ -33,6 +33,22 @@ assert P_pkg867__BalanceSTM;RUN({r__}) :[deadlock-free]
 assert P_pkg867__BalanceSTM :[deterministic]
 assert P_pkg867__BalanceSTM :[divergence-free]
 
+-- generate pkg867__OP_RotationPID
+P_pkg867__OP_RotationPID = let
+	id__ = 0
+	
+	param_diff = 0
+	
+	
+	
+within
+	pkg867_::OP_RotationPID::O__(id__,
+				param_diff,
+			    const_pkg867__RotationPID_D)
+assert P_pkg867__OP_RotationPID :[deadlock-free]	
+assert P_pkg867__OP_RotationPID;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_RotationPID :[deterministic]
+assert P_pkg867__OP_RotationPID :[divergence-free]
 -- generate pkg867__OP_normal_BalanceSTM_CalculateAngle_entry
 P_pkg867__OP_normal_BalanceSTM_CalculateAngle_entry = let
 	id__ = 0
@@ -1325,5 +1341,129 @@ assert P_pkg867__OP_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_ent
 assert P_pkg867__OP_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49;RUN({r__}) :[deadlock-free]
 assert P_pkg867__OP_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 :[deterministic]
 assert P_pkg867__OP_clone_clone_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7_S1_f_28_normal_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_t_op_i_j_2_18_49 :[divergence-free]
+-- generate pkg867__OP_AnglePID
+P_pkg867__OP_AnglePID = let
+	id__ = 0
+	
+	param_newError = 0
+	param_diff = 0
+	
+	
+	
+within
+	pkg867_::OP_AnglePID::O__(id__,
+				param_newError,
+				param_diff,
+			    const_pkg867__AnglePID_P,
+			    const_pkg867__AnglePID_D)
+assert P_pkg867__OP_AnglePID :[deadlock-free]	
+assert P_pkg867__OP_AnglePID;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_AnglePID :[deterministic]
+assert P_pkg867__OP_AnglePID :[divergence-free]
+-- generate pkg867__OP_normal_AnglePID_UpdateOutput_entry
+P_pkg867__OP_normal_AnglePID_UpdateOutput_entry = let
+	id__ = 0
+	
+	param_newError = 0
+	param_diff = 0
+	
+	const_pkg867__normal_AnglePID_UpdateOutput_entry_P = 0
+	const_pkg867__normal_AnglePID_UpdateOutput_entry_D = 0
+	
+	
+within
+	pkg867_::OP_normal_AnglePID_UpdateOutput_entry::O__(id__,
+				param_newError,
+				param_diff,
+			    const_pkg867__normal_AnglePID_UpdateOutput_entry_P,
+			    const_pkg867__normal_AnglePID_UpdateOutput_entry_D)
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[deadlock-free]	
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[deterministic]
+assert P_pkg867__OP_normal_AnglePID_UpdateOutput_entry :[divergence-free]
+-- generate pkg867__OP_SpeedPID
+P_pkg867__OP_SpeedPID = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	
+	
+within
+	pkg867_::OP_SpeedPID::O__(id__,
+				param_newError,
+			    const_pkg867__SpeedPID_P,
+			    const_pkg867__SpeedPID_I,
+			    const_pkg867__SpeedPID_maxIntegral)
+assert P_pkg867__OP_SpeedPID :[deadlock-free]	
+assert P_pkg867__OP_SpeedPID;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_SpeedPID :[deterministic]
+assert P_pkg867__OP_SpeedPID :[divergence-free]
+-- generate pkg867__OP_normal_SpeedPID_UpdateOutput_entry
+P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	const_pkg867__normal_SpeedPID_UpdateOutput_entry_P = 0
+	const_pkg867__normal_SpeedPID_UpdateOutput_entry_I = 0
+	
+	
+within
+	pkg867_::OP_normal_SpeedPID_UpdateOutput_entry::O__(id__,
+				param_newError,
+			    const_pkg867__normal_SpeedPID_UpdateOutput_entry_P,
+			    const_pkg867__normal_SpeedPID_UpdateOutput_entry_I)
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[deadlock-free]	
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[deterministic]
+assert P_pkg867__OP_normal_SpeedPID_UpdateOutput_entry :[divergence-free]
+-- generate pkg867__OP_normal_SpeedPID_UpdateIntegral_entry
+P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	const_pkg867__normal_SpeedPID_UpdateIntegral_entry_maxIntegral = 0
+	
+	
+within
+	pkg867_::OP_normal_SpeedPID_UpdateIntegral_entry::O__(id__,
+				param_newError,
+			    const_pkg867__normal_SpeedPID_UpdateIntegral_entry_maxIntegral)
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry :[deadlock-free]	
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry :[deterministic]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry :[divergence-free]
+-- generate pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op
+P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	
+	
+within
+	pkg867_::OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op::O__(id__,
+				param_newError)
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op :[deadlock-free]	
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op :[deterministic]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_i_t_op :[divergence-free]
+-- generate pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op
+P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op = let
+	id__ = 0
+	
+	
+	const_pkg867__normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_maxIntegral = 0
+	
+	
+within
+	pkg867_::OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op::O__(id__,
+			    const_pkg867__normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op_maxIntegral)
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op :[deadlock-free]	
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op;RUN({r__}) :[deadlock-free]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op :[deterministic]
+assert P_pkg867__OP_normal_SpeedPID_UpdateIntegral_entry_j_2_2_t_2_2_op :[divergence-free]
 
 

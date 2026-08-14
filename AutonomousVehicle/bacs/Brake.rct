@@ -1,0 +1,56 @@
+package bacs
+
+stm Brake {
+	
+	
+	
+	
+	
+	
+	
+	var brakeTime : real , demand : PodDemand , brakedDemand : PodDemand
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	event output_pod_demand : PodDemand
+	
+	
+	
+	event pod_demand_age_checked : PodDemand
+	
+	
+	
+	
+
+	event configBrakeTime : real
+
+	state Initialise {
+	}
+	state Spin {
+	}
+	state DemandCallback {
+	}
+	initial i0
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t1 {
+		from Initialise
+		to Spin
+		}
+	transition t2 {
+		from Spin
+		to DemandCallback
+		}
+	transition t3 {
+		from DemandCallback
+		to Spin
+	}
+}

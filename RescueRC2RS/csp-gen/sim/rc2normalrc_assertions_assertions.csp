@@ -1,28 +1,27 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 06-05-2026 11:01:27
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 13-08-2026 14:26:27
 --
 
 include "defs/state_timed_defs.csp"
 include "defs/core_defs.csp"
 include "defs/sequence_toolkit_defs.csp"
-include "../timed/defs/main_defs.csp"
+include "rc2rs/robosim/defs/Rescue_defs.csp"
+include "../rc2rs/robochart/defs/Rescue_defs.csp"
+include "../timed/defs/pkg213_main.csp"
 include "defs/pkg213_main_sim.csp"
-include "defs/function_toolkit_defs.csp"
 include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
 include "../timed/defs/main.csp"
 include "defs/core_timed_defs.csp"
 include "sims/defs/RC_defs.csp"
-include "../timed/defs/pkg213_main_defs.csp"
 include "defs/set_toolkit_defs.csp"
+include "../defs/Rescue_defs.csp"
 include "instantiations.csp"
 include "defs/relation_toolkit_defs.csp"
-include "defs/pkg213_main_sim_defs.csp"
 
 channel r__
-
-transparent chase
 
 -- A1 - schedulable
 assert let 
@@ -63,10 +62,10 @@ assert let
 	rename_in_RC(RC::i_found.x__) = pkg213_main_sim::Rescue::i_found.x__
 	rename_in_RC(RC::i_origin.x__) = pkg213_main_sim::Rescue::i_origin.x__
 	rename_in_RC(RC::i_switchOn.x__) = pkg213_main_sim::Rescue::i_switchOn.x__
-	rename_out_RC(RC::o_move.lv) = pkg213_main_sim::Rescue::o_move.lv
-	rename_out_RC(RC::o_takeoff) = pkg213_main_sim::Rescue::o_takeoff
-	rename_out_RC(RC::o_turnBack) = pkg213_main_sim::Rescue::o_turnBack
 	rename_out_RC(RC::o_land) = pkg213_main_sim::Rescue::o_land
+	rename_out_RC(RC::o_turnBack) = pkg213_main_sim::Rescue::o_turnBack
+	rename_out_RC(RC::o_takeoff) = pkg213_main_sim::Rescue::o_takeoff
+	rename_out_RC(RC::o_move.lv) = pkg213_main_sim::Rescue::o_move.lv
 within
 	prioritise(let 
 		cycle_RC_RC = 1
@@ -103,13 +102,13 @@ within
 
 -- A4 - refinement
 assert let
-	rename_in_Rescue(pkg213_main_sim::Rescue::i_switchOn.x__) = RC::i_switchOn.x__
 	rename_in_Rescue(pkg213_main_sim::Rescue::i_found.x__) = RC::i_found.x__
+	rename_in_Rescue(pkg213_main_sim::Rescue::i_switchOn.x__) = RC::i_switchOn.x__
 	rename_in_Rescue(pkg213_main_sim::Rescue::i_origin.x__) = RC::i_origin.x__
-	rename_out_Rescue(pkg213_main_sim::Rescue::o_turnBack) = RC::o_turnBack
 	rename_out_Rescue(pkg213_main_sim::Rescue::o_land) = RC::o_land
-	rename_out_Rescue(pkg213_main_sim::Rescue::o_takeoff) = RC::o_takeoff
 	rename_out_Rescue(pkg213_main_sim::Rescue::o_move.lv) = RC::o_move.lv
+	rename_out_Rescue(pkg213_main_sim::Rescue::o_takeoff) = RC::o_takeoff
+	rename_out_Rescue(pkg213_main_sim::Rescue::o_turnBack) = RC::o_turnBack
 within
 	prioritise(let 
 		cycle_pkg213_main_sim_Rescue_Rescue = 1

@@ -1,0 +1,782 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_DemandLimiterRatio
+exports
+
+
+
+
+module DemandLimiterRatio
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_Ready|
+	              NID_LimitSpeed|
+	              NID_i0|
+	              NID_Initialise|
+	              NID_j0|
+	              NID_j1
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_newDemand, set_newDemand, setL_newDemand, setR_newDemand: PodDemand
+	channel get_limitingRatio, set_limitingRatio, setL_limitingRatio, setR_limitingRatio: SpeedLimit
+	channel get_speedLimitDisabled, set_speedLimitDisabled, setL_speedLimitDisabled, setR_speedLimitDisabled: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel speed_limit__: NIDS.InOut.SpeedLimit
+	channel speed_limit: InOut.SpeedLimit
+	channel pod_demand_geo_limited__: NIDS.InOut.PodDemand
+	channel pod_demand_geo_limited: InOut.PodDemand
+	channel pod_demand_limited__: NIDS.InOut.PodDemand
+	channel pod_demand_limited: InOut.PodDemand
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	Ready::enter,
+	LimitSpeed::enter,
+	i0::enter,
+	Initialise::enter,
+	j0::enter,
+	j1::enter
+	|}
+	
+	enteredSS = 	{|
+	Ready::entered,
+	LimitSpeed::entered,
+	Initialise::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	speed_limit,
+		pod_demand_geo_limited,
+		pod_demand_limited
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: Ready
+	module Ready
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: LimitSpeed
+	module LimitSpeed
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_limitingRatio?limitingRatio -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,bacs_DemandLimiterRatio_ScaleSpeed(PodDemand_speed(newDemand),realToRatio(SpeedLimit_speedLimit(limitingRatio)))) -> SKIP))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_limitingRatio?limitingRatio -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,bacs_DemandLimiterRatio_ScaleSpeed(PodDemand_speed(newDemand),realToRatio(SpeedLimit_speedLimit(limitingRatio)))) -> SKIP))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Initialise
+	module Initialise
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_limitingRatio?limitingRatio -> true & (share__choice(set_limitingRatio!update_SpeedLimit_speedLimit(limitingRatio,const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) -> SKIP))));share__choice(true & (share__choice(set_speedLimitDisabled!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_limitingRatio?limitingRatio -> true & (share__choice(set_limitingRatio!update_SpeedLimit_speedLimit(limitingRatio,const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) -> SKIP))));share__choice(true & (share__choice(set_speedLimitDisabled!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j0
+	module j0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j1
+	module j1
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = D__(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = ((let
+		Trans = share__choice(get_speedLimitDisabled?speedLimitDisabled -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((share__choice(get_newDemand?newDemand -> true&(share__choice(pod_demand_limited.out!newDemand -> SKIP))) ; Ready::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+			 	 [] dbisim((true)&(pod_demand_geo_limited__!NID_Ready.in?newDemand:{newDemand|newDemand <- PodDemand, true} -> share__choice(set_newDemand!newDemand -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 	 [] dbisim(((not (speedLimitDisabled)))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; LimitSpeed::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_LimitSpeed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((speedLimitDisabled)&(internal__!NID_j1 -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+			 	 [] dbisim((true)&(speed_limit__!NID_Ready.in?limitingRatio:{limitingRatio|limitingRatio <- SpeedLimit, true} -> share__choice(set_limitingRatio!limitingRatio -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				Ready::enter,
+				LimitSpeed::enter,
+				i0::enter,
+				Initialise::enter,
+				j0::enter,
+				j1::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_j0,internal__.NID_i0,pod_demand_geo_limited__.NID_Ready.in,internal__.NID_Initialise,internal__.NID_j1,internal__.NID_LimitSpeed,internal__.NID_j1,speed_limit__.NID_Ready.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   Ready::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   LimitSpeed::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   Initialise::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   j0::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   j1::D__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,pod_demand_geo_limited__.NID_Ready.in,speed_limit__.NID_Ready.in|}]]
+					 [[LimitSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_LimitSpeed|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_limitingRatio,setR_newDemand |} ]] 
+					  [[set_speedLimitDisabled <- setL_speedLimitDisabled]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_speedLimitDisabled
+					 			,setR_limitingRatio
+					 			 			,setR_newDemand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_speedLimitDisabled |} ]]
+					  [[set_limitingRatio <- setR_limitingRatio,set_newDemand <- setR_newDemand]]
+					 )
+					)[[setL_speedLimitDisabled <- set_speedLimitDisabled]]
+					 [[setR_limitingRatio <- set_limitingRatio,setR_newDemand <- set_newDemand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					speed_limit__.x____ <- speed_limit,
+					pod_demand_geo_limited__.x____ <- pod_demand_geo_limited,
+					pod_demand_limited__.x____ <- pod_demand_limited
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		((
+			(Behaviour(id__,
+					    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								Behaviour(id__,
+										    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+								[| {|get_speedLimitDisabled,set_speedLimitDisabled,terminate|} |]
+								Memory_speedLimitDisabled(true)
+							)\{|get_speedLimitDisabled,set_speedLimitDisabled|}
+						)
+						[| {|get_limitingRatio,set_limitingRatio,terminate|} |]
+						Memory_limitingRatio(((0,0,""),0))
+					)\{|get_limitingRatio,set_limitingRatio|}
+				)
+				[| {|get_newDemand,set_newDemand,terminate|} |]
+				Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_newDemand,set_newDemand|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				Ready::enter,
+				LimitSpeed::enter,
+				i0::enter,
+				Initialise::enter,
+				j0::enter,
+				j1::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_j0,internal__.NID_i0,pod_demand_geo_limited__.NID_Ready.in,internal__.NID_Initialise,internal__.NID_j1,internal__.NID_LimitSpeed,internal__.NID_j1,speed_limit__.NID_Ready.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   Ready::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   LimitSpeed::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   Initialise::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   j0::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   [| { share__, terminate } |] (
+					   j1::VS_O__(id__,
+					   		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,pod_demand_geo_limited__.NID_Ready.in,speed_limit__.NID_Ready.in|}]]
+					 [[LimitSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_LimitSpeed|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_limitingRatio,setR_newDemand |} ]] 
+					  [[set_speedLimitDisabled <- setL_speedLimitDisabled]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_speedLimitDisabled
+					 			,setR_limitingRatio
+					 			 			,setR_newDemand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_speedLimitDisabled |} ]]
+					  [[set_limitingRatio <- setR_limitingRatio,set_newDemand <- setR_newDemand]]
+					 )
+					)[[setL_speedLimitDisabled <- set_speedLimitDisabled]]
+					 [[setR_limitingRatio <- set_limitingRatio,setR_newDemand <- set_newDemand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					speed_limit__.x____ <- speed_limit,
+					pod_demand_geo_limited__.x____ <- pod_demand_geo_limited,
+					pod_demand_limited__.x____ <- pod_demand_limited
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								Behaviour_VS_O(id__,
+										    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+								[| {|get_speedLimitDisabled,set_speedLimitDisabled,terminate|} |]
+								Memory_speedLimitDisabled(true)
+							)\{|get_speedLimitDisabled,set_speedLimitDisabled|}
+						)
+						[| {|get_limitingRatio,set_limitingRatio,terminate|} |]
+						Memory_limitingRatio(((0,0,""),0))
+					)\{|get_limitingRatio,set_limitingRatio|}
+				)
+				[| {|get_newDemand,set_newDemand,terminate|} |]
+				Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_newDemand,set_newDemand|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_newDemand(newDemand) =
+		get_newDemand!newDemand -> Memory_newDemand(newDemand)
+		[]
+		set_newDemand?x__ -> Memory_newDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_limitingRatio(limitingRatio) =
+		get_limitingRatio!limitingRatio -> Memory_limitingRatio(limitingRatio)
+		[]
+		set_limitingRatio?x__ -> Memory_limitingRatio(x__)
+		[]
+		terminate -> SKIP
+	Memory_speedLimitDisabled(speedLimitDisabled) =
+		get_speedLimitDisabled!speedLimitDisabled -> Memory_speedLimitDisabled(speedLimitDisabled)
+		[]
+		set_speedLimitDisabled?x__ -> Memory_speedLimitDisabled(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+	[| { terminate } |] (
+	Memory_limitingRatio(((0,0,""),0))
+	[| { terminate } |] (
+	Memory_speedLimitDisabled(true)
+	)
+	)
+	
+	getsetLocalChannels = {|get_newDemand,set_newDemand,get_limitingRatio,set_limitingRatio,get_speedLimitDisabled,set_speedLimitDisabled|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = STM_VS_O(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+	
+	D__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = STM(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) \ internal_events
+	O__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = sbisim(diamond(D__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)))
+	VS__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = FVS__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)
+	VS_O__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = sbisim(diamond(FVS__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO)))
+	HEXT__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = O__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = O__(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule
+
+
+endmodule

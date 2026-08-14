@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -39,8 +39,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitOpCall: core_nat
 	channel goHomeCall
+	channel waitOpCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -60,8 +60,8 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	waitOpCall,
-		goHomeCall
+	,	goHomeCall,
+		waitOpCall
 		, share__
 		|}
 	
@@ -154,11 +154,11 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__goHome(id__,
+			    const_pkg727_main_normal_GoHome_Going_entry_goHTime) 	= goHomeCall -> SKIP
 	CALL__waitOp(id__,
 			    const_pkg727_main_normal_GoHome_Going_entry_goHTime,
 				param_i) 	= waitOpCall.param_i -> SKIP
-	CALL__goHome(id__,
-			    const_pkg727_main_normal_GoHome_Going_entry_goHTime) 	= goHomeCall -> SKIP
 	
 	-- END of Operation calls --
 	

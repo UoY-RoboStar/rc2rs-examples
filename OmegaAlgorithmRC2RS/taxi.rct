@@ -1,0 +1,230 @@
+package taxi
+interface SwarmTaxiVarsI {
+    var linearSpeed : real
+    var angularSpeed : real
+    var reached : boolean
+    var desiredTurningDegree : real
+    var degreeTurned : real
+    var avoidanceRadius : real
+    var illuminated : boolean
+}
+
+interface SwarmTaxiEventsI {
+	event anyRobotToAvoid
+} 
+
+interface SwarmTaxiOpI {
+   
+    CalcCoherenceHeading()
+    CalcAvoidanceHeading()
+    CheckIlluminationStatus()
+  
+}
+
+interface ISoftOps{
+	 Turn()
+	 RotateAntiClockwise(j : real)
+	 MoveForward(j : real)
+	 RotateClockwise(j : real)
+	 UpdateAvoidanceRadius()
+}
+
+interface ITurn{
+	RotateAntiClockwise(j : real)
+	RotateClockwise(j : real)
+}
+
+operation Turn(){
+  //	requires SwarmTaxiVarsI
+   var linearSpeed : real
+    var angularSpeed : real
+    var reached : boolean
+    var desiredTurningDegree : real
+    var degreeTurned : real
+    var avoidanceRadius : real
+    var illuminated : boolean
+    uses SwarmTaxiEventsI
+	requires SwarmTaxiOpI
+	requires ITurn
+	const angularSpeed1 : real // 0.1
+	const rotate : real // 2.51
+
+  initial I
+  final F
+  state S {
+    entry if desiredTurningDegree <= 0 then RotateClockwise(-rotate)
+          else RotateAntiClockwise(rotate) end;
+          degreeTurned = degreeTurned + angularSpeed * angularSpeed1;
+          if (desiredTurningDegree < 0 /\ degreeTurned < desiredTurningDegree)
+            then reached = true; degreeTurned = 0
+            else skip end;
+          if (desiredTurningDegree > 0 /\ degreeTurned > desiredTurningDegree)
+            then reached = true; degreeTurned = 0
+            else skip end
+  }
+  transition t1 {
+    from I
+    to S
+  }
+  transition t2 {
+    from S
+    to F
+  }
+}
+
+operation UpdateAvoidanceRadius(){
+  	//requires SwarmTaxiVarsI
+	requires SwarmTaxiOpI
+	const avoidanceRadius1 : real // 0.1
+	const avoidanceRadius2 : real // 0.2
+	 
+    var illuminated : boolean
+    var avoidanceRadius : real
+
+  initial I
+  final F
+  state S {
+    entry CheckIlluminationStatus();
+          if illuminated == true then avoidanceRadius = avoidanceRadius2
+          else avoidanceRadius = avoidanceRadius1 end
+  }
+  transition t1 {
+    from I
+    to S
+  }
+  transition t2 {
+    from S
+    to F
+  }
+}
+
+operation MoveForward(j : real) {
+  //	requires SwarmTaxiVarsI
+	//requires SwarmTaxiOpI
+  //precondition i > 0
+  var linearSpeed : real, angularSpeed : real 
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = j; angularSpeed = 0
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+operation RotateClockwise(j : real) {
+	//requires SwarmTaxiVarsI
+ // precondition j < 0
+ var linearSpeed : real, angularSpeed : real 
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = 0; angularSpeed = j
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+operation RotateAntiClockwise(j : real){
+  requires SwarmTaxiVarsI
+  //precondition j > 0
+
+  initial I
+  final F
+  state s1 {
+    entry linearSpeed = 0; angularSpeed = j
+  }
+  transition t1 {
+    from I
+    to s1
+  }
+  transition t2 {
+    from s1
+    to F
+  }
+}
+
+
+
+module ModTaxi {
+	robotic platform robotTaxi {
+		provides SwarmTaxiOpI 
+	}
+	
+	cref ctrl1 = ctrlTaxi
+	
+}
+
+controller ctrlTaxi {
+		requires SwarmTaxiOpI
+		sref stm1 = SwarmTaxisFSM
+		opref op1 = Turn
+		opref op2 = RotateAntiClockwise
+		opref op3 = RotateClockwise
+		opref op4 = MoveForward
+		opref op5 = UpdateAvoidanceRadius
+	}
+
+		stm SwarmTaxisFSM {
+			requires ISoftOps
+		    uses SwarmTaxiVarsI
+		    uses SwarmTaxiEventsI
+		    requires SwarmTaxiOpI
+		    const MoveForwardVal : real // 6.4
+		    clock T
+		    
+		    initial i1
+		
+		    state Forward {
+		      entry reached = false; UpdateAvoidanceRadius(); MoveForward(MoveForwardVal)
+		    }
+		    state Coherence {
+		      entry CalcCoherenceHeading(); Turn()
+		    }
+		    state Avoidance {
+		      entry CalcAvoidanceHeading(); Turn()
+		    }
+		
+		    transition t1 {
+		      from i1
+		      to Forward
+		      action #T
+		    }
+		    transition t2 {
+		      from Forward
+		      to Coherence
+		      condition since(T) > 1//25
+		    }
+		    transition t3 {
+		      from Forward
+		      to Avoidance
+		      trigger anyRobotToAvoid
+		    }
+		    transition t4 {
+		      from Coherence
+		      to Forward
+		      # T
+				condition reached == true
+			}
+			transition t0 {
+				from Avoidance
+				to Forward
+				# T
+				condition reached == true
+			}
+		}
+

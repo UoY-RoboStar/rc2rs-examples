@@ -1,0 +1,165 @@
+package bacs::AutoDemand
+
+import autonomous_vehicle_system::*
+import bacs::*
+stm AutoDemand {
+	var currentConfiguration : AutoDemandConfig
+	var currentObjective : Goal
+	var currentLocation : Pose2DStamped
+	var currentVehicleState : PodState
+	var newDemand : PodDemand
+	var newAuxDemand : AuxiliaryDemand
+	var goalReached : boolean
+	var vehicleStopped : boolean
+	event location : Pose2DStamped
+	
+	
+	
+	event demand : PodDemand
+	
+	event pod_state : PodState
+	
+	event goal : Goal
+	event configuration : AutoDemandConfig
+	state DetermineSpeed {
+		entry newDemand . speed = CalculateSpeed (
+		currentConfiguration , currentObjective , newDemand . steer )
+	}
+	state DetermineSteer {
+		
+	entry newDemand . steer = CalculateSteer ( currentConfiguration ,
+		currentObjective , currentLocation )
+	}
+	state DetermineBrake {
+		
+	entry vehicleStopped = VehicleStopped ( currentVehicleState
+		, newDemand , currentObjective ) ; newDemand . driveByWireRequest = true
+	}
+	state Ready {
+	}
+	initial i0
+	state Unconfigured {
+		entry currentConfiguration = DEFAULT_CONFIGURATION
+	}
+	state WaitForObjective {
+	}
+	state ZeroDemand {
+		
+	entry newDemand . steer = ZERO_STEER ; newDemand . speed = ZERO_SPEED
+	}
+	state WaitToBrake {
+		entry newDemand . brake = BrakeState::BRAKE_DONT_CARE
+	}
+	state Moving {
+		entry newDemand . brake = BrakeState::BRAKE_DONT_CARE
+	}
+	junction j0
+	state ApplyBrake {
+		entry newDemand . brake = BrakeState::BRAKE_ON
+	}
+	transition t0 {
+		from i0
+		to Unconfigured
+	}
+	transition t2 {
+		from CheckGoalReached
+		to DetermineSteer
+		condition 
+		not goalReached
+	}
+	transition t3 {
+		from DetermineSteer
+		to DetermineSpeed
+	}
+	transition t4 {
+		from DetermineSpeed
+		to ConstructDemand
+	}
+	transition t1 {
+		from Unconfigured
+		to WaitForObjective
+		trigger pod_state ? currentVehicleState 
+	}
+	transition t6 {
+		from WaitForObjective
+		to Ready
+		trigger goal ? currentObjective # brakeActivationDelay
+	}
+	transition t8 {
+		from Ready
+		to Ready
+		trigger goal ? currentObjective # brakeActivationDelay
+	}
+	transition t9 {
+		from Ready
+		to Ready
+		trigger pod_state ? currentVehicleState
+	}
+	transition t10 {
+		from CheckGoalReached
+		to ZeroDemand
+		condition goalReached
+	}
+	transition t11 {
+		from ZeroDemand
+		to ConstructDemand
+	}
+	transition t5 {
+		from DetermineBrake
+		to Moving
+		condition not vehicleStopped
+	}
+	transition t12 {
+		from DetermineBrake
+		to WaitToBrake
+		condition vehicleStopped
+	}
+	transition t13 {
+		from Moving
+		to j0
+	}
+	transition t15 {
+		from ApplyBrake
+		to j0
+		}
+	transition t16 {
+		from WaitToBrake
+		to ApplyBrake
+		condition since ( brakeActivationDelay ) > currentConfiguration . brakeDelay
+	}
+	transition t18 {
+		from WaitToBrake
+		to j0
+		condition since ( brakeActivationDelay ) <= currentConfiguration . brakeDelay
+	}
+	transition t7 {
+		from j0
+		to Ready
+	}
+	clock brakeActivationDelay
+const DEFAULT_CONFIGURATION : AutoDemandConfig
+	state CheckGoalReached {
+		entry goalReached = PathGoalReached ( currentObjective , currentLocation ,
+		currentConfiguration )
+	}
+	state ConstructDemand {
+		entry newDemand . header .stamp = GetSystemTime ( ) ; newDemand . source =
+		DemandSource::DEMAND_AUTONOMOUS_CONTROL ; newDemand . driveByWireRequest =
+		true ; newDemand . abdicate = false
+	}
+	transition t14 {
+		from Ready
+		to CheckGoalReached
+		trigger location ? currentLocation
+	}
+	transition t17 {
+		from ConstructDemand
+		to DetermineBrake
+	}
+	transition t19 {
+		from Ready
+		to Ready
+		trigger configuration ? currentConfiguration
+	}
+uses SystemConstants
+}

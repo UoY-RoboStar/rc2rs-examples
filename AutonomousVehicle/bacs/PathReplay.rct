@@ -1,0 +1,113 @@
+package bacs::PathReplay
+import sequence_toolkit::*
+import bacs::*
+stm PathReplay {
+	var origin : GpsPathPoint
+	var currentRoute : Seq( GpsPathPoint )
+	var goalConfig : ConfigGoalGeneration
+	var locationLatest : Pose2DStamped
+	var goalPoint : GpsPathPoint
+	var newObjective : Goal
+	var goalAuxiliaries : AuxiliaryDemand
+	event location : Pose2DStamped
+	
+	event goal : Goal
+	event route : Seq( GpsPathPoint )
+	event config : ConfigGoalGeneration
+	
+	
+	event auxiliary_demand : AuxiliaryDemand
+	
+	event routeOrigin : GpsPathPoint
+	state ConfigureOrigin {
+		entry origin = head ( currentRoute ) ; routeOrigin ! origin
+	}
+	state Reset {
+		entry currentRoute = SortRouteToCurrentLocation (
+		locationLatest , currentRoute )
+	}
+	initial i0
+	state Unconfigured {
+	}
+	state WaitForRoute {
+	}
+	state CurrentGoal {
+	}
+	state NextGoal {
+		entry goalPoint = head ( currentRoute ) ; newObjective =
+		ConvertPointRouteToGoal ( goalPoint ) ; currentRoute = tail ( currentRoute )
+	}
+	state TranslateAuxiliaries {
+		entry goalAuxiliaries = ConvertPointRouteToAuxiliaryDemand ( goalPoint )
+	}
+	transition t1 {
+		from ConfigureOrigin
+		to Reset
+	}
+	transition t0 {
+		from i0
+		to Unconfigured
+	}
+	transition t3 {
+		from Unconfigured
+		to WaitForRoute
+		trigger config ? goalConfig
+	}
+	transition t2 {
+		from WaitForRoute
+		to j1
+		trigger route ? currentRoute
+	}
+	transition t4 {
+		from Reset
+		to NextGoal
+	}
+	transition t5 {
+		from TranslateAuxiliaries
+		to CurrentGoal
+		action auxiliary_demand ! goalAuxiliaries
+	}
+	transition t6 {
+		from CurrentGoal
+		to j0
+		condition DemandGoalReached ( locationLatest , goalPoint
+		, goalConfig )
+	}
+	transition t7 {
+		from CurrentGoal
+		to CurrentGoal
+		trigger location ? locationLatest
+	}
+	transition t8 {
+		from NextGoal
+		to TranslateAuxiliaries
+		action goal ! newObjective
+	}
+transition t9 {
+		from CurrentGoal
+		to CurrentGoal
+		trigger config ? goalConfig
+	}
+junction j0
+	transition t10 {
+		from j0
+		to NextGoal
+		condition isNonEmpty ( currentRoute )
+	}
+	transition t11 {
+		from j0
+		to WaitForRoute
+		condition not isNonEmpty ( currentRoute )
+	}
+junction j1
+	transition t12 {
+		from j1
+		to ConfigureOrigin
+		condition isNonEmpty ( currentRoute )
+	}
+	transition t13 {
+		from j1
+		to WaitForRoute
+		condition not isNonEmpty ( currentRoute )
+	}
+}

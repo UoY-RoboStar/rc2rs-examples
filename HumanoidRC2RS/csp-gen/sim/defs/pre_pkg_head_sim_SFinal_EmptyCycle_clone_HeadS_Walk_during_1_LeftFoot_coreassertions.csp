@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 14-08-2026 15:56:57
+--
+
+include "pre_pkg_head_sim_defs.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_head_sim_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot
+P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_head_sim::OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot::O__(id__)
+assert P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot :[deadlock-free]	
+assert P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot :[deterministic]
+assert P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_head_sim_OP_SFinal_EmptyCycle_clone_HeadS_Walk_during_1_LeftFoot

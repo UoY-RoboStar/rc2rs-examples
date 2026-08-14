@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:27:27
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -39,9 +39,9 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel moveCall: core_real.Chemical_Angle
 	channel randomWalkCall
 	channel shortRandomWalkCall
+	channel moveCall: core_real.Chemical_Angle
 	
 	enterSS = {|
 	i0::enter,
@@ -62,9 +62,9 @@ exports
 	-- channel set with all visible events
 	sem__events = {|
 		terminate
-	,	moveCall,
-		randomWalkCall,
-		shortRandomWalkCall
+	,	randomWalkCall,
+		shortRandomWalkCall,
+		moveCall
 		, share__
 		|}
 	
@@ -73,11 +73,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_From : core_clock_type 
 	channel get_CLID_j0 : core_clock_type 
+	channel get_CLID_From : core_clock_type 
 	--channel increment__
 	
-	CLID_From_clock_type(id__,
+	CLID_j0_clock_type(id__,
 			          const_pkg994_Location_changeDirection_lv) = 
 		let
 			max = (clock_type_max(Union({
@@ -87,7 +87,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_j0_clock_type(id__,
+	CLID_From_clock_type(id__,
 			          const_pkg994_Location_changeDirection_lv) = 
 		let
 			max = (clock_type_max(Union({
@@ -257,14 +257,14 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__move(id__,
-				    const_pkg994_Location_changeDirection_lv,
-					param_lv,
-					param_a) = EDeadline(moveCall.param_lv.param_a,0)
 		CALL__randomWalk(id__,
 				    const_pkg994_Location_changeDirection_lv) = EDeadline(randomWalkCall,0)
 		CALL__shortRandomWalk(id__,
 				    const_pkg994_Location_changeDirection_lv) = EDeadline(shortRandomWalkCall,0)
+		CALL__move(id__,
+				    const_pkg994_Location_changeDirection_lv,
+					param_lv,
+					param_a) = EDeadline(moveCall.param_lv.param_a,0)
 		
 		-- END of Operation calls --
 	

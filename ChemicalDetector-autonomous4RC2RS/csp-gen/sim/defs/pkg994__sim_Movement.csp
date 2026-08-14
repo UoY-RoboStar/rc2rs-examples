@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 14-05-2026 19:42:45
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 14-08-2026 15:26:44
 --
 
 module pkg994__sim_Movement
@@ -51,12 +51,12 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_normal_Movement_Avoiding_entryCall
-	channel clone_normal_Movement_TryingAgain_t11_opCall
-	channel shortRandomWalkCall
-	channel clone_normal_Movement_GettingOut_entryCall
 	channel randomWalkCall
-	channel moveCall: core_real.Chemical_Angle
+	channel shortRandomWalkCall
+	channel clone_normal_Movement_TryingAgain_t11_opCall
+	channel clone_normal_Movement_GettingOut_entryCall
 	channel clone_normal_Movement_Found_entryCall
+	channel moveCall: core_real.Chemical_Angle
 	
 	enterSS = {|
 	i1::enter,
@@ -94,30 +94,16 @@ exports
 	localClockResets = {|clockReset.CLID_T|}
 	
 	
-	channel get_CLID_Found : core_clock_type 
 	channel get_CLID_T : core_clock_type 
-	channel get_CLID_Going : core_clock_type 
-	channel get_CLID_AvoidingAgain : core_clock_type 
-	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_TryingAgain : core_clock_type 
-	channel get_CLID_GettingOut : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
+	channel get_CLID_Going : core_clock_type 
 	channel get_CLID_Avoiding : core_clock_type 
+	channel get_CLID_GettingOut : core_clock_type 
+	channel get_CLID_Found : core_clock_type 
+	channel get_CLID_AvoidingAgain : core_clock_type 
 	channel get_CLID_j1 : core_clock_type 
 	--channel increment__
-	
-	CLID_Found_clock_type(id__,
-			          const_pkg994__sim_Movement_lv,
-			          const_pkg994__sim_Movement_evadeTime,
-			          const_pkg994__sim_Movement_stuckPeriod,
-			          const_pkg994__sim_Movement_stuckDist,
-			          const_pkg994__sim_Movement_outPeriod) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_T_clock_type(id__,
 			          const_pkg994__sim_Movement_lv,
@@ -137,21 +123,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Going_clock_type(id__,
-			          const_pkg994__sim_Movement_lv,
-			          const_pkg994__sim_Movement_evadeTime,
-			          const_pkg994__sim_Movement_stuckPeriod,
-			          const_pkg994__sim_Movement_stuckDist,
-			          const_pkg994__sim_Movement_outPeriod) = 
-		let
-			max = (clock_type_max(Union({
-	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_AvoidingAgain_clock_type(id__,
+	CLID_TryingAgain_clock_type(id__,
 			          const_pkg994__sim_Movement_lv,
 			          const_pkg994__sim_Movement_evadeTime,
 			          const_pkg994__sim_Movement_stuckPeriod,
@@ -179,7 +151,21 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_TryingAgain_clock_type(id__,
+	CLID_Going_clock_type(id__,
+			          const_pkg994__sim_Movement_lv,
+			          const_pkg994__sim_Movement_evadeTime,
+			          const_pkg994__sim_Movement_stuckPeriod,
+			          const_pkg994__sim_Movement_stuckDist,
+			          const_pkg994__sim_Movement_outPeriod) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Avoiding_clock_type(id__,
 			          const_pkg994__sim_Movement_lv,
 			          const_pkg994__sim_Movement_evadeTime,
 			          const_pkg994__sim_Movement_stuckPeriod,
@@ -207,7 +193,21 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Avoiding_clock_type(id__,
+	CLID_Found_clock_type(id__,
+			          const_pkg994__sim_Movement_lv,
+			          const_pkg994__sim_Movement_evadeTime,
+			          const_pkg994__sim_Movement_stuckPeriod,
+			          const_pkg994__sim_Movement_stuckDist,
+			          const_pkg994__sim_Movement_outPeriod) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_AvoidingAgain_clock_type(id__,
 			          const_pkg994__sim_Movement_lv,
 			          const_pkg994__sim_Movement_evadeTime,
 			          const_pkg994__sim_Movement_stuckPeriod,
@@ -244,29 +244,29 @@ exports
 	
 	-- declaring registerRead/Write datatypes
 	datatype RegisterDataInput = i_turn.Bool.Chemical_Angle
+		| i_stop.Bool
 		| i_odometer.Bool.core_real
 		| i_resume.Bool
-		| i_stop.Bool
 		| i_obstacle.Bool.Location_Loc
 	
 	
-	datatype RegisterDataOutput = o_move.core_real.Chemical_Angle
+	datatype RegisterDataOutput = o_randomWalk
+		| o_move.core_real.Chemical_Angle
 		| o_flag
-		| o_randomWalk
 		| o_shortRandomWalk
 	
 	
 	nametype RegisterOutputs = {|
+	o_randomWalk,
 	o_move,
 	o_flag,
-	o_randomWalk,
 	o_shortRandomWalk|}
 		
 	nametype RegisterInputs = {|
 	i_turn,
+	i_stop,
 	i_odometer,
 	i_resume,
-	i_stop,
 	i_obstacle|}
 	
 	channel registerRead 	: RegisterDataInput
@@ -284,12 +284,12 @@ exports
 				,registerRead
 				,registerWrite
 	,	clone_normal_Movement_Avoiding_entryCall,
-		clone_normal_Movement_TryingAgain_t11_opCall,
-		shortRandomWalkCall,
-		clone_normal_Movement_GettingOut_entryCall,
 		randomWalkCall,
-		moveCall,
-		clone_normal_Movement_Found_entryCall
+		shortRandomWalkCall,
+		clone_normal_Movement_TryingAgain_t11_opCall,
+		clone_normal_Movement_GettingOut_entryCall,
+		clone_normal_Movement_Found_entryCall,
+		moveCall
 		|}
 
 		-- Nodes --
@@ -586,12 +586,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
-						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_resumeF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -599,9 +599,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -619,37 +619,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -722,12 +722,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
-						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_resumeF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -735,9 +735,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -755,37 +755,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -806,7 +806,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_stop?stop -> get_stopF?stopF -> get_resumeF?resumeF -> get_turn?turn -> get_turnF?turnF -> get_resume?resume -> TimeOut_1(
+					Trans = share__choice(get_resume?resume -> get_stop?stop -> get_turnF?turnF -> get_resumeF?resumeF -> get_turn?turn -> get_stopF?stopF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((not (((true and (((member(stop,{true}) and stopF))))))) and (not (((true and (((member(turn,{true.a | a <- Chemical_Angle}) and turnF))))))))) and (not (((true and (((member(resume,{true}) and resumeF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_turn?b__?x__ -> set_a!x__ -> SKIP
@@ -1170,37 +1170,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1302,37 +1302,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1681,12 +1681,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_turnF
 						 				 			,setL_obstacleF
 						 				 			,setL_stopF
-						 				 			,setL_turnF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -1694,9 +1694,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_stopF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_obstacleF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -1714,37 +1714,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1819,12 +1819,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_turnF
 						 				 			,setL_obstacleF
 						 				 			,setL_stopF
-						 				 			,setL_turnF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -1832,9 +1832,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_stopF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_obstacleF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -1852,37 +1852,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1896,7 +1896,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_obstacleF?obstacleF -> get_stop?stop -> get_stopF?stopF -> get_obstacle?obstacle -> get_turn?turn -> get_turnF?turnF -> TimeOut_1(
+					Trans = share__choice(get_turnF?turnF -> get_stop?stop -> get_turn?turn -> get_obstacleF?obstacleF -> get_stopF?stopF -> get_obstacle?obstacle -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((not (((true and (((member(obstacle,{true.l | l <- Location_Loc}) and obstacleF))))))) and (not (((true and (((member(turn,{true.a | a <- Chemical_Angle}) and turnF))))))))) and (not (((true and (((member(stop,{true}) and stopF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_obstacle?b__?x__ -> set_l!x__ -> SKIP;
@@ -2276,12 +2276,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_resumeF <- setL_resumeF,set_turnF <- setL_turnF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
 						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -2289,9 +2289,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_resumeF,setL_turnF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_resumeF <- set_resumeF,setL_turnF <- set_turnF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -2309,37 +2309,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2412,12 +2412,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_resumeF <- setL_resumeF,set_turnF <- setL_turnF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
 						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -2425,9 +2425,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_resumeF,setL_turnF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_resumeF <- set_resumeF,setL_turnF <- set_turnF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -2445,37 +2445,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2489,7 +2489,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_stop?stop -> get_stopF?stopF -> get_resumeF?resumeF -> get_turn?turn -> get_resume?resume -> get_turnF?turnF -> TimeOut_1(
+					Trans = share__choice(get_resume?resume -> get_resumeF?resumeF -> get_turnF?turnF -> get_stop?stop -> get_turn?turn -> get_stopF?stopF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((((not (((true and (((member(resume,{true}) and resumeF))))))) and (not (((true and (((member(turn,{true.a | a <- Chemical_Angle}) and turnF))))))))) and (not (((true and (((member(stop,{true}) and stopF))))))))) and (not (((true and (((member(resume,{true}) and resumeF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_turn?b__?x__ -> set_a!x__ -> SKIP
@@ -2826,13 +2826,13 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_resumeF <- setL_resumeF,set_turnF <- setL_turnF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_obstacleF
-						 				 			,setL_stopF
 						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_obstacleF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -2840,9 +2840,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_resumeF,setL_turnF,setL_obstacleF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_resumeF <- set_resumeF,setL_turnF <- set_turnF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -2860,37 +2860,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -2965,13 +2965,13 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_resumeF <- setL_resumeF,set_turnF <- setL_turnF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_obstacleF
-						 				 			,setL_stopF
 						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_obstacleF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -2979,9 +2979,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_resumeF,setL_turnF,setL_obstacleF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_resumeF <- set_resumeF,setL_turnF <- set_turnF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -2999,37 +2999,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3043,7 +3043,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_obstacleF?obstacleF -> get_stop?stop -> get_stopF?stopF -> get_resumeF?resumeF -> get_obstacle?obstacle -> get_turn?turn -> get_resume?resume -> get_turnF?turnF -> TimeOut_1(
+					Trans = share__choice(get_resume?resume -> get_resumeF?resumeF -> get_turnF?turnF -> get_stop?stop -> get_turn?turn -> get_obstacleF?obstacleF -> get_stopF?stopF -> get_obstacle?obstacle -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((((not (((true and (((member(resume,{true}) and resumeF))))))) and (not (((true and (((member(turn,{true.a | a <- Chemical_Angle}) and turnF))))))))) and (not (((true and (((member(stop,{true}) and stopF))))))))) and (not (((true and (((member(obstacle,{true.l | l <- Location_Loc}) and obstacleF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_turn?b__?x__ -> set_a!x__ -> SKIP;
@@ -3373,14 +3373,14 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[clockReset.CLID_T <- clockResetL.CLID_T,set_d0 <- setL_d0,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF]]
+						 				  [[clockReset.CLID_T <- clockResetL.CLID_T,set_resumeF <- setL_resumeF,set_d1 <- setL_d1,set_d0 <- setL_d0,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
 						 				 			,clockResetL.CLID_T
+						 				 			,setL_resumeF
+						 				 			,setL_d1
 						 				 			,setL_d0
 						 				 			,setL_stopF
-						 				 			,setL_d1
-						 				 			,setL_resumeF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -3388,9 +3388,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_d0,setL_stopF,setL_d1,setL_resumeF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_resumeF,setL_d1,setL_d0,setL_stopF |} ]]
 						 				 )
-						 				)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_d0 <- set_d0,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF]]
+						 				)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_resumeF <- set_resumeF,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -3408,37 +3408,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3504,14 +3504,14 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[clockReset.CLID_T <- clockResetL.CLID_T,set_d0 <- setL_d0,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF]]
+						 				  [[clockReset.CLID_T <- clockResetL.CLID_T,set_resumeF <- setL_resumeF,set_d1 <- setL_d1,set_d0 <- setL_d0,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
 						 				 			,clockResetL.CLID_T
+						 				 			,setL_resumeF
+						 				 			,setL_d1
 						 				 			,setL_d0
 						 				 			,setL_stopF
-						 				 			,setL_d1
-						 				 			,setL_resumeF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -3519,9 +3519,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_d0,setL_stopF,setL_d1,setL_resumeF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_resumeF,setL_d1,setL_d0,setL_stopF |} ]]
 						 				 )
-						 				)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_d0 <- set_d0,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF]]
+						 				)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_resumeF <- set_resumeF,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -3539,37 +3539,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -3583,7 +3583,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_stop?stop -> get_CLID_T?T -> get_d0?d0 -> get_stopF?stopF -> get_d1?d1 -> get_resumeF?resumeF -> get_resume?resume -> TimeOut_1(
+					Trans = share__choice(get_resume?resume -> get_CLID_T?T -> get_resumeF?resumeF -> get_stop?stop -> get_d1?d1 -> get_d0?d0 -> get_stopF?stopF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((((not (((true and (((member(resume,{true}) and resumeF))))))) and (not ((((T<const_pkg994__sim_Movement_stuckPeriod) or (Minus(d1, d0, core_real)>const_pkg994__sim_Movement_stuckDist))))))) and (not (((true and (((member(stop,{true}) and stopF))))))))) and (not ((((T>=const_pkg994__sim_Movement_stuckPeriod) and (Minus(d1, d0, core_real)<=const_pkg994__sim_Movement_stuckDist))))))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -3917,12 +3917,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
-						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_resumeF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -3930,9 +3930,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -3950,37 +3950,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4053,12 +4053,12 @@ exports
 						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 				 )
 						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						 				  [[set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						 				  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_stopF <- setL_stopF]]
 						 				 )
 						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 				 			,setL_stopF
-						 				 			,setL_resumeF
 						 				 			,setL_turnF
+						 				 			,setL_resumeF
+						 				 			,setL_stopF
 						 				|}) |]
 						 				 ((i::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 				 		    const_pkg994__sim_Movement_lv,
@@ -4066,9 +4066,9 @@ exports
 						 				 		    const_pkg994__sim_Movement_stuckPeriod,
 						 				 		    const_pkg994__sim_Movement_stuckDist,
 						 				 		    const_pkg994__sim_Movement_outPeriod))
-						 				  [[ share__ <- x__ | x__ <- {| share__,setL_stopF,setL_resumeF,setL_turnF |} ]]
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_stopF |} ]]
 						 				 )
-						 				)[[setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						 				)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_stopF <- set_stopF]]
 						 				)
 						 			)
 						 			 \ hideSet)
@@ -4086,37 +4086,37 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_l,setR_obstacleF,setR_odometerF,setR_d0,clockResetR.CLID_T,setR_a,setR_stopF,setR_d1,setR_resumeF,setR_turnF |} ]] 
-						  [[set_l <- setL_l,set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_d0 <- setL_d0,clockReset.CLID_T <- clockResetL.CLID_T,set_a <- setL_a,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_T,setR_turnF,setR_resumeF,setR_l,setR_a,setR_d1,setR_d0,setR_odometerF,setR_obstacleF,setR_stopF |} ]] 
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_l <- setL_l,set_a <- setL_a,set_d1 <- setL_d1,set_d0 <- setL_d0,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_l
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_d0
 						 			,clockResetL.CLID_T
-						 			,setL_a
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
-						 			,setR_l
-						 			 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_d0
-						 			 			,clockResetR.CLID_T
-						 			 			,setR_a
-						 			 			,setR_stopF
-						 			 			,setR_d1
-						 			 			,setR_resumeF
+						 			,setL_resumeF
+						 			,setL_l
+						 			,setL_a
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetR.CLID_T
 						 			 			,setR_turnF
+						 			 			,setR_resumeF
+						 			 			,setR_l
+						 			 			,setR_a
+						 			 			,setR_d1
+						 			 			,setR_d0
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_l,setL_obstacleF,setL_odometerF,setL_d0,clockResetL.CLID_T,setL_a,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
-						  [[set_l <- setR_l,set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_d0 <- setR_d0,clockReset.CLID_T <- clockResetR.CLID_T,set_a <- setR_a,set_stopF <- setR_stopF,set_d1 <- setR_d1,set_resumeF <- setR_resumeF,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_l,setL_a,setL_d1,setL_d0,setL_odometerF,setL_obstacleF,setL_stopF |} ]]
+						  [[clockReset.CLID_T <- clockResetR.CLID_T,set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_l <- setR_l,set_a <- setR_a,set_d1 <- setR_d1,set_d0 <- setR_d0,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF]]
 						 )
-						)[[setL_l <- set_l,setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_d0 <- set_d0,clockResetL.CLID_T <- clockReset.CLID_T,setL_a <- set_a,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
-						 [[setR_l <- set_l,setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_d0 <- set_d0,clockResetR.CLID_T <- clockReset.CLID_T,setR_a <- set_a,setR_stopF <- set_stopF,setR_d1 <- set_d1,setR_resumeF <- set_resumeF,setR_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_l <- set_l,setL_a <- set_a,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
+						 [[clockResetR.CLID_T <- clockReset.CLID_T,setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_l <- set_l,setR_a <- set_a,setR_d1 <- set_d1,setR_d0 <- set_d0,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -4130,7 +4130,7 @@ exports
 						    const_pkg994__sim_Movement_stuckPeriod,
 						    const_pkg994__sim_Movement_stuckDist,
 						    const_pkg994__sim_Movement_outPeriod) = ((let
-					Trans = share__choice(get_stop?stop -> get_stopF?stopF -> get_resumeF?resumeF -> get_turn?turn -> get_turnF?turnF -> get_resume?resume -> TimeOut_1(
+					Trans = share__choice(get_resume?resume -> get_turnF?turnF -> get_stop?stop -> get_resumeF?resumeF -> get_turn?turn -> get_stopF?stopF -> TimeOut_1(
 						 (share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
 						 [] dbisim(((((((not (((true and (((member(turn,{true.a | a <- Chemical_Angle}) and turnF))))))) and (not (((true and (((member(stop,{true}) and stopF))))))))) and (not (((true and (((member(resume,{true}) and resumeF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_turn?b__?x__ -> set_a!x__ -> SKIP
@@ -4221,30 +4221,36 @@ exports
 				    const_pkg994__sim_Movement_stuckPeriod,
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_Avoiding_entryCall,0)
-		CALL__clone_normal_Movement_TryingAgain_t11_op(id__,
-				    const_pkg994__sim_Movement_lv,
-				    const_pkg994__sim_Movement_evadeTime,
-				    const_pkg994__sim_Movement_stuckPeriod,
-				    const_pkg994__sim_Movement_stuckDist,
-				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_TryingAgain_t11_opCall,0)
-		CALL__shortRandomWalk(id__,
-				    const_pkg994__sim_Movement_lv,
-				    const_pkg994__sim_Movement_evadeTime,
-				    const_pkg994__sim_Movement_stuckPeriod,
-				    const_pkg994__sim_Movement_stuckDist,
-				    const_pkg994__sim_Movement_outPeriod) = EDeadline(registerWrite.o_shortRandomWalk,0)
-		CALL__clone_normal_Movement_GettingOut_entry(id__,
-				    const_pkg994__sim_Movement_lv,
-				    const_pkg994__sim_Movement_evadeTime,
-				    const_pkg994__sim_Movement_stuckPeriod,
-				    const_pkg994__sim_Movement_stuckDist,
-				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_GettingOut_entryCall,0)
 		CALL__randomWalk(id__,
 				    const_pkg994__sim_Movement_lv,
 				    const_pkg994__sim_Movement_evadeTime,
 				    const_pkg994__sim_Movement_stuckPeriod,
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = EDeadline(registerWrite.o_randomWalk,0)
+		CALL__shortRandomWalk(id__,
+				    const_pkg994__sim_Movement_lv,
+				    const_pkg994__sim_Movement_evadeTime,
+				    const_pkg994__sim_Movement_stuckPeriod,
+				    const_pkg994__sim_Movement_stuckDist,
+				    const_pkg994__sim_Movement_outPeriod) = EDeadline(registerWrite.o_shortRandomWalk,0)
+		CALL__clone_normal_Movement_TryingAgain_t11_op(id__,
+				    const_pkg994__sim_Movement_lv,
+				    const_pkg994__sim_Movement_evadeTime,
+				    const_pkg994__sim_Movement_stuckPeriod,
+				    const_pkg994__sim_Movement_stuckDist,
+				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_TryingAgain_t11_opCall,0)
+		CALL__clone_normal_Movement_GettingOut_entry(id__,
+				    const_pkg994__sim_Movement_lv,
+				    const_pkg994__sim_Movement_evadeTime,
+				    const_pkg994__sim_Movement_stuckPeriod,
+				    const_pkg994__sim_Movement_stuckDist,
+				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_GettingOut_entryCall,0)
+		CALL__clone_normal_Movement_Found_entry(id__,
+				    const_pkg994__sim_Movement_lv,
+				    const_pkg994__sim_Movement_evadeTime,
+				    const_pkg994__sim_Movement_stuckPeriod,
+				    const_pkg994__sim_Movement_stuckDist,
+				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_Found_entryCall,0)
 		CALL__move(id__,
 				    const_pkg994__sim_Movement_lv,
 				    const_pkg994__sim_Movement_evadeTime,
@@ -4253,33 +4259,27 @@ exports
 				    const_pkg994__sim_Movement_outPeriod,
 					param_lv,
 					param_a) = EDeadline(registerWrite.o_move.param_lv.param_a,0)
-		CALL__clone_normal_Movement_Found_entry(id__,
-				    const_pkg994__sim_Movement_lv,
-				    const_pkg994__sim_Movement_evadeTime,
-				    const_pkg994__sim_Movement_stuckPeriod,
-				    const_pkg994__sim_Movement_stuckDist,
-				    const_pkg994__sim_Movement_outPeriod) = EDeadline(clone_normal_Movement_Found_entryCall,0)
 		
 		-- END of Operation calls --
 	
-		datatype SOutputEvents = SOutput_move
+		datatype SOutputEvents = SOutput_randomWalk
+			| SOutput_move
 			| SOutput_flag
-			| SOutput_randomWalk
 			| SOutput_shortRandomWalk
 		
 		cycle(cycle_pkg994__sim_Movement_Movement) =
 			let
+				project(o_randomWalk) = SOutput_randomWalk
 				project(o_move.x__) = SOutput_move
 				project(o_flag) = SOutput_flag
-				project(o_randomWalk) = SOutput_randomWalk
 				project(o_shortRandomWalk) = SOutput_shortRandomWalk
 		
 				Cycle =
 					Deadline(
 						(registerRead.i_turn?x__ -> SKIP
+							||| registerRead.i_stop?x__ -> SKIP
 							||| registerRead.i_odometer?x__ -> SKIP
 							||| registerRead.i_resume?x__ -> SKIP
-							||| registerRead.i_stop?x__ -> SKIP
 							||| registerRead.i_obstacle?x__ -> SKIP);
 						startexec -> CollectOutputs(SOutputEvents),0);
 					TimeOut_1(terminate -> SKIP,WAIT(cycle_pkg994__sim_Movement_Movement-1);Cycle)
@@ -4299,36 +4299,57 @@ exports
 				    const_pkg994__sim_Movement_stuckPeriod,
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
-		(
-			cycle(cycle_pkg994__sim_Movement_Movement)
-			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
-			( 
-				(
-					(
-						(startexec -> IteratedStateful(id__,cycle_pkg994__sim_Movement_Movement,
-								    const_pkg994__sim_Movement_lv,
-								    const_pkg994__sim_Movement_evadeTime,
-								    const_pkg994__sim_Movement_stuckPeriod,
-								    const_pkg994__sim_Movement_stuckDist,
-								    const_pkg994__sim_Movement_outPeriod) \ {terminate}) 
-						[| {share__} |]
-						SKIP
-					) ; 
-					(let
-						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
-					 within
-					 	Ending
-					)
+		dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												(
+													cycle(cycle_pkg994__sim_Movement_Movement)
+													[| {| endexec,registerWrite,startexec,terminate |} |]
+													(
+														(
+															(startexec -> IteratedStateful(id__,cycle_pkg994__sim_Movement_Movement,
+																	    const_pkg994__sim_Movement_lv,
+																	    const_pkg994__sim_Movement_evadeTime,
+																	    const_pkg994__sim_Movement_stuckPeriod,
+																	    const_pkg994__sim_Movement_stuckDist,
+																	    const_pkg994__sim_Movement_outPeriod) \ {terminate}) 
+															[| {share__} |]
+															SKIP
+														) ; 
+														(let
+															Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+														 within
+														 	Ending
+														)
+													)
+												)\{startexec}
+												[| {|get_stop,registerRead.i_stop,terminate|} |]
+												Memory_stop(false)
+											)\{|get_stop|}
+										)
+										[| {|get_turn,registerRead.i_turn,terminate|} |]
+										Memory_turn(false.Chemical_Angle_Left)
+									)\{|get_turn|}
+								)
+								[| {|get_resume,registerRead.i_resume,terminate|} |]
+								Memory_resume(false)
+							)\{|get_resume|}
+						)
+						[| {|get_odometer,registerRead.i_odometer,terminate|} |]
+						Memory_odometer(false.0)
+					)\{|get_odometer|}
 				)
-				[| union(sharedVarSync,{terminate}) |]
-				dbisim(sharedVarMemory(id__,cycle_pkg994__sim_Movement_Movement,
-						    const_pkg994__sim_Movement_lv,
-						    const_pkg994__sim_Movement_evadeTime,
-						    const_pkg994__sim_Movement_stuckPeriod,
-						    const_pkg994__sim_Movement_stuckDist,
-						    const_pkg994__sim_Movement_outPeriod))
-			)\sharedVarHide
-		)\{startexec}
+				[| {|get_obstacle,registerRead.i_obstacle,terminate|} |]
+				Memory_obstacle(false.Location_Loc_left)
+			)\{|get_obstacle|}
+		)
 		
 		STM_VS_O(id__,cycle_pkg994__sim_Movement_Movement,
 				    const_pkg994__sim_Movement_lv,
@@ -4336,36 +4357,57 @@ exports
 				    const_pkg994__sim_Movement_stuckPeriod,
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
-		(
-			cycle(cycle_pkg994__sim_Movement_Movement)
-			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
-			( 
-				(
-					(
-						(startexec -> IteratedStateful_VS_O(id__,cycle_pkg994__sim_Movement_Movement,
-								    const_pkg994__sim_Movement_lv,
-								    const_pkg994__sim_Movement_evadeTime,
-								    const_pkg994__sim_Movement_stuckPeriod,
-								    const_pkg994__sim_Movement_stuckDist,
-								    const_pkg994__sim_Movement_outPeriod) \ {terminate}) 
-						[| {share__} |]
-						SKIP
-					) ; 
-					(let
-						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
-					 within
-					 	Ending
-					)
+		dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												(
+													cycle(cycle_pkg994__sim_Movement_Movement)
+													[| {| endexec,registerWrite,startexec,terminate |} |]
+													(
+														(
+															(startexec -> IteratedStateful_VS_O(id__,cycle_pkg994__sim_Movement_Movement,
+																	    const_pkg994__sim_Movement_lv,
+																	    const_pkg994__sim_Movement_evadeTime,
+																	    const_pkg994__sim_Movement_stuckPeriod,
+																	    const_pkg994__sim_Movement_stuckDist,
+																	    const_pkg994__sim_Movement_outPeriod) \ {terminate}) 
+															[| {share__} |]
+															SKIP
+														) ; 
+														(let
+															Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+														 within
+														 	Ending
+														)
+													)
+												)\{startexec}
+												[| {|get_stop,registerRead.i_stop,terminate|} |]
+												Memory_stop(false)
+											)\{|get_stop|}
+										)
+										[| {|get_turn,registerRead.i_turn,terminate|} |]
+										Memory_turn(false.Chemical_Angle_Left)
+									)\{|get_turn|}
+								)
+								[| {|get_resume,registerRead.i_resume,terminate|} |]
+								Memory_resume(false)
+							)\{|get_resume|}
+						)
+						[| {|get_odometer,registerRead.i_odometer,terminate|} |]
+						Memory_odometer(false.0)
+					)\{|get_odometer|}
 				)
-				[| union(sharedVarSync,{terminate}) |]
-				dbisim(sharedVarMemory(id__,cycle_pkg994__sim_Movement_Movement,
-						    const_pkg994__sim_Movement_lv,
-						    const_pkg994__sim_Movement_evadeTime,
-						    const_pkg994__sim_Movement_stuckPeriod,
-						    const_pkg994__sim_Movement_stuckDist,
-						    const_pkg994__sim_Movement_outPeriod))
-			)\sharedVarHide
-		)\{startexec}
+				[| {|get_obstacle,registerRead.i_obstacle,terminate|} |]
+				Memory_obstacle(false.Location_Loc_left)
+			)\{|get_obstacle|}
+		)
 		
 		-- Transitions
 		Transitions(id__,cycle_pkg994__sim_Movement_Movement,
@@ -4374,12 +4416,12 @@ exports
 				    const_pkg994__sim_Movement_stuckPeriod,
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = ((let
-			Trans = share__choice(get_obstacleF?obstacleF -> get_stop?stop -> get_CLID_T?T:CLID_T_clock_type(id__,
+			Trans = share__choice(get_resume?resume -> get_CLID_T?T:CLID_T_clock_type(id__,
 					          const_pkg994__sim_Movement_lv,
 					          const_pkg994__sim_Movement_evadeTime,
 					          const_pkg994__sim_Movement_stuckPeriod,
 					          const_pkg994__sim_Movement_stuckDist,
-					          const_pkg994__sim_Movement_outPeriod) -> get_d0?d0 -> get_stopF?stopF -> get_d1?d1 -> get_resumeF?resumeF -> get_obstacle?obstacle -> get_turn?turn -> get_turnF?turnF -> get_resume?resume -> TimeOut_1(
+					          const_pkg994__sim_Movement_outPeriod) -> get_stop?stop -> get_turnF?turnF -> get_resumeF?resumeF -> get_turn?turn -> get_d1?d1 -> get_d0?d0 -> get_obstacleF?obstacleF -> get_stopF?stopF -> get_obstacle?obstacle -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP))))
 				 [] dbisim((((member(stop,{true}) and stopF)))&(internal__!NID_Waiting -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -4634,16 +4676,16 @@ exports
 						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_T <- clockResetL.CLID_T,set_d0 <- setL_d0,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_d1 <- setL_d1,set_d0 <- setL_d0,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_obstacleF
 						 			,clockResetL.CLID_T
-						 			,setL_d0
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
+						 			,setL_resumeF
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_obstacleF
+						 			,setL_stopF
 						|}) |]
 						 ((i1::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 		    const_pkg994__sim_Movement_lv,
@@ -4651,9 +4693,9 @@ exports
 						 		    const_pkg994__sim_Movement_stuckPeriod,
 						 		    const_pkg994__sim_Movement_stuckDist,
 						 		    const_pkg994__sim_Movement_outPeriod))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_T,setL_d0,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_d1,setL_d0,setL_obstacleF,setL_stopF |} ]]
 						 )
-						)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_T <- clockReset.CLID_T,setL_d0 <- set_d0,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						)
 					)
 					 \ hideSet)
@@ -4681,7 +4723,7 @@ exports
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Found,Found::entered,get_CLID_Going,Going::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Avoiding,Avoiding::entered|}
+				stateClockSync = {|get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Going,Going::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Found,Found::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
 			 within
 				(MachineBody(id__,cycle_pkg994__sim_Movement_Movement,
 						    const_pkg994__sim_Movement_lv,
@@ -4704,7 +4746,7 @@ exports
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Found,Found::entered,get_CLID_Going,Going::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Avoiding,Avoiding::entered|}
+				stateClockSync = {|get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Going,Going::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Found,Found::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -4726,68 +4768,68 @@ exports
 																				    const_pkg994__sim_Movement_stuckPeriod,
 																				    const_pkg994__sim_Movement_stuckDist,
 																				    const_pkg994__sim_Movement_outPeriod)
-																		[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
-																		dbisim(Clock_CLID_Avoiding(id__,0,
+																		[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
+																		dbisim(Clock_CLID_AvoidingAgain(id__,0,
 																				          const_pkg994__sim_Movement_lv,
 																				          const_pkg994__sim_Movement_evadeTime,
 																				          const_pkg994__sim_Movement_stuckPeriod,
 																				          const_pkg994__sim_Movement_stuckDist,
 																				          const_pkg994__sim_Movement_outPeriod))
-																	)\{|get_CLID_Avoiding|}
+																	)\{|get_CLID_AvoidingAgain|}
 																)
-																[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
-																dbisim(Clock_CLID_GettingOut(id__,0,
+																[| {|get_CLID_Found,Found::entered,terminate|} |]
+																dbisim(Clock_CLID_Found(id__,0,
 																		          const_pkg994__sim_Movement_lv,
 																		          const_pkg994__sim_Movement_evadeTime,
 																		          const_pkg994__sim_Movement_stuckPeriod,
 																		          const_pkg994__sim_Movement_stuckDist,
 																		          const_pkg994__sim_Movement_outPeriod))
-															)\{|get_CLID_GettingOut|}
+															)\{|get_CLID_Found|}
 														)
-														[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
-														dbisim(Clock_CLID_TryingAgain(id__,0,
+														[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
+														dbisim(Clock_CLID_GettingOut(id__,0,
 																          const_pkg994__sim_Movement_lv,
 																          const_pkg994__sim_Movement_evadeTime,
 																          const_pkg994__sim_Movement_stuckPeriod,
 																          const_pkg994__sim_Movement_stuckDist,
 																          const_pkg994__sim_Movement_outPeriod))
-													)\{|get_CLID_TryingAgain|}
+													)\{|get_CLID_GettingOut|}
 												)
-												[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
-												dbisim(Clock_CLID_Waiting(id__,0,
+												[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
+												dbisim(Clock_CLID_Avoiding(id__,0,
 														          const_pkg994__sim_Movement_lv,
 														          const_pkg994__sim_Movement_evadeTime,
 														          const_pkg994__sim_Movement_stuckPeriod,
 														          const_pkg994__sim_Movement_stuckDist,
 														          const_pkg994__sim_Movement_outPeriod))
-											)\{|get_CLID_Waiting|}
+											)\{|get_CLID_Avoiding|}
 										)
-										[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
-										dbisim(Clock_CLID_AvoidingAgain(id__,0,
+										[| {|get_CLID_Going,Going::entered,terminate|} |]
+										dbisim(Clock_CLID_Going(id__,0,
 												          const_pkg994__sim_Movement_lv,
 												          const_pkg994__sim_Movement_evadeTime,
 												          const_pkg994__sim_Movement_stuckPeriod,
 												          const_pkg994__sim_Movement_stuckDist,
 												          const_pkg994__sim_Movement_outPeriod))
-									)\{|get_CLID_AvoidingAgain|}
+									)\{|get_CLID_Going|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+								dbisim(Clock_CLID_Waiting(id__,0,
 										          const_pkg994__sim_Movement_lv,
 										          const_pkg994__sim_Movement_evadeTime,
 										          const_pkg994__sim_Movement_stuckPeriod,
 										          const_pkg994__sim_Movement_stuckDist,
 										          const_pkg994__sim_Movement_outPeriod))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Waiting|}
 						)
-						[| {|get_CLID_Found,Found::entered,terminate|} |]
-						dbisim(Clock_CLID_Found(id__,0,
+						[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
+						dbisim(Clock_CLID_TryingAgain(id__,0,
 								          const_pkg994__sim_Movement_lv,
 								          const_pkg994__sim_Movement_evadeTime,
 								          const_pkg994__sim_Movement_stuckPeriod,
 								          const_pkg994__sim_Movement_stuckDist,
 								          const_pkg994__sim_Movement_outPeriod))
-					)\{|get_CLID_Found|}
+					)\{|get_CLID_TryingAgain|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -5030,16 +5072,16 @@ exports
 						 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_obstacleF <- setL_obstacleF,clockReset.CLID_T <- clockResetL.CLID_T,set_d0 <- setL_d0,set_stopF <- setL_stopF,set_d1 <- setL_d1,set_resumeF <- setL_resumeF,set_turnF <- setL_turnF]]
+						  [[clockReset.CLID_T <- clockResetL.CLID_T,set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_d1 <- setL_d1,set_d0 <- setL_d0,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,setL_obstacleF
 						 			,clockResetL.CLID_T
-						 			,setL_d0
-						 			,setL_stopF
-						 			,setL_d1
-						 			,setL_resumeF
 						 			,setL_turnF
+						 			,setL_resumeF
+						 			,setL_d1
+						 			,setL_d0
+						 			,setL_obstacleF
+						 			,setL_stopF
 						|}) |]
 						 ((i1::enter -> Transitions(id__,cycle_pkg994__sim_Movement_Movement,
 						 		    const_pkg994__sim_Movement_lv,
@@ -5047,9 +5089,9 @@ exports
 						 		    const_pkg994__sim_Movement_stuckPeriod,
 						 		    const_pkg994__sim_Movement_stuckDist,
 						 		    const_pkg994__sim_Movement_outPeriod))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,clockResetL.CLID_T,setL_d0,setL_stopF,setL_d1,setL_resumeF,setL_turnF |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_T,setL_turnF,setL_resumeF,setL_d1,setL_d0,setL_obstacleF,setL_stopF |} ]]
 						 )
-						)[[setL_obstacleF <- set_obstacleF,clockResetL.CLID_T <- clockReset.CLID_T,setL_d0 <- set_d0,setL_stopF <- set_stopF,setL_d1 <- set_d1,setL_resumeF <- set_resumeF,setL_turnF <- set_turnF]]
+						)[[clockResetL.CLID_T <- clockReset.CLID_T,setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_d1 <- set_d1,setL_d0 <- set_d0,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF]]
 						)
 					)
 					 \ hideSet)
@@ -5077,7 +5119,7 @@ exports
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Found,Found::entered,get_CLID_Going,Going::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Avoiding,Avoiding::entered|}
+				stateClockSync = {|get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Going,Going::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Found,Found::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
 			 within
 				(MachineBody_VS_O(id__,cycle_pkg994__sim_Movement_Movement,
 						    const_pkg994__sim_Movement_lv,
@@ -5100,7 +5142,7 @@ exports
 				    const_pkg994__sim_Movement_stuckDist,
 				    const_pkg994__sim_Movement_outPeriod) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Found,Found::entered,get_CLID_Going,Going::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Avoiding,Avoiding::entered|}
+				stateClockSync = {|get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Going,Going::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Found,Found::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -5122,68 +5164,68 @@ exports
 																				    const_pkg994__sim_Movement_stuckPeriod,
 																				    const_pkg994__sim_Movement_stuckDist,
 																				    const_pkg994__sim_Movement_outPeriod)
-																		[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
-																		dbisim(Clock_CLID_Avoiding(id__,0,
+																		[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
+																		dbisim(Clock_CLID_AvoidingAgain(id__,0,
 																				          const_pkg994__sim_Movement_lv,
 																				          const_pkg994__sim_Movement_evadeTime,
 																				          const_pkg994__sim_Movement_stuckPeriod,
 																				          const_pkg994__sim_Movement_stuckDist,
 																				          const_pkg994__sim_Movement_outPeriod))
-																	)\{|get_CLID_Avoiding|}
+																	)\{|get_CLID_AvoidingAgain|}
 																)
-																[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
-																dbisim(Clock_CLID_GettingOut(id__,0,
+																[| {|get_CLID_Found,Found::entered,terminate|} |]
+																dbisim(Clock_CLID_Found(id__,0,
 																		          const_pkg994__sim_Movement_lv,
 																		          const_pkg994__sim_Movement_evadeTime,
 																		          const_pkg994__sim_Movement_stuckPeriod,
 																		          const_pkg994__sim_Movement_stuckDist,
 																		          const_pkg994__sim_Movement_outPeriod))
-															)\{|get_CLID_GettingOut|}
+															)\{|get_CLID_Found|}
 														)
-														[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
-														dbisim(Clock_CLID_TryingAgain(id__,0,
+														[| {|get_CLID_GettingOut,GettingOut::entered,terminate|} |]
+														dbisim(Clock_CLID_GettingOut(id__,0,
 																          const_pkg994__sim_Movement_lv,
 																          const_pkg994__sim_Movement_evadeTime,
 																          const_pkg994__sim_Movement_stuckPeriod,
 																          const_pkg994__sim_Movement_stuckDist,
 																          const_pkg994__sim_Movement_outPeriod))
-													)\{|get_CLID_TryingAgain|}
+													)\{|get_CLID_GettingOut|}
 												)
-												[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
-												dbisim(Clock_CLID_Waiting(id__,0,
+												[| {|get_CLID_Avoiding,Avoiding::entered,terminate|} |]
+												dbisim(Clock_CLID_Avoiding(id__,0,
 														          const_pkg994__sim_Movement_lv,
 														          const_pkg994__sim_Movement_evadeTime,
 														          const_pkg994__sim_Movement_stuckPeriod,
 														          const_pkg994__sim_Movement_stuckDist,
 														          const_pkg994__sim_Movement_outPeriod))
-											)\{|get_CLID_Waiting|}
+											)\{|get_CLID_Avoiding|}
 										)
-										[| {|get_CLID_AvoidingAgain,AvoidingAgain::entered,terminate|} |]
-										dbisim(Clock_CLID_AvoidingAgain(id__,0,
+										[| {|get_CLID_Going,Going::entered,terminate|} |]
+										dbisim(Clock_CLID_Going(id__,0,
 												          const_pkg994__sim_Movement_lv,
 												          const_pkg994__sim_Movement_evadeTime,
 												          const_pkg994__sim_Movement_stuckPeriod,
 												          const_pkg994__sim_Movement_stuckDist,
 												          const_pkg994__sim_Movement_outPeriod))
-									)\{|get_CLID_AvoidingAgain|}
+									)\{|get_CLID_Going|}
 								)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+								dbisim(Clock_CLID_Waiting(id__,0,
 										          const_pkg994__sim_Movement_lv,
 										          const_pkg994__sim_Movement_evadeTime,
 										          const_pkg994__sim_Movement_stuckPeriod,
 										          const_pkg994__sim_Movement_stuckDist,
 										          const_pkg994__sim_Movement_outPeriod))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Waiting|}
 						)
-						[| {|get_CLID_Found,Found::entered,terminate|} |]
-						dbisim(Clock_CLID_Found(id__,0,
+						[| {|get_CLID_TryingAgain,TryingAgain::entered,terminate|} |]
+						dbisim(Clock_CLID_TryingAgain(id__,0,
 								          const_pkg994__sim_Movement_lv,
 								          const_pkg994__sim_Movement_evadeTime,
 								          const_pkg994__sim_Movement_stuckPeriod,
 								          const_pkg994__sim_Movement_stuckDist,
 								          const_pkg994__sim_Movement_outPeriod))
-					)\{|get_CLID_Found|}
+					)\{|get_CLID_TryingAgain|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -5539,92 +5581,28 @@ exports
 		
 		clockSync = {|get_CLID_T,clockReset.CLID_T|}
 		
-		Clock_CLID_Found(id__,x__,
+		Clock_CLID_TryingAgain(id__,x__,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
 				          const_pkg994__sim_Movement_stuckDist,
 				          const_pkg994__sim_Movement_outPeriod) = 
 			TimeOut_1(
-				Found::entered -> Clock_CLID_Found(id__,0,
+				TryingAgain::entered -> Clock_CLID_TryingAgain(id__,0,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod)
 				[]
-				get_CLID_Found!x__ -> Clock_CLID_Found(id__,x__,
+				get_CLID_TryingAgain!x__ -> Clock_CLID_TryingAgain(id__,x__,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod)
 				[]
-				terminate -> SKIP,Clock_CLID_Found(id__,clock_type_plus(x__,1,CLID_Found_clock_type(id__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)),
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod))
-		Clock_CLID_Going(id__,x__,
-				          const_pkg994__sim_Movement_lv,
-				          const_pkg994__sim_Movement_evadeTime,
-				          const_pkg994__sim_Movement_stuckPeriod,
-				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod) = 
-			TimeOut_1(
-				Going::entered -> Clock_CLID_Going(id__,0,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)),
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod))
-		Clock_CLID_AvoidingAgain(id__,x__,
-				          const_pkg994__sim_Movement_lv,
-				          const_pkg994__sim_Movement_evadeTime,
-				          const_pkg994__sim_Movement_stuckPeriod,
-				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod) = 
-			TimeOut_1(
-				AvoidingAgain::entered -> Clock_CLID_AvoidingAgain(id__,0,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				get_CLID_AvoidingAgain!x__ -> Clock_CLID_AvoidingAgain(id__,x__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_AvoidingAgain(id__,clock_type_plus(x__,1,CLID_AvoidingAgain_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_TryingAgain(id__,clock_type_plus(x__,1,CLID_TryingAgain_clock_type(id__,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
@@ -5667,60 +5645,28 @@ exports
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod))
-		Clock_CLID_TryingAgain(id__,x__,
+		Clock_CLID_Going(id__,x__,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
 				          const_pkg994__sim_Movement_stuckDist,
 				          const_pkg994__sim_Movement_outPeriod) = 
 			TimeOut_1(
-				TryingAgain::entered -> Clock_CLID_TryingAgain(id__,0,
+				Going::entered -> Clock_CLID_Going(id__,0,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod)
 				[]
-				get_CLID_TryingAgain!x__ -> Clock_CLID_TryingAgain(id__,x__,
+				get_CLID_Going!x__ -> Clock_CLID_Going(id__,x__,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod)
 				[]
-				terminate -> SKIP,Clock_CLID_TryingAgain(id__,clock_type_plus(x__,1,CLID_TryingAgain_clock_type(id__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)),
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod))
-		Clock_CLID_GettingOut(id__,x__,
-				          const_pkg994__sim_Movement_lv,
-				          const_pkg994__sim_Movement_evadeTime,
-				          const_pkg994__sim_Movement_stuckPeriod,
-				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod) = 
-			TimeOut_1(
-				GettingOut::entered -> Clock_CLID_GettingOut(id__,0,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				get_CLID_GettingOut!x__ -> Clock_CLID_GettingOut(id__,x__,
-						          const_pkg994__sim_Movement_lv,
-						          const_pkg994__sim_Movement_evadeTime,
-						          const_pkg994__sim_Movement_stuckPeriod,
-						          const_pkg994__sim_Movement_stuckDist,
-						          const_pkg994__sim_Movement_outPeriod)
-				[]
-				terminate -> SKIP,Clock_CLID_GettingOut(id__,clock_type_plus(x__,1,CLID_GettingOut_clock_type(id__,
+				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
 						          const_pkg994__sim_Movement_lv,
 						          const_pkg994__sim_Movement_evadeTime,
 						          const_pkg994__sim_Movement_stuckPeriod,
@@ -5763,27 +5709,109 @@ exports
 						          const_pkg994__sim_Movement_stuckPeriod,
 						          const_pkg994__sim_Movement_stuckDist,
 						          const_pkg994__sim_Movement_outPeriod))
+		Clock_CLID_GettingOut(id__,x__,
+				          const_pkg994__sim_Movement_lv,
+				          const_pkg994__sim_Movement_evadeTime,
+				          const_pkg994__sim_Movement_stuckPeriod,
+				          const_pkg994__sim_Movement_stuckDist,
+				          const_pkg994__sim_Movement_outPeriod) = 
+			TimeOut_1(
+				GettingOut::entered -> Clock_CLID_GettingOut(id__,0,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				get_CLID_GettingOut!x__ -> Clock_CLID_GettingOut(id__,x__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_GettingOut(id__,clock_type_plus(x__,1,CLID_GettingOut_clock_type(id__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)),
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod))
+		Clock_CLID_Found(id__,x__,
+				          const_pkg994__sim_Movement_lv,
+				          const_pkg994__sim_Movement_evadeTime,
+				          const_pkg994__sim_Movement_stuckPeriod,
+				          const_pkg994__sim_Movement_stuckDist,
+				          const_pkg994__sim_Movement_outPeriod) = 
+			TimeOut_1(
+				Found::entered -> Clock_CLID_Found(id__,0,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				get_CLID_Found!x__ -> Clock_CLID_Found(id__,x__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_Found(id__,clock_type_plus(x__,1,CLID_Found_clock_type(id__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)),
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod))
+		Clock_CLID_AvoidingAgain(id__,x__,
+				          const_pkg994__sim_Movement_lv,
+				          const_pkg994__sim_Movement_evadeTime,
+				          const_pkg994__sim_Movement_stuckPeriod,
+				          const_pkg994__sim_Movement_stuckDist,
+				          const_pkg994__sim_Movement_outPeriod) = 
+			TimeOut_1(
+				AvoidingAgain::entered -> Clock_CLID_AvoidingAgain(id__,0,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				get_CLID_AvoidingAgain!x__ -> Clock_CLID_AvoidingAgain(id__,x__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)
+				[]
+				terminate -> SKIP,Clock_CLID_AvoidingAgain(id__,clock_type_plus(x__,1,CLID_AvoidingAgain_clock_type(id__,
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod)),
+						          const_pkg994__sim_Movement_lv,
+						          const_pkg994__sim_Movement_evadeTime,
+						          const_pkg994__sim_Movement_stuckPeriod,
+						          const_pkg994__sim_Movement_stuckDist,
+						          const_pkg994__sim_Movement_outPeriod))
 		
 		StateClocks(id__,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
 				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod) = dbisim(Clock_CLID_Found(id__,0,
-				          const_pkg994__sim_Movement_lv,
-				          const_pkg994__sim_Movement_evadeTime,
-				          const_pkg994__sim_Movement_stuckPeriod,
-				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_Going(id__,0,
-				          const_pkg994__sim_Movement_lv,
-				          const_pkg994__sim_Movement_evadeTime,
-				          const_pkg994__sim_Movement_stuckPeriod,
-				          const_pkg994__sim_Movement_stuckDist,
-				          const_pkg994__sim_Movement_outPeriod))
-		[| { terminate } |] (
-		dbisim(Clock_CLID_AvoidingAgain(id__,0,
+				          const_pkg994__sim_Movement_outPeriod) = dbisim(Clock_CLID_TryingAgain(id__,0,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
@@ -5797,7 +5825,14 @@ exports
 				          const_pkg994__sim_Movement_stuckDist,
 				          const_pkg994__sim_Movement_outPeriod))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_TryingAgain(id__,0,
+		dbisim(Clock_CLID_Going(id__,0,
+				          const_pkg994__sim_Movement_lv,
+				          const_pkg994__sim_Movement_evadeTime,
+				          const_pkg994__sim_Movement_stuckPeriod,
+				          const_pkg994__sim_Movement_stuckDist,
+				          const_pkg994__sim_Movement_outPeriod))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Avoiding(id__,0,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
@@ -5811,7 +5846,14 @@ exports
 				          const_pkg994__sim_Movement_stuckDist,
 				          const_pkg994__sim_Movement_outPeriod))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Avoiding(id__,0,
+		dbisim(Clock_CLID_Found(id__,0,
+				          const_pkg994__sim_Movement_lv,
+				          const_pkg994__sim_Movement_evadeTime,
+				          const_pkg994__sim_Movement_stuckPeriod,
+				          const_pkg994__sim_Movement_stuckDist,
+				          const_pkg994__sim_Movement_outPeriod))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_AvoidingAgain(id__,0,
 				          const_pkg994__sim_Movement_lv,
 				          const_pkg994__sim_Movement_evadeTime,
 				          const_pkg994__sim_Movement_stuckPeriod,
@@ -5824,7 +5866,7 @@ exports
 		)
 		)
 		
-		stateClockSync = {|get_CLID_Found,Found::entered,get_CLID_Going,Going::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_TryingAgain,TryingAgain::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Avoiding,Avoiding::entered|}
+		stateClockSync = {|get_CLID_TryingAgain,TryingAgain::entered,get_CLID_Waiting,Waiting::entered,get_CLID_Going,Going::entered,get_CLID_Avoiding,Avoiding::entered,get_CLID_GettingOut,GettingOut::entered,get_CLID_Found,Found::entered,get_CLID_AvoidingAgain,AvoidingAgain::entered|}
 		
 		
 		-- Shared memory

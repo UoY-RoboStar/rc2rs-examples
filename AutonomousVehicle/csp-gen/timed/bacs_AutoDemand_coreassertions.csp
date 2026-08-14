@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacs_AutoDemandcsp"
+
+-- generate bacs_AutoDemand_AutoDemand
+P_bacs_AutoDemand_AutoDemand = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_AutoDemand::AutoDemand::O__(
+		id__,
+		const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+		const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+		const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+		const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+		const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+	)
+assert P_bacs_AutoDemand_AutoDemand :[deadlock-free]	
+assert P_bacs_AutoDemand_AutoDemand;RUN({r__}) :[deadlock-free]
+assert P_bacs_AutoDemand_AutoDemand :[deterministic]
+assert P_bacs_AutoDemand_AutoDemand :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_AutoDemand_AutoDemand[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_AutoDemand_AutoDemand
+
+
+

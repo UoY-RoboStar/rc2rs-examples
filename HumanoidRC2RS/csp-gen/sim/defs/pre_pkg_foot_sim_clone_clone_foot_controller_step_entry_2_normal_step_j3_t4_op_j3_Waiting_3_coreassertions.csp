@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 14-08-2026 15:56:58
+--
+
+include "core_timed_defs.csp"
+include "pre_pkg_foot_sim_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "pre_pkg_foot_sim_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3
+P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_foot_sim::OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3::O__(id__)
+assert P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3 :[deadlock-free]	
+assert P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3 :[deterministic]
+assert P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_foot_sim_OP_clone_clone_foot_controller_step_entry_2_normal_step_j3_t4_op_j3_Waiting_3

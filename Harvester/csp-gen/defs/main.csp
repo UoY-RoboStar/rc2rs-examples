@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -62,11 +62,11 @@ module Harvester
 			
 			
 			-- declaring call and ret events for undefined operations
-			channel hideArmCall
-			channel moveCall: main_JointsPos
 			channel graspCall: main_JointsPos
+			channel moveCall: main_JointsPos
 			channel goHomeCall
 			channel pickCall
+			channel hideArmCall
 			channel dropCall: main_JointsPos
 			
 			-- declaring controller termination channel
@@ -76,11 +76,11 @@ module Harvester
 			sem__events = {|
 				terminate
 			,	takePic
-			,	hideArmCall,
+			,	graspCall,
 				moveCall,
-				graspCall,
 				goHomeCall,
 				pickCall,
+				hideArmCall,
 				dropCall
 			|}
 	
@@ -182,11 +182,11 @@ module Harvester
 				channel endGoHome: InOut
 				
 				-- Declaring call and ret events for undefined operations
-				channel hideArmCall
-				channel moveCall: main_JointsPos
 				channel graspCall: main_JointsPos
+				channel moveCall: main_JointsPos
 				channel goHomeCall
 				channel pickCall
+				channel hideArmCall
 				channel dropCall: main_JointsPos
 				
 				enterSS = {|
@@ -220,11 +220,11 @@ module Harvester
 					endIKSolver,
 					startGoHome,
 					endGoHome
-				,	hideArmCall,
+				,	graspCall,
 					moveCall,
-					graspCall,
 					goHomeCall,
 					pickCall,
+					hideArmCall,
 					dropCall
 					|}
 			
@@ -1215,27 +1215,27 @@ module Harvester
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-							  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+							  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_img
-							 			,setL_localized
-							 			,setL_apples
 							 			,setL_nextApple
 							 			,setL_positions
-							 			,setR_img
-							 			 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setL_localized
+							 			,setL_img
+							 			,setL_apples
+							 			,setR_nextApple
 							 			 			,setR_positions
+							 			 			,setR_localized
+							 			 			,setR_img
+							 			 			,setR_apples
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-							  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+							  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 							 )
-							)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-							 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+							)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+							 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1428,27 +1428,27 @@ module Harvester
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-							  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+							  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_img
-							 			,setL_localized
-							 			,setL_apples
 							 			,setL_nextApple
 							 			,setL_positions
-							 			,setR_img
-							 			 			,setR_localized
-							 			 			,setR_apples
-							 			 			,setR_nextApple
+							 			,setL_localized
+							 			,setL_img
+							 			,setL_apples
+							 			,setR_nextApple
 							 			 			,setR_positions
+							 			 			,setR_localized
+							 			 			,setR_img
+							 			 			,setR_apples
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-							  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+							  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 							 )
-							)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-							 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+							)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+							 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -1895,25 +1895,6 @@ module Harvester
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
-				CALL__hideArm(id__,
-						    const_main_AppleHarvestControl_hideTime,
-						    const_main_AppleHarvestControl_approachTime,
-						    const_main_AppleHarvestControl_graspTime,
-						    const_main_AppleHarvestControl_dropTime,
-						    const_main_AppleHarvestControl_pickTime,
-						    const_main_AppleHarvestControl_pickDeadl,
-						    const_main_AppleHarvestControl_homePos,
-						    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
-				CALL__move(id__,
-						    const_main_AppleHarvestControl_hideTime,
-						    const_main_AppleHarvestControl_approachTime,
-						    const_main_AppleHarvestControl_graspTime,
-						    const_main_AppleHarvestControl_dropTime,
-						    const_main_AppleHarvestControl_pickTime,
-						    const_main_AppleHarvestControl_pickDeadl,
-						    const_main_AppleHarvestControl_homePos,
-						    const_main_AppleHarvestControl_storagePos,
-							param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__grasp(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -1924,6 +1905,16 @@ module Harvester
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos,
 							param_jp) 	= graspCall.param_jp -> SKIP
+				CALL__move(id__,
+						    const_main_AppleHarvestControl_hideTime,
+						    const_main_AppleHarvestControl_approachTime,
+						    const_main_AppleHarvestControl_graspTime,
+						    const_main_AppleHarvestControl_dropTime,
+						    const_main_AppleHarvestControl_pickTime,
+						    const_main_AppleHarvestControl_pickDeadl,
+						    const_main_AppleHarvestControl_homePos,
+						    const_main_AppleHarvestControl_storagePos,
+							param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__goHome(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -1942,6 +1933,15 @@ module Harvester
 						    const_main_AppleHarvestControl_pickDeadl,
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) 	= pickCall -> SKIP
+				CALL__hideArm(id__,
+						    const_main_AppleHarvestControl_hideTime,
+						    const_main_AppleHarvestControl_approachTime,
+						    const_main_AppleHarvestControl_graspTime,
+						    const_main_AppleHarvestControl_dropTime,
+						    const_main_AppleHarvestControl_pickTime,
+						    const_main_AppleHarvestControl_pickDeadl,
+						    const_main_AppleHarvestControl_homePos,
+						    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
 				CALL__drop(id__,
 						    const_main_AppleHarvestControl_hideTime,
 						    const_main_AppleHarvestControl_approachTime,
@@ -2072,7 +2072,7 @@ module Harvester
 						    const_main_AppleHarvestControl_pickDeadl,
 						    const_main_AppleHarvestControl_homePos,
 						    const_main_AppleHarvestControl_storagePos) = ((let
-					Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> (
+					Trans = share__choice(get_nextApple?nextApple -> get_positions?positions -> get_localized?localized -> (
 						((share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 						 	 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -2220,12 +2220,12 @@ module Harvester
 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-								  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_localized
 								 			,setL_nextApple
 								 			,setL_positions
+								 			,setL_localized
 								 			,setR_img
 								 			|}) |]
 								 ((i0::enter -> Transitions(id__,
@@ -2237,10 +2237,10 @@ module Harvester
 								 		    const_main_AppleHarvestControl_pickDeadl,
 								 		    const_main_AppleHarvestControl_homePos,
 								 		    const_main_AppleHarvestControl_storagePos))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 								  [[set_img <- setR_img]]
 								 )
-								)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 								 [[setR_img <- set_img]]
 								)
 							)
@@ -2501,12 +2501,12 @@ module Harvester
 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-								  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+								  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_localized
 								 			,setL_nextApple
 								 			,setL_positions
+								 			,setL_localized
 								 			,setR_img
 								 			|}) |]
 								 ((i0::enter -> Transitions(id__,
@@ -2518,10 +2518,10 @@ module Harvester
 								 		    const_main_AppleHarvestControl_pickDeadl,
 								 		    const_main_AppleHarvestControl_homePos,
 								 		    const_main_AppleHarvestControl_storagePos))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 								  [[set_img <- setR_img]]
 								 )
-								)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+								)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 								 [[setR_img <- set_img]]
 								)
 							)
@@ -3199,7 +3199,7 @@ module Harvester
 						 	 [] dbisim((true)&(startIKSolver__!NID_Ready.in?apples:{apples|apples <- Set(setoperations_Coord3D), true} -> share__choice(set_apples!apples -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Loop::enter -> SKIP)))
 						 	 [] dbisim(((apples!={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_apples?apples -> pre_setoperations_choose(apples) & (share__choice(set_apple!setoperations_choose(apples) -> SKIP)))) ; Solve::enter -> SKIP)))
 						 	 [] dbisim(((apples=={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_positions?positions -> true&(share__choice(endIKSolver.out!positions -> SKIP))) ; Ready::enter -> SKIP)))
-						 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> share__choice(get_apple?apple -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
+						 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_positions?positions -> share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> share__choice(get_apple?apple -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
 						 ) ; Trans)
 						 []
 						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
@@ -3577,11 +3577,11 @@ module Harvester
 				channel endGoHome: InOut
 				
 				-- Declaring call and ret events for undefined operations
-				channel hideArmCall
-				channel moveCall: main_JointsPos
 				channel graspCall: main_JointsPos
+				channel moveCall: main_JointsPos
 				channel goHomeCall
 				channel pickCall
+				channel hideArmCall
 				channel dropCall: main_JointsPos
 				
 				enterSS = {|
@@ -3605,11 +3605,11 @@ module Harvester
 					terminate
 				,	startGoHome,
 					endGoHome
-				,	hideArmCall,
+				,	graspCall,
 					moveCall,
-					graspCall,
 					goHomeCall,
 					pickCall,
+					hideArmCall,
 					dropCall
 					|}
 			
@@ -3791,18 +3791,18 @@ module Harvester
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
-				CALL__hideArm(id__,
-						    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
-				CALL__move(id__,
-						    const_main_GoHome_goHTime,
-							param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__grasp(id__,
 						    const_main_GoHome_goHTime,
 							param_jp) 	= graspCall.param_jp -> SKIP
+				CALL__move(id__,
+						    const_main_GoHome_goHTime,
+							param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__goHome(id__,
 						    const_main_GoHome_goHTime) 	= goHomeCall -> SKIP
 				CALL__pick(id__,
 						    const_main_GoHome_goHTime) 	= pickCall -> SKIP
+				CALL__hideArm(id__,
+						    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
 				CALL__drop(id__,
 						    const_main_GoHome_goHTime,
 							param_jp) 	= dropCall.param_jp -> SKIP
@@ -4094,13 +4094,13 @@ module Harvester
 			endmodule
 			
 				-- undefined operations
-				CALL__hideArm(id__) 	= hideArmCall -> SKIP
-				CALL__move(id__,
-						    param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__grasp(id__,
 						    param_jp) 	= graspCall.param_jp -> SKIP
+				CALL__move(id__,
+						    param_jp) 	= moveCall.param_jp -> SKIP
 				CALL__goHome(id__) 	= goHomeCall -> SKIP
 				CALL__pick(id__) 	= pickCall -> SKIP
+				CALL__hideArm(id__) 	= hideArmCall -> SKIP
 				CALL__drop(id__,
 						    param_jp) 	= dropCall.param_jp -> SKIP
 				
@@ -4143,11 +4143,11 @@ module Harvester
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -4170,11 +4170,11 @@ module Harvester
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -4243,11 +4243,11 @@ module Harvester
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -4270,11 +4270,11 @@ module Harvester
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -4343,11 +4343,11 @@ module Harvester
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -4370,11 +4370,11 @@ module Harvester
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -4444,11 +4444,11 @@ module Harvester
 								stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 								stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 								stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-								stm_ref0::hideArmCall <- hideArmCall,
-								stm_ref0::moveCall <- moveCall,
 								stm_ref0::graspCall <- graspCall,
+								stm_ref0::moveCall <- moveCall,
 								stm_ref0::goHomeCall <- goHomeCall,
 								stm_ref0::pickCall <- pickCall,
+								stm_ref0::hideArmCall <- hideArmCall,
 								stm_ref0::dropCall <- dropCall
 							]]
 						)
@@ -4471,11 +4471,11 @@ module Harvester
 									stm_ref2::terminate <- terminate,
 									stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 									stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-									stm_ref2::hideArmCall <- hideArmCall,
-									stm_ref2::moveCall <- moveCall,
 									stm_ref2::graspCall <- graspCall,
+									stm_ref2::moveCall <- moveCall,
 									stm_ref2::goHomeCall <- goHomeCall,
 									stm_ref2::pickCall <- pickCall,
+									stm_ref2::hideArmCall <- hideArmCall,
 									stm_ref2::dropCall <- dropCall
 								]]
 							)
@@ -4560,11 +4560,11 @@ module Harvester
 								    const_main_ControlArm_stm_ref2_goHTime)[[
 							ctrl_ref0::terminate <- terminate,
 							ctrl_ref0::takePic <- takePic,
-							ctrl_ref0::hideArmCall <- hideArmCall,
-							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::graspCall <- graspCall,
+							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::goHomeCall <- goHomeCall,
 							ctrl_ref0::pickCall <- pickCall,
+							ctrl_ref0::hideArmCall <- hideArmCall,
 							ctrl_ref0::dropCall <- dropCall
 						]]
 					)
@@ -4620,11 +4620,11 @@ module Harvester
 								    const_main_ControlArm_stm_ref2_goHTime)[[
 							ctrl_ref0::terminate <- terminate,
 							ctrl_ref0::takePic <- takePic,
-							ctrl_ref0::hideArmCall <- hideArmCall,
-							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::graspCall <- graspCall,
+							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::goHomeCall <- goHomeCall,
 							ctrl_ref0::pickCall <- pickCall,
+							ctrl_ref0::hideArmCall <- hideArmCall,
 							ctrl_ref0::dropCall <- dropCall
 						]]
 					)
@@ -4680,11 +4680,11 @@ module Harvester
 								    const_main_ControlArm_stm_ref2_goHTime)[[
 							ctrl_ref0::terminate <- terminate,
 							ctrl_ref0::takePic <- takePic,
-							ctrl_ref0::hideArmCall <- hideArmCall,
-							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::graspCall <- graspCall,
+							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::goHomeCall <- goHomeCall,
 							ctrl_ref0::pickCall <- pickCall,
+							ctrl_ref0::hideArmCall <- hideArmCall,
 							ctrl_ref0::dropCall <- dropCall
 						]]
 					)
@@ -4741,11 +4741,11 @@ module Harvester
 								    const_main_ControlArm_stm_ref2_goHTime)[[
 							ctrl_ref0::terminate <- terminate,
 							ctrl_ref0::takePic <- takePic,
-							ctrl_ref0::hideArmCall <- hideArmCall,
-							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::graspCall <- graspCall,
+							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::goHomeCall <- goHomeCall,
 							ctrl_ref0::pickCall <- pickCall,
+							ctrl_ref0::hideArmCall <- hideArmCall,
 							ctrl_ref0::dropCall <- dropCall
 						]]
 					)
@@ -4802,11 +4802,11 @@ module Harvester
 								    const_main_ControlArm_stm_ref2_goHTime)[[
 							ctrl_ref0::terminate <- terminate,
 							ctrl_ref0::takePic <- takePic,
-							ctrl_ref0::hideArmCall <- hideArmCall,
-							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::graspCall <- graspCall,
+							ctrl_ref0::moveCall <- moveCall,
 							ctrl_ref0::goHomeCall <- goHomeCall,
 							ctrl_ref0::pickCall <- pickCall,
+							ctrl_ref0::hideArmCall <- hideArmCall,
 							ctrl_ref0::dropCall <- dropCall
 						]]
 					)
@@ -4852,11 +4852,11 @@ endmodule
 		
 		
 		-- declaring call and ret events for undefined operations
-		channel hideArmCall
-		channel moveCall: main_JointsPos
 		channel graspCall: main_JointsPos
+		channel moveCall: main_JointsPos
 		channel goHomeCall
 		channel pickCall
+		channel hideArmCall
 		channel dropCall: main_JointsPos
 		
 		-- declaring controller termination channel
@@ -4866,11 +4866,11 @@ endmodule
 		sem__events = {|
 			terminate
 		,	takePic
-		,	hideArmCall,
+		,	graspCall,
 			moveCall,
-			graspCall,
 			goHomeCall,
 			pickCall,
+			hideArmCall,
 			dropCall
 		|}
 
@@ -4972,11 +4972,11 @@ endmodule
 			channel endGoHome: InOut
 			
 			-- Declaring call and ret events for undefined operations
-			channel hideArmCall
-			channel moveCall: main_JointsPos
 			channel graspCall: main_JointsPos
+			channel moveCall: main_JointsPos
 			channel goHomeCall
 			channel pickCall
+			channel hideArmCall
 			channel dropCall: main_JointsPos
 			
 			enterSS = {|
@@ -5010,11 +5010,11 @@ endmodule
 				endIKSolver,
 				startGoHome,
 				endGoHome
-			,	hideArmCall,
+			,	graspCall,
 				moveCall,
-				graspCall,
 				goHomeCall,
 				pickCall,
+				hideArmCall,
 				dropCall
 				|}
 		
@@ -6005,27 +6005,27 @@ endmodule
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-						  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+						  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_img
-						 			,setL_localized
-						 			,setL_apples
 						 			,setL_nextApple
 						 			,setL_positions
-						 			,setR_img
-						 			 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setL_localized
+						 			,setL_img
+						 			,setL_apples
+						 			,setR_nextApple
 						 			 			,setR_positions
+						 			 			,setR_localized
+						 			 			,setR_img
+						 			 			,setR_apples
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-						  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+						  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 						 )
-						)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-						 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+						)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+						 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -6218,27 +6218,27 @@ endmodule
 						 	]]
 						 )
 						 )
-						  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-						  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+						  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_img
-						 			,setL_localized
-						 			,setL_apples
 						 			,setL_nextApple
 						 			,setL_positions
-						 			,setR_img
-						 			 			,setR_localized
-						 			 			,setR_apples
-						 			 			,setR_nextApple
+						 			,setL_localized
+						 			,setL_img
+						 			,setL_apples
+						 			,setR_nextApple
 						 			 			,setR_positions
+						 			 			,setR_localized
+						 			 			,setR_img
+						 			 			,setR_apples
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-						  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+						  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 						 )
-						)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-						 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+						)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+						 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -6685,25 +6685,6 @@ endmodule
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
-			CALL__hideArm(id__,
-					    const_main_AppleHarvestControl_hideTime,
-					    const_main_AppleHarvestControl_approachTime,
-					    const_main_AppleHarvestControl_graspTime,
-					    const_main_AppleHarvestControl_dropTime,
-					    const_main_AppleHarvestControl_pickTime,
-					    const_main_AppleHarvestControl_pickDeadl,
-					    const_main_AppleHarvestControl_homePos,
-					    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
-			CALL__move(id__,
-					    const_main_AppleHarvestControl_hideTime,
-					    const_main_AppleHarvestControl_approachTime,
-					    const_main_AppleHarvestControl_graspTime,
-					    const_main_AppleHarvestControl_dropTime,
-					    const_main_AppleHarvestControl_pickTime,
-					    const_main_AppleHarvestControl_pickDeadl,
-					    const_main_AppleHarvestControl_homePos,
-					    const_main_AppleHarvestControl_storagePos,
-						param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__grasp(id__,
 					    const_main_AppleHarvestControl_hideTime,
 					    const_main_AppleHarvestControl_approachTime,
@@ -6714,6 +6695,16 @@ endmodule
 					    const_main_AppleHarvestControl_homePos,
 					    const_main_AppleHarvestControl_storagePos,
 						param_jp) 	= graspCall.param_jp -> SKIP
+			CALL__move(id__,
+					    const_main_AppleHarvestControl_hideTime,
+					    const_main_AppleHarvestControl_approachTime,
+					    const_main_AppleHarvestControl_graspTime,
+					    const_main_AppleHarvestControl_dropTime,
+					    const_main_AppleHarvestControl_pickTime,
+					    const_main_AppleHarvestControl_pickDeadl,
+					    const_main_AppleHarvestControl_homePos,
+					    const_main_AppleHarvestControl_storagePos,
+						param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__goHome(id__,
 					    const_main_AppleHarvestControl_hideTime,
 					    const_main_AppleHarvestControl_approachTime,
@@ -6732,6 +6723,15 @@ endmodule
 					    const_main_AppleHarvestControl_pickDeadl,
 					    const_main_AppleHarvestControl_homePos,
 					    const_main_AppleHarvestControl_storagePos) 	= pickCall -> SKIP
+			CALL__hideArm(id__,
+					    const_main_AppleHarvestControl_hideTime,
+					    const_main_AppleHarvestControl_approachTime,
+					    const_main_AppleHarvestControl_graspTime,
+					    const_main_AppleHarvestControl_dropTime,
+					    const_main_AppleHarvestControl_pickTime,
+					    const_main_AppleHarvestControl_pickDeadl,
+					    const_main_AppleHarvestControl_homePos,
+					    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
 			CALL__drop(id__,
 					    const_main_AppleHarvestControl_hideTime,
 					    const_main_AppleHarvestControl_approachTime,
@@ -6862,7 +6862,7 @@ endmodule
 					    const_main_AppleHarvestControl_pickDeadl,
 					    const_main_AppleHarvestControl_homePos,
 					    const_main_AppleHarvestControl_storagePos) = ((let
-				Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> (
+				Trans = share__choice(get_nextApple?nextApple -> get_positions?positions -> get_localized?localized -> (
 					((share__ -> SKIP
 					 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 					 	 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -7010,12 +7010,12 @@ endmodule
 							 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-							  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+							  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-							 			,setL_localized
 							 			,setL_nextApple
 							 			,setL_positions
+							 			,setL_localized
 							 			,setR_img
 							 			|}) |]
 							 ((i0::enter -> Transitions(id__,
@@ -7027,10 +7027,10 @@ endmodule
 							 		    const_main_AppleHarvestControl_pickDeadl,
 							 		    const_main_AppleHarvestControl_homePos,
 							 		    const_main_AppleHarvestControl_storagePos))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 							  [[set_img <- setR_img]]
 							 )
-							)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+							)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 							 [[setR_img <- set_img]]
 							)
 						)
@@ -7291,12 +7291,12 @@ endmodule
 							 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 							 )
 							  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-							  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+							  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 							 )
 							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-							 			,setL_localized
 							 			,setL_nextApple
 							 			,setL_positions
+							 			,setL_localized
 							 			,setR_img
 							 			|}) |]
 							 ((i0::enter -> Transitions(id__,
@@ -7308,10 +7308,10 @@ endmodule
 							 		    const_main_AppleHarvestControl_pickDeadl,
 							 		    const_main_AppleHarvestControl_homePos,
 							 		    const_main_AppleHarvestControl_storagePos))
-							  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 							  [[set_img <- setR_img]]
 							 )
-							)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+							)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 							 [[setR_img <- set_img]]
 							)
 						)
@@ -7989,7 +7989,7 @@ endmodule
 					 	 [] dbisim((true)&(startIKSolver__!NID_Ready.in?apples:{apples|apples <- Set(setoperations_Coord3D), true} -> share__choice(set_apples!apples -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Loop::enter -> SKIP)))
 					 	 [] dbisim(((apples!={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_apples?apples -> pre_setoperations_choose(apples) & (share__choice(set_apple!setoperations_choose(apples) -> SKIP)))) ; Solve::enter -> SKIP)))
 					 	 [] dbisim(((apples=={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_positions?positions -> true&(share__choice(endIKSolver.out!positions -> SKIP))) ; Ready::enter -> SKIP)))
-					 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> share__choice(get_apple?apple -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
+					 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_positions?positions -> share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> share__choice(get_apple?apple -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
 					 ) ; Trans)
 					 []
 					 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
@@ -8367,11 +8367,11 @@ endmodule
 			channel endGoHome: InOut
 			
 			-- Declaring call and ret events for undefined operations
-			channel hideArmCall
-			channel moveCall: main_JointsPos
 			channel graspCall: main_JointsPos
+			channel moveCall: main_JointsPos
 			channel goHomeCall
 			channel pickCall
+			channel hideArmCall
 			channel dropCall: main_JointsPos
 			
 			enterSS = {|
@@ -8395,11 +8395,11 @@ endmodule
 				terminate
 			,	startGoHome,
 				endGoHome
-			,	hideArmCall,
+			,	graspCall,
 				moveCall,
-				graspCall,
 				goHomeCall,
 				pickCall,
+				hideArmCall,
 				dropCall
 				|}
 		
@@ -8581,18 +8581,18 @@ endmodule
 			-- If it is in the context of a controller, the required operations not provided by the
 			-- controller will be declared here, and the defined operations will be defined in the
 			-- context of the Controller module, and therefore within scope of the state machine module.
-			CALL__hideArm(id__,
-					    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
-			CALL__move(id__,
-					    const_main_GoHome_goHTime,
-						param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__grasp(id__,
 					    const_main_GoHome_goHTime,
 						param_jp) 	= graspCall.param_jp -> SKIP
+			CALL__move(id__,
+					    const_main_GoHome_goHTime,
+						param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__goHome(id__,
 					    const_main_GoHome_goHTime) 	= goHomeCall -> SKIP
 			CALL__pick(id__,
 					    const_main_GoHome_goHTime) 	= pickCall -> SKIP
+			CALL__hideArm(id__,
+					    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
 			CALL__drop(id__,
 					    const_main_GoHome_goHTime,
 						param_jp) 	= dropCall.param_jp -> SKIP
@@ -8884,13 +8884,13 @@ endmodule
 		endmodule
 		
 			-- undefined operations
-			CALL__hideArm(id__) 	= hideArmCall -> SKIP
-			CALL__move(id__,
-					    param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__grasp(id__,
 					    param_jp) 	= graspCall.param_jp -> SKIP
+			CALL__move(id__,
+					    param_jp) 	= moveCall.param_jp -> SKIP
 			CALL__goHome(id__) 	= goHomeCall -> SKIP
 			CALL__pick(id__) 	= pickCall -> SKIP
+			CALL__hideArm(id__) 	= hideArmCall -> SKIP
 			CALL__drop(id__,
 					    param_jp) 	= dropCall.param_jp -> SKIP
 			
@@ -8933,11 +8933,11 @@ endmodule
 							stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 							stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 							stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-							stm_ref0::hideArmCall <- hideArmCall,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::graspCall <- graspCall,
+							stm_ref0::moveCall <- moveCall,
 							stm_ref0::goHomeCall <- goHomeCall,
 							stm_ref0::pickCall <- pickCall,
+							stm_ref0::hideArmCall <- hideArmCall,
 							stm_ref0::dropCall <- dropCall
 						]]
 					)
@@ -8960,11 +8960,11 @@ endmodule
 								stm_ref2::terminate <- terminate,
 								stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 								stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-								stm_ref2::hideArmCall <- hideArmCall,
-								stm_ref2::moveCall <- moveCall,
 								stm_ref2::graspCall <- graspCall,
+								stm_ref2::moveCall <- moveCall,
 								stm_ref2::goHomeCall <- goHomeCall,
 								stm_ref2::pickCall <- pickCall,
+								stm_ref2::hideArmCall <- hideArmCall,
 								stm_ref2::dropCall <- dropCall
 							]]
 						)
@@ -9033,11 +9033,11 @@ endmodule
 							stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 							stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 							stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-							stm_ref0::hideArmCall <- hideArmCall,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::graspCall <- graspCall,
+							stm_ref0::moveCall <- moveCall,
 							stm_ref0::goHomeCall <- goHomeCall,
 							stm_ref0::pickCall <- pickCall,
+							stm_ref0::hideArmCall <- hideArmCall,
 							stm_ref0::dropCall <- dropCall
 						]]
 					)
@@ -9060,11 +9060,11 @@ endmodule
 								stm_ref2::terminate <- terminate,
 								stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 								stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-								stm_ref2::hideArmCall <- hideArmCall,
-								stm_ref2::moveCall <- moveCall,
 								stm_ref2::graspCall <- graspCall,
+								stm_ref2::moveCall <- moveCall,
 								stm_ref2::goHomeCall <- goHomeCall,
 								stm_ref2::pickCall <- pickCall,
+								stm_ref2::hideArmCall <- hideArmCall,
 								stm_ref2::dropCall <- dropCall
 							]]
 						)
@@ -9133,11 +9133,11 @@ endmodule
 							stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 							stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 							stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-							stm_ref0::hideArmCall <- hideArmCall,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::graspCall <- graspCall,
+							stm_ref0::moveCall <- moveCall,
 							stm_ref0::goHomeCall <- goHomeCall,
 							stm_ref0::pickCall <- pickCall,
+							stm_ref0::hideArmCall <- hideArmCall,
 							stm_ref0::dropCall <- dropCall
 						]]
 					)
@@ -9160,11 +9160,11 @@ endmodule
 								stm_ref2::terminate <- terminate,
 								stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 								stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-								stm_ref2::hideArmCall <- hideArmCall,
-								stm_ref2::moveCall <- moveCall,
 								stm_ref2::graspCall <- graspCall,
+								stm_ref2::moveCall <- moveCall,
 								stm_ref2::goHomeCall <- goHomeCall,
 								stm_ref2::pickCall <- pickCall,
+								stm_ref2::hideArmCall <- hideArmCall,
 								stm_ref2::dropCall <- dropCall
 							]]
 						)
@@ -9234,11 +9234,11 @@ endmodule
 							stm_ref0::endIKSolver.out <- stm_ref1::endIKSolver.in,
 							stm_ref0::endGoHome.in <- stm_ref2::endGoHome.out,
 							stm_ref0::endGoHome.out <- stm_ref2::endGoHome.in,
-							stm_ref0::hideArmCall <- hideArmCall,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::graspCall <- graspCall,
+							stm_ref0::moveCall <- moveCall,
 							stm_ref0::goHomeCall <- goHomeCall,
 							stm_ref0::pickCall <- pickCall,
+							stm_ref0::hideArmCall <- hideArmCall,
 							stm_ref0::dropCall <- dropCall
 						]]
 					)
@@ -9261,11 +9261,11 @@ endmodule
 								stm_ref2::terminate <- terminate,
 								stm_ref2::startGoHome.in <- stm_ref0::startGoHome.out,
 								stm_ref2::startGoHome.out <- stm_ref0::startGoHome.in,
-								stm_ref2::hideArmCall <- hideArmCall,
-								stm_ref2::moveCall <- moveCall,
 								stm_ref2::graspCall <- graspCall,
+								stm_ref2::moveCall <- moveCall,
 								stm_ref2::goHomeCall <- goHomeCall,
 								stm_ref2::pickCall <- pickCall,
+								stm_ref2::hideArmCall <- hideArmCall,
 								stm_ref2::dropCall <- dropCall
 							]]
 						)
@@ -9320,6 +9320,7 @@ endmodule
 
 	endmodule
 
+
 module AppleHarvestControl
 exports
 	transparent diamond
@@ -9370,14 +9371,14 @@ exports
 	channel endGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel hideArmCall
+	channel CHTBACall: main_Image
+	channel graspCall: main_JointsPos
 	channel moveCall: main_JointsPos
 	channel NearestNeighbourCall
-	channel graspCall: main_JointsPos
 	channel goHomeCall
 	channel pickCall
+	channel hideArmCall
 	channel dropCall: main_JointsPos
-	channel CHTBACall: main_Image
 	
 	enterSS = {|
 	i0::enter,
@@ -9410,14 +9411,14 @@ exports
 		endIKSolver,
 		startGoHome,
 		endGoHome
-	,	hideArmCall,
+	,	CHTBACall,
+		graspCall,
 		moveCall,
 		NearestNeighbourCall,
-		graspCall,
 		goHomeCall,
 		pickCall,
-		dropCall,
-		CHTBACall
+		hideArmCall,
+		dropCall
 		|}
 
 	-- Nodes --
@@ -10407,27 +10408,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-				  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+				  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_img
-				 			,setL_localized
-				 			,setL_apples
 				 			,setL_nextApple
 				 			,setL_positions
-				 			,setR_img
-				 			 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setL_localized
+				 			,setL_img
+				 			,setL_apples
+				 			,setR_nextApple
 				 			 			,setR_positions
+				 			 			,setR_localized
+				 			 			,setR_img
+				 			 			,setR_apples
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-				  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+				  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 				 )
-				)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-				 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+				)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+				 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 				)\union(enteredSS,{terminate}) 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10620,27 +10621,27 @@ exports
 				 	]]
 				 )
 				 )
-				  [[ share__ <- x__ | x__ <- {| share__,setR_img,setR_localized,setR_apples,setR_nextApple,setR_positions |} ]] 
-				  [[set_img <- setL_img,set_localized <- setL_localized,set_apples <- setL_apples,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setR_nextApple,setR_positions,setR_localized,setR_img,setR_apples |} ]] 
+				  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized,set_img <- setL_img,set_apples <- setL_apples]]
 				 )
 				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-				 			,setL_img
-				 			,setL_localized
-				 			,setL_apples
 				 			,setL_nextApple
 				 			,setL_positions
-				 			,setR_img
-				 			 			,setR_localized
-				 			 			,setR_apples
-				 			 			,setR_nextApple
+				 			,setL_localized
+				 			,setL_img
+				 			,setL_apples
+				 			,setR_nextApple
 				 			 			,setR_positions
+				 			 			,setR_localized
+				 			 			,setR_img
+				 			 			,setR_apples
 				 			|}) |]
 				 ((During)
-				  [[ share__ <- x__ | x__ <- {| share__,setL_img,setL_localized,setL_apples,setL_nextApple,setL_positions |} ]]
-				  [[set_img <- setR_img,set_localized <- setR_localized,set_apples <- setR_apples,set_nextApple <- setR_nextApple,set_positions <- setR_positions]]
+				  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized,setL_img,setL_apples |} ]]
+				  [[set_nextApple <- setR_nextApple,set_positions <- setR_positions,set_localized <- setR_localized,set_img <- setR_img,set_apples <- setR_apples]]
 				 )
-				)[[setL_img <- set_img,setL_localized <- set_localized,setL_apples <- set_apples,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
-				 [[setR_img <- set_img,setR_localized <- set_localized,setR_apples <- set_apples,setR_nextApple <- set_nextApple,setR_positions <- set_positions]]
+				)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized,setL_img <- set_img,setL_apples <- set_apples]]
+				 [[setR_nextApple <- set_nextApple,setR_positions <- set_positions,setR_localized <- set_localized,setR_img <- set_img,setR_apples <- set_apples]]
 				)\{terminate} 
 			)
 			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -11087,7 +11088,7 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__hideArm(id__,
+	CALL__CHTBA(id__,
 			    const_main_AppleHarvestControl_hideTime,
 			    const_main_AppleHarvestControl_approachTime,
 			    const_main_AppleHarvestControl_graspTime,
@@ -11095,7 +11096,18 @@ exports
 			    const_main_AppleHarvestControl_pickTime,
 			    const_main_AppleHarvestControl_pickDeadl,
 			    const_main_AppleHarvestControl_homePos,
-			    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
+			    const_main_AppleHarvestControl_storagePos,
+				param_img) 	= CHTBACall.param_img -> SKIP
+	CALL__grasp(id__,
+			    const_main_AppleHarvestControl_hideTime,
+			    const_main_AppleHarvestControl_approachTime,
+			    const_main_AppleHarvestControl_graspTime,
+			    const_main_AppleHarvestControl_dropTime,
+			    const_main_AppleHarvestControl_pickTime,
+			    const_main_AppleHarvestControl_pickDeadl,
+			    const_main_AppleHarvestControl_homePos,
+			    const_main_AppleHarvestControl_storagePos,
+				param_jp) 	= graspCall.param_jp -> SKIP
 	CALL__move(id__,
 			    const_main_AppleHarvestControl_hideTime,
 			    const_main_AppleHarvestControl_approachTime,
@@ -11115,16 +11127,6 @@ exports
 			    const_main_AppleHarvestControl_pickDeadl,
 			    const_main_AppleHarvestControl_homePos,
 			    const_main_AppleHarvestControl_storagePos) 	= NearestNeighbourCall -> SKIP
-	CALL__grasp(id__,
-			    const_main_AppleHarvestControl_hideTime,
-			    const_main_AppleHarvestControl_approachTime,
-			    const_main_AppleHarvestControl_graspTime,
-			    const_main_AppleHarvestControl_dropTime,
-			    const_main_AppleHarvestControl_pickTime,
-			    const_main_AppleHarvestControl_pickDeadl,
-			    const_main_AppleHarvestControl_homePos,
-			    const_main_AppleHarvestControl_storagePos,
-				param_jp) 	= graspCall.param_jp -> SKIP
 	CALL__goHome(id__,
 			    const_main_AppleHarvestControl_hideTime,
 			    const_main_AppleHarvestControl_approachTime,
@@ -11143,6 +11145,15 @@ exports
 			    const_main_AppleHarvestControl_pickDeadl,
 			    const_main_AppleHarvestControl_homePos,
 			    const_main_AppleHarvestControl_storagePos) 	= pickCall -> SKIP
+	CALL__hideArm(id__,
+			    const_main_AppleHarvestControl_hideTime,
+			    const_main_AppleHarvestControl_approachTime,
+			    const_main_AppleHarvestControl_graspTime,
+			    const_main_AppleHarvestControl_dropTime,
+			    const_main_AppleHarvestControl_pickTime,
+			    const_main_AppleHarvestControl_pickDeadl,
+			    const_main_AppleHarvestControl_homePos,
+			    const_main_AppleHarvestControl_storagePos) 	= hideArmCall -> SKIP
 	CALL__drop(id__,
 			    const_main_AppleHarvestControl_hideTime,
 			    const_main_AppleHarvestControl_approachTime,
@@ -11153,16 +11164,6 @@ exports
 			    const_main_AppleHarvestControl_homePos,
 			    const_main_AppleHarvestControl_storagePos,
 				param_jp) 	= dropCall.param_jp -> SKIP
-	CALL__CHTBA(id__,
-			    const_main_AppleHarvestControl_hideTime,
-			    const_main_AppleHarvestControl_approachTime,
-			    const_main_AppleHarvestControl_graspTime,
-			    const_main_AppleHarvestControl_dropTime,
-			    const_main_AppleHarvestControl_pickTime,
-			    const_main_AppleHarvestControl_pickDeadl,
-			    const_main_AppleHarvestControl_homePos,
-			    const_main_AppleHarvestControl_storagePos,
-				param_img) 	= CHTBACall.param_img -> SKIP
 	
 	-- END of Operation calls --
 	
@@ -11253,7 +11254,7 @@ exports
 			    const_main_AppleHarvestControl_pickDeadl,
 			    const_main_AppleHarvestControl_homePos,
 			    const_main_AppleHarvestControl_storagePos) = ((let
-		Trans = share__choice(get_localized?localized -> get_nextApple?nextApple -> get_positions?positions -> (
+		Trans = share__choice(get_nextApple?nextApple -> get_positions?positions -> get_localized?localized -> (
 			((share__ -> SKIP
 			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Prepare::enter -> SKIP))))
 			 	 [] dbisim((true)&(takePic__!NID_Prepare.in?img:{img|img <- main_Image, true} -> share__choice(set_img!img -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; LocalizeFruit::enter -> SKIP)))
@@ -11401,12 +11402,12 @@ exports
 					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-					  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+					  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-					 			,setL_localized
 					 			,setL_nextApple
 					 			,setL_positions
+					 			,setL_localized
 					 			,setR_img
 					 			|}) |]
 					 ((i0::enter -> Transitions(id__,
@@ -11418,10 +11419,10 @@ exports
 					 		    const_main_AppleHarvestControl_pickDeadl,
 					 		    const_main_AppleHarvestControl_homePos,
 					 		    const_main_AppleHarvestControl_storagePos))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 					  [[set_img <- setR_img]]
 					 )
-					)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+					)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 					 [[setR_img <- set_img]]
 					)
 				)
@@ -11682,12 +11683,12 @@ exports
 					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
 					 )
 					  [[ share__ <- x__ | x__ <- {| share__,setR_img |} ]] 
-					  [[set_localized <- setL_localized,set_nextApple <- setL_nextApple,set_positions <- setL_positions]]
+					  [[set_nextApple <- setL_nextApple,set_positions <- setL_positions,set_localized <- setL_localized]]
 					 )
 					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-					 			,setL_localized
 					 			,setL_nextApple
 					 			,setL_positions
+					 			,setL_localized
 					 			,setR_img
 					 			|}) |]
 					 ((i0::enter -> Transitions(id__,
@@ -11699,10 +11700,10 @@ exports
 					 		    const_main_AppleHarvestControl_pickDeadl,
 					 		    const_main_AppleHarvestControl_homePos,
 					 		    const_main_AppleHarvestControl_storagePos))
-					  [[ share__ <- x__ | x__ <- {| share__,setL_localized,setL_nextApple,setL_positions |} ]]
+					  [[ share__ <- x__ | x__ <- {| share__,setL_nextApple,setL_positions,setL_localized |} ]]
 					  [[set_img <- setR_img]]
 					 )
-					)[[setL_localized <- set_localized,setL_nextApple <- set_nextApple,setL_positions <- set_positions]]
+					)[[setL_nextApple <- set_nextApple,setL_positions <- set_positions,setL_localized <- set_localized]]
 					 [[setR_img <- set_img]]
 					)
 				)
@@ -12380,7 +12381,7 @@ exports
 			 	 [] dbisim((true)&(startIKSolver__!NID_Ready.in?apples:{apples|apples <- Set(setoperations_Coord3D), true} -> share__choice(set_apples!apples -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Loop::enter -> SKIP)))
 			 	 [] dbisim(((apples!={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(share__choice(get_apples?apples -> pre_setoperations_choose(apples) & (share__choice(set_apple!setoperations_choose(apples) -> SKIP)))) ; Solve::enter -> SKIP)))
 			 	 [] dbisim(((apples=={}))&(internal__!NID_Loop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_positions?positions -> true&(share__choice(endIKSolver.out!positions -> SKIP))) ; Ready::enter -> SKIP)))
-			 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_p1?p1 -> share__choice(get_p2?p2 -> share__choice(get_p3?p3 -> share__choice(get_apple?apple -> share__choice(get_positions?positions -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Solve -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> true&(if (((main_jointInLimit(p1) or main_jointInLimit(p2)) or main_jointInLimit(p3))) then (share__choice(share__choice(get_positions?positions -> share__choice(get_p1?p1 -> share__choice(get_p3?p3 -> share__choice(get_p2?p2 -> share__choice(get_apple?apple -> true & (share__choice(set_positions!main_addApple(positions,apple,p1,p2,p3) -> SKIP))))))))) else (SKIP))))) ; Loop::enter -> SKIP)))
 			 ) ; Trans)
 			 []
 			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
@@ -12758,11 +12759,11 @@ exports
 	channel endGoHome: InOut
 	
 	-- Declaring call and ret events for undefined operations
-	channel hideArmCall
-	channel moveCall: main_JointsPos
 	channel graspCall: main_JointsPos
+	channel moveCall: main_JointsPos
 	channel goHomeCall
 	channel pickCall
+	channel hideArmCall
 	channel dropCall: main_JointsPos
 	
 	enterSS = {|
@@ -12786,11 +12787,11 @@ exports
 		terminate
 	,	startGoHome,
 		endGoHome
-	,	hideArmCall,
+	,	graspCall,
 		moveCall,
-		graspCall,
 		goHomeCall,
 		pickCall,
+		hideArmCall,
 		dropCall
 		|}
 
@@ -12972,18 +12973,18 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
-	CALL__hideArm(id__,
-			    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
-	CALL__move(id__,
-			    const_main_GoHome_goHTime,
-				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__grasp(id__,
 			    const_main_GoHome_goHTime,
 				param_jp) 	= graspCall.param_jp -> SKIP
+	CALL__move(id__,
+			    const_main_GoHome_goHTime,
+				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__goHome(id__,
 			    const_main_GoHome_goHTime) 	= goHomeCall -> SKIP
 	CALL__pick(id__,
 			    const_main_GoHome_goHTime) 	= pickCall -> SKIP
+	CALL__hideArm(id__,
+			    const_main_GoHome_goHTime) 	= hideArmCall -> SKIP
 	CALL__drop(id__,
 			    const_main_GoHome_goHTime,
 				param_jp) 	= dropCall.param_jp -> SKIP

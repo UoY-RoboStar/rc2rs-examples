@@ -1,0 +1,42 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "bacs_DeadMansHandle_DeadMansHandle.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "state_timed_defs.csp"
+include "bacs_DeadMansHandle_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate bacs_DeadMansHandle_DeadMansHandle
+P_bacs_DeadMansHandle_DeadMansHandle = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_DeadMansHandle_DeadMansHandle::O__(
+		id__,
+		const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+		const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+		const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+	)
+assert P_bacs_DeadMansHandle_DeadMansHandle :[deadlock-free]	
+assert P_bacs_DeadMansHandle_DeadMansHandle;RUN({r__}) :[deadlock-free]
+assert P_bacs_DeadMansHandle_DeadMansHandle :[deterministic]
+assert P_bacs_DeadMansHandle_DeadMansHandle :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_DeadMansHandle_DeadMansHandle[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_DeadMansHandle_DeadMansHandle

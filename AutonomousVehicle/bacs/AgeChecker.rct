@@ -1,0 +1,205 @@
+package bacs::AgeChecker
+import bacs::*
+import autonomous_vehicle_system::*
+stm AgeChecker {
+	
+	
+	event pod_demand_limited : PodDemand
+	event pod_demand_age_checked : PodDemand
+	event config : ConfigAgeChecker
+	
+	const DEFAULT_CONFIGURATION : ConfigAgeChecker, MESSAGE_HANDLING_DELAY:nat, RATE:nat
+	
+	var demand : PodDemand , newDemand :
+	PodDemand , age : real , executingCheckAge : boolean , rate : int ,
+	ageToStartRamp : real , ageToStop : real , retrievedConfiguration :
+	ConfigAgeChecker
+
+	clock loop
+
+	state SpinOnce {
+	}
+	initial i0
+	state Initialise {
+		
+	
+	
+	
+	 entry rate = DEFAULT_CONFIGURATION . rate ; ageToStartRamp = DEFAULT_CONFIGURATION.ageToStartRamp; ageToStop = DEFAULT_CONFIGURATION.ageToStop; executingCheckAge = false ;
+		config?retrievedConfiguration; # loop ; # messageHandling initial i0
+		junction j0
+		final f0
+		transition t0 {
+			from i0
+			to j0
+		}
+		transition t1 {
+			from j0
+			to f0
+		condition not retrievedConfiguration . retrieved
+		}
+		transition t2 {
+			from j0
+			to f0
+		condition retrievedConfiguration . retrieved
+			action rate =  retrievedConfiguration.rate; ageToStartRamp = retrievedConfiguration.ageToStartRamp; ageToStop = retrievedConfiguration.ageToStop 
+		}
+	}
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t1 {
+		from Initialise
+		to SpinOnce
+	}
+	
+state CheckAge {
+	
+	
+		
+	entry executingCheckAge = true ; age = GetSystemTime ( ) - demand . header .
+		stamp 
+		
+	state RampDown {
+		entry newDemand . speed = RealToSpeed ( SpeedToReal ( demand . speed ) * (
+			ageToStop - age ) / ( ageToStop - ageToStartRamp ) ) 
+	}
+	
+	state Stop {
+		entry newDemand . speed = ZERO_SPEED ; newDemand . steer = ZERO_STEER
+	}
+		
+	initial initialCheckAge
+	final finalCheckAge
+	junction checkAgeOut
+	
+	transition checkAgeInitialToRampDown {
+		from j0
+		to PrepareNewDemand
+		condition age > ageToStartRamp  
+		
+	}
+	
+	transition checkAgeRampDownToOut {
+		from RampDown
+		to checkAgeOut
+	}
+	transition checkAgeStopToOut {
+		from Stop
+		to checkAgeOut
+	}
+	
+	transition checkAgeOutToFinal {
+		from checkAgeOut
+		to j1
+		action pod_demand_age_checked ! newDemand
+	}
+	
+	transition ceckAgeInitialToStop {
+		from PrepareNewDemand
+		to Stop
+		condition age >=  ageToStop
+	} 	
+
+		
+		transition t1 {
+			from j0
+			to j1
+		condition not age > ageToStartRamp
+		}
+	junction j0
+		transition t0 {
+			from initialCheckAge
+			to j0
+		}
+	junction j1
+		transition t2 {
+			from j1
+			to finalCheckAge
+			action executingCheckAge = false
+		}
+	state PrepareNewDemand {
+		entry newDemand . header = demand . header ; newDemand . source = demand .
+			source ; newDemand . driveByWireRequest = demand . driveByWireRequest 
+		
+		
+		}
+		transition t3 {
+			from PrepareNewDemand
+			to RampDown
+			condition age < ageToStop
+		}
+	}
+	
+	state DemandCallback {
+	
+	
+	 
+	entry age = GetSystemTime ( ) - demand . header . stamp 
+	initial initialDemandCallback
+		final finalDemandCallback
+		transition demandCallbackIntialToFinal {
+			from j1
+			to j0
+			
+		condition age <= ageToStartRamp 
+		action pod_demand_age_checked ! demand
+		}
+		transition demandCallbackIntialToFinalOld {
+			from j1
+			to j0
+			condition age > ageToStartRamp
+		}
+	junction j0
+		transition t0 {
+			from j0
+			to finalDemandCallback
+			}
+	junction j1
+		transition t1 {
+			from initialDemandCallback
+			to j1
+		}
+	}
+	
+	state Sleep {
+	}
+
+transition t2 {
+		from SpinOnce
+		to DemandCallback
+		trigger pod_demand_limited ? demand
+	}
+	transition t3 {
+		from DemandCallback
+		to SpinOnce
+	}
+	
+	
+	transition t6 {
+		from SpinOnce
+		to CheckAge
+	condition since ( messageHandling ) > MESSAGE_HANDLING_DELAY
+		action # loop
+	}
+
+
+
+	transition t11 {
+		from CheckAge
+		to Sleep
+		condition not executingCheckAge
+	}
+
+
+transition t7 {
+		from Sleep
+		to SpinOnce
+	condition since ( loop ) > ( 1 / RATE )
+		action 
+	# messageHandling
+	}
+clock messageHandling
+uses SystemConstants
+}

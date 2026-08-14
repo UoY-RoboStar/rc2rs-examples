@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -43,13 +43,13 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel pickCall
-	channel hideArmCall
-	channel dropCall: main_JointsPos
 	channel goHomeCall
-	channel clone_normal_GoHome_Going_entryCall
-	channel clone_normal_GoHome_Going_t2_opCall
 	channel graspCall: main_JointsPos
+	channel hideArmCall
+	channel clone_normal_GoHome_Going_t2_opCall
+	channel clone_normal_GoHome_Going_entryCall
 	channel moveCall: main_JointsPos
+	channel dropCall: main_JointsPos
 	
 	enterSS = {|
 	i0::enter,
@@ -73,13 +73,13 @@ exports
 	,	startGoHome,
 		endGoHome
 	,	pickCall,
-		hideArmCall,
-		dropCall,
 		goHomeCall,
-		clone_normal_GoHome_Going_entryCall,
-		clone_normal_GoHome_Going_t2_opCall,
 		graspCall,
-		moveCall
+		hideArmCall,
+		clone_normal_GoHome_Going_t2_opCall,
+		clone_normal_GoHome_Going_entryCall,
+		moveCall,
+		dropCall
 		|}
 
 	-- Nodes --
@@ -744,23 +744,23 @@ exports
 	-- context of the Controller module, and therefore within scope of the state machine module.
 	CALL__pick(id__,
 			    const_pkg727_main_GoHome_goHTime) 	= pickCall -> SKIP
-	CALL__hideArm(id__,
-			    const_pkg727_main_GoHome_goHTime) 	= hideArmCall -> SKIP
-	CALL__drop(id__,
-			    const_pkg727_main_GoHome_goHTime,
-				param_jp) 	= dropCall.param_jp -> SKIP
 	CALL__goHome(id__,
 			    const_pkg727_main_GoHome_goHTime) 	= goHomeCall -> SKIP
-	CALL__clone_normal_GoHome_Going_entry(id__,
-			    const_pkg727_main_GoHome_goHTime) 	= clone_normal_GoHome_Going_entryCall -> SKIP
-	CALL__clone_normal_GoHome_Going_t2_op(id__,
-			    const_pkg727_main_GoHome_goHTime) 	= clone_normal_GoHome_Going_t2_opCall -> SKIP
 	CALL__grasp(id__,
 			    const_pkg727_main_GoHome_goHTime,
 				param_jp) 	= graspCall.param_jp -> SKIP
+	CALL__hideArm(id__,
+			    const_pkg727_main_GoHome_goHTime) 	= hideArmCall -> SKIP
+	CALL__clone_normal_GoHome_Going_t2_op(id__,
+			    const_pkg727_main_GoHome_goHTime) 	= clone_normal_GoHome_Going_t2_opCall -> SKIP
+	CALL__clone_normal_GoHome_Going_entry(id__,
+			    const_pkg727_main_GoHome_goHTime) 	= clone_normal_GoHome_Going_entryCall -> SKIP
 	CALL__move(id__,
 			    const_pkg727_main_GoHome_goHTime,
 				param_jp) 	= moveCall.param_jp -> SKIP
+	CALL__drop(id__,
+			    const_pkg727_main_GoHome_goHTime,
+				param_jp) 	= dropCall.param_jp -> SKIP
 	
 	-- END of Operation calls --
 	

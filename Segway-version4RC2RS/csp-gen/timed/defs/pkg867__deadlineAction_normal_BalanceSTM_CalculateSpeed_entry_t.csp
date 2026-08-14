@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:43
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -431,21 +431,21 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_g |} ]] 
-						  [[set_currLeftVel <- setL_currLeftVel,set_g <- setL_g]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currLeftVel |} ]] 
+						  [[set_g <- setL_g,set_currLeftVel <- setL_currLeftVel]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_currLeftVel
 						 			,setL_g
-						 			,setR_currLeftVel
-						 			 			,setR_g
+						 			,setL_currLeftVel
+						 			,setR_g
+						 			 			,setR_currLeftVel
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_g |} ]]
-						  [[set_currLeftVel <- setR_currLeftVel,set_g <- setR_g]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currLeftVel |} ]]
+						  [[set_g <- setR_g,set_currLeftVel <- setR_currLeftVel]]
 						 )
-						)[[setL_currLeftVel <- set_currLeftVel,setL_g <- set_g]]
-						 [[setR_currLeftVel <- set_currLeftVel,setR_g <- set_g]]
+						)[[setL_g <- set_g,setL_currLeftVel <- set_currLeftVel]]
+						 [[setR_g <- set_g,setR_currLeftVel <- set_currLeftVel]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -529,21 +529,21 @@ exports
 						 	)\{|get_CLID_S1|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_currLeftVel,setR_g |} ]] 
-						  [[set_currLeftVel <- setL_currLeftVel,set_g <- setL_g]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_g,setR_currLeftVel |} ]] 
+						  [[set_g <- setL_g,set_currLeftVel <- setL_currLeftVel]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_currLeftVel
 						 			,setL_g
-						 			,setR_currLeftVel
-						 			 			,setR_g
+						 			,setL_currLeftVel
+						 			,setR_g
+						 			 			,setR_currLeftVel
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_currLeftVel,setL_g |} ]]
-						  [[set_currLeftVel <- setR_currLeftVel,set_g <- setR_g]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_g,setL_currLeftVel |} ]]
+						  [[set_g <- setR_g,set_currLeftVel <- setR_currLeftVel]]
 						 )
-						)[[setL_currLeftVel <- set_currLeftVel,setL_g <- set_g]]
-						 [[setR_currLeftVel <- set_currLeftVel,setR_g <- set_g]]
+						)[[setL_g <- set_g,setL_currLeftVel <- set_currLeftVel]]
+						 [[setR_g <- set_g,setR_currLeftVel <- set_currLeftVel]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

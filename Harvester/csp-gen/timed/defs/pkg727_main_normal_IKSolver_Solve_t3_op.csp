@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -51,8 +51,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall
 	channel normal_IKSolver_Solve_t3_op_t_elseJ__t_elseTA__opCall
+	channel normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall
 	
 	enterSS = {|
 	f::enter,
@@ -84,8 +84,8 @@ exports
 		set_EXT_p1, set_p1,
 		set_EXT_positions, set_positions,
 		set_EXT_p2, set_p2
-	,	normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall,
-		normal_IKSolver_Solve_t3_op_t_elseJ__t_elseTA__opCall
+	,	normal_IKSolver_Solve_t3_op_t_elseJ__t_elseTA__opCall,
+		normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall
 		, share__
 		|}
 	
@@ -241,8 +241,8 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
-		CALL__normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__op(id__) = EDeadline(normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall,0)
 		CALL__normal_IKSolver_Solve_t3_op_t_elseJ__t_elseTA__op(id__) = EDeadline(normal_IKSolver_Solve_t3_op_t_elseJ__t_elseTA__opCall,0)
+		CALL__normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__op(id__) = EDeadline(normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__opCall,0)
 		
 		-- END of Operation calls --
 	
@@ -255,7 +255,7 @@ exports
 		
 		-- Transitions
 		Transitions(id__) = ((let
-			Trans = share__choice(get_p2?p2 -> get_p3?p3 -> get_p1?p1 -> TimeOut_1(
+			Trans = share__choice(get_p3?p3 -> get_p1?p1 -> get_p2?p2 -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; t_initialJunction_::enter -> SKIP))))
 				 [] dbisim((true)&(internal__!NID_t_thenJ_ -> SKIP ;  ((true&CALL__normal_IKSolver_Solve_t3_op_t_thenJ__t_thenTA__op(
@@ -329,17 +329,17 @@ exports
 						 [[t_thenJ_::interrupt <- x__ | x__ <- {|internal__.NID_t_thenJ_|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_p2 <- setL_p2,set_p3 <- setL_p3,set_p1 <- setL_p1]]
+						  [[set_p3 <- setL_p3,set_p1 <- setL_p1,set_p2 <- setL_p2]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-						 			,setL_p2
 						 			,setL_p3
 						 			,setL_p1
+						 			,setL_p2
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p3,setL_p1 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p3,setL_p1,setL_p2 |} ]]
 						 )
-						)[[setL_p2 <- set_p2,setL_p3 <- set_p3,setL_p1 <- set_p1]]
+						)[[setL_p3 <- set_p3,setL_p1 <- set_p1,setL_p2 <- set_p2]]
 						)
 					)
 					 \ hideSet)
@@ -422,17 +422,17 @@ exports
 						 [[t_thenJ_::interrupt <- x__ | x__ <- {|internal__.NID_t_thenJ_|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[set_p2 <- setL_p2,set_p3 <- setL_p3,set_p1 <- setL_p1]]
+						  [[set_p3 <- setL_p3,set_p1 <- setL_p1,set_p2 <- setL_p2]]
 						 )
 						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-						 			,setL_p2
 						 			,setL_p3
 						 			,setL_p1
+						 			,setL_p2
 						|}) |]
 						 ((i::enter -> Transitions(id__))
-						  [[ share__ <- x__ | x__ <- {| share__,setL_p2,setL_p3,setL_p1 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_p3,setL_p1,setL_p2 |} ]]
 						 )
-						)[[setL_p2 <- set_p2,setL_p3 <- set_p3,setL_p1 <- set_p1]]
+						)[[setL_p3 <- set_p3,setL_p1 <- set_p1,setL_p2 <- set_p2]]
 						)
 					)
 					 \ hideSet)

@@ -1,0 +1,35 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "lutz_VehicleControl_defs.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "lutz_VehicleControl_VehicleControl.csp"
+include "../instantiations.csp"
+channel r__
+-- generate lutz_VehicleControl_VehicleControl
+P_lutz_VehicleControl_VehicleControl = let
+	id__ = 0
+	
+	
+	
+within
+	lutz_VehicleControl_VehicleControl::O__(
+		id__,
+		const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+		const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+		const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+		const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+		const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY
+	)
+assert P_lutz_VehicleControl_VehicleControl :[deadlock-free]	
+assert P_lutz_VehicleControl_VehicleControl;RUN({r__}) :[deadlock-free]
+assert P_lutz_VehicleControl_VehicleControl :[deterministic]
+assert P_lutz_VehicleControl_VehicleControl :[divergence-free]

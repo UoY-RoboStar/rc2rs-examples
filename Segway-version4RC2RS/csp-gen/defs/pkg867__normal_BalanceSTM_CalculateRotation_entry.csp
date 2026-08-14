@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -49,10 +49,10 @@ exports
 	channel gyroZ: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitIntervalCall: core_nat.core_nat
 	channel deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall: core_nat
-	channel RotationPIDCall: core_real
 	channel normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall
+	channel RotationPIDCall: core_real
+	channel waitIntervalCall: core_nat.core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -81,10 +81,10 @@ exports
 		set_EXT_currGyroZ, set_currGyroZ,
 		set_EXT_rotationOutput, set_rotationOutput
 	,	gyroZ
-	,	waitIntervalCall,
-		deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall,
+	,	deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall,
+		normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall,
 		RotationPIDCall,
-		normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall
+		waitIntervalCall
 		, share__
 		|}
 	
@@ -225,18 +225,18 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall.param_d -> SKIP
+	CALL__normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget) 	= normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall -> SKIP
+	CALL__RotationPID(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
+				param_diff) 	= RotationPIDCall.param_diff -> SKIP
 	CALL__waitInterval(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
 				param_m,
 				param_n) 	= waitIntervalCall.param_m.param_n -> SKIP
-	CALL__deadlineAction_normal_BalanceSTM_CalculateRotation_entry_t(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
-				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateRotation_entry_tCall.param_d -> SKIP
-	CALL__RotationPID(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget,
-				param_diff) 	= RotationPIDCall.param_diff -> SKIP
-	CALL__normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_op(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateRotation_entry_rotationBudget) 	= normal_BalanceSTM_CalculateRotation_entry_j_3_10_t_3_10_opCall -> SKIP
 	
 	-- END of Operation calls --
 	

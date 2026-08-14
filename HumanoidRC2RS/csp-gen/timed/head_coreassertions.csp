@@ -1,0 +1,130 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:56:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "headcsp"
+
+-- generate head_HeadS
+P_head_HeadS = let
+	id__ = 0
+	
+	
+	
+within
+	head::HeadS::O__(
+		id__
+	)
+assert P_head_HeadS :[deadlock-free]	
+assert P_head_HeadS;RUN({r__}) :[deadlock-free]
+assert P_head_HeadS :[deterministic]
+assert P_head_HeadS :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_head_HeadS[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_HeadS
+
+-- generate head_OP_Walk
+P_head_OP_Walk = let
+	id__ = 0
+	
+	
+	
+	
+within
+	head::OP_Walk::O__(id__)
+assert P_head_OP_Walk :[deadlock-free]	
+assert P_head_OP_Walk;RUN({r__}) :[deadlock-free]
+assert P_head_OP_Walk :[deterministic]
+assert P_head_OP_Walk :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_head_OP_Walk[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_OP_Walk
+
+-- generate head_Head
+P_head_Head = let
+	id__ = 0
+	
+	
+	
+		
+within
+	head::Head::O__(id__)
+
+assert P_head_Head :[deadlock-free]	
+assert P_head_Head;RUN({r__}) :[deadlock-free]
+assert P_head_Head :[deterministic]
+assert P_head_Head :[divergence-free]
+
+-- generate head_Head_stm_ref
+P_head_Head_stm_ref = let
+	id__ = 0
+	
+	
+	
+within
+	head::Head::stm_ref::O__(
+		id__
+	)
+assert P_head_Head_stm_ref :[deadlock-free]	
+assert P_head_Head_stm_ref;RUN({r__}) :[deadlock-free]
+assert P_head_Head_stm_ref :[deterministic]
+assert P_head_Head_stm_ref :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_head_Head_stm_ref[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_Head_stm_ref
+-- timed deadlock free
+assert prioritise(P_head_Head[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_Head
+
+-- generate head_Humanoid
+P_head_Humanoid = let
+	id__ = 0
+	
+	
+	
+		
+	
+within
+	head::Humanoid::O__(id__)
+assert P_head_Humanoid :[deadlock-free]	
+assert P_head_Humanoid;RUN({r__}) :[deadlock-free]
+assert P_head_Humanoid :[deterministic]
+assert P_head_Humanoid :[divergence-free]
+
+-- generate head_Humanoid_ctrl_ref0
+P_head_Humanoid_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	head::Humanoid::ctrl_ref0::O__(id__)
+
+assert P_head_Humanoid_ctrl_ref0 :[deadlock-free]	
+assert P_head_Humanoid_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_head_Humanoid_ctrl_ref0 :[deterministic]
+assert P_head_Humanoid_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_head_Humanoid_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_Humanoid_ctrl_ref0
+-- timed deadlock free
+assert prioritise(P_head_Humanoid[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_head_Humanoid

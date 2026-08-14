@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 14-05-2026 19:42:42
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:27:31
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -64,9 +64,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 			
 			
 			-- declaring call and ret events for undefined operations
-			channel moveCall: core_real.Chemical_Angle
 			channel randomWalkCall
 			channel shortRandomWalkCall
+			channel moveCall: core_real.Chemical_Angle
 			
 			-- declaring controller termination channel
 			channel terminate
@@ -80,9 +80,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				stop,
 				resume,
 				odometer
-			,	moveCall,
-				randomWalkCall,
-				shortRandomWalkCall
+			,	randomWalkCall,
+				shortRandomWalkCall,
+				moveCall
 			|}
 	
 			-- defined operations
@@ -605,10 +605,6 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
 				
-				CALL__waitOp(id__,
-						    const_pkg994__normal_Movement_Avoiding_entry_evadeTime,
-							param_i) = (OP_waitOp::O__(id__,
-							param_i))
 				CALL__normal_Movement_Avoiding_entry_i_t_op(id__,
 						    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = (OP_normal_Movement_Avoiding_entry_i_t_op::O__(id__))
 				[[
@@ -618,6 +614,10 @@ module pkg994_ChemicalDetector_ChemicalDetector
 					OP_normal_Movement_Avoiding_entry_i_t_op::get_d0 <- get_d0,
 					OP_normal_Movement_Avoiding_entry_i_t_op::set_d0 <- set_d0
 				]]
+				CALL__waitOp(id__,
+						    const_pkg994__normal_Movement_Avoiding_entry_evadeTime,
+							param_i) = (OP_waitOp::O__(id__,
+							param_i))
 				CALL__normal_Movement_Avoiding_entry_j_3_3_t_3_3_op(id__,
 						    const_pkg994__normal_Movement_Avoiding_entry_evadeTime) = (OP_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op::O__(id__))
 				-- END of Operation calls --
@@ -5328,6 +5328,10 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
 				
+				CALL__clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1(id__,
+						    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime,
+							param_i) = (OP_clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1::O__(id__,
+							param_i))
 				CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2(id__,
 						    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime) = (OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2::O__(id__))
 				[[
@@ -5337,10 +5341,6 @@ module pkg994_ChemicalDetector_ChemicalDetector
 					OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2::get_d0 <- get_d0,
 					OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_i_t_op_i_j_3_3_2::set_d0 <- set_d0
 				]]
-				CALL__clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1(id__,
-						    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime,
-							param_i) = (OP_clone_clone_normal_Movement_Avoiding_entry_waitOp_j_2_5_f_1::O__(id__,
-							param_i))
 				CALL__clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5(id__,
 						    const_pkg994__clone_normal_Movement_Avoiding_entry_evadeTime) = (OP_clone_clone_normal_Movement_Avoiding_entry_normal_Movement_Avoiding_entry_j_3_3_t_3_3_op_j_3_3_j_2_5_5::O__(id__))
 				-- END of Operation calls --
@@ -7800,9 +7800,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				channel flag: InOut
 				
 				-- Declaring call and ret events for undefined operations
-				channel moveCall: core_real.Chemical_Angle
 				channel randomWalkCall
 				channel shortRandomWalkCall
+				channel moveCall: core_real.Chemical_Angle
 				
 				enterSS = {|
 				i1::enter,
@@ -7841,9 +7841,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 					turn,
 					stop,
 					flag
-				,	moveCall,
-					randomWalkCall,
-					shortRandomWalkCall
+				,	randomWalkCall,
+					shortRandomWalkCall,
+					moveCall
 					|}
 			
 				-- Nodes --
@@ -8127,25 +8127,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8242,25 +8242,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8549,25 +8549,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8666,25 +8666,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -8964,25 +8964,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9079,25 +9079,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9419,25 +9419,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9535,25 +9535,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9835,25 +9835,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -9952,25 +9952,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10243,25 +10243,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10351,25 +10351,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10650,25 +10650,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\union(enteredSS,{terminate}) 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10766,25 +10766,25 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							 	]]
 							 )
 							 )
-							  [[ share__ <- x__ | x__ <- {| share__,setR_d0,setR_a,setR_d1,setR_l |} ]] 
-							  [[set_d0 <- setL_d0,set_a <- setL_a,set_d1 <- setL_d1,set_l <- setL_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l,setR_d0,setR_d1 |} ]] 
+							  [[set_a <- setL_a,set_l <- setL_l,set_d0 <- setL_d0,set_d1 <- setL_d1]]
 							 )
 							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-							 			,setL_d0
 							 			,setL_a
-							 			,setL_d1
 							 			,setL_l
-							 			,setR_d0
-							 			 			,setR_a
-							 			 			,setR_d1
+							 			,setL_d0
+							 			,setL_d1
+							 			,setR_a
 							 			 			,setR_l
+							 			 			,setR_d0
+							 			 			,setR_d1
 							 			|}) |]
 							 ((During)
-							  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_a,setL_d1,setL_l |} ]]
-							  [[set_d0 <- setR_d0,set_a <- setR_a,set_d1 <- setR_d1,set_l <- setR_l]]
+							  [[ share__ <- x__ | x__ <- {| share__,setL_a,setL_l,setL_d0,setL_d1 |} ]]
+							  [[set_a <- setR_a,set_l <- setR_l,set_d0 <- setR_d0,set_d1 <- setR_d1]]
 							 )
-							)[[setL_d0 <- set_d0,setL_a <- set_a,setL_d1 <- set_d1,setL_l <- set_l]]
-							 [[setR_d0 <- set_d0,setR_a <- set_a,setR_d1 <- set_d1,setR_l <- set_l]]
+							)[[setL_a <- set_a,setL_l <- set_l,setL_d0 <- set_d0,setL_d1 <- set_d1]]
+							 [[setR_a <- set_a,setR_l <- set_l,setR_d0 <- set_d0,setR_d1 <- set_d1]]
 							)\{terminate} 
 						)
 						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -10824,14 +10824,6 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				-- If it is in the context of a controller, the required operations not provided by the
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
-				CALL__move(id__,
-						    const_pkg994__Movement_lv,
-						    const_pkg994__Movement_evadeTime,
-						    const_pkg994__Movement_stuckPeriod,
-						    const_pkg994__Movement_stuckDist,
-						    const_pkg994__Movement_outPeriod,
-							param_lv,
-							param_a) 	= moveCall.param_lv.param_a -> SKIP
 				CALL__randomWalk(id__,
 						    const_pkg994__Movement_lv,
 						    const_pkg994__Movement_evadeTime,
@@ -10844,6 +10836,14 @@ module pkg994_ChemicalDetector_ChemicalDetector
 						    const_pkg994__Movement_stuckPeriod,
 						    const_pkg994__Movement_stuckDist,
 						    const_pkg994__Movement_outPeriod) 	= shortRandomWalkCall -> SKIP
+				CALL__move(id__,
+						    const_pkg994__Movement_lv,
+						    const_pkg994__Movement_evadeTime,
+						    const_pkg994__Movement_stuckPeriod,
+						    const_pkg994__Movement_stuckDist,
+						    const_pkg994__Movement_outPeriod,
+							param_lv,
+							param_a) 	= moveCall.param_lv.param_a -> SKIP
 				
 				CALL__clone_normal_Movement_TryingAgain_t11_op(id__,
 						    const_pkg994__Movement_lv,
@@ -10964,7 +10964,7 @@ module pkg994_ChemicalDetector_ChemicalDetector
 						    const_pkg994__Movement_stuckPeriod,
 						    const_pkg994__Movement_stuckDist,
 						    const_pkg994__Movement_outPeriod) = ((let
-					Trans = share__choice(get_d0?d0 -> get_d1?d1 -> (
+					Trans = share__choice(get_d1?d1 -> get_d0?d0 -> (
 						((share__ -> SKIP
 						 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Waiting::enter -> SKIP))))
 						 	 [] dbisim((true)&(turn__!NID_Waiting.in?a:{a|a <- Chemical_Angle, true} -> share__choice(set_a!a -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Going::enter -> SKIP)))
@@ -11129,11 +11129,11 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
-								  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
+								  [[set_d1 <- setL_d1,set_d0 <- setL_d0]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_d0
 								 			,setL_d1
+								 			,setL_d0
 								 			,setR_a
 								 			 			,setR_l
 								 			|}) |]
@@ -11143,10 +11143,10 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								 		    const_pkg994__Movement_stuckPeriod,
 								 		    const_pkg994__Movement_stuckDist,
 								 		    const_pkg994__Movement_outPeriod))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_d0 |} ]]
 								  [[set_a <- setR_a,set_l <- setR_l]]
 								 )
-								)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
+								)[[setL_d1 <- set_d1,setL_d0 <- set_d0]]
 								 [[setR_a <- set_a,setR_l <- set_l]]
 								)
 							)
@@ -11371,11 +11371,11 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
 								 )
 								  [[ share__ <- x__ | x__ <- {| share__,setR_a,setR_l |} ]] 
-								  [[set_d0 <- setL_d0,set_d1 <- setL_d1]]
+								  [[set_d1 <- setL_d1,set_d0 <- setL_d0]]
 								 )
 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
-								 			,setL_d0
 								 			,setL_d1
+								 			,setL_d0
 								 			,setR_a
 								 			 			,setR_l
 								 			|}) |]
@@ -11385,10 +11385,10 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								 		    const_pkg994__Movement_stuckPeriod,
 								 		    const_pkg994__Movement_stuckDist,
 								 		    const_pkg994__Movement_outPeriod))
-								  [[ share__ <- x__ | x__ <- {| share__,setL_d0,setL_d1 |} ]]
+								  [[ share__ <- x__ | x__ <- {| share__,setL_d1,setL_d0 |} ]]
 								  [[set_a <- setR_a,set_l <- setR_l]]
 								 )
-								)[[setL_d0 <- set_d0,setL_d1 <- set_d1]]
+								)[[setL_d1 <- set_d1,setL_d0 <- set_d0]]
 								 [[setR_a <- set_a,setR_l <- set_l]]
 								)
 							)
@@ -11640,11 +11640,11 @@ module pkg994_ChemicalDetector_ChemicalDetector
 			endmodule
 			
 				-- undefined operations
+				CALL__randomWalk(id__) 	= randomWalkCall -> SKIP
+				CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
 				CALL__move(id__,
 						    param_lv,
 						    param_a) 	= moveCall.param_lv.param_a -> SKIP
-				CALL__randomWalk(id__) 	= randomWalkCall -> SKIP
-				CALL__shortRandomWalk(id__) 	= shortRandomWalkCall -> SKIP
 				
 				-- declaring controller memory
 				Memory(id__) = SKIP
@@ -11675,9 +11675,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							stm_ref0::resume <- resume,
 							stm_ref0::stop <- stop,
 							stm_ref0::odometer <- odometer,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::randomWalkCall <- randomWalkCall,
-							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+							stm_ref0::moveCall <- moveCall
 						]]
 					)
 						[|
@@ -11725,9 +11725,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							stm_ref0::resume <- resume,
 							stm_ref0::stop <- stop,
 							stm_ref0::odometer <- odometer,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::randomWalkCall <- randomWalkCall,
-							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+							stm_ref0::moveCall <- moveCall
 						]]
 					)
 						[|
@@ -11775,9 +11775,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							stm_ref0::resume <- resume,
 							stm_ref0::stop <- stop,
 							stm_ref0::odometer <- odometer,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::randomWalkCall <- randomWalkCall,
-							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+							stm_ref0::moveCall <- moveCall
 						]]
 					)
 						[|
@@ -11826,9 +11826,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 							stm_ref0::resume <- resume,
 							stm_ref0::stop <- stop,
 							stm_ref0::odometer <- odometer,
-							stm_ref0::moveCall <- moveCall,
 							stm_ref0::randomWalkCall <- randomWalkCall,
-							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall
+							stm_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+							stm_ref0::moveCall <- moveCall
 						]]
 					)
 						[|
@@ -16816,15 +16816,6 @@ module pkg994_ChemicalDetector_ChemicalDetector
 				-- controller will be declared here, and the defined operations will be defined in the
 				-- context of the Controller module, and therefore within scope of the state machine module.
 				
-				CALL__clone_normal_GasAnalysis_GasDetected_t9a_op(id__,
-						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t9a_op::O__(id__))
-				[[
-					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::turn <- turn
-				]]
-				[[
-					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gs <- get_gs,
-					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gs <- set_gs
-				]]
 				CALL__clone_normal_GasAnalysis_GasDetected_t8_op(id__,
 						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t8_op::O__(id__))
 				[[
@@ -16834,6 +16825,15 @@ module pkg994_ChemicalDetector_ChemicalDetector
 						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_Analysis_t3_op::O__(id__))
 				[[
 					OP_clone_normal_GasAnalysis_Analysis_t3_op::resume <- resume
+				]]
+				CALL__clone_normal_GasAnalysis_GasDetected_t9a_op(id__,
+						    const_pkg994__GasAnalysis_thr) = (OP_clone_normal_GasAnalysis_GasDetected_t9a_op::O__(id__))
+				[[
+					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::turn <- turn
+				]]
+				[[
+					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::get_gs <- get_gs,
+					OP_clone_normal_GasAnalysis_GasDetected_t9a_op::set_gs <- set_gs
 				]]
 				-- END of Operation calls --
 				
@@ -17388,9 +17388,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								ctrl_ref0::resume.in <- ctrl_ref1::resume.out,
 								ctrl_ref0::resume.out <- ctrl_ref1::resume.in,
 								ctrl_ref0::odometer <- odometer,
-								ctrl_ref0::moveCall <- moveCall,
 								ctrl_ref0::randomWalkCall <- randomWalkCall,
-								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall
+								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+								ctrl_ref0::moveCall <- moveCall
 							]]
 						)
 							[|{|terminate, ctrl_ref1::stop, ctrl_ref1::resume|}|]
@@ -17470,9 +17470,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								ctrl_ref0::resume.in <- ctrl_ref1::resume.out,
 								ctrl_ref0::resume.out <- ctrl_ref1::resume.in,
 								ctrl_ref0::odometer <- odometer,
-								ctrl_ref0::moveCall <- moveCall,
 								ctrl_ref0::randomWalkCall <- randomWalkCall,
-								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall
+								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+								ctrl_ref0::moveCall <- moveCall
 							]]
 						)
 							[|{|terminate, ctrl_ref1::stop, ctrl_ref1::resume|}|]
@@ -17552,9 +17552,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								ctrl_ref0::resume.in <- ctrl_ref1::resume.out,
 								ctrl_ref0::resume.out <- ctrl_ref1::resume.in,
 								ctrl_ref0::odometer <- odometer,
-								ctrl_ref0::moveCall <- moveCall,
 								ctrl_ref0::randomWalkCall <- randomWalkCall,
-								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall
+								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+								ctrl_ref0::moveCall <- moveCall
 							]]
 						)
 							[|{|terminate, ctrl_ref1::stop, ctrl_ref1::resume|}|]
@@ -17635,9 +17635,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								ctrl_ref0::resume.in <- ctrl_ref1::resume.out,
 								ctrl_ref0::resume.out <- ctrl_ref1::resume.in,
 								ctrl_ref0::odometer <- odometer,
-								ctrl_ref0::moveCall <- moveCall,
 								ctrl_ref0::randomWalkCall <- randomWalkCall,
-								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall
+								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+								ctrl_ref0::moveCall <- moveCall
 							]]
 						)
 							[|{|terminate, ctrl_ref1::stop, ctrl_ref1::resume|}|]
@@ -17718,9 +17718,9 @@ module pkg994_ChemicalDetector_ChemicalDetector
 								ctrl_ref0::resume.in <- ctrl_ref1::resume.out,
 								ctrl_ref0::resume.out <- ctrl_ref1::resume.in,
 								ctrl_ref0::odometer <- odometer,
-								ctrl_ref0::moveCall <- moveCall,
 								ctrl_ref0::randomWalkCall <- randomWalkCall,
-								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall
+								ctrl_ref0::shortRandomWalkCall <- shortRandomWalkCall,
+								ctrl_ref0::moveCall <- moveCall
 							]]
 						)
 							[|{|terminate, ctrl_ref1::stop, ctrl_ref1::resume|}|]

@@ -1,0 +1,14 @@
+package
+data_logging
+import autonomous_vehicle_system::*controller Logger {
+event environmentPointCloud : Seq( Point2d )
+	event environmentObjects : Seq( DetectedObject )
+	event environmentImage : StereoImage
+	event earlyWarning : DriverWarning
+	sref stm_ref0 = data_logging::log
+	requires Logging connection Logger on environmentPointCloud to stm_ref0 on
+	environmentPointCloud
+	connection Logger on environmentObjects to stm_ref0 on environmentObjects
+	connection Logger on environmentImage to stm_ref0 on environmentImage
+	connection Logger on earlyWarning to stm_ref0 on earlyWarning
+}

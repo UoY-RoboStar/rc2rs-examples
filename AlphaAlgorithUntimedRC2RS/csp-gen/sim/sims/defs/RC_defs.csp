@@ -1,0 +1,178 @@
+module RC
+	--include "../../../timed/defs/main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|main::AggregationSoftware::receive.in,main::AggregationSoftware::broadcast.in,main::AggregationSoftware::obstacle.in|}
+	OutputEvents = {|main::AggregationSoftware::receive.out,main::AggregationSoftware::moveCall,main::AggregationSoftware::broadcast.out|}
+	ExternalEvents = {|main::AggregationSoftware::receive.in,main::AggregationSoftware::broadcast.in,main::AggregationSoftware::obstacle.in
+					   ,main::AggregationSoftware::receive.out,main::AggregationSoftware::moveCall,main::AggregationSoftware::broadcast.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_receive.Bool.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+		| i_broadcast.Bool.main_ID
+		| i_obstacle.Bool.main_Position
+	
+	datatype RegisterDataOutput = o_receive.{(x0__,x1__) | x0__ <- main_ID,x1__ <- main_ID}
+		| o_move.core_real.core_real
+		| o_broadcast.main_ID
+	
+	
+	nametype RegisterOutputs = {|
+	o_receive,
+	o_move,
+	o_broadcast|}
+	
+	nametype RegisterInputs = {|
+	i_receive,
+	i_broadcast,
+	i_obstacle|}
+	
+	datatype COutputEvents = COutput_receive
+		| COutput_move
+		| COutput_broadcast
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_receive = registerRead.i_receive?b__.x__ ->
+								if b__ then (main::AggregationSoftware::receive.in.x__ -> A1_receive [] A1_receive)
+									   else A1_receive
+		A1_broadcast = registerRead.i_broadcast?b__.x__ ->
+								if b__ then (main::AggregationSoftware::broadcast.in.x__ -> A1_broadcast [] A1_broadcast)
+									   else A1_broadcast
+		A1_obstacle = registerRead.i_obstacle?b__.x__ ->
+								if b__ then (main::AggregationSoftware::obstacle.in.x__ -> A1_obstacle [] A1_obstacle)
+									   else A1_obstacle
+		
+														
+	within
+			     	A1_receive
+			     	 |||
+			     	A1_broadcast
+			     	 |||
+			     	A1_obstacle
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+			read(COutput_receive) = main::AggregationSoftware::receive.out?x__ -> registerWrite.o_receive.x__ -> SKIP
+			read(COutput_move) = main::AggregationSoftware::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
+			read(COutput_broadcast) = main::AggregationSoftware::broadcast.out?x__ -> registerWrite.o_broadcast.x__ -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_receive?x__ -> SKIP)
+				|||
+			(registerRead.i_broadcast?x__ -> SKIP)
+				|||
+			(registerRead.i_obstacle?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(main::AggregationSoftware::D__(id__,
+				    const_MovementC_stm_ref0_lv,
+				    const_MovementC_stm_ref0_av,
+				    const_MovementC_stm_ref0_MB,
+				    const_MovementC_stm_ref0_alpha,
+				    const_CommunicationC_stm_ref0_id,
+				    const_CommunicationC_stm_ref0_RC)\{|main::AggregationSoftware::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) =
+		prioritise(
+			((TLFree(id__,
+					    const_MovementC_stm_ref0_lv,
+					    const_MovementC_stm_ref0_av,
+					    const_MovementC_stm_ref0_MB,
+					    const_MovementC_stm_ref0_alpha,
+					    const_CommunicationC_stm_ref0_id,
+					    const_CommunicationC_stm_ref0_RC) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) =
+		prioritise(
+			((main::AggregationSoftware::D__(id__,
+					    const_MovementC_stm_ref0_lv,
+					    const_MovementC_stm_ref0_av,
+					    const_MovementC_stm_ref0_MB,
+					    const_MovementC_stm_ref0_alpha,
+					    const_CommunicationC_stm_ref0_id,
+					    const_CommunicationC_stm_ref0_RC)\{|main::AggregationSoftware::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) = D__(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC)
+
+endmodule

@@ -1,0 +1,651 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:45
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+	module utility_StatusDistributor
+		shared_variable_events = {|
+		|}
+		
+	exports
+		transparent diamond
+		transparent sbisim
+		transparent dbisim
+		transparent chase
+
+		-- declaring controller events
+		channel statusIn: InOut.core_boolean
+		channel statusOut1: InOut.core_boolean
+		channel statusOut2: InOut.core_boolean
+		
+		
+		
+		-- declaring call and ret events for undefined operations
+		
+		-- declaring controller termination channel
+		channel terminate
+		
+		-- channel set with all visible events
+		sem__events = {|
+			terminate
+		,	statusIn,
+			statusOut1,
+			statusOut2
+		|}
+
+		-- defined operations
+	
+		-- declaring machines
+		module distribute
+		exports
+			transparent diamond
+			transparent sbisim
+			transparent dbisim
+			transparent chase
+		
+			-- Transition identifiers
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_distribute|
+			              NID_i0|
+			              NID_Initialise
+			
+			channel internal__ : NIDS
+			
+			-- Flow channels		
+			channel interrupt
+			channel exited
+			channel exit
+			channel terminate
+			
+			-- Variable channels
+			channel get_status, set_status, setL_status, setR_status: core_boolean
+			
+			-- Shared variable channels
+			
+			-- Local variable channels for defined operations that are required by the state machine
+			
+			-- Declaring state machine events
+			channel statusIn__: NIDS.InOut.core_boolean
+			channel statusIn: InOut.core_boolean
+			channel statusOut1__: NIDS.InOut.core_boolean
+			channel statusOut1: InOut.core_boolean
+			channel statusOut2__: NIDS.InOut.core_boolean
+			channel statusOut2: InOut.core_boolean
+			
+			-- Declaring call and ret events for undefined operations
+			
+			enterSS = {|
+			distribute::enter,
+			i0::enter,
+			Initialise::enter
+			|}
+			
+			enteredSS = 	{|
+			distribute::entered,
+			Initialise::entered
+			|}
+			
+			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+			
+			shared_variable_events = {|
+			|}
+			
+			-- channel set with all visible events
+			sem__events = {|
+				terminate
+			,	statusIn,
+				statusOut1,
+				statusOut2
+				|}
+		
+			-- Nodes --
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- State: distribute
+			module distribute
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(get_status?status -> true&(share__choice(statusOut1.out!status -> SKIP)));share__choice(get_status?status -> true&(share__choice(statusOut2.out!status -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(get_status?status -> true&(share__choice(statusOut1.out!status -> SKIP)));share__choice(get_status?status -> true&(share__choice(statusOut2.out!status -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Initial: i0
+			module i0
+			exports
+			
+				channel enter, interrupt
+				
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__) = D__(id__)
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Initialise
+			module Initialise
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			-- END of Nodes --
+			
+			-- Operation calls --
+			-- Only the undefined operations are declared here.
+			-- If the state machine is in isolation, all required operations will be undefined.
+			-- If it is in the context of a controller, the required operations not provided by the
+			-- controller will be declared here, and the defined operations will be defined in the
+			-- context of the Controller module, and therefore within scope of the state machine module.
+			
+			-- END of Operation calls --
+			
+			-- STM processes
+			STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+			( 
+				(
+					(
+						(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+					 	[[ share__ <- x__ | x__ <- {||} ]]
+					)
+				[| {share__} |]
+				SKIP
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__))
+			)\sharedVarHide
+			
+			STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+			( 
+				(
+					(
+						(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+					 	[[ share__ <- x__ | x__ <- {||} ]]
+					)
+				[| {share__} |]
+				SKIP
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__))
+			)\sharedVarHide
+			
+			-- Transitions
+			Transitions(id__) = ((let
+				Trans = (
+					((share__ -> SKIP
+					 [] dbisim((true)&(statusIn__!NID_distribute.in?status:{status|status <- core_boolean, true} -> share__choice(set_status!status -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; distribute::enter -> SKIP)))
+					 	 [] dbisim((true)&(statusIn__!NID_Initialise.in?status:{status|status <- core_boolean, true} -> share__choice(set_status!status -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; distribute::enter -> SKIP)))
+					 	 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+					 ) ; Trans)
+					 []
+					 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+					 []
+					 terminate -> SKIP
+				)
+			within
+				Trans
+			)
+			)
+			
+			-- Stateful
+			-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+			
+			-- Named process definitions
+			MachineBody(id__) = 
+				dbisim((
+				let
+					finalNodesEntered = {||}
+				within
+					((let
+						-- IMPLEMENTATION NOTE:
+						-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						-- modules for defining the semantics of each node.
+						enterSS = {|
+						distribute::enter,
+						i0::enter,
+						Initialise::enter
+						|}
+						hideSet = union(enterSS,{|exit,exited,internal__|})
+					within 
+						((let
+							-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							-- because CSPM modules are used for the semantics of Node.
+							flowevts = union(enterSS,{|exit,exited,interrupt|})
+							transSync = {|statusIn__.NID_distribute.in,statusIn__.NID_Initialise.in,internal__.NID_i0|}
+						within
+							((
+							 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							   distribute::D__(id__)
+							   [| { share__, terminate } |] (
+							   i0::D__(id__)
+							   [| { share__, terminate } |] (
+							   Initialise::D__(id__)
+							   )
+							   )
+							 )
+							 [[distribute::interrupt <- x__ | x__ <- {|interrupt,statusIn__.NID_distribute.in|}]]
+							 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,statusIn__.NID_Initialise.in|}]]
+							 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+							 )
+							  [[ share__ <- x__ | x__ <- {| share__,setR_status |} ]] 
+							 )
+							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+							 			,setR_status
+							 			|}) |]
+							 ((i0::enter -> Transitions(id__))
+							  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+							  [[set_status <- setR_status]]
+							 )
+							)
+							 [[setR_status <- set_status]]
+							)
+						)
+						 \ hideSet)
+						[[
+							statusIn__.x____ <- statusIn,
+							statusOut1__.x____ <- statusOut1,
+							statusOut2__.x____ <- statusOut2
+							| x____ <- NIDS
+						]]
+					)
+					 [| {| interrupt |} |] SKIP)
+				)
+				)
+			
+			Behaviour(id__) = 
+				dbisim((MachineBody(id__)\ enteredSS)
+				)
+			
+			IteratedBehaviour(id__) = 
+				dbisim((MachineBody(id__)\ enteredSS)
+				)
+			
+			Stateful(id__) = 
+				((
+					(Behaviour(id__) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__))
+				 	\getsetLocalChannels
+				)
+				)
+			
+			IteratedStateful(id__) =
+				(dbisim(
+					sbisim(
+						Behaviour(id__)
+						[| {|get_status,set_status,terminate|} |]
+						Memory_status(true)
+					)\{|get_status,set_status|}
+				)
+				)
+			
+			-- Visible counterparts
+			MachineBody_VS_O(id__) = 
+				dbisim((
+				let
+					finalNodesEntered = {||}
+				within
+					((let
+						-- IMPLEMENTATION NOTE:
+						-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						-- modules for defining the semantics of each node.
+						enterSS = {|
+						distribute::enter,
+						i0::enter,
+						Initialise::enter
+						|}
+						hideSet = union(enterSS,{|exit,exited,internal__|})
+					within 
+						((let
+							-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							-- because CSPM modules are used for the semantics of Node.
+							flowevts = union(enterSS,{|exit,exited,interrupt|})
+							transSync = {|statusIn__.NID_distribute.in,statusIn__.NID_Initialise.in,internal__.NID_i0|}
+						within
+							((
+							 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							   distribute::VS_O__(id__)
+							   [| { share__, terminate } |] (
+							   i0::VS_O__(id__)
+							   [| { share__, terminate } |] (
+							   Initialise::VS_O__(id__)
+							   )
+							   )
+							 )
+							 [[distribute::interrupt <- x__ | x__ <- {|interrupt,statusIn__.NID_distribute.in|}]]
+							 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,statusIn__.NID_Initialise.in|}]]
+							 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+							 )
+							  [[ share__ <- x__ | x__ <- {| share__,setR_status |} ]] 
+							 )
+							 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+							 			,setR_status
+							 			|}) |]
+							 ((i0::enter -> Transitions(id__))
+							  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+							  [[set_status <- setR_status]]
+							 )
+							)
+							 [[setR_status <- set_status]]
+							)
+						)
+						 \ hideSet)
+						[[
+							statusIn__.x____ <- statusIn,
+							statusOut1__.x____ <- statusOut1,
+							statusOut2__.x____ <- statusOut2
+							| x____ <- NIDS
+						]]
+					)
+					 [| {| interrupt |} |] SKIP)
+				)
+				)
+			
+			Behaviour_VS_O(id__) = 
+				dbisim((MachineBody_VS_O(id__))
+				)
+			
+			IteratedBehaviour_VS_O(id__) = 
+				dbisim((MachineBody_VS_O(id__))
+				)
+			
+			Stateful_VS_O(id__) = 
+				dbisim((
+					(Behaviour_VS_O(id__) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__))
+				 	\getsetLocalChannels
+				)
+				)
+			
+			IteratedStateful_VS_O(id__) =
+				(dbisim(
+					sbisim(
+						Behaviour_VS_O(id__)
+						[| {|get_status,set_status,terminate|} |]
+						Memory_status(true)
+					)\{|get_status,set_status|}
+				)
+				)
+			
+			-- END
+			
+			-- Memory
+			-- Memory variables
+			Memory_status(status) =
+				get_status!status -> Memory_status(status)
+				[]
+				set_status?x__ -> Memory_status(x__)
+				[]
+				terminate -> SKIP
+			
+			-- varMemory process
+			varMemory(id__) = Memory_status(true)
+			
+			getsetLocalChannels = {|get_status,set_status|}
+			
+			-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+			FVS__(id__) = STM_VS_O(id__)
+			
+			D__(id__) = STM(id__) \ internal_events
+			O__(id__) = sbisim(diamond(D__(id__)))
+			VS__(id__) = FVS__(id__)
+			VS_O__(id__) = sbisim(diamond(FVS__(id__)))
+			HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+			HUP__(id__) = O__(id__) [|{share__}|] SKIP
+			
+			-- Shared memory
+			-- Shared memory variables
+			
+			-- sharedVarMemory process
+			sharedVarMemory(id__) = terminate -> SKIP
+			
+			sharedVarSync = {||}
+			
+			sharedVarHide = {||}
+		endmodule
+		
+			-- undefined operations
+			
+			-- declaring controller memory
+			Memory(id__) = SKIP
+			
+			D__(id__) = 	((
+					distribute::D__(id__)[[
+						distribute::terminate <- terminate,
+						distribute::statusIn <- statusIn,
+						distribute::statusOut1 <- statusOut1,
+						distribute::statusOut2 <- statusOut2
+					]]
+				)
+					[|
+						union(
+							{|
+							|},
+							{|
+							|}
+						)
+					|]
+				Memory(id__)
+			)
+			\ union(
+				{|
+				|},
+				{|
+				|}
+			)
+			[|{|terminate|}|>SKIP
+			
+			-- VS version
+			VS__(id__) = 	((
+					distribute::VS__(id__)[[
+						distribute::terminate <- terminate,
+						distribute::statusIn <- statusIn,
+						distribute::statusOut1 <- statusOut1,
+						distribute::statusOut2 <- statusOut2
+					]]
+				)
+					[|
+						union(
+							{|
+							|},
+							{|
+							|}
+						)
+					|]
+				Memory(id__)
+			)
+			\ union(
+				{|
+				|},
+				{|
+				|}
+			)
+			[|{|terminate|}|>SKIP
+		
+			-- O version (optimised) THESE TWO PROCESSES SHOULD BE KEPT IN SYNC WITH THE ABOVE TWO
+			O__(id__) = sbisim(diamond(	((
+					distribute::O__(id__)[[
+						distribute::terminate <- terminate,
+						distribute::statusIn <- statusIn,
+						distribute::statusOut1 <- statusOut1,
+						distribute::statusOut2 <- statusOut2
+					]]
+				)
+					[|
+						union(
+							{|
+							|},
+							{|
+							|}
+						)
+					|]
+				dbisim(Memory(id__))
+			)
+			\ union(
+				{|
+				|},
+				{|
+				|}
+			)
+			[|{|terminate|}|>SKIP
+			))
+							
+			-- VS_O version
+			VS_O__(id__) = sbisim(diamond(	((
+					distribute::VS_O__(id__)[[
+						distribute::terminate <- terminate,
+						distribute::statusIn <- statusIn,
+						distribute::statusOut1 <- statusOut1,
+						distribute::statusOut2 <- statusOut2
+					]]
+				)
+					[|
+						union(
+							{|
+							|},
+							{|
+							|}
+						)
+					|]
+				dbisim(Memory(id__))
+			)
+			\ union(
+				{|
+				|},
+				{|
+				|}
+			)
+			[|{|terminate|}|>SKIP
+			))
+		
+			HEXT(id__) = O__(id__) [|shared_variable_events|] SKIP			
+
+	endmodule

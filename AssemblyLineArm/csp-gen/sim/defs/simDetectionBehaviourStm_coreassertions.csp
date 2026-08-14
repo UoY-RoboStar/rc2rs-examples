@@ -1,0 +1,53 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 13:00:30
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "simDetectionBehaviourStm.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate simDetectionBehaviourStm
+P_simDetectionBehaviourStm = let
+	cycle_simDetectionBehaviourStm_simDetectionBehaviourStm = 1
+	id__ = 0
+	
+	const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE1 = 0
+	const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE2 = 0
+	const_simDetectionBehaviourStm_WAIT_LOWER1 = 0
+	const_simDetectionBehaviourStm_WAIT_LOWER2 = 0
+	const_simDetectionBehaviourStm_BELT_SPEED = 0
+	const_simDetectionBehaviourStm_step_size = 0
+	
+	
+within
+	simDetectionBehaviourStm::O__(
+		id__,
+		const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE1,
+		const_simDetectionBehaviourStm_HEIGHT_TO_SHAPE2,
+		const_simDetectionBehaviourStm_WAIT_LOWER1,
+		const_simDetectionBehaviourStm_WAIT_LOWER2,
+		const_simDetectionBehaviourStm_BELT_SPEED,
+		const_simDetectionBehaviourStm_step_size,
+		const_simDetectionBehaviourStm_HOME_X,
+		const_simDetectionBehaviourStm_HOME_Y,
+		const_simDetectionBehaviourStm_DELAY_DISCARD,
+		const_simDetectionBehaviourStm_WAIT_PICK,
+		const_simDetectionBehaviourStm_WAIT_DROP
+	)
+assert P_simDetectionBehaviourStm :[deadlock-free]	
+assert P_simDetectionBehaviourStm;RUN({r__}) :[deadlock-free]
+assert P_simDetectionBehaviourStm :[deterministic]
+assert P_simDetectionBehaviourStm :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_simDetectionBehaviourStm[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_simDetectionBehaviourStm

@@ -1,0 +1,2034 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_AutoDemand_AutoDemand
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_DetermineSpeed|
+	              NID_DetermineSteer|
+	              NID_DetermineBrake|
+	              NID_Ready|
+	              NID_i0|
+	              NID_Unconfigured|
+	              NID_WaitForObjective|
+	              NID_ZeroDemand|
+	              NID_WaitToBrake|
+	              NID_Moving|
+	              NID_j0|
+	              NID_ApplyBrake|
+	              NID_CheckGoalReached|
+	              NID_ConstructDemand
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_currentConfiguration, set_currentConfiguration, setL_currentConfiguration, setR_currentConfiguration: AutoDemandConfig
+	channel get_currentObjective, set_currentObjective, setL_currentObjective, setR_currentObjective: Goal
+	channel get_currentLocation, set_currentLocation, setL_currentLocation, setR_currentLocation: Pose2DStamped
+	channel get_currentVehicleState, set_currentVehicleState, setL_currentVehicleState, setR_currentVehicleState: PodState
+	channel get_newDemand, set_newDemand, setL_newDemand, setR_newDemand: PodDemand
+	channel get_newAuxDemand, set_newAuxDemand, setL_newAuxDemand, setR_newAuxDemand: AuxiliaryDemand
+	channel get_goalReached, set_goalReached, setL_goalReached, setR_goalReached: core_boolean
+	channel get_vehicleStopped, set_vehicleStopped, setL_vehicleStopped, setR_vehicleStopped: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel location__: NIDS.InOut.Pose2DStamped
+	channel location: InOut.Pose2DStamped
+	channel demand__: NIDS.InOut.PodDemand
+	channel demand: InOut.PodDemand
+	channel pod_state__: NIDS.InOut.PodState
+	channel pod_state: InOut.PodState
+	channel goal__: NIDS.InOut.Goal
+	channel goal: InOut.Goal
+	channel configuration__: NIDS.InOut.AutoDemandConfig
+	channel configuration: InOut.AutoDemandConfig
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	DetermineSpeed::enter,
+	DetermineSteer::enter,
+	DetermineBrake::enter,
+	Ready::enter,
+	i0::enter,
+	Unconfigured::enter,
+	WaitForObjective::enter,
+	ZeroDemand::enter,
+	WaitToBrake::enter,
+	Moving::enter,
+	j0::enter,
+	ApplyBrake::enter,
+	CheckGoalReached::enter,
+	ConstructDemand::enter
+	|}
+	
+	enteredSS = 	{|
+	DetermineSpeed::entered,
+	DetermineSteer::entered,
+	DetermineBrake::entered,
+	Ready::entered,
+	Unconfigured::entered,
+	WaitForObjective::entered,
+	ZeroDemand::entered,
+	WaitToBrake::entered,
+	Moving::entered,
+	ApplyBrake::entered,
+	CheckGoalReached::entered,
+	ConstructDemand::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	location,
+		demand,
+		pod_state,
+		goal,
+		configuration
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: DetermineSpeed
+	module DetermineSpeed
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentObjective?currentObjective -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,bacs_CalculateSpeed(currentConfiguration,currentObjective,PodDemand_steer(newDemand))) -> SKIP)))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentObjective?currentObjective -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,bacs_CalculateSpeed(currentConfiguration,currentObjective,PodDemand_steer(newDemand))) -> SKIP)))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: DetermineSteer
+	module DetermineSteer
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentLocation?currentLocation -> share__choice(get_currentObjective?currentObjective -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,bacs_CalculateSteer(currentConfiguration,currentObjective,currentLocation)) -> SKIP))))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentLocation?currentLocation -> share__choice(get_currentObjective?currentObjective -> share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,bacs_CalculateSteer(currentConfiguration,currentObjective,currentLocation)) -> SKIP))))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: DetermineBrake
+	module DetermineBrake
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentVehicleState?currentVehicleState -> share__choice(get_newDemand?newDemand -> share__choice(get_currentObjective?currentObjective -> true & (share__choice(set_vehicleStopped!bacs_VehicleStopped(currentVehicleState,newDemand,currentObjective) -> SKIP))))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,true) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentVehicleState?currentVehicleState -> share__choice(get_newDemand?newDemand -> share__choice(get_currentObjective?currentObjective -> true & (share__choice(set_vehicleStopped!bacs_VehicleStopped(currentVehicleState,newDemand,currentObjective) -> SKIP))))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,true) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Ready
+	module Ready
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Unconfigured
+	module Unconfigured
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_currentConfiguration!const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_currentConfiguration!const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: WaitForObjective
+	module WaitForObjective
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: ZeroDemand
+	module ZeroDemand
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,const_bacs_AutoDemand_AutoDemand_ZERO_STEER) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,const_bacs_AutoDemand_AutoDemand_ZERO_SPEED) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_steer(newDemand,const_bacs_AutoDemand_AutoDemand_ZERO_STEER) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_speed(newDemand,const_bacs_AutoDemand_AutoDemand_ZERO_SPEED) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: WaitToBrake
+	module WaitToBrake
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_DONT_CARE) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_DONT_CARE) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Moving
+	module Moving
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_DONT_CARE) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_DONT_CARE) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j0
+	module j0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: ApplyBrake
+	module ApplyBrake
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_ON) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_brake(newDemand,BrakeState_BRAKE_ON) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: CheckGoalReached
+	module CheckGoalReached
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentLocation?currentLocation -> share__choice(get_currentObjective?currentObjective -> true & (share__choice(set_goalReached!bacs_PathGoalReached(currentObjective,currentLocation,currentConfiguration) -> SKIP)))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_currentConfiguration?currentConfiguration -> share__choice(get_currentLocation?currentLocation -> share__choice(get_currentObjective?currentObjective -> true & (share__choice(set_goalReached!bacs_PathGoalReached(currentObjective,currentLocation,currentConfiguration) -> SKIP)))))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: ConstructDemand
+	module ConstructDemand
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_header(newDemand,update_Header_stamp(PodDemand_header(newDemand),autonomous_vehicle_system_GetSystemTime())) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_source(newDemand,DemandSource_DEMAND_AUTONOMOUS_CONTROL) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,true) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_abdicate(newDemand,false) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_header(newDemand,update_Header_stamp(PodDemand_header(newDemand),autonomous_vehicle_system_GetSystemTime())) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_source(newDemand,DemandSource_DEMAND_AUTONOMOUS_CONTROL) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_driveByWireRequest(newDemand,true) -> SKIP))));share__choice(share__choice(get_newDemand?newDemand -> true & (share__choice(set_newDemand!update_PodDemand_abdicate(newDemand,false) -> SKIP)))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+						    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+						    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+						    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = ((let
+		Trans = share__choice(get_currentConfiguration?currentConfiguration -> get_vehicleStopped?vehicleStopped -> get_goalReached?goalReached -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Unconfigured::enter -> SKIP))))
+			 	 [] dbisim(((not (goalReached)))&(internal__!NID_CheckGoalReached -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DetermineSteer::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_DetermineSteer -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DetermineSpeed::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_DetermineSpeed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ConstructDemand::enter -> SKIP)))
+			 	 [] dbisim((true)&(pod_state__!NID_Unconfigured.in?currentVehicleState:{currentVehicleState|currentVehicleState <- PodState, true} -> share__choice(set_currentVehicleState!currentVehicleState -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; WaitForObjective::enter -> SKIP)))
+			 	 [] dbisim((true)&(goal__!NID_WaitForObjective.in?currentObjective:{currentObjective|currentObjective <- Goal, true} -> share__choice(set_currentObjective!currentObjective -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 	 [] dbisim((true)&(goal__!NID_Ready.in?currentObjective:{currentObjective|currentObjective <- Goal, true} -> share__choice(set_currentObjective!currentObjective -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 	 [] dbisim((true)&(pod_state__!NID_Ready.in?currentVehicleState:{currentVehicleState|currentVehicleState <- PodState, true} -> share__choice(set_currentVehicleState!currentVehicleState -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 	 [] dbisim((goalReached)&(internal__!NID_CheckGoalReached -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ZeroDemand::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_ZeroDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ConstructDemand::enter -> SKIP)))
+			 	 [] dbisim(((not (vehicleStopped)))&(internal__!NID_DetermineBrake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Moving::enter -> SKIP)))
+			 	 [] dbisim((vehicleStopped)&(internal__!NID_DetermineBrake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; WaitToBrake::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Moving -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_ApplyBrake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_WaitToBrake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ApplyBrake::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_WaitToBrake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; Ready::enter -> SKIP))))
+			 	 [] dbisim((true)&(location__!NID_Ready.in?currentLocation:{currentLocation|currentLocation <- Pose2DStamped, true} -> share__choice(set_currentLocation!currentLocation -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckGoalReached::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_ConstructDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DetermineBrake::enter -> SKIP)))
+			 	 [] dbisim((true)&(configuration__!NID_Ready.in?currentConfiguration:{currentConfiguration|currentConfiguration <- AutoDemandConfig, true} -> share__choice(set_currentConfiguration!currentConfiguration -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				DetermineSpeed::enter,
+				DetermineSteer::enter,
+				DetermineBrake::enter,
+				Ready::enter,
+				i0::enter,
+				Unconfigured::enter,
+				WaitForObjective::enter,
+				ZeroDemand::enter,
+				WaitToBrake::enter,
+				Moving::enter,
+				j0::enter,
+				ApplyBrake::enter,
+				CheckGoalReached::enter,
+				ConstructDemand::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_CheckGoalReached,internal__.NID_DetermineSteer,internal__.NID_DetermineSpeed,pod_state__.NID_Unconfigured.in,goal__.NID_WaitForObjective.in,goal__.NID_Ready.in,pod_state__.NID_Ready.in,internal__.NID_CheckGoalReached,internal__.NID_ZeroDemand,internal__.NID_DetermineBrake,internal__.NID_DetermineBrake,internal__.NID_Moving,internal__.NID_ApplyBrake,internal__.NID_WaitToBrake,internal__.NID_WaitToBrake,internal__.NID_j0,location__.NID_Ready.in,internal__.NID_ConstructDemand,configuration__.NID_Ready.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   DetermineSpeed::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DetermineSteer::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DetermineBrake::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Ready::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Unconfigured::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   WaitForObjective::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ZeroDemand::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   WaitToBrake::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Moving::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   j0::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ApplyBrake::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   CheckGoalReached::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ConstructDemand::D__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[DetermineSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineSpeed|}]]
+					 [[DetermineSteer::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineSteer|}]]
+					 [[DetermineBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineBrake,internal__.NID_DetermineBrake|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,goal__.NID_Ready.in,pod_state__.NID_Ready.in,location__.NID_Ready.in,configuration__.NID_Ready.in|}]]
+					 [[Unconfigured::interrupt <- x__ | x__ <- {|interrupt,pod_state__.NID_Unconfigured.in|}]]
+					 [[WaitForObjective::interrupt <- x__ | x__ <- {|interrupt,goal__.NID_WaitForObjective.in|}]]
+					 [[ZeroDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ZeroDemand|}]]
+					 [[WaitToBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_WaitToBrake,internal__.NID_WaitToBrake|}]]
+					 [[Moving::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Moving|}]]
+					 [[ApplyBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ApplyBrake|}]]
+					 [[CheckGoalReached::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckGoalReached,internal__.NID_CheckGoalReached|}]]
+					 [[ConstructDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ConstructDemand|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_currentConfiguration,setR_currentVehicleState,setR_currentLocation,setR_currentObjective |} ]] 
+					  [[set_currentConfiguration <- setL_currentConfiguration,set_vehicleStopped <- setL_vehicleStopped,set_goalReached <- setL_goalReached]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_currentConfiguration
+					 			,setL_vehicleStopped
+					 			,setL_goalReached
+					 			,setR_currentConfiguration
+					 			 			,setR_currentVehicleState
+					 			 			,setR_currentLocation
+					 			 			,setR_currentObjective
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					 		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_currentConfiguration,setL_vehicleStopped,setL_goalReached |} ]]
+					  [[set_currentConfiguration <- setR_currentConfiguration,set_currentVehicleState <- setR_currentVehicleState,set_currentLocation <- setR_currentLocation,set_currentObjective <- setR_currentObjective]]
+					 )
+					)[[setL_currentConfiguration <- set_currentConfiguration,setL_vehicleStopped <- set_vehicleStopped,setL_goalReached <- set_goalReached]]
+					 [[setR_currentConfiguration <- set_currentConfiguration,setR_currentVehicleState <- set_currentVehicleState,setR_currentLocation <- set_currentLocation,setR_currentObjective <- set_currentObjective]]
+					)
+				)
+				 \ hideSet)
+				[[
+					location__.x____ <- location,
+					demand__.x____ <- demand,
+					pod_state__.x____ <- pod_state,
+					goal__.x____ <- goal,
+					configuration__.x____ <- configuration
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((MachineBody(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		((
+			(Behaviour(id__,
+					    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		Behaviour(id__,
+																				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+																				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+																		[| {|get_vehicleStopped,set_vehicleStopped,terminate|} |]
+																		Memory_vehicleStopped(true)
+																	)\{|get_vehicleStopped,set_vehicleStopped|}
+																)
+																[| {|get_goalReached,set_goalReached,terminate|} |]
+																Memory_goalReached(true)
+															)\{|get_goalReached,set_goalReached|}
+														)
+														[| {|get_newAuxDemand,set_newAuxDemand,terminate|} |]
+														Memory_newAuxDemand((true,true,true,0,(0,0,"")))
+													)\{|get_newAuxDemand,set_newAuxDemand|}
+												)
+												[| {|get_newDemand,set_newDemand,terminate|} |]
+												Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+											)\{|get_newDemand,set_newDemand|}
+										)
+										[| {|get_currentVehicleState,set_currentVehicleState,terminate|} |]
+										Memory_currentVehicleState((0,true,true))
+									)\{|get_currentVehicleState,set_currentVehicleState|}
+								)
+								[| {|get_currentLocation,set_currentLocation,terminate|} |]
+								Memory_currentLocation((0,0,0))
+							)\{|get_currentLocation,set_currentLocation|}
+						)
+						[| {|get_currentObjective,set_currentObjective,terminate|} |]
+						Memory_currentObjective((0,0,(0,0,0)))
+					)\{|get_currentObjective,set_currentObjective|}
+				)
+				[| {|get_currentConfiguration,set_currentConfiguration,terminate|} |]
+				Memory_currentConfiguration((0,0))
+			)\{|get_currentConfiguration,set_currentConfiguration|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				DetermineSpeed::enter,
+				DetermineSteer::enter,
+				DetermineBrake::enter,
+				Ready::enter,
+				i0::enter,
+				Unconfigured::enter,
+				WaitForObjective::enter,
+				ZeroDemand::enter,
+				WaitToBrake::enter,
+				Moving::enter,
+				j0::enter,
+				ApplyBrake::enter,
+				CheckGoalReached::enter,
+				ConstructDemand::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_CheckGoalReached,internal__.NID_DetermineSteer,internal__.NID_DetermineSpeed,pod_state__.NID_Unconfigured.in,goal__.NID_WaitForObjective.in,goal__.NID_Ready.in,pod_state__.NID_Ready.in,internal__.NID_CheckGoalReached,internal__.NID_ZeroDemand,internal__.NID_DetermineBrake,internal__.NID_DetermineBrake,internal__.NID_Moving,internal__.NID_ApplyBrake,internal__.NID_WaitToBrake,internal__.NID_WaitToBrake,internal__.NID_j0,location__.NID_Ready.in,internal__.NID_ConstructDemand,configuration__.NID_Ready.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   DetermineSpeed::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DetermineSteer::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   DetermineBrake::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Ready::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Unconfigured::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   WaitForObjective::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ZeroDemand::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   WaitToBrake::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   Moving::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   j0::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ApplyBrake::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   CheckGoalReached::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   [| { share__, terminate } |] (
+					   ConstructDemand::VS_O__(id__,
+					   		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					   		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[DetermineSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineSpeed|}]]
+					 [[DetermineSteer::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineSteer|}]]
+					 [[DetermineBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DetermineBrake,internal__.NID_DetermineBrake|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,goal__.NID_Ready.in,pod_state__.NID_Ready.in,location__.NID_Ready.in,configuration__.NID_Ready.in|}]]
+					 [[Unconfigured::interrupt <- x__ | x__ <- {|interrupt,pod_state__.NID_Unconfigured.in|}]]
+					 [[WaitForObjective::interrupt <- x__ | x__ <- {|interrupt,goal__.NID_WaitForObjective.in|}]]
+					 [[ZeroDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ZeroDemand|}]]
+					 [[WaitToBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_WaitToBrake,internal__.NID_WaitToBrake|}]]
+					 [[Moving::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Moving|}]]
+					 [[ApplyBrake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ApplyBrake|}]]
+					 [[CheckGoalReached::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckGoalReached,internal__.NID_CheckGoalReached|}]]
+					 [[ConstructDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ConstructDemand|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_currentConfiguration,setR_currentVehicleState,setR_currentLocation,setR_currentObjective |} ]] 
+					  [[set_currentConfiguration <- setL_currentConfiguration,set_vehicleStopped <- setL_vehicleStopped,set_goalReached <- setL_goalReached]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_currentConfiguration
+					 			,setL_vehicleStopped
+					 			,setL_goalReached
+					 			,setR_currentConfiguration
+					 			 			,setR_currentVehicleState
+					 			 			,setR_currentLocation
+					 			 			,setR_currentObjective
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					 		    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					 		    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_currentConfiguration,setL_vehicleStopped,setL_goalReached |} ]]
+					  [[set_currentConfiguration <- setR_currentConfiguration,set_currentVehicleState <- setR_currentVehicleState,set_currentLocation <- setR_currentLocation,set_currentObjective <- setR_currentObjective]]
+					 )
+					)[[setL_currentConfiguration <- set_currentConfiguration,setL_vehicleStopped <- set_vehicleStopped,setL_goalReached <- set_goalReached]]
+					 [[setR_currentConfiguration <- set_currentConfiguration,setR_currentVehicleState <- set_currentVehicleState,setR_currentLocation <- set_currentLocation,setR_currentObjective <- set_currentObjective]]
+					)
+				)
+				 \ hideSet)
+				[[
+					location__.x____ <- location,
+					demand__.x____ <- demand,
+					pod_state__.x____ <- pod_state,
+					goal__.x____ <- goal,
+					configuration__.x____ <- configuration
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+					    const_bacs_AutoDemand_AutoDemand_ZERO_STEER))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		Behaviour_VS_O(id__,
+																				    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+																				    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+																				    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+																		[| {|get_vehicleStopped,set_vehicleStopped,terminate|} |]
+																		Memory_vehicleStopped(true)
+																	)\{|get_vehicleStopped,set_vehicleStopped|}
+																)
+																[| {|get_goalReached,set_goalReached,terminate|} |]
+																Memory_goalReached(true)
+															)\{|get_goalReached,set_goalReached|}
+														)
+														[| {|get_newAuxDemand,set_newAuxDemand,terminate|} |]
+														Memory_newAuxDemand((true,true,true,0,(0,0,"")))
+													)\{|get_newAuxDemand,set_newAuxDemand|}
+												)
+												[| {|get_newDemand,set_newDemand,terminate|} |]
+												Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+											)\{|get_newDemand,set_newDemand|}
+										)
+										[| {|get_currentVehicleState,set_currentVehicleState,terminate|} |]
+										Memory_currentVehicleState((0,true,true))
+									)\{|get_currentVehicleState,set_currentVehicleState|}
+								)
+								[| {|get_currentLocation,set_currentLocation,terminate|} |]
+								Memory_currentLocation((0,0,0))
+							)\{|get_currentLocation,set_currentLocation|}
+						)
+						[| {|get_currentObjective,set_currentObjective,terminate|} |]
+						Memory_currentObjective((0,0,(0,0,0)))
+					)\{|get_currentObjective,set_currentObjective|}
+				)
+				[| {|get_currentConfiguration,set_currentConfiguration,terminate|} |]
+				Memory_currentConfiguration((0,0))
+			)\{|get_currentConfiguration,set_currentConfiguration|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_currentConfiguration(currentConfiguration) =
+		get_currentConfiguration!currentConfiguration -> Memory_currentConfiguration(currentConfiguration)
+		[]
+		set_currentConfiguration?x__ -> Memory_currentConfiguration(x__)
+		[]
+		terminate -> SKIP
+	Memory_currentObjective(currentObjective) =
+		get_currentObjective!currentObjective -> Memory_currentObjective(currentObjective)
+		[]
+		set_currentObjective?x__ -> Memory_currentObjective(x__)
+		[]
+		terminate -> SKIP
+	Memory_currentLocation(currentLocation) =
+		get_currentLocation!currentLocation -> Memory_currentLocation(currentLocation)
+		[]
+		set_currentLocation?x__ -> Memory_currentLocation(x__)
+		[]
+		terminate -> SKIP
+	Memory_currentVehicleState(currentVehicleState) =
+		get_currentVehicleState!currentVehicleState -> Memory_currentVehicleState(currentVehicleState)
+		[]
+		set_currentVehicleState?x__ -> Memory_currentVehicleState(x__)
+		[]
+		terminate -> SKIP
+	Memory_newDemand(newDemand) =
+		get_newDemand!newDemand -> Memory_newDemand(newDemand)
+		[]
+		set_newDemand?x__ -> Memory_newDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_newAuxDemand(newAuxDemand) =
+		get_newAuxDemand!newAuxDemand -> Memory_newAuxDemand(newAuxDemand)
+		[]
+		set_newAuxDemand?x__ -> Memory_newAuxDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_goalReached(goalReached) =
+		get_goalReached!goalReached -> Memory_goalReached(goalReached)
+		[]
+		set_goalReached?x__ -> Memory_goalReached(x__)
+		[]
+		terminate -> SKIP
+	Memory_vehicleStopped(vehicleStopped) =
+		get_vehicleStopped!vehicleStopped -> Memory_vehicleStopped(vehicleStopped)
+		[]
+		set_vehicleStopped?x__ -> Memory_vehicleStopped(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = Memory_currentConfiguration((0,0))
+	[| { terminate } |] (
+	Memory_currentObjective((0,0,(0,0,0)))
+	[| { terminate } |] (
+	Memory_currentLocation((0,0,0))
+	[| { terminate } |] (
+	Memory_currentVehicleState((0,true,true))
+	[| { terminate } |] (
+	Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+	[| { terminate } |] (
+	Memory_newAuxDemand((true,true,true,0,(0,0,"")))
+	[| { terminate } |] (
+	Memory_goalReached(true)
+	[| { terminate } |] (
+	Memory_vehicleStopped(true)
+	)
+	)
+	)
+	)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_currentConfiguration,set_currentConfiguration,get_currentObjective,set_currentObjective,get_currentLocation,set_currentLocation,get_currentVehicleState,set_currentVehicleState,get_newDemand,set_newDemand,get_newAuxDemand,set_newAuxDemand,get_goalReached,set_goalReached,get_vehicleStopped,set_vehicleStopped|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = STM_VS_O(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+	
+	D__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = STM(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) \ internal_events
+	O__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = sbisim(diamond(D__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)))
+	VS__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = FVS__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)
+	VS_O__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = sbisim(diamond(FVS__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER)))
+	HEXT__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = O__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = O__(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+			    const_bacs_AutoDemand_AutoDemand_ZERO_STEER) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule

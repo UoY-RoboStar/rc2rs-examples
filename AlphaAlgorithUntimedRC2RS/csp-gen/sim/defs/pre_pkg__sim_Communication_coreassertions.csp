@@ -1,0 +1,38 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 17:36:55
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_Communication.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_Communication
+P_pre_pkg__sim_Communication = let
+	cycle_pre_pkg__sim_Communication_Communication = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__sim_Communication::O__(
+		id__,
+		const_pre_pkg__sim_Communication_id,
+		const_pre_pkg__sim_Communication_RC
+	)
+assert P_pre_pkg__sim_Communication :[deadlock-free]	
+assert P_pre_pkg__sim_Communication;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_Communication :[deterministic]
+assert P_pre_pkg__sim_Communication :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_Communication[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_Communication

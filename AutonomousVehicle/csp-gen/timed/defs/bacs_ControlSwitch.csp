@@ -1,0 +1,3177 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_ControlSwitch
+exports
+
+
+
+
+module ControlSwitch
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_Ready|
+	              NID_CheckPriority|
+	              NID_i0|
+	              NID_DropDemand|
+	              NID_AcceptDemand|
+	              NID_UpdateAutonomousDemandStatus|
+	              NID_UpdateDriveByWireStatus|
+	              NID_CheckAllAbdicating|
+	              NID_Initialise|
+	              NID_j0
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_msg, set_msg, setL_msg, setR_msg: PodDemand
+	channel get_acceptDemand, set_acceptDemand, setL_acceptDemand, setR_acceptDemand: core_boolean
+	channel get_allAbdicating, set_allAbdicating, setL_allAbdicating, setR_allAbdicating: core_boolean
+	channel get_driveByWireAbdicated, set_driveByWireAbdicated, setL_driveByWireAbdicated, setR_driveByWireAbdicated: core_boolean
+	channel get_autonomousControlAbdicated, set_autonomousControlAbdicated, setL_autonomousControlAbdicated, setR_autonomousControlAbdicated: core_boolean
+	channel get_priorityCheckComplete, set_priorityCheckComplete, setL_priorityCheckComplete, setR_priorityCheckComplete: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel demand__: NIDS.InOut.PodDemand
+	channel demand: InOut.PodDemand
+	channel turnigy_pod_demand__: NIDS.InOut.PodDemand
+	channel turnigy_pod_demand: InOut.PodDemand
+	channel pod_demand__: NIDS.InOut.PodDemand
+	channel pod_demand: InOut.PodDemand
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	Ready::enter,
+	CheckPriority::enter,
+	i0::enter,
+	DropDemand::enter,
+	AcceptDemand::enter,
+	UpdateAutonomousDemandStatus::enter,
+	UpdateDriveByWireStatus::enter,
+	CheckAllAbdicating::enter,
+	Initialise::enter,
+	j0::enter
+	|}
+	
+	enteredSS = 	{|
+	Ready::entered,
+	CheckPriority::entered,
+	DropDemand::entered,
+	AcceptDemand::entered,
+	UpdateAutonomousDemandStatus::entered,
+	UpdateDriveByWireStatus::entered,
+	CheckAllAbdicating::entered,
+	Initialise::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	demand,
+		turnigy_pod_demand,
+		pod_demand
+		|}
+	datatype ClockSet = 
+		CLID_driveByWireDemandTimer|
+		CLID_autonomousDemandTimer
+	
+	channel clockReset, clockResetL, clockResetR : ClockSet
+	
+	localClockResets = {|clockReset.CLID_driveByWireDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+	
+	
+	channel get_CLID_UpdateDriveByWireStatus : core_clock_type 
+	channel get_CLID_driveByWireDemandTimer : core_clock_type 
+	channel get_CLID_CheckAllAbdicating : core_clock_type 
+	channel get_CLID_Initialise : core_clock_type 
+	channel get_CLID_autonomousDemandTimer : core_clock_type 
+	channel get_CLID_CheckPriority : core_clock_type 
+	channel get_CLID_Ready : core_clock_type 
+	channel get_CLID_AcceptDemand : core_clock_type 
+	channel get_CLID_DropDemand : core_clock_type 
+	channel get_CLID_UpdateAutonomousDemandStatus : core_clock_type 
+	--channel increment__
+	
+	CLID_UpdateDriveByWireStatus_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_driveByWireDemandTimer_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	({const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND|MAX_TIME_BETWEEN_DEMAND <- core_nat}),
+	({const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND|MAX_TIME_BETWEEN_DEMAND <- core_nat}),
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CheckAllAbdicating_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Initialise_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_autonomousDemandTimer_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{},
+	({const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND|MAX_TIME_BETWEEN_DEMAND <- core_nat}),
+	({const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND|MAX_TIME_BETWEEN_DEMAND <- core_nat})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CheckPriority_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Ready_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_AcceptDemand_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_DropDemand_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_UpdateAutonomousDemandStatus_clock_type(id__,
+			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: Ready
+		module Ready
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: CheckPriority
+		module CheckPriority
+		
+		enterSS = 
+				{|			i0::enter,
+					f0::enter,
+					CheckDriveByWireAbdication::enter,
+					DriveByWireOld::enter,
+					CheckAutonomousAbdication::enter,
+					j0::enter,
+					AutonomousOld::enter,
+					j2::enter,
+					j3::enter,
+					HandleDriveByWireAbdication::enter
+				|}
+		enteredSS = 
+				{|			f0::entered,
+					CheckDriveByWireAbdication::entered,
+					DriveByWireOld::entered,
+					CheckAutonomousAbdication::entered,
+					AutonomousOld::entered,
+					HandleDriveByWireAbdication::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i0|
+			              NID_f0|
+			              NID_CheckDriveByWireAbdication|
+			              NID_DriveByWireOld|
+			              NID_CheckAutonomousAbdication|
+			              NID_j0|
+			              NID_AutonomousOld|
+			              NID_j2|
+			              NID_j3|
+			              NID_HandleDriveByWireAbdication
+			
+			channel internal__ : NIDS
+			channel demand__: NIDS.InOut.PodDemand
+			channel turnigy_pod_demand__: NIDS.InOut.PodDemand
+			channel pod_demand__: NIDS.InOut.PodDemand
+			
+			channel get_CLID_CheckAutonomousAbdication : core_clock_type 
+			channel get_CLID_CheckDriveByWireAbdication : core_clock_type 
+			channel get_CLID_AutonomousOld : core_clock_type 
+			channel get_CLID_DriveByWireOld : core_clock_type 
+			channel get_CLID_HandleDriveByWireAbdication : core_clock_type 
+			--channel increment__
+			
+			CLID_CheckAutonomousAbdication_clock_type(id__,
+					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_CheckDriveByWireAbdication_clock_type(id__,
+					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_AutonomousOld_clock_type(id__,
+					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_DriveByWireOld_clock_type(id__,
+					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_HandleDriveByWireAbdication_clock_type(id__,
+					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i0
+			module i0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Final state: f0
+			module f0
+			
+			exports
+			
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+							
+							Entering 	= entered -> SKIP ; Active
+							Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+							Interrupted	= share__choice(exit -> exited -> Inactive)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: CheckDriveByWireAbdication
+			module CheckDriveByWireAbdication
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: DriveByWireOld
+			module DriveByWireOld
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(true & (share__choice(set_driveByWireAbdicated!false -> SKIP))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(true & (share__choice(set_driveByWireAbdicated!false -> SKIP))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: CheckAutonomousAbdication
+			module CheckAutonomousAbdication
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j0
+			module j0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: AutonomousOld
+			module AutonomousOld
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(true & (share__choice(set_autonomousControlAbdicated!false -> SKIP))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(true & (share__choice(set_autonomousControlAbdicated!false -> SKIP))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j2
+			module j2
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j3
+			module j3
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: HandleDriveByWireAbdication
+			module HandleDriveByWireAbdication
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_priorityCheckComplete!false -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						dbisim(
+						 							sbisim(
+						 								dbisim(
+						 									sbisim(
+						 										(let
+						 											-- IMPLEMENTATION NOTE:
+						 											-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 											-- modules for defining the semantics of each node.
+						 											enterSS = {|
+						 											i0::enter,
+						 											f0::enter,
+						 											CheckDriveByWireAbdication::enter,
+						 											DriveByWireOld::enter,
+						 											CheckAutonomousAbdication::enter,
+						 											j0::enter,
+						 											AutonomousOld::enter,
+						 											j2::enter,
+						 											j3::enter,
+						 											HandleDriveByWireAbdication::enter
+						 											|}
+						 											hideSet = union(enterSS,{|exit,exited,internal__|})
+						 										within 
+						 											((let
+						 												-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 												-- because CSPM modules are used for the semantics of Node.
+						 												flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 												transSync = {|internal__.NID_i0,internal__.NID_CheckDriveByWireAbdication,internal__.NID_CheckDriveByWireAbdication,internal__.NID_DriveByWireOld,internal__.NID_j3,internal__.NID_CheckAutonomousAbdication,internal__.NID_AutonomousOld,internal__.NID_CheckAutonomousAbdication,internal__.NID_j0,internal__.NID_j3,internal__.NID_HandleDriveByWireAbdication,internal__.NID_HandleDriveByWireAbdication,internal__.NID_j2|}
+						 											within
+						 												((
+						 												 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 												   i0::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   f0::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   CheckDriveByWireAbdication::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   DriveByWireOld::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   CheckAutonomousAbdication::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j0::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   AutonomousOld::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j2::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j3::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   HandleDriveByWireAbdication::D__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												 )
+						 												 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 												 [[CheckDriveByWireAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckDriveByWireAbdication,internal__.NID_CheckDriveByWireAbdication|}]]
+						 												 [[DriveByWireOld::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DriveByWireOld|}]]
+						 												 [[CheckAutonomousAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAutonomousAbdication,internal__.NID_CheckAutonomousAbdication|}]]
+						 												 [[AutonomousOld::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousOld|}]]
+						 												 [[HandleDriveByWireAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandleDriveByWireAbdication,internal__.NID_HandleDriveByWireAbdication|}]]
+						 												 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 												 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+						 												 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2|}]]
+						 												 [[j3::interrupt <- x__ | x__ <- {|internal__.NID_j3,internal__.NID_j3|}]]
+						 												 )
+						 												  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 												  [[set_driveByWireAbdicated <- setL_driveByWireAbdicated,clockReset.CLID_driveByWireDemandTimer <- clockResetL.CLID_driveByWireDemandTimer,clockReset.CLID_autonomousDemandTimer <- clockResetL.CLID_autonomousDemandTimer,set_msg <- setL_msg]]
+						 												 )
+						 												 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 												 			,setL_driveByWireAbdicated
+						 												 			,clockResetL.CLID_driveByWireDemandTimer
+						 												 			,clockResetL.CLID_autonomousDemandTimer
+						 												 			,setL_msg
+						 												|}) |]
+						 												 ((i0::enter -> Transitions(id__,
+						 												 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 												  [[ share__ <- x__ | x__ <- {| share__,setL_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer,clockResetL.CLID_autonomousDemandTimer,setL_msg |} ]]
+						 												 )
+						 												)[[setL_driveByWireAbdicated <- set_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,clockResetL.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setL_msg <- set_msg]]
+						 												)
+						 											)
+						 											 \ hideSet)
+						 											[[
+						 												demand__.x____ <- demand,
+						 												turnigy_pod_demand__.x____ <- turnigy_pod_demand,
+						 												pod_demand__.x____ <- pod_demand
+						 												| x____ <- NIDS
+						 											]]
+						 										)
+						 										[| {|get_CLID_HandleDriveByWireAbdication,HandleDriveByWireAbdication::entered,terminate|} |]
+						 										dbisim(Clock_CLID_HandleDriveByWireAbdication(id__,0,
+						 												          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 									)\{|get_CLID_HandleDriveByWireAbdication|}
+						 								)
+						 								[| {|get_CLID_DriveByWireOld,DriveByWireOld::entered,terminate|} |]
+						 								dbisim(Clock_CLID_DriveByWireOld(id__,0,
+						 										          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 										          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 							)\{|get_CLID_DriveByWireOld|}
+						 						)
+						 						[| {|get_CLID_AutonomousOld,AutonomousOld::entered,terminate|} |]
+						 						dbisim(Clock_CLID_AutonomousOld(id__,0,
+						 								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 					)\{|get_CLID_AutonomousOld|}
+						 				)
+						 				[| {|get_CLID_CheckDriveByWireAbdication,CheckDriveByWireAbdication::entered,terminate|} |]
+						 				dbisim(Clock_CLID_CheckDriveByWireAbdication(id__,0,
+						 						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 			)\{|get_CLID_CheckDriveByWireAbdication|}
+						 		)
+						 		[| {|get_CLID_CheckAutonomousAbdication,CheckAutonomousAbdication::entered,terminate|} |]
+						 		dbisim(Clock_CLID_CheckAutonomousAbdication(id__,0,
+						 				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 	)\{|get_CLID_CheckAutonomousAbdication|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_driveByWireAbdicated,setR_autonomousControlAbdicated,clockResetR.CLID_autonomousDemandTimer,setR_allAbdicating,clockResetR.CLID_driveByWireDemandTimer,setR_priorityCheckComplete,setR_msg,setR_acceptDemand |} ]] 
+						  [[set_driveByWireAbdicated <- setL_driveByWireAbdicated,clockReset.CLID_driveByWireDemandTimer <- clockResetL.CLID_driveByWireDemandTimer,set_autonomousControlAbdicated <- setL_autonomousControlAbdicated,clockReset.CLID_autonomousDemandTimer <- clockResetL.CLID_autonomousDemandTimer,set_priorityCheckComplete <- setL_priorityCheckComplete,set_msg <- setL_msg,set_allAbdicating <- setL_allAbdicating,set_acceptDemand <- setL_acceptDemand]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_driveByWireAbdicated
+						 			,clockResetL.CLID_driveByWireDemandTimer
+						 			,setL_autonomousControlAbdicated
+						 			,clockResetL.CLID_autonomousDemandTimer
+						 			,setL_priorityCheckComplete
+						 			,setL_msg
+						 			,setL_allAbdicating
+						 			,setL_acceptDemand
+						 			,setR_driveByWireAbdicated
+						 			 			,setR_autonomousControlAbdicated
+						 			 			,clockResetR.CLID_autonomousDemandTimer
+						 			 			,setR_allAbdicating
+						 			 			,clockResetR.CLID_driveByWireDemandTimer
+						 			 			,setR_priorityCheckComplete
+						 			 			,setR_msg
+						 			 			,setR_acceptDemand
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer,setL_autonomousControlAbdicated,clockResetL.CLID_autonomousDemandTimer,setL_priorityCheckComplete,setL_msg,setL_allAbdicating,setL_acceptDemand |} ]]
+						  [[set_driveByWireAbdicated <- setR_driveByWireAbdicated,set_autonomousControlAbdicated <- setR_autonomousControlAbdicated,clockReset.CLID_autonomousDemandTimer <- clockResetR.CLID_autonomousDemandTimer,set_allAbdicating <- setR_allAbdicating,clockReset.CLID_driveByWireDemandTimer <- clockResetR.CLID_driveByWireDemandTimer,set_priorityCheckComplete <- setR_priorityCheckComplete,set_msg <- setR_msg,set_acceptDemand <- setR_acceptDemand]]
+						 )
+						)[[setL_driveByWireAbdicated <- set_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,setL_autonomousControlAbdicated <- set_autonomousControlAbdicated,clockResetL.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setL_priorityCheckComplete <- set_priorityCheckComplete,setL_msg <- set_msg,setL_allAbdicating <- set_allAbdicating,setL_acceptDemand <- set_acceptDemand]]
+						 [[setR_driveByWireAbdicated <- set_driveByWireAbdicated,setR_autonomousControlAbdicated <- set_autonomousControlAbdicated,clockResetR.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setR_allAbdicating <- set_allAbdicating,clockResetR.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,setR_priorityCheckComplete <- set_priorityCheckComplete,setR_msg <- set_msg,setR_acceptDemand <- set_acceptDemand]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_priorityCheckComplete!false -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						dbisim(
+						 							sbisim(
+						 								dbisim(
+						 									sbisim(
+						 										(let
+						 											-- IMPLEMENTATION NOTE:
+						 											-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 											-- modules for defining the semantics of each node.
+						 											enterSS = {|
+						 											i0::enter,
+						 											f0::enter,
+						 											CheckDriveByWireAbdication::enter,
+						 											DriveByWireOld::enter,
+						 											CheckAutonomousAbdication::enter,
+						 											j0::enter,
+						 											AutonomousOld::enter,
+						 											j2::enter,
+						 											j3::enter,
+						 											HandleDriveByWireAbdication::enter
+						 											|}
+						 											hideSet = union(enterSS,{|exit,exited,internal__|})
+						 										within 
+						 											((let
+						 												-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 												-- because CSPM modules are used for the semantics of Node.
+						 												flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 												transSync = {|internal__.NID_i0,internal__.NID_CheckDriveByWireAbdication,internal__.NID_CheckDriveByWireAbdication,internal__.NID_DriveByWireOld,internal__.NID_j3,internal__.NID_CheckAutonomousAbdication,internal__.NID_AutonomousOld,internal__.NID_CheckAutonomousAbdication,internal__.NID_j0,internal__.NID_j3,internal__.NID_HandleDriveByWireAbdication,internal__.NID_HandleDriveByWireAbdication,internal__.NID_j2|}
+						 											within
+						 												((
+						 												 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 												   i0::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   f0::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   CheckDriveByWireAbdication::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   DriveByWireOld::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   CheckAutonomousAbdication::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j0::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   AutonomousOld::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j2::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   j3::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   [| { share__, terminate } |] (
+						 												   HandleDriveByWireAbdication::VS_O__(id__,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												   )
+						 												 )
+						 												 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 												 [[CheckDriveByWireAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckDriveByWireAbdication,internal__.NID_CheckDriveByWireAbdication|}]]
+						 												 [[DriveByWireOld::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DriveByWireOld|}]]
+						 												 [[CheckAutonomousAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAutonomousAbdication,internal__.NID_CheckAutonomousAbdication|}]]
+						 												 [[AutonomousOld::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousOld|}]]
+						 												 [[HandleDriveByWireAbdication::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandleDriveByWireAbdication,internal__.NID_HandleDriveByWireAbdication|}]]
+						 												 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 												 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+						 												 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2|}]]
+						 												 [[j3::interrupt <- x__ | x__ <- {|internal__.NID_j3,internal__.NID_j3|}]]
+						 												 )
+						 												  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 												  [[set_driveByWireAbdicated <- setL_driveByWireAbdicated,clockReset.CLID_driveByWireDemandTimer <- clockResetL.CLID_driveByWireDemandTimer,clockReset.CLID_autonomousDemandTimer <- clockResetL.CLID_autonomousDemandTimer,set_msg <- setL_msg]]
+						 												 )
+						 												 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 												 			,setL_driveByWireAbdicated
+						 												 			,clockResetL.CLID_driveByWireDemandTimer
+						 												 			,clockResetL.CLID_autonomousDemandTimer
+						 												 			,setL_msg
+						 												|}) |]
+						 												 ((i0::enter -> Transitions(id__,
+						 												 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 												  [[ share__ <- x__ | x__ <- {| share__,setL_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer,clockResetL.CLID_autonomousDemandTimer,setL_msg |} ]]
+						 												 )
+						 												)[[setL_driveByWireAbdicated <- set_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,clockResetL.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setL_msg <- set_msg]]
+						 												)
+						 											)
+						 											 \ hideSet)
+						 											[[
+						 												demand__.x____ <- demand,
+						 												turnigy_pod_demand__.x____ <- turnigy_pod_demand,
+						 												pod_demand__.x____ <- pod_demand
+						 												| x____ <- NIDS
+						 											]]
+						 										)
+						 										[| {|get_CLID_HandleDriveByWireAbdication,HandleDriveByWireAbdication::entered,terminate|} |]
+						 										dbisim(Clock_CLID_HandleDriveByWireAbdication(id__,0,
+						 												          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 												          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 									)\{|get_CLID_HandleDriveByWireAbdication|}
+						 								)
+						 								[| {|get_CLID_DriveByWireOld,DriveByWireOld::entered,terminate|} |]
+						 								dbisim(Clock_CLID_DriveByWireOld(id__,0,
+						 										          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 										          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 							)\{|get_CLID_DriveByWireOld|}
+						 						)
+						 						[| {|get_CLID_AutonomousOld,AutonomousOld::entered,terminate|} |]
+						 						dbisim(Clock_CLID_AutonomousOld(id__,0,
+						 								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 					)\{|get_CLID_AutonomousOld|}
+						 				)
+						 				[| {|get_CLID_CheckDriveByWireAbdication,CheckDriveByWireAbdication::entered,terminate|} |]
+						 				dbisim(Clock_CLID_CheckDriveByWireAbdication(id__,0,
+						 						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 			)\{|get_CLID_CheckDriveByWireAbdication|}
+						 		)
+						 		[| {|get_CLID_CheckAutonomousAbdication,CheckAutonomousAbdication::entered,terminate|} |]
+						 		dbisim(Clock_CLID_CheckAutonomousAbdication(id__,0,
+						 				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						 	)\{|get_CLID_CheckAutonomousAbdication|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_driveByWireAbdicated,setR_autonomousControlAbdicated,clockResetR.CLID_autonomousDemandTimer,setR_allAbdicating,clockResetR.CLID_driveByWireDemandTimer,setR_priorityCheckComplete,setR_msg,setR_acceptDemand |} ]] 
+						  [[set_driveByWireAbdicated <- setL_driveByWireAbdicated,clockReset.CLID_driveByWireDemandTimer <- clockResetL.CLID_driveByWireDemandTimer,set_autonomousControlAbdicated <- setL_autonomousControlAbdicated,clockReset.CLID_autonomousDemandTimer <- clockResetL.CLID_autonomousDemandTimer,set_priorityCheckComplete <- setL_priorityCheckComplete,set_msg <- setL_msg,set_allAbdicating <- setL_allAbdicating,set_acceptDemand <- setL_acceptDemand]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_driveByWireAbdicated
+						 			,clockResetL.CLID_driveByWireDemandTimer
+						 			,setL_autonomousControlAbdicated
+						 			,clockResetL.CLID_autonomousDemandTimer
+						 			,setL_priorityCheckComplete
+						 			,setL_msg
+						 			,setL_allAbdicating
+						 			,setL_acceptDemand
+						 			,setR_driveByWireAbdicated
+						 			 			,setR_autonomousControlAbdicated
+						 			 			,clockResetR.CLID_autonomousDemandTimer
+						 			 			,setR_allAbdicating
+						 			 			,clockResetR.CLID_driveByWireDemandTimer
+						 			 			,setR_priorityCheckComplete
+						 			 			,setR_msg
+						 			 			,setR_acceptDemand
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer,setL_autonomousControlAbdicated,clockResetL.CLID_autonomousDemandTimer,setL_priorityCheckComplete,setL_msg,setL_allAbdicating,setL_acceptDemand |} ]]
+						  [[set_driveByWireAbdicated <- setR_driveByWireAbdicated,set_autonomousControlAbdicated <- setR_autonomousControlAbdicated,clockReset.CLID_autonomousDemandTimer <- clockResetR.CLID_autonomousDemandTimer,set_allAbdicating <- setR_allAbdicating,clockReset.CLID_driveByWireDemandTimer <- clockResetR.CLID_driveByWireDemandTimer,set_priorityCheckComplete <- setR_priorityCheckComplete,set_msg <- setR_msg,set_acceptDemand <- setR_acceptDemand]]
+						 )
+						)[[setL_driveByWireAbdicated <- set_driveByWireAbdicated,clockResetL.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,setL_autonomousControlAbdicated <- set_autonomousControlAbdicated,clockResetL.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setL_priorityCheckComplete <- set_priorityCheckComplete,setL_msg <- set_msg,setL_allAbdicating <- set_allAbdicating,setL_acceptDemand <- set_acceptDemand]]
+						 [[setR_driveByWireAbdicated <- set_driveByWireAbdicated,setR_autonomousControlAbdicated <- set_autonomousControlAbdicated,clockResetR.CLID_autonomousDemandTimer <- clockReset.CLID_autonomousDemandTimer,setR_allAbdicating <- set_allAbdicating,clockResetR.CLID_driveByWireDemandTimer <- clockReset.CLID_driveByWireDemandTimer,setR_priorityCheckComplete <- set_priorityCheckComplete,setR_msg <- set_msg,setR_acceptDemand <- set_acceptDemand]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = ((let
+					Trans = share__choice(get_driveByWireAbdicated?driveByWireAbdicated -> get_CLID_driveByWireDemandTimer?driveByWireDemandTimer -> get_CLID_autonomousDemandTimer?autonomousDemandTimer -> get_msg?msg -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; CheckDriveByWireAbdication::enter -> SKIP))))
+						 [] dbisim(((driveByWireDemandTimer>=const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))&(internal__!NID_CheckDriveByWireAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DriveByWireOld::enter -> SKIP)))
+						 [] dbisim(((driveByWireDemandTimer<const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))&(internal__!NID_CheckDriveByWireAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_DriveByWireOld -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+						 [] dbisim(((PodDemand_source(msg)!=DemandSource_DEMAND_DRIVE_BY_WIRE))&(internal__!NID_j3 -> SKIP ;  ((share__choice(true & (share__choice(set_acceptDemand!false -> SKIP))) ; HandleDriveByWireAbdication::enter -> SKIP))))
+						 [] dbisim(((autonomousDemandTimer>=const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))&(internal__!NID_CheckAutonomousAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; AutonomousOld::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_AutonomousOld -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j2::enter -> SKIP)))
+						 [] dbisim(((autonomousDemandTimer<const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))&(internal__!NID_CheckAutonomousAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j2::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; j3::enter -> SKIP))))
+						 [] dbisim(((PodDemand_source(msg)==DemandSource_DEMAND_DRIVE_BY_WIRE))&(internal__!NID_j3 -> SKIP ;  ((share__choice(share__choice(get_driveByWireAbdicated?driveByWireAbdicated -> true & (share__choice(set_acceptDemand!(not (driveByWireAbdicated)) -> SKIP))));share__choice(true & (share__choice(set_priorityCheckComplete!true -> SKIP))) ; f0::enter -> SKIP))))
+						 [] dbisim(((not (driveByWireAbdicated)))&(internal__!NID_HandleDriveByWireAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_priorityCheckComplete!true -> SKIP))) ; f0::enter -> SKIP)))
+						 [] dbisim((driveByWireAbdicated)&(internal__!NID_HandleDriveByWireAbdication -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckAutonomousAbdication::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_j2 -> SKIP ;  ((share__choice(share__choice(get_autonomousControlAbdicated?autonomousControlAbdicated -> true & (share__choice(set_acceptDemand!(not (autonomousControlAbdicated)) -> SKIP))));share__choice(true & (share__choice(set_priorityCheckComplete!true -> SKIP))) ; f0::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_CheckAutonomousAbdication(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					TimeOut_1(
+						CheckAutonomousAbdication::entered -> Clock_CLID_CheckAutonomousAbdication(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						get_CLID_CheckAutonomousAbdication!x__ -> Clock_CLID_CheckAutonomousAbdication(id__,x__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						terminate -> SKIP,Clock_CLID_CheckAutonomousAbdication(id__,clock_type_plus(x__,1,CLID_CheckAutonomousAbdication_clock_type(id__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				Clock_CLID_CheckDriveByWireAbdication(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					TimeOut_1(
+						CheckDriveByWireAbdication::entered -> Clock_CLID_CheckDriveByWireAbdication(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						get_CLID_CheckDriveByWireAbdication!x__ -> Clock_CLID_CheckDriveByWireAbdication(id__,x__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						terminate -> SKIP,Clock_CLID_CheckDriveByWireAbdication(id__,clock_type_plus(x__,1,CLID_CheckDriveByWireAbdication_clock_type(id__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				Clock_CLID_AutonomousOld(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					TimeOut_1(
+						AutonomousOld::entered -> Clock_CLID_AutonomousOld(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						get_CLID_AutonomousOld!x__ -> Clock_CLID_AutonomousOld(id__,x__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						terminate -> SKIP,Clock_CLID_AutonomousOld(id__,clock_type_plus(x__,1,CLID_AutonomousOld_clock_type(id__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				Clock_CLID_DriveByWireOld(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					TimeOut_1(
+						DriveByWireOld::entered -> Clock_CLID_DriveByWireOld(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						get_CLID_DriveByWireOld!x__ -> Clock_CLID_DriveByWireOld(id__,x__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						terminate -> SKIP,Clock_CLID_DriveByWireOld(id__,clock_type_plus(x__,1,CLID_DriveByWireOld_clock_type(id__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				Clock_CLID_HandleDriveByWireAbdication(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					TimeOut_1(
+						HandleDriveByWireAbdication::entered -> Clock_CLID_HandleDriveByWireAbdication(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						get_CLID_HandleDriveByWireAbdication!x__ -> Clock_CLID_HandleDriveByWireAbdication(id__,x__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						[]
+						terminate -> SKIP,Clock_CLID_HandleDriveByWireAbdication(id__,clock_type_plus(x__,1,CLID_HandleDriveByWireAbdication_clock_type(id__,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(Clock_CLID_CheckAutonomousAbdication(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_CheckDriveByWireAbdication(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_AutonomousOld(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_DriveByWireOld(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_HandleDriveByWireAbdication(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+				)
+				)
+				)
+				)
+				
+				stateClockSync = {|get_CLID_CheckAutonomousAbdication,CheckAutonomousAbdication::entered,get_CLID_CheckDriveByWireAbdication,CheckDriveByWireAbdication::entered,get_CLID_AutonomousOld,AutonomousOld::entered,get_CLID_DriveByWireOld,DriveByWireOld::entered,get_CLID_HandleDriveByWireAbdication,HandleDriveByWireAbdication::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: DropDemand
+		module DropDemand
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: AcceptDemand
+		module AcceptDemand
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(get_msg?msg -> true&(share__choice(pod_demand.out!msg -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(get_msg?msg -> true&(share__choice(pod_demand.out!msg -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateAutonomousDemandStatus
+		module UpdateAutonomousDemandStatus
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> true & (share__choice(set_autonomousControlAbdicated!PodDemand_abdicate(msg) -> SKIP))));share__choice(clockReset.CLID_autonomousDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> true & (share__choice(set_autonomousControlAbdicated!PodDemand_abdicate(msg) -> SKIP))));share__choice(clockReset.CLID_autonomousDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateDriveByWireStatus
+		module UpdateDriveByWireStatus
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> true & (share__choice(set_driveByWireAbdicated!PodDemand_abdicate(msg) -> SKIP))));share__choice(clockReset.CLID_driveByWireDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_msg?msg -> true & (share__choice(set_driveByWireAbdicated!PodDemand_abdicate(msg) -> SKIP))));share__choice(clockReset.CLID_driveByWireDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: CheckAllAbdicating
+		module CheckAllAbdicating
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_driveByWireAbdicated?driveByWireAbdicated -> share__choice(get_autonomousControlAbdicated?autonomousControlAbdicated -> true & (share__choice(set_allAbdicating!(driveByWireAbdicated and autonomousControlAbdicated) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_driveByWireAbdicated?driveByWireAbdicated -> share__choice(get_autonomousControlAbdicated?autonomousControlAbdicated -> true & (share__choice(set_allAbdicating!(driveByWireAbdicated and autonomousControlAbdicated) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Initialise
+		module Initialise
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_driveByWireAbdicated!false -> SKIP)));share__choice(true & (share__choice(set_autonomousControlAbdicated!false -> SKIP)));share__choice(clockReset.CLID_autonomousDemandTimer -> SKIP);share__choice(clockReset.CLID_driveByWireDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_driveByWireAbdicated!false -> SKIP)));share__choice(true & (share__choice(set_autonomousControlAbdicated!false -> SKIP)));share__choice(clockReset.CLID_autonomousDemandTimer -> SKIP);share__choice(clockReset.CLID_driveByWireDemandTimer -> SKIP) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = D__(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		)\sharedVarHide
+		
+		STM_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__,
+							    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+							    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+					    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = ((let
+			Trans = share__choice(get_priorityCheckComplete?priorityCheckComplete -> get_allAbdicating?allAbdicating -> get_acceptDemand?acceptDemand -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_Ready -> SKIP ; (share__choice(clockReset.CLID_driveByWireDemandTimer -> SKIP) ; share__choice(SKIP))
+				 ; share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&(share__choice(turnigy_pod_demand.in?msg -> (SStop /\ set_msg!msg -> SKIP))) ; UpdateDriveByWireStatus::enter -> SKIP)))
+				 [] dbisim(((not (acceptDemand)))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; CheckAllAbdicating::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_Ready -> SKIP ; (share__choice(clockReset.CLID_autonomousDemandTimer -> SKIP) ; share__choice(SKIP))
+				 ; share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&(share__choice(demand.in?msg -> (SStop /\ set_msg!msg -> SKIP))) ; UpdateAutonomousDemandStatus::enter -> SKIP)))
+				 [] dbisim((acceptDemand)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; AcceptDemand::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_DropDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_AcceptDemand -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_UpdateAutonomousDemandStatus -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckPriority::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_UpdateDriveByWireStatus -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckPriority::enter -> SKIP)))
+				 [] dbisim(((not (allAbdicating)))&(internal__!NID_CheckAllAbdicating -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; DropDemand::enter -> SKIP)))
+				 [] dbisim((allAbdicating)&(internal__!NID_CheckAllAbdicating -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&(share__choice(pod_demand.out!const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND -> SKIP)) ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((priorityCheckComplete)&(internal__!NID_CheckPriority -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Ready::enter,
+					CheckPriority::enter,
+					i0::enter,
+					DropDemand::enter,
+					AcceptDemand::enter,
+					UpdateAutonomousDemandStatus::enter,
+					UpdateDriveByWireStatus::enter,
+					CheckAllAbdicating::enter,
+					Initialise::enter,
+					j0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_Ready,internal__.NID_j0,internal__.NID_i0,internal__.NID_Ready,internal__.NID_j0,internal__.NID_DropDemand,internal__.NID_AcceptDemand,internal__.NID_UpdateAutonomousDemandStatus,internal__.NID_UpdateDriveByWireStatus,internal__.NID_CheckAllAbdicating,internal__.NID_CheckAllAbdicating,internal__.NID_Initialise,internal__.NID_CheckPriority|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Ready::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   CheckPriority::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   i0::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   DropDemand::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   AcceptDemand::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   UpdateAutonomousDemandStatus::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   UpdateDriveByWireStatus::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   CheckAllAbdicating::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   Initialise::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   j0::D__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready|}]]
+						 [[CheckPriority::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckPriority|}]]
+						 [[DropDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DropDemand|}]]
+						 [[AcceptDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AcceptDemand|}]]
+						 [[UpdateAutonomousDemandStatus::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateAutonomousDemandStatus|}]]
+						 [[UpdateDriveByWireStatus::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateDriveByWireStatus|}]]
+						 [[CheckAllAbdicating::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAllAbdicating,internal__.NID_CheckAllAbdicating|}]]
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_priorityCheckComplete <- setL_priorityCheckComplete,set_allAbdicating <- setL_allAbdicating,set_acceptDemand <- setL_acceptDemand]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_priorityCheckComplete
+						 			,setL_allAbdicating
+						 			,setL_acceptDemand
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_priorityCheckComplete,setL_allAbdicating,setL_acceptDemand |} ]]
+						 )
+						)[[setL_priorityCheckComplete <- set_priorityCheckComplete,setL_allAbdicating <- set_allAbdicating,setL_acceptDemand <- set_acceptDemand]]
+						)
+					)
+					 \ hideSet)
+					[[
+						demand__.x____ <- demand,
+						turnigy_pod_demand__.x____ <- turnigy_pod_demand,
+						pod_demand__.x____ <- pod_demand
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,get_CLID_Initialise,Initialise::entered,get_CLID_CheckPriority,CheckPriority::entered,get_CLID_Ready,Ready::entered,get_CLID_AcceptDemand,AcceptDemand::entered,get_CLID_DropDemand,DropDemand::entered,get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered|}
+			 within
+				(MachineBody(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,get_CLID_Initialise,Initialise::entered,get_CLID_CheckPriority,CheckPriority::entered,get_CLID_Ready,Ready::entered,get_CLID_AcceptDemand,AcceptDemand::entered,get_CLID_DropDemand,DropDemand::entered,get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		dbisim(
+																			sbisim(
+																				MachineBody(id__,
+																						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+																				[| {|get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered,terminate|} |]
+																				dbisim(Clock_CLID_UpdateAutonomousDemandStatus(id__,0,
+																						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																			)\{|get_CLID_UpdateAutonomousDemandStatus|}
+																		)
+																		[| {|get_CLID_DropDemand,DropDemand::entered,terminate|} |]
+																		dbisim(Clock_CLID_DropDemand(id__,0,
+																				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																	)\{|get_CLID_DropDemand|}
+																)
+																[| {|get_CLID_AcceptDemand,AcceptDemand::entered,terminate|} |]
+																dbisim(Clock_CLID_AcceptDemand(id__,0,
+																		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+															)\{|get_CLID_AcceptDemand|}
+														)
+														[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+														dbisim(Clock_CLID_Ready(id__,0,
+																          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+													)\{|get_CLID_Ready|}
+												)
+												[| {|get_CLID_CheckPriority,CheckPriority::entered,terminate|} |]
+												dbisim(Clock_CLID_CheckPriority(id__,0,
+														          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+														          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+											)\{|get_CLID_CheckPriority|}
+										)
+										[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+										dbisim(Clock_CLID_Initialise(id__,0,
+												          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+												          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+									)\{|get_CLID_Initialise|}
+								)
+								[| {|get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,terminate|} |]
+								dbisim(Clock_CLID_CheckAllAbdicating(id__,0,
+										          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+										          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+							)\{|get_CLID_CheckAllAbdicating|}
+						)
+						[| {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,terminate|} |]
+						dbisim(Clock_CLID_UpdateDriveByWireStatus(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+					)\{|get_CLID_UpdateDriveByWireStatus|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			((let
+				getsetLocalChannels = {|get_msg,set_msg,
+				get_acceptDemand,set_acceptDemand,
+				get_allAbdicating,set_allAbdicating,
+				get_driveByWireAbdicated,set_driveByWireAbdicated,
+				get_autonomousControlAbdicated,set_autonomousControlAbdicated,
+				get_priorityCheckComplete,set_priorityCheckComplete|}
+				clockSync = {|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer,get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+			within
+				(Behaviour(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [| {terminate} |] Clocks(id__,
+				 		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	dbisim(
+																		sbisim(
+																			IteratedBehaviour(id__,
+																					    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																					    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+																			[| {|get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer,terminate|} |]
+																			dbisim(Clock_CLID_autonomousDemandTimer(id__,0,
+																					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																		)\{|get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+																	)
+																	[| {|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer,terminate|} |]
+																	dbisim(Clock_CLID_driveByWireDemandTimer(id__,0,
+																			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																)\{|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer|}
+															)
+															[| {|get_priorityCheckComplete,set_priorityCheckComplete,terminate|} |]
+															Memory_priorityCheckComplete(true)
+														)\{|get_priorityCheckComplete,set_priorityCheckComplete|}
+													)
+													[| {|get_autonomousControlAbdicated,set_autonomousControlAbdicated,terminate|} |]
+													Memory_autonomousControlAbdicated(true)
+												)\{|get_autonomousControlAbdicated,set_autonomousControlAbdicated|}
+											)
+											[| {|get_driveByWireAbdicated,set_driveByWireAbdicated,terminate|} |]
+											Memory_driveByWireAbdicated(true)
+										)\{|get_driveByWireAbdicated,set_driveByWireAbdicated|}
+									)
+									[| {|get_allAbdicating,set_allAbdicating,terminate|} |]
+									Memory_allAbdicating(true)
+								)\{|get_allAbdicating,set_allAbdicating|}
+							)
+							[| {|get_acceptDemand,set_acceptDemand,terminate|} |]
+							Memory_acceptDemand(true)
+						)\{|get_acceptDemand,set_acceptDemand|}
+					)
+					[| {|get_msg,set_msg,terminate|} |]
+					Memory_msg((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+				)\{|get_msg,set_msg|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Ready::enter,
+					CheckPriority::enter,
+					i0::enter,
+					DropDemand::enter,
+					AcceptDemand::enter,
+					UpdateAutonomousDemandStatus::enter,
+					UpdateDriveByWireStatus::enter,
+					CheckAllAbdicating::enter,
+					Initialise::enter,
+					j0::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_Ready,internal__.NID_j0,internal__.NID_i0,internal__.NID_Ready,internal__.NID_j0,internal__.NID_DropDemand,internal__.NID_AcceptDemand,internal__.NID_UpdateAutonomousDemandStatus,internal__.NID_UpdateDriveByWireStatus,internal__.NID_CheckAllAbdicating,internal__.NID_CheckAllAbdicating,internal__.NID_Initialise,internal__.NID_CheckPriority|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Ready::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   CheckPriority::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   i0::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   DropDemand::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   AcceptDemand::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   UpdateAutonomousDemandStatus::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   UpdateDriveByWireStatus::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   CheckAllAbdicating::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   Initialise::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   [| { share__, terminate } |] (
+						   j0::VS_O__(id__,
+						   		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						   		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready|}]]
+						 [[CheckPriority::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckPriority|}]]
+						 [[DropDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_DropDemand|}]]
+						 [[AcceptDemand::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AcceptDemand|}]]
+						 [[UpdateAutonomousDemandStatus::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateAutonomousDemandStatus|}]]
+						 [[UpdateDriveByWireStatus::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateDriveByWireStatus|}]]
+						 [[CheckAllAbdicating::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckAllAbdicating,internal__.NID_CheckAllAbdicating|}]]
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_priorityCheckComplete <- setL_priorityCheckComplete,set_allAbdicating <- setL_allAbdicating,set_acceptDemand <- setL_acceptDemand]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_priorityCheckComplete
+						 			,setL_allAbdicating
+						 			,setL_acceptDemand
+						|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_priorityCheckComplete,setL_allAbdicating,setL_acceptDemand |} ]]
+						 )
+						)[[setL_priorityCheckComplete <- set_priorityCheckComplete,setL_allAbdicating <- set_allAbdicating,setL_acceptDemand <- set_acceptDemand]]
+						)
+					)
+					 \ hideSet)
+					[[
+						demand__.x____ <- demand,
+						turnigy_pod_demand__.x____ <- turnigy_pod_demand,
+						pod_demand__.x____ <- pod_demand
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,get_CLID_Initialise,Initialise::entered,get_CLID_CheckPriority,CheckPriority::entered,get_CLID_Ready,Ready::entered,get_CLID_AcceptDemand,AcceptDemand::entered,get_CLID_DropDemand,DropDemand::entered,get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,get_CLID_Initialise,Initialise::entered,get_CLID_CheckPriority,CheckPriority::entered,get_CLID_Ready,Ready::entered,get_CLID_AcceptDemand,AcceptDemand::entered,get_CLID_DropDemand,DropDemand::entered,get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		dbisim(
+																			sbisim(
+																				MachineBody_VS_O(id__,
+																						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+																				[| {|get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered,terminate|} |]
+																				dbisim(Clock_CLID_UpdateAutonomousDemandStatus(id__,0,
+																						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																			)\{|get_CLID_UpdateAutonomousDemandStatus|}
+																		)
+																		[| {|get_CLID_DropDemand,DropDemand::entered,terminate|} |]
+																		dbisim(Clock_CLID_DropDemand(id__,0,
+																				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																	)\{|get_CLID_DropDemand|}
+																)
+																[| {|get_CLID_AcceptDemand,AcceptDemand::entered,terminate|} |]
+																dbisim(Clock_CLID_AcceptDemand(id__,0,
+																		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+															)\{|get_CLID_AcceptDemand|}
+														)
+														[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+														dbisim(Clock_CLID_Ready(id__,0,
+																          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+													)\{|get_CLID_Ready|}
+												)
+												[| {|get_CLID_CheckPriority,CheckPriority::entered,terminate|} |]
+												dbisim(Clock_CLID_CheckPriority(id__,0,
+														          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+														          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+											)\{|get_CLID_CheckPriority|}
+										)
+										[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+										dbisim(Clock_CLID_Initialise(id__,0,
+												          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+												          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+									)\{|get_CLID_Initialise|}
+								)
+								[| {|get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,terminate|} |]
+								dbisim(Clock_CLID_CheckAllAbdicating(id__,0,
+										          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+										          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+							)\{|get_CLID_CheckAllAbdicating|}
+						)
+						[| {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,terminate|} |]
+						dbisim(Clock_CLID_UpdateDriveByWireStatus(id__,0,
+								          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+								          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+					)\{|get_CLID_UpdateDriveByWireStatus|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			dbisim((let
+				getsetLocalChannels = {|get_msg,set_msg,
+				get_acceptDemand,set_acceptDemand,
+				get_allAbdicating,set_allAbdicating,
+				get_driveByWireAbdicated,set_driveByWireAbdicated,
+				get_autonomousControlAbdicated,set_autonomousControlAbdicated,
+				get_priorityCheckComplete,set_priorityCheckComplete|}
+				clockSync = {|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer,get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+			within
+				(Behaviour_VS_O(id__,
+						    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [| {terminate} |] Clocks(id__,
+				 		          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				 		          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	dbisim(
+																		sbisim(
+																			IteratedBehaviour_VS_O(id__,
+																					    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																					    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+																			[| {|get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer,terminate|} |]
+																			dbisim(Clock_CLID_autonomousDemandTimer(id__,0,
+																					          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																					          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																		)\{|get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+																	)
+																	[| {|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer,terminate|} |]
+																	dbisim(Clock_CLID_driveByWireDemandTimer(id__,0,
+																			          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+																			          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+																)\{|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer|}
+															)
+															[| {|get_priorityCheckComplete,set_priorityCheckComplete,terminate|} |]
+															Memory_priorityCheckComplete(true)
+														)\{|get_priorityCheckComplete,set_priorityCheckComplete|}
+													)
+													[| {|get_autonomousControlAbdicated,set_autonomousControlAbdicated,terminate|} |]
+													Memory_autonomousControlAbdicated(true)
+												)\{|get_autonomousControlAbdicated,set_autonomousControlAbdicated|}
+											)
+											[| {|get_driveByWireAbdicated,set_driveByWireAbdicated,terminate|} |]
+											Memory_driveByWireAbdicated(true)
+										)\{|get_driveByWireAbdicated,set_driveByWireAbdicated|}
+									)
+									[| {|get_allAbdicating,set_allAbdicating,terminate|} |]
+									Memory_allAbdicating(true)
+								)\{|get_allAbdicating,set_allAbdicating|}
+							)
+							[| {|get_acceptDemand,set_acceptDemand,terminate|} |]
+							Memory_acceptDemand(true)
+						)\{|get_acceptDemand,set_acceptDemand|}
+					)
+					[| {|get_msg,set_msg,terminate|} |]
+					Memory_msg((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+				)\{|get_msg,set_msg|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_msg(msg) =
+			get_msg!msg -> Memory_msg(msg)
+			[]
+			set_msg?x__ -> Memory_msg(x__)
+			[]
+			terminate -> SKIP
+		Memory_acceptDemand(acceptDemand) =
+			get_acceptDemand!acceptDemand -> Memory_acceptDemand(acceptDemand)
+			[]
+			set_acceptDemand?x__ -> Memory_acceptDemand(x__)
+			[]
+			terminate -> SKIP
+		Memory_allAbdicating(allAbdicating) =
+			get_allAbdicating!allAbdicating -> Memory_allAbdicating(allAbdicating)
+			[]
+			set_allAbdicating?x__ -> Memory_allAbdicating(x__)
+			[]
+			terminate -> SKIP
+		Memory_driveByWireAbdicated(driveByWireAbdicated) =
+			get_driveByWireAbdicated!driveByWireAbdicated -> Memory_driveByWireAbdicated(driveByWireAbdicated)
+			[]
+			set_driveByWireAbdicated?x__ -> Memory_driveByWireAbdicated(x__)
+			[]
+			terminate -> SKIP
+		Memory_autonomousControlAbdicated(autonomousControlAbdicated) =
+			get_autonomousControlAbdicated!autonomousControlAbdicated -> Memory_autonomousControlAbdicated(autonomousControlAbdicated)
+			[]
+			set_autonomousControlAbdicated?x__ -> Memory_autonomousControlAbdicated(x__)
+			[]
+			terminate -> SKIP
+		Memory_priorityCheckComplete(priorityCheckComplete) =
+			get_priorityCheckComplete!priorityCheckComplete -> Memory_priorityCheckComplete(priorityCheckComplete)
+			[]
+			set_priorityCheckComplete?x__ -> Memory_priorityCheckComplete(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = Memory_msg((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+		[| { terminate } |] (
+		Memory_acceptDemand(true)
+		[| { terminate } |] (
+		Memory_allAbdicating(true)
+		[| { terminate } |] (
+		Memory_driveByWireAbdicated(true)
+		[| { terminate } |] (
+		Memory_autonomousControlAbdicated(true)
+		[| { terminate } |] (
+		Memory_priorityCheckComplete(true)
+		)
+		)
+		)
+		)
+		)
+		
+		getsetLocalChannels = {|get_msg,set_msg,get_acceptDemand,set_acceptDemand,get_allAbdicating,set_allAbdicating,get_driveByWireAbdicated,set_driveByWireAbdicated,get_autonomousControlAbdicated,set_autonomousControlAbdicated,get_priorityCheckComplete,set_priorityCheckComplete|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = STM_VS_O(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) \ localClockResets
+		D__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = timed_priority(STM(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) \ union(internal_events,localClockResets))
+		O__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(D__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		VS__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = FVS__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+		VS_O__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(FVS__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		HEXT__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = O__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(timed_priority(STM(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) \ internal_events))
+		HUP__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = timed_priority(O__(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) [|{share__}|] SKIP)
+		
+		-- Clocks
+		Clock_CLID_driveByWireDemandTimer(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				clockReset.CLID_driveByWireDemandTimer -> Clock_CLID_driveByWireDemandTimer(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_driveByWireDemandTimer!x__ -> Clock_CLID_driveByWireDemandTimer(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_driveByWireDemandTimer(id__,clock_type_plus(x__,1,CLID_driveByWireDemandTimer_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_autonomousDemandTimer(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				clockReset.CLID_autonomousDemandTimer -> Clock_CLID_autonomousDemandTimer(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_autonomousDemandTimer!x__ -> Clock_CLID_autonomousDemandTimer(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_autonomousDemandTimer(id__,clock_type_plus(x__,1,CLID_autonomousDemandTimer_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		
+		Clocks(id__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(Clock_CLID_driveByWireDemandTimer(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_autonomousDemandTimer(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		)
+		
+		clockSync = {|get_CLID_driveByWireDemandTimer,clockReset.CLID_driveByWireDemandTimer,get_CLID_autonomousDemandTimer,clockReset.CLID_autonomousDemandTimer|}
+		
+		Clock_CLID_UpdateDriveByWireStatus(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				UpdateDriveByWireStatus::entered -> Clock_CLID_UpdateDriveByWireStatus(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_UpdateDriveByWireStatus!x__ -> Clock_CLID_UpdateDriveByWireStatus(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateDriveByWireStatus(id__,clock_type_plus(x__,1,CLID_UpdateDriveByWireStatus_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_CheckAllAbdicating(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				CheckAllAbdicating::entered -> Clock_CLID_CheckAllAbdicating(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_CheckAllAbdicating!x__ -> Clock_CLID_CheckAllAbdicating(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_CheckAllAbdicating(id__,clock_type_plus(x__,1,CLID_CheckAllAbdicating_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_Initialise(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				Initialise::entered -> Clock_CLID_Initialise(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_Initialise!x__ -> Clock_CLID_Initialise(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_Initialise(id__,clock_type_plus(x__,1,CLID_Initialise_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_CheckPriority(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				CheckPriority::entered -> Clock_CLID_CheckPriority(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_CheckPriority!x__ -> Clock_CLID_CheckPriority(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_CheckPriority(id__,clock_type_plus(x__,1,CLID_CheckPriority_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_Ready(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				Ready::entered -> Clock_CLID_Ready(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_AcceptDemand(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				AcceptDemand::entered -> Clock_CLID_AcceptDemand(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_AcceptDemand!x__ -> Clock_CLID_AcceptDemand(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_AcceptDemand(id__,clock_type_plus(x__,1,CLID_AcceptDemand_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_DropDemand(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				DropDemand::entered -> Clock_CLID_DropDemand(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_DropDemand!x__ -> Clock_CLID_DropDemand(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_DropDemand(id__,clock_type_plus(x__,1,CLID_DropDemand_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		Clock_CLID_UpdateAutonomousDemandStatus(id__,x__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = 
+			TimeOut_1(
+				UpdateAutonomousDemandStatus::entered -> Clock_CLID_UpdateAutonomousDemandStatus(id__,0,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				get_CLID_UpdateAutonomousDemandStatus!x__ -> Clock_CLID_UpdateAutonomousDemandStatus(id__,x__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateAutonomousDemandStatus(id__,clock_type_plus(x__,1,CLID_UpdateAutonomousDemandStatus_clock_type(id__,
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND)),
+						          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+						          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		
+		StateClocks(id__,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = dbisim(Clock_CLID_UpdateDriveByWireStatus(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CheckAllAbdicating(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Initialise(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CheckPriority(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Ready(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_AcceptDemand(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_DropDemand(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_UpdateAutonomousDemandStatus(id__,0,
+				          const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				          const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND))
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		stateClockSync = {|get_CLID_UpdateDriveByWireStatus,UpdateDriveByWireStatus::entered,get_CLID_CheckAllAbdicating,CheckAllAbdicating::entered,get_CLID_Initialise,Initialise::entered,get_CLID_CheckPriority,CheckPriority::entered,get_CLID_Ready,Ready::entered,get_CLID_AcceptDemand,AcceptDemand::entered,get_CLID_DropDemand,DropDemand::entered,get_CLID_UpdateAutonomousDemandStatus,UpdateAutonomousDemandStatus::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,
+				    const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+				    const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule
+
+
+endmodule

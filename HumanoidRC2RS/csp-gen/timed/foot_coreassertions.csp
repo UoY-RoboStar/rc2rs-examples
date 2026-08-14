@@ -1,0 +1,116 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:56:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "footcsp"
+
+-- generate foot_foot_controller
+P_foot_foot_controller = let
+	id__ = 0
+	
+	
+	
+within
+	foot::foot_controller::O__(
+		id__
+	)
+assert P_foot_foot_controller :[deadlock-free]	
+assert P_foot_foot_controller;RUN({r__}) :[deadlock-free]
+assert P_foot_foot_controller :[deterministic]
+assert P_foot_foot_controller :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_foot_controller[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_foot_controller
+
+-- generate foot_OP_correct
+P_foot_OP_correct = let
+	id__ = 0
+	
+	param_v = (0,0,0)
+	
+	
+	
+within
+	foot::OP_correct::O__(id__,
+				param_v)
+assert P_foot_OP_correct :[deadlock-free]	
+assert P_foot_OP_correct;RUN({r__}) :[deadlock-free]
+assert P_foot_OP_correct :[deterministic]
+assert P_foot_OP_correct :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_OP_correct[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_OP_correct
+-- generate foot_OP_step
+P_foot_OP_step = let
+	id__ = 0
+	
+	param_d = (0,0,0)
+	
+	
+	
+within
+	foot::OP_step::O__(id__,
+				param_d,
+			    const_foot_step_c)
+assert P_foot_OP_step :[deadlock-free]	
+assert P_foot_OP_step;RUN({r__}) :[deadlock-free]
+assert P_foot_OP_step :[deterministic]
+assert P_foot_OP_step :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_OP_step[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_OP_step
+
+-- generate foot_Foot
+P_foot_Foot = let
+	id__ = 0
+	
+	
+	
+		
+	const_foot_Foot_op2_c = const_foot_step_c
+within
+	foot::Foot::O__(id__,
+			   	const_foot_Foot_op2_c)
+
+assert P_foot_Foot :[deadlock-free]	
+assert P_foot_Foot;RUN({r__}) :[deadlock-free]
+assert P_foot_Foot :[deterministic]
+assert P_foot_Foot :[divergence-free]
+
+-- generate foot_Foot_stm_ref0
+P_foot_Foot_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	foot::Foot::stm_ref0::O__(
+		id__,
+		const_foot_step_c
+	)
+assert P_foot_Foot_stm_ref0 :[deadlock-free]	
+assert P_foot_Foot_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_foot_Foot_stm_ref0 :[deterministic]
+assert P_foot_Foot_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_foot_Foot_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_Foot_stm_ref0
+-- timed deadlock free
+assert prioritise(P_foot_Foot[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_foot_Foot
+

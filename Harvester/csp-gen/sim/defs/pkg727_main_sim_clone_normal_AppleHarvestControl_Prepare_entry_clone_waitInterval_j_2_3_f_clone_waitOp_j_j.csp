@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 04-08-2026 16:51:11
 --
 
 -- compileSelfContainedOperation
@@ -70,10 +70,20 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
+	channel get_CLID_C : core_clock_type 
 	channel get_CLID_Waiting : core_clock_type 
 	channel get_CLID_f : core_clock_type 
-	channel get_CLID_C : core_clock_type 
 	--channel increment__
+	
+	CLID_C_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	({param_i|param_i <- core_nat}),
+	({param_i|param_i <- core_nat})
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
 	CLID_Waiting_clock_type(id__) = 
 		let
@@ -88,16 +98,6 @@ exports
 		let
 			max = (clock_type_max(Union({
 	{}
-	}))+1)
-		ctype = {0..max}
-	within
-		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
-	
-	CLID_C_clock_type(id__) = 
-		let
-			max = (clock_type_max(Union({
-	({param_i|param_i <- core_nat}),
-	({param_i|param_i <- core_nat})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -387,25 +387,25 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,clockResetR.CLID_C |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,clockReset.CLID_C <- clockResetL.CLID_C]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF |} ]] 
+						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,clockResetL.CLID_C
 						 			,setL_endIKSolverF
 						 			,setL_takePicF
 						 			,setL_endGoHomeF
-						 			,clockResetL.CLID_C
-						 			,setR_endIKSolverF
+						 			,clockResetR.CLID_C
+						 			 			,setR_endIKSolverF
 						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
-						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,clockResetL.CLID_C |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,clockReset.CLID_C <- clockResetR.CLID_C]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF |} ]]
+						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,clockResetL.CLID_C <- clockReset.CLID_C]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,clockResetR.CLID_C <- clockReset.CLID_C]]
+						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF]]
+						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -481,25 +481,25 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,clockResetR.CLID_C |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,clockReset.CLID_C <- clockResetL.CLID_C]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetR.CLID_C,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF |} ]] 
+						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,clockResetL.CLID_C
 						 			,setL_endIKSolverF
 						 			,setL_takePicF
 						 			,setL_endGoHomeF
-						 			,clockResetL.CLID_C
-						 			,setR_endIKSolverF
+						 			,clockResetR.CLID_C
+						 			 			,setR_endIKSolverF
 						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
-						 			 			,clockResetR.CLID_C
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,clockResetL.CLID_C |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,clockReset.CLID_C <- clockResetR.CLID_C]]
+						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF |} ]]
+						  [[clockReset.CLID_C <- clockResetR.CLID_C,set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,clockResetL.CLID_C <- clockReset.CLID_C]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,clockResetR.CLID_C <- clockReset.CLID_C]]
+						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF]]
+						 [[clockResetR.CLID_C <- clockReset.CLID_C,setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

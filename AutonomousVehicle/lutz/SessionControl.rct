@@ -1,0 +1,361 @@
+package lutz::SessionControl
+
+import lutz::*
+
+stm SSessionControl {
+    requires lutz::UserInstructions
+
+    // Clocks & Constants
+    const SESSION_CONTROL_PERIOD : nat
+    clock sessionControlPeriod
+
+    // Variables
+    var currentDemand : PodDemand
+    var newSessionRequest : SessionControl
+    var newDemand : PodDemand
+    var newInstruction : UICode
+    var currentPodStatus : Status
+    var newReadyness : VehicleReadyState
+    var sessionStateChanged : boolean
+    var oldReadyness : VehicleReadyState
+    var podStatus : Status
+    var podPowertrain : Powertrain
+    var podEps : Eps
+    var podEpsInboard : Steer
+    var podEpsOutboard : Steer
+    var podParkBrake : ParkBrake
+    var podBattery : Battery
+    var podControlCommand1 : ControlCommand1
+    var podHandshake : Handshake
+
+    // Original Events
+    event session_control : SessionControl
+    event pod_demand : PodDemand
+    event status : Status
+    event ui_code : UICode
+    event updatedSession : SessionControl
+    event updatedReadyness : VehicleReadyState
+    event powertrain : Powertrain
+    event eps : Eps
+    event eps_inboard : Steer
+    event eps_outboard : Steer
+    event epb : ParkBrake
+    event battery : Battery
+    event control_command1 : ControlCommand1
+    event quality : ServiceQuality
+
+    // Events required by DetermineUserInstruction
+    event instruction : UICode
+    event readyStateOut : VehicleReadyState
+    event session : SessionControl
+
+    // States & Junctions
+    initial i0
+
+    state Initialise {
+    }
+
+    state Ready {
+    }
+
+    state UpdateSession {
+        during session_control ! newSessionRequest
+    }
+
+    state CheckChanges {
+        during sessionStateChanged = (currentPodStatus != podStatus) \/ 
+               (currentDemand.driveByWireRequest != newDemand.driveByWireRequest) \/ 
+               (oldReadyness != newReadyness)
+    }
+
+    state AutonomousRequestTypeChanged {
+    }
+
+    junction j0
+
+    state AutonomousCancelled {
+        during newInstruction.code = UserCode::AUTONOMOUS_CANCELLED
+    }
+
+    state HandleAutonomousStates {
+        during DetermineUserInstruction(
+            newReadyness, newSessionRequest, currentPodStatus, podPowertrain, 
+            podEps, podEpsInboard, podEpsOutboard, podParkBrake, podBattery, 
+            podControlCommand1, podHandshake
+        )
+    }
+
+    junction j1
+
+    state AutonomousRequested {
+        during newInstruction.code = UserCode::AUTONOMOUS_REQUESTED
+    }
+
+    state SessionChanged {
+        during DetermineUserInstruction(
+            newReadyness, newSessionRequest, currentPodStatus, podPowertrain, 
+            podEps, podEpsInboard, podEpsOutboard, podParkBrake, podBattery, 
+            podControlCommand1, podHandshake
+        )
+    }
+
+    junction j2
+
+    state SessionCurrent {
+    }
+
+    state SessionNotAutonomous {
+        during newSessionRequest.requestedState = VehicleState::NO_SESSION
+    }
+
+    state PrepareAutonomous {
+    }
+
+    state SessionAutonomous {
+        during oldReadyness = newReadyness ; currentPodStatus = podStatus
+    }
+
+    state SessionOverride {
+        during newReadyness = GetOverrideState(newSessionRequest, currentPodStatus, podPowertrain, podParkBrake, podHandshake) ;
+               newInstruction = GetOverrideUserInstructions(newReadyness)
+    }
+
+    state CheckChangesBeforeAutonomous {
+        during sessionStateChanged = (currentPodStatus != podStatus) \/ 
+               (currentDemand.driveByWireRequest != newDemand.driveByWireRequest) \/ 
+               (oldReadyness != newReadyness)
+    }
+
+    state Autonomous {
+        during oldReadyness = newReadyness ; currentPodStatus = podStatus
+    }
+
+    state NotAutonomous {
+        during newSessionRequest.requestedState = VehicleState::NO_SESSION
+    }
+
+    state Override {
+        during newReadyness = GetOverrideState(newSessionRequest, currentPodStatus, podPowertrain, podParkBrake, podHandshake) ;
+               newInstruction = GetOverrideUserInstructions(newReadyness)
+    }
+
+    state UpdateState {
+        during currentPodStatus = podStatus
+    }
+
+    state SessionUpdateState {
+        during currentPodStatus = podStatus
+    }
+
+    state InternalInstruction {
+    }
+
+    // Transitions
+    transition t0 {
+        from i0
+        to Initialise
+    }
+
+    transition t1 {
+        from Initialise
+        to Ready
+    }
+
+    transition t2 {
+        from Ready
+        to UpdateSession
+        condition since(sessionControlPeriod) > SESSION_CONTROL_PERIOD
+    }
+
+    transition t3 {
+        from UpdateSession
+        to Ready
+        action # sessionControlPeriod
+    }
+
+    transition t4 {
+        from Ready
+        to InternalInstruction
+    }
+
+    transition t5 {
+        from Ready
+        to j0
+        trigger pod_demand ? newDemand
+    }
+
+    transition t6 {
+        from j0
+        to AutonomousRequestTypeChanged
+        condition currentDemand.driveByWireRequest != newDemand.driveByWireRequest
+    }
+
+    transition t7 {
+        from HandleAutonomousStates
+        to Ready
+    }
+
+    transition t8 {
+        from Ready
+        to Ready
+        trigger updatedSession ? newSessionRequest
+    }
+
+    transition t9 {
+        from Ready
+        to CheckChanges
+        trigger status ? podStatus
+    }
+
+    transition t10 {
+        from AutonomousRequestTypeChanged
+        to AutonomousCancelled
+        condition not newDemand.driveByWireRequest
+    }
+
+    transition t11 {
+        from j0
+        to PrepareAutonomous
+        condition currentDemand.driveByWireRequest == newDemand.driveByWireRequest
+    }
+
+    transition t12 {
+        from j1
+        to PrepareAutonomous
+        action ui_code ! newInstruction
+    }
+
+    transition t13 {
+        from AutonomousRequestTypeChanged
+        to AutonomousRequested
+        condition newDemand.driveByWireRequest
+    }
+
+    transition t14 {
+        from AutonomousRequested
+        to j1
+    }
+
+    transition t15 {
+        from AutonomousCancelled
+        to j1
+    }
+
+    transition t16 {
+        from SessionCurrent
+        to j2
+    }
+
+    transition t17 {
+        from Ready
+        to Ready
+        trigger updatedReadyness ? newReadyness
+    }
+
+    transition t18 {
+        from CheckChanges
+        to SessionChanged
+        condition sessionStateChanged
+    }
+
+    transition t19 {
+        from SessionUpdateState
+        to j2
+    }
+
+    transition t20 {
+        from j2
+        to Ready
+    }
+
+    transition t21 {
+        from CheckChanges
+        to SessionCurrent
+        condition not sessionStateChanged
+    }
+
+    transition t22 {
+        from SessionChanged
+        to SessionNotAutonomous
+        condition not newDemand.driveByWireRequest
+    }
+
+    transition t23 {
+        from InternalInstruction
+        to Ready
+    }
+
+    transition t24 {
+        from SessionChanged
+        to SessionAutonomous
+        condition newDemand.driveByWireRequest
+    }
+
+    transition t25 {
+        from SessionAutonomous
+        to HandleAutonomousStates
+    }
+
+    transition t26 {
+        from SessionNotAutonomous
+        to SessionOverride
+        condition podStatus.systemState == VehicleState::OVERRIDE
+    }
+
+    transition t27 {
+        from PrepareAutonomous
+        to CheckChangesBeforeAutonomous
+    }
+
+    transition t28 {
+        from CheckChangesBeforeAutonomous
+        to NotAutonomous
+        condition not newDemand.driveByWireRequest
+    }
+
+    transition t29 {
+        from CheckChangesBeforeAutonomous
+        to Autonomous
+        condition newDemand.driveByWireRequest
+    }
+
+    transition t30 {
+        from Autonomous
+        to HandleAutonomousStates
+    }
+
+    transition t32 {
+        from NotAutonomous
+        to UpdateState
+        condition not podStatus.systemState == VehicleState::OVERRIDE
+    }
+
+    transition t33 {
+        from NotAutonomous
+        to Override
+        condition podStatus.systemState == VehicleState::OVERRIDE
+    }
+
+    transition t34 {
+        from Override
+        to UpdateState
+        action ui_code ! newInstruction
+    }
+
+    transition t35 {
+        from SessionOverride
+        to SessionUpdateState
+        action ui_code ! newInstruction
+    }
+
+    transition t36 {
+        from SessionNotAutonomous
+        to SessionUpdateState
+        condition not podStatus.systemState == VehicleState::OVERRIDE
+    }
+
+    transition t37 {
+        from UpdateState
+        to Ready
+    }
+}

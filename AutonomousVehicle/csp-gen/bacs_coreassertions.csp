@@ -1,0 +1,310 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacscsp"
+
+-- generate bacs_Brake
+P_bacs_Brake = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::Brake::O__(
+		id__
+	)
+assert P_bacs_Brake :[deadlock-free]	
+assert P_bacs_Brake;RUN({r__}) :[deadlock-free]
+assert P_bacs_Brake :[deterministic]
+assert P_bacs_Brake :[divergence-free]
+
+-- generate bacs_OP_SetOrigin
+P_bacs_OP_SetOrigin = let
+	id__ = 0
+	
+	param_newOrigin = (0,0)
+	
+	
+	
+within
+	bacs::OP_SetOrigin::O__(id__,
+				param_newOrigin)
+assert P_bacs_OP_SetOrigin :[deadlock-free]	
+assert P_bacs_OP_SetOrigin;RUN({r__}) :[deadlock-free]
+assert P_bacs_OP_SetOrigin :[deterministic]
+assert P_bacs_OP_SetOrigin :[divergence-free]
+
+-- generate bacs_B_acs
+P_bacs_B_acs = let
+	id__ = 0
+	
+	
+	
+	const_bacs_B_acs_stm_ref3_ZERO_SPEED = const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED
+	const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION = const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref2_zeroSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit
+	const_bacs_B_acs_stm_ref2_oneSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+	const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD = const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD
+	const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND = const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+	const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION = const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND = const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND
+	const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND = const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+	const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION = const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref7_ZERO_SPEED = const_bacs_AutoDemand_AutoDemand_ZERO_SPEED
+	const_bacs_B_acs_stm_ref7_MINIMIM_SPEED = const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED = const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref7_ZERO_STEER = const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+	const_bacs_B_acs_stm_ref9_ZERO_RATIO = const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+	const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION = const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY = const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY
+	const_bacs_B_acs_stm_ref11_RATE = const_bacs_AgeChecker_AgeChecker_RATE
+	const_bacs_B_acs_stm_ref11_ZERO_SPEED = const_bacs_AgeChecker_AgeChecker_ZERO_SPEED
+	const_bacs_B_acs_stm_ref11_MINIMIM_SPEED = const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED = const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref11_ZERO_STEER = const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+		
+within
+	bacs::B_acs::O__(id__,
+			    const_bacs_B_acs_ZERO_SPEED,
+			    const_bacs_B_acs_MINIMIM_SPEED,
+			    const_bacs_B_acs_MAXIMUM_SPEED,
+			    const_bacs_B_acs_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref3_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref2_zeroSpeedLimit,
+			    const_bacs_B_acs_stm_ref2_oneSpeedLimit,
+			    const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD,
+			    const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND,
+			    const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND,
+			    const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND,
+			    const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref7_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref7_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref7_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref9_ZERO_RATIO,
+			    const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY,
+			    const_bacs_B_acs_stm_ref11_RATE,
+			    const_bacs_B_acs_stm_ref11_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref11_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref11_ZERO_STEER)
+
+assert P_bacs_B_acs :[deadlock-free]	
+assert P_bacs_B_acs;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs :[deterministic]
+assert P_bacs_B_acs :[divergence-free]
+
+-- generate bacs_B_acs_stm_ref3
+P_bacs_B_acs_stm_ref3 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref3::O__(
+		id__,
+		const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED
+	)
+assert P_bacs_B_acs_stm_ref3 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref3;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref3 :[deterministic]
+assert P_bacs_B_acs_stm_ref3 :[divergence-free]
+-- generate bacs_B_acs_stm_ref2
+P_bacs_B_acs_stm_ref2 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref2::O__(
+		id__,
+		const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+		const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+		const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+	)
+assert P_bacs_B_acs_stm_ref2 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref2;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref2 :[deterministic]
+assert P_bacs_B_acs_stm_ref2 :[divergence-free]
+-- generate bacs_B_acs_stm_ref4
+P_bacs_B_acs_stm_ref4 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref4::O__(
+		id__,
+		const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD,
+		const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+	)
+assert P_bacs_B_acs_stm_ref4 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref4;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref4 :[deterministic]
+assert P_bacs_B_acs_stm_ref4 :[divergence-free]
+-- generate bacs_B_acs_stm_ref5
+P_bacs_B_acs_stm_ref5 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref5::O__(
+		id__,
+		const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION
+	)
+assert P_bacs_B_acs_stm_ref5 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref5;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref5 :[deterministic]
+assert P_bacs_B_acs_stm_ref5 :[divergence-free]
+-- generate bacs_B_acs_stm_ref1
+P_bacs_B_acs_stm_ref1 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref1::O__(
+		id__
+	)
+assert P_bacs_B_acs_stm_ref1 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref1;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref1 :[deterministic]
+assert P_bacs_B_acs_stm_ref1 :[divergence-free]
+-- generate bacs_B_acs_stm_ref0
+P_bacs_B_acs_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref0::O__(
+		id__
+	)
+assert P_bacs_B_acs_stm_ref0 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref0 :[deterministic]
+assert P_bacs_B_acs_stm_ref0 :[divergence-free]
+-- generate bacs_B_acs_stm_ref6
+P_bacs_B_acs_stm_ref6 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref6::O__(
+		id__,
+		const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+		const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+	)
+assert P_bacs_B_acs_stm_ref6 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref6;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref6 :[deterministic]
+assert P_bacs_B_acs_stm_ref6 :[divergence-free]
+-- generate bacs_B_acs_stm_ref7
+P_bacs_B_acs_stm_ref7 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref7::O__(
+		id__,
+		const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION,
+		const_bacs_AutoDemand_AutoDemand_ZERO_SPEED,
+		const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED,
+		const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED,
+		const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+	)
+assert P_bacs_B_acs_stm_ref7 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref7;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref7 :[deterministic]
+assert P_bacs_B_acs_stm_ref7 :[divergence-free]
+-- generate bacs_B_acs_stm_ref8
+P_bacs_B_acs_stm_ref8 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref8::O__(
+		id__
+	)
+assert P_bacs_B_acs_stm_ref8 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref8;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref8 :[deterministic]
+assert P_bacs_B_acs_stm_ref8 :[divergence-free]
+-- generate bacs_B_acs_stm_ref9
+P_bacs_B_acs_stm_ref9 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref9::O__(
+		id__,
+		const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+	)
+assert P_bacs_B_acs_stm_ref9 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref9;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref9 :[deterministic]
+assert P_bacs_B_acs_stm_ref9 :[divergence-free]
+-- generate bacs_B_acs_stm_ref10
+P_bacs_B_acs_stm_ref10 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref10::O__(
+		id__
+	)
+assert P_bacs_B_acs_stm_ref10 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref10;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref10 :[deterministic]
+assert P_bacs_B_acs_stm_ref10 :[divergence-free]
+-- generate bacs_B_acs_stm_ref11
+P_bacs_B_acs_stm_ref11 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref11::O__(
+		id__,
+		const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION,
+		const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY,
+		const_bacs_AgeChecker_AgeChecker_RATE,
+		const_bacs_AgeChecker_AgeChecker_ZERO_SPEED,
+		const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED,
+		const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED,
+		const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+	)
+assert P_bacs_B_acs_stm_ref11 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref11;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref11 :[deterministic]
+assert P_bacs_B_acs_stm_ref11 :[divergence-free]
+-- generate bacs_B_acs_stm_ref12
+P_bacs_B_acs_stm_ref12 = let
+	id__ = 0
+	
+	
+	
+within
+	bacs::B_acs::stm_ref12::O__(
+		id__
+	)
+assert P_bacs_B_acs_stm_ref12 :[deadlock-free]	
+assert P_bacs_B_acs_stm_ref12;RUN({r__}) :[deadlock-free]
+assert P_bacs_B_acs_stm_ref12 :[deterministic]
+assert P_bacs_B_acs_stm_ref12 :[divergence-free]
+

@@ -1,0 +1,120 @@
+module StmSourceAnalysis
+	--include "../../../timed/defs/SourceAnalysisPkg.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|SourceAnalysisPkg::SourceAnalysis::s.in|}
+	OutputEvents = {|SourceAnalysisPkg::SourceAnalysis::turn.out,SourceAnalysisPkg::SourceAnalysis::resume.out,SourceAnalysisPkg::SourceAnalysis::stop.out|}
+	ExternalEvents = {|SourceAnalysisPkg::SourceAnalysis::s.in
+					   ,SourceAnalysisPkg::SourceAnalysis::turn.out,SourceAnalysisPkg::SourceAnalysis::resume.out,SourceAnalysisPkg::SourceAnalysis::stop.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_s.Bool.LSeq(core_real,2)
+	
+	datatype RegisterDataOutput = o_turn.core_real
+		| o_resume
+		| o_stop
+	
+	
+	nametype RegisterOutputs = {|
+	o_turn,
+	o_resume,
+	o_stop|}
+	
+	nametype RegisterInputs = {|
+	i_s|}
+	
+	datatype COutputEvents = COutput_turn
+		| COutput_resume
+		| COutput_stop
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_s = registerRead.i_s?b__.x__ ->
+								if b__ then (SourceAnalysisPkg::SourceAnalysis::s.in.x__ -> A1_s [] A1_s)
+									   else A1_s
+		
+														
+	within
+			     	A1_s
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_StmSourceAnalysis_StmSourceAnalysis) = let
+			
+			read(COutput_turn) = SourceAnalysisPkg::SourceAnalysis::turn.out?x__ -> registerWrite.o_turn.x__ -> SKIP
+			read(COutput_resume) = SourceAnalysisPkg::SourceAnalysis::resume.out -> registerWrite.o_resume -> SKIP
+			read(COutput_stop) = SourceAnalysisPkg::SourceAnalysis::stop.out -> registerWrite.o_stop -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_StmSourceAnalysis_StmSourceAnalysis); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_StmSourceAnalysis_StmSourceAnalysis) = let
+			A3 = ((registerRead.i_s?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_StmSourceAnalysis_StmSourceAnalysis);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_StmSourceAnalysis_StmSourceAnalysis) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_StmSourceAnalysis_StmSourceAnalysis))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_StmSourceAnalysis_StmSourceAnalysis)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_SourceAnalysisPkg_SourceAnalysis_thr) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(SourceAnalysisPkg::SourceAnalysis::D__(id__,
+				    const_SourceAnalysisPkg_SourceAnalysis_thr)\{|SourceAnalysisPkg::SourceAnalysis::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_StmSourceAnalysis_StmSourceAnalysis,
+			    const_SourceAnalysisPkg_SourceAnalysis_thr) =
+		prioritise(
+			((TLFree(id__,
+					    const_SourceAnalysisPkg_SourceAnalysis_thr) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_StmSourceAnalysis_StmSourceAnalysis)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_StmSourceAnalysis_StmSourceAnalysis,
+			    const_SourceAnalysisPkg_SourceAnalysis_thr) =
+		prioritise(
+			((SourceAnalysisPkg::SourceAnalysis::D__(id__,
+					    const_SourceAnalysisPkg_SourceAnalysis_thr)\{|SourceAnalysisPkg::SourceAnalysis::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_StmSourceAnalysis_StmSourceAnalysis)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_StmSourceAnalysis_StmSourceAnalysis,
+			    const_SourceAnalysisPkg_SourceAnalysis_thr) = D__(id__,cycle_StmSourceAnalysis_StmSourceAnalysis,
+			    const_SourceAnalysisPkg_SourceAnalysis_thr)
+
+endmodule

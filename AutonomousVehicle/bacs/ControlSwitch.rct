@@ -1,0 +1,205 @@
+package bacs::ControlSwitch
+import bacs::*
+stm ControlSwitch {
+	var msg : PodDemand
+	
+	
+	var acceptDemand : boolean , allAbdicating : boolean , driveByWireAbdicated :
+	boolean , autonomousControlAbdicated : boolean , priorityCheckComplete :
+	boolean
+	const ZERO_VEHICLE_DEMAND : PodDemand
+	
+	
+	
+	event demand : PodDemand
+	
+	event turnigy_pod_demand : PodDemand
+	
+	event pod_demand : PodDemand
+	state Ready {
+	}
+	state CheckPriority {
+		
+	 
+		
+		initial i0
+		final f0
+		state CheckDriveByWireAbdication {
+		}
+		state DriveByWireOld {
+			entry driveByWireAbdicated = false
+		}
+		
+		state CheckAutonomousAbdication {
+		}
+		
+		junction j0
+		state AutonomousOld {
+			entry autonomousControlAbdicated = false
+		}
+		junction j2
+		junction j3
+		state HandleDriveByWireAbdication {
+		}
+		transition t0 {
+			from i0
+			to CheckDriveByWireAbdication
+			}
+		transition t3 {
+			from CheckDriveByWireAbdication
+			to DriveByWireOld
+			condition since ( driveByWireDemandTimer ) >= MAX_TIME_BETWEEN_DEMAND
+		}
+		transition t4 {
+			from CheckDriveByWireAbdication
+			to j0
+			condition since ( driveByWireDemandTimer ) < MAX_TIME_BETWEEN_DEMAND
+		}
+		transition t5 {
+			from DriveByWireOld
+			to j0
+		}
+		
+		
+		
+		transition t8 {
+			from j3
+			to HandleDriveByWireAbdication
+			condition msg . source != DemandSource::DEMAND_DRIVE_BY_WIRE
+			action acceptDemand = false
+		}
+		transition t9 {
+			from CheckAutonomousAbdication
+			to AutonomousOld
+			condition since ( autonomousDemandTimer ) >= MAX_TIME_BETWEEN_DEMAND
+		}
+		transition t10 {
+			from AutonomousOld
+			to j2
+		}
+		transition t11 {
+			from CheckAutonomousAbdication
+			to j2
+			condition since ( autonomousDemandTimer ) < MAX_TIME_BETWEEN_DEMAND
+		}
+		
+		
+	transition t1 {
+			from j0
+			to j3
+		}
+		transition t2 {
+			from j3
+			to f0
+			condition msg . source == DemandSource::DEMAND_DRIVE_BY_WIRE
+			action acceptDemand = not driveByWireAbdicated ; priorityCheckComplete = true
+		}
+		transition t7 {
+			from HandleDriveByWireAbdication
+			to f0
+			condition 
+		not driveByWireAbdicated
+			action priorityCheckComplete = true
+		}
+		transition t12 {
+			from HandleDriveByWireAbdication
+			to CheckAutonomousAbdication
+			condition driveByWireAbdicated
+		}
+		
+		transition t6 {
+			from j2
+			to f0
+			action acceptDemand = not autonomousControlAbdicated ; priorityCheckComplete
+				= true
+		}
+	entry priorityCheckComplete = false
+	}
+	initial i0
+	state DropDemand {
+	}
+	state AcceptDemand {
+		entry pod_demand ! msg
+	}
+	state UpdateAutonomousDemandStatus {
+		entry autonomousControlAbdicated = msg . abdicate ; #
+		autonomousDemandTimer
+	}
+	state UpdateDriveByWireStatus {
+		entry driveByWireAbdicated = msg . abdicate ; # driveByWireDemandTimer
+	}
+	state CheckAllAbdicating {
+		entry allAbdicating = driveByWireAbdicated /\ autonomousControlAbdicated
+	}
+	transition t0 {
+		from Ready
+		to UpdateDriveByWireStatus
+		# driveByWireDemandTimer
+		action turnigy_pod_demand ? msg
+	}
+	transition t5 {
+		from j0
+		to CheckAllAbdicating
+		condition not acceptDemand
+	}
+	transition t7 {
+		from i0
+		to Initialise
+	}
+	transition t8 {
+		from Ready
+		to UpdateAutonomousDemandStatus
+		# autonomousDemandTimer
+		action demand ? msg
+	}
+	transition t1 {
+		from j0
+		to AcceptDemand
+		condition acceptDemand
+	}
+	transition t2 {
+		from DropDemand
+		to Ready
+	}
+	transition t3 {
+		from AcceptDemand
+		to Ready
+	}
+	transition t4 {
+		from UpdateAutonomousDemandStatus
+		to CheckPriority
+	}
+	transition t6 {
+		from UpdateDriveByWireStatus
+		to CheckPriority
+	}
+	transition t9 {
+		from CheckAllAbdicating
+		to DropDemand
+		condition not allAbdicating
+	}
+	transition t10 {
+		from CheckAllAbdicating
+		to Ready
+		condition allAbdicating
+		action pod_demand ! ZERO_VEHICLE_DEMAND
+	}
+	clock autonomousDemandTimer
+clock driveByWireDemandTimer
+const MAX_TIME_BETWEEN_DEMAND : nat
+	
+state Initialise {
+		entry driveByWireAbdicated = false ; autonomousControlAbdicated = false ; #
+		autonomousDemandTimer ; # driveByWireDemandTimer
+	}
+	transition t11 {
+		from Initialise
+		to Ready
+	}
+junction j0
+	transition t12 {
+		from CheckPriority
+		to j0
+		condition priorityCheckComplete
+	}
+}

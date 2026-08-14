@@ -1,0 +1,124 @@
+package bacs::DeadMansHandle
+import bacs::*
+stm DeadMansHandle {
+	const DEFAULT_CONFIGURATION : ConfigDeadMans
+	var retrievedConfiguration : ConfigDeadMans,  rangeMin: real, rangeMax: real
+	var msg : DeadMansHandleReading, executingRxCallback : boolean, speedLimit : SpeedLimit
+	const zeroSpeedLimit : real, oneSpeedLimit : real
+	
+	event deadmanshandle : DeadMansHandleReading
+	
+	
+	
+	
+	event speed_limit : SpeedLimit
+	event configuration : ConfigDeadMans
+	state Initialise {
+		
+	 entry rangeMin = DEFAULT_CONFIGURATION . rangeMin ; rangeMax =
+		DEFAULT_CONFIGURATION . rangeMax ; configuration ? retrievedConfiguration initial i0
+		final f0
+	transition t0 {
+			from j0
+			to f0
+			condition retrievedConfiguration . retrieved
+			action rangeMin = retrievedConfiguration . rangeMin ; rangeMax =
+				retrievedConfiguration . rangeMax
+		}
+		transition t1 {
+			from j0
+			to f0
+			condition not retrievedConfiguration . retrieved
+		}
+	junction j0
+		transition t2 {
+			from i0
+			to j0
+		}
+	}
+	state Spin {
+	}
+	initial i0
+	state RxCallback {
+		
+	entry executingRxCallback = true ; speedLimit . header . stamp = msg . header .
+		stamp state BelowRange {
+			
+		
+		entry speedLimit . speedLimit = zeroSpeedLimit // 0.0
+		}
+		state Scale {
+			entry speedLimit . speedLimit = ( msg . analogReading - rangeMin ) / ( rangeMax - rangeMin )
+		}
+		state AboveRange {
+			
+		
+		entry speedLimit . speedLimit = oneSpeedLimit // 1.0
+		}
+		initial i0
+		final f0
+		junction j0
+		junction j1
+		transition t0 {
+			from BelowRange
+			to j1
+			}
+		transition t1 {
+			from j1
+			to f0
+			action speed_limit ! speedLimit ; executingRxCallback = false
+		}
+		transition t2 {
+			from AboveRange
+			to j1
+			}
+		transition t3 {
+			from j0
+			to BelowRange
+			condition msg . analogReading < rangeMin
+		}
+		transition t4 {
+			from j0
+			to Scale
+			condition msg . analogReading > rangeMin /\ msg .
+			analogReading < rangeMax
+		}
+		transition t5 {
+			from j0
+			to AboveRange
+			condition not ( msg . analogReading <  rangeMin \/ msg
+			. analogReading > rangeMin /\ msg . analogReading <
+			rangeMax )
+		}
+		transition t6 {
+			from i0
+			to j0
+		}
+		
+	transition t7 {
+			from Scale
+			to j1
+		}
+	}
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t1 {
+		from Initialise
+		to Spin
+		}
+	transition t2 {
+		from Spin
+		to RxCallback
+		trigger deadmanshandle ? msg
+	}
+	transition t3 {
+		from RxCallback
+		to Spin
+	condition not executingRxCallback
+	}
+
+
+
+}

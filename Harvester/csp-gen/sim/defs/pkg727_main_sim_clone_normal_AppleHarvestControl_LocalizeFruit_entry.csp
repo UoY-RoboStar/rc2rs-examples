@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 04-08-2026 16:51:11
 --
 
 -- compileSelfContainedOperation
@@ -36,11 +36,11 @@ exports
 	channel get_takePicF, set_takePicF, setL_takePicF, setR_takePicF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_apples: Set(setoperations_Coord3D)
 	channel set_EXT_localized: core_boolean
-	channel set_EXT_img: main_Image
 	channel set_EXT_endIKSolverF: core_boolean
 	channel set_EXT_takePicF: core_boolean
+	channel set_EXT_img: main_Image
+	channel set_EXT_apples: Set(setoperations_Coord3D)
 	channel set_EXT_endGoHomeF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
@@ -48,8 +48,8 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel clone_CHTBA_i_j_2_4Call: main_Image
 	channel clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_fCall
+	channel clone_CHTBA_i_j_2_4Call: main_Image
 	
 	enterSS = {|
 	i::enter,
@@ -64,11 +64,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_apples,
 		set_EXT_localized,
-		set_EXT_img,
 		set_EXT_endIKSolverF,
 		set_EXT_takePicF,
+		set_EXT_img,
+		set_EXT_apples,
 		set_EXT_endGoHomeF
 	|}
 	
@@ -108,8 +108,8 @@ exports
 	
 	-- channel set with all visible events
 	sem__events = {|endexec,terminate
-	,	clone_CHTBA_i_j_2_4Call,
-		clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_fCall
+	,	clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_fCall,
+		clone_CHTBA_i_j_2_4Call
 		, share__
 		|}
 	
@@ -200,9 +200,9 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f(id__) = EDeadline(clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_fCall,0)
 		CALL__clone_CHTBA_i_j_2_4(id__,
 					param_img) = EDeadline(clone_CHTBA_i_j_2_4Call.param_img,0)
-		CALL__clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_f(id__) = EDeadline(clone_normal_AppleHarvestControl_LocalizeFruit_entry_j_2_4_t_2_4_op_j_2_4_fCall,0)
 		
 		-- END of Operation calls --
 	

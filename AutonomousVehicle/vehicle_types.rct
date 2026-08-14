@@ -1,0 +1,125 @@
+
+datatype ControlCommand1 {
+	throttlePot : nat
+	direction : nat
+	horn : boolean
+	parkBrakeOn : boolean
+	parkBrakeOff : boolean
+	speedMode : boolean
+	torqueMode : boolean
+	maxSpeed : nat
+	torque : nat
+	podStateRequest : nat
+	torqueLimit : nat
+}
+datatype VehicleControl2 {
+	emergencyStop : boolean
+	frontSteerAngle : nat
+	rearSteerAngle : nat
+}
+datatype VehicleControlAuxiliaryPower {
+	leftIndication : boolean
+	rightIndication : boolean
+	horn : boolean
+}
+
+datatype SessionControl {
+	requestedState : VehicleState
+	
+	sesionId : nat
+}
+datatype Handshake {
+	seed : nat
+	keyStatus : nat
+	sessionStatus : nat
+	keyResponse : nat
+	qualityOfService : nat
+}
+datatype UICode {
+	code : UserCode
+}
+enumeration UserCode { DRIVER_SEAT PASSENGER_SEAT VEHICLE_DOOR AUTONOMOUS_REQUESTED AUTONOMOUS_CANCELLED } enumeration
+VehicleReadyState { DRIVER_SEAT_ERROR PASSENGER_SEAT_ERROR VEHICLE_DOOR_ERROR
+}
+enumeration VehicleState { INVALID NO_SESSION AUTONOMOUS MANUAL OVERRIDE OFF
+ERROR EMERGENCY_STOP NEW_SESSION STEERING_CENTERING STEERING_CHECK_CENTRED
+PRIMED CHARGING } type ServiceQuality
+datatype Status {
+	systemState : VehicleState
+	doorOpen : boolean
+	chargeDoorOpen : boolean
+	frontBumper : boolean
+	rearBumper : boolean
+	driverSeat : Seats
+	passengerSeat : Seats
+	motorTemp : nat
+	iverterTemp : nat
+	vbat12Level : nat
+}
+type SessionId
+enumeration ReadyCode { READY STATIONARY AUTONOMY_READY SESSION_VALID
+SESSION_ID_ERROR HANDSHAKE_ID_ERROR SESSION_CANCELLED MAX_SPEED_ERROR }
+datatype VehicleReadyness {
+	ready : ReadyCode
+}
+datatype NextStateInstruction {
+	readyState : VehicleReadyState
+	instruction : UICode
+}
+type HandshakeKey
+datatype PodState {
+	speedMetersPerSecond : Speed
+	indicatorLeft : boolean
+	indicatorRight : boolean
+}
+datatype Indicator {
+	left : boolean
+	right : boolean
+}
+datatype Powertrain {
+	speedKilometersPerHour : Speed
+	switchForward : boolean
+	switchReverse : boolean
+	switchNeutral : boolean
+}
+datatype Eps {
+	manualSteerAngle : nat
+	inboardEps : nat
+	outboardEps : nat
+	inboardEpsError : nat
+	outboardEpsError : nat
+	brakePedalForce : nat
+}
+datatype Steer {
+	frontActPos : nat
+	rearActPos : nat
+	epsSystemState : nat
+	steerWheelPosition : nat
+	frontMovState : nat
+	rearMovState : nat
+	epsError : nat
+}
+datatype ParkBrake {
+	frontPressureRaw : nat
+	rearPressureRaw : nat
+	frontPressureTarget : nat
+	rearPressureTarget : nat
+	brakeLight : boolean
+	ignition : boolean
+	actOutRly : boolean
+	actInRly : boolean
+	delayedIgnition : boolean
+	parkBrake : boolean
+	systemState : nat
+}
+datatype Battery {
+	estop : boolean
+	ignitionManual : boolean
+	ignitionAuto : boolean
+	driveStatus : boolean
+	evMode : nat
+	stateOfCharge : nat
+	batteryPower : nat
+	rfEstop : boolean
+}
+enumeration Seats { EMPTY OCCUPIED OCCUPIED_BELTED }

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 13:20:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 04-08-2026 16:51:11
 --
 
 -- compileSelfContainedOperation
@@ -34,11 +34,11 @@ exports
 	channel get_exec_ms_AppleHarvestControl_Prepare, set_exec_ms_AppleHarvestControl_Prepare, setL_exec_ms_AppleHarvestControl_Prepare, setR_exec_ms_AppleHarvestControl_Prepare: core_boolean
 	
 	-- Shared variable channels
+	channel set_EXT_exec_ds_AppleHarvestControl_Prepare: core_boolean
 	channel set_EXT_endIKSolverF: core_boolean
+	channel set_EXT_exec_ms_AppleHarvestControl_Prepare: core_boolean
 	channel set_EXT_takePicF: core_boolean
 	channel set_EXT_endGoHomeF: core_boolean
-	channel set_EXT_exec_ds_AppleHarvestControl_Prepare: core_boolean
-	channel set_EXT_exec_ms_AppleHarvestControl_Prepare: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -59,11 +59,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_endIKSolverF,
-		set_EXT_takePicF,
-		set_EXT_endGoHomeF,
 		set_EXT_exec_ds_AppleHarvestControl_Prepare,
-		set_EXT_exec_ms_AppleHarvestControl_Prepare
+		set_EXT_endIKSolverF,
+		set_EXT_exec_ms_AppleHarvestControl_Prepare,
+		set_EXT_takePicF,
+		set_EXT_endGoHomeF
 	|}
 	
 	
@@ -166,11 +166,11 @@ exports
 			
 			channel internal__ : NIDS
 			
-			channel get_CLID_S1 : core_clock_type 
 			channel get_CLID_S2 : core_clock_type 
+			channel get_CLID_S1 : core_clock_type 
 			--channel increment__
 			
-			CLID_S1_clock_type(id__) = 
+			CLID_S2_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -179,7 +179,7 @@ exports
 			within
 				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 			
-			CLID_S2_clock_type(id__) = 
+			CLID_S1_clock_type(id__) = 
 				let
 					max = (clock_type_max(Union({
 			{}
@@ -455,36 +455,36 @@ exports
 						 					[[ endexec_action <- endexec ]]
 						 					[[ startexec_action <- startexec ]]
 						 				)
-						 				[| {|get_CLID_S2,S2::entered,terminate|} |]
-						 				dbisim(Clock_CLID_S2(id__,0))
-						 			)\{|get_CLID_S2|}
+						 				[| {|get_CLID_S1,S1::entered,terminate|} |]
+						 				dbisim(Clock_CLID_S1(id__,0))
+						 			)\{|get_CLID_S1|}
 						 		)
-						 		[| {|get_CLID_S1,S1::entered,terminate|} |]
-						 		dbisim(Clock_CLID_S1(id__,0))
-						 	)\{|get_CLID_S1|}
+						 		[| {|get_CLID_S2,S2::entered,terminate|} |]
+						 		dbisim(Clock_CLID_S2(id__,0))
+						 	)\{|get_CLID_S2|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_exec_ds_AppleHarvestControl_Prepare,setR_endIKSolverF,setR_exec_ms_AppleHarvestControl_Prepare,setR_takePicF,setR_endGoHomeF |} ]] 
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_endIKSolverF <- setL_endIKSolverF,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_exec_ds_AppleHarvestControl_Prepare
 						 			,setL_endIKSolverF
+						 			,setL_exec_ms_AppleHarvestControl_Prepare
 						 			,setL_takePicF
 						 			,setL_endGoHomeF
-						 			,setL_exec_ds_AppleHarvestControl_Prepare
-						 			,setL_exec_ms_AppleHarvestControl_Prepare
-						 			,setR_endIKSolverF
+						 			,setR_exec_ds_AppleHarvestControl_Prepare
+						 			 			,setR_endIKSolverF
+						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
-						 			 			,setR_exec_ds_AppleHarvestControl_Prepare
-						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_AppleHarvestControl_Prepare,setL_endIKSolverF,setL_exec_ms_AppleHarvestControl_Prepare,setL_takePicF,setL_endGoHomeF |} ]]
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_endIKSolverF <- setR_endIKSolverF,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						)[[setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_endIKSolverF <- set_endIKSolverF,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF]]
+						 [[setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_endIKSolverF <- set_endIKSolverF,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -556,36 +556,36 @@ exports
 						 					[[ endexec_action <- endexec ]]
 						 					[[ startexec_action <- startexec ]]
 						 				)
-						 				[| {|get_CLID_S2,S2::entered,terminate|} |]
-						 				dbisim(Clock_CLID_S2(id__,0))
-						 			)\{|get_CLID_S2|}
+						 				[| {|get_CLID_S1,S1::entered,terminate|} |]
+						 				dbisim(Clock_CLID_S1(id__,0))
+						 			)\{|get_CLID_S1|}
 						 		)
-						 		[| {|get_CLID_S1,S1::entered,terminate|} |]
-						 		dbisim(Clock_CLID_S1(id__,0))
-						 	)\{|get_CLID_S1|}
+						 		[| {|get_CLID_S2,S2::entered,terminate|} |]
+						 		dbisim(Clock_CLID_S2(id__,0))
+						 	)\{|get_CLID_S2|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_endIKSolverF,setR_takePicF,setR_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare |} ]] 
-						  [[set_endIKSolverF <- setL_endIKSolverF,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_exec_ds_AppleHarvestControl_Prepare,setR_endIKSolverF,setR_exec_ms_AppleHarvestControl_Prepare,setR_takePicF,setR_endGoHomeF |} ]] 
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setL_exec_ds_AppleHarvestControl_Prepare,set_endIKSolverF <- setL_endIKSolverF,set_exec_ms_AppleHarvestControl_Prepare <- setL_exec_ms_AppleHarvestControl_Prepare,set_takePicF <- setL_takePicF,set_endGoHomeF <- setL_endGoHomeF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_exec_ds_AppleHarvestControl_Prepare
 						 			,setL_endIKSolverF
+						 			,setL_exec_ms_AppleHarvestControl_Prepare
 						 			,setL_takePicF
 						 			,setL_endGoHomeF
-						 			,setL_exec_ds_AppleHarvestControl_Prepare
-						 			,setL_exec_ms_AppleHarvestControl_Prepare
-						 			,setR_endIKSolverF
+						 			,setR_exec_ds_AppleHarvestControl_Prepare
+						 			 			,setR_endIKSolverF
+						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			 			,setR_takePicF
 						 			 			,setR_endGoHomeF
-						 			 			,setR_exec_ds_AppleHarvestControl_Prepare
-						 			 			,setR_exec_ms_AppleHarvestControl_Prepare
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_endIKSolverF,setL_takePicF,setL_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare |} ]]
-						  [[set_endIKSolverF <- setR_endIKSolverF,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF,set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ds_AppleHarvestControl_Prepare,setL_endIKSolverF,setL_exec_ms_AppleHarvestControl_Prepare,setL_takePicF,setL_endGoHomeF |} ]]
+						  [[set_exec_ds_AppleHarvestControl_Prepare <- setR_exec_ds_AppleHarvestControl_Prepare,set_endIKSolverF <- setR_endIKSolverF,set_exec_ms_AppleHarvestControl_Prepare <- setR_exec_ms_AppleHarvestControl_Prepare,set_takePicF <- setR_takePicF,set_endGoHomeF <- setR_endGoHomeF]]
 						 )
-						)[[setL_endIKSolverF <- set_endIKSolverF,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF,setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
-						 [[setR_endIKSolverF <- set_endIKSolverF,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF,setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare]]
+						)[[setL_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setL_endIKSolverF <- set_endIKSolverF,setL_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare,setL_takePicF <- set_takePicF,setL_endGoHomeF <- set_endGoHomeF]]
+						 [[setR_exec_ds_AppleHarvestControl_Prepare <- set_exec_ds_AppleHarvestControl_Prepare,setR_endIKSolverF <- set_endIKSolverF,setR_exec_ms_AppleHarvestControl_Prepare <- set_exec_ms_AppleHarvestControl_Prepare,setR_takePicF <- set_takePicF,setR_endGoHomeF <- set_endGoHomeF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -622,13 +622,6 @@ exports
 				
 				
 				-- Clocks
-				Clock_CLID_S1(id__,x__) = 
-					TimeOut_1(
-						S1::entered -> Clock_CLID_S1(id__,0)
-						[]
-						get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
-						[]
-						terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 				Clock_CLID_S2(id__,x__) = 
 					TimeOut_1(
 						S2::entered -> Clock_CLID_S2(id__,0)
@@ -636,13 +629,20 @@ exports
 						get_CLID_S2!x__ -> Clock_CLID_S2(id__,x__)
 						[]
 						terminate -> SKIP,Clock_CLID_S2(id__,clock_type_plus(x__,1,CLID_S2_clock_type(id__))))
+				Clock_CLID_S1(id__,x__) = 
+					TimeOut_1(
+						S1::entered -> Clock_CLID_S1(id__,0)
+						[]
+						get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 				
-				StateClocks(id__) = dbisim(Clock_CLID_S1(id__,0))
+				StateClocks(id__) = dbisim(Clock_CLID_S2(id__,0))
 				[| { terminate } |] (
-				dbisim(Clock_CLID_S2(id__,0))
+				dbisim(Clock_CLID_S1(id__,0))
 				)
 				
-				stateClockSync = {|get_CLID_S1,S1::entered,get_CLID_S2,S2::entered|}
+				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered|}
 			}
 		
 		endmodule

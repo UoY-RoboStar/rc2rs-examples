@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "taxi_RotateClockwise.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "taxi_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate taxi_OP_RotateClockwise
+P_taxi_OP_RotateClockwise = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	taxi::OP_RotateClockwise::O__(id__,
+				param_j)
+assert P_taxi_OP_RotateClockwise :[deadlock-free]	
+assert P_taxi_OP_RotateClockwise;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_RotateClockwise :[deterministic]
+assert P_taxi_OP_RotateClockwise :[divergence-free]

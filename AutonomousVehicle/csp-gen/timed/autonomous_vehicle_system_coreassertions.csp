@@ -1,0 +1,210 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "autonomous_vehicle_systemcsp"
+
+
+
+
+-- generate autonomous_vehicle_system_AutonomousVehicle
+P_autonomous_vehicle_system_AutonomousVehicle = let
+	id__ = 0
+	
+	
+	const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_ZERO_SPEED = const_bacs_B_acs_ZERO_SPEED
+	const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_MINIMIM_SPEED = const_bacs_B_acs_MINIMIM_SPEED
+	const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_MAXIMUM_SPEED = const_bacs_B_acs_MAXIMUM_SPEED
+	const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_ZERO_STEER = const_bacs_B_acs_ZERO_STEER
+	
+	const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD = const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD
+	const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION = const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY = const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY
+	const_bacs_B_acs_stm_ref11_RATE = const_bacs_AgeChecker_AgeChecker_RATE
+	const_bacs_B_acs_stm_ref11_ZERO_SPEED = const_bacs_AgeChecker_AgeChecker_ZERO_SPEED
+	const_bacs_B_acs_stm_ref11_MINIMIM_SPEED = const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED = const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref11_ZERO_STEER = const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+	const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND = const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND
+	const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND = const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND
+	const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST = const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST
+	const_lutz_Lutz_stm_ref0_CONTROL_PERIOD = const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD
+	const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY = const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY
+	const_bacs_B_acs_stm_ref3_ZERO_SPEED = const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED
+	const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND = const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND
+	const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND = const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS = const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD = const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT = const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT
+	const_bacs_B_acs_stm_ref9_ZERO_RATIO = const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+	const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION = const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD = const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD
+	const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND = const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+	const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION = const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref7_ZERO_SPEED = const_bacs_AutoDemand_AutoDemand_ZERO_SPEED
+	const_bacs_B_acs_stm_ref7_MINIMIM_SPEED = const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED = const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref7_ZERO_STEER = const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+	const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION = const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref2_zeroSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit
+	const_bacs_B_acs_stm_ref2_oneSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+		
+	
+within
+	autonomous_vehicle_system::AutonomousVehicle::O__(id__,
+			    const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_ZERO_SPEED,
+			    const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_MINIMIM_SPEED,
+			    const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_MAXIMUM_SPEED,
+			    const_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref3_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref2_zeroSpeedLimit,
+			    const_bacs_B_acs_stm_ref2_oneSpeedLimit,
+			    const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD,
+			    const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND,
+			    const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND,
+			    const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND,
+			    const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref7_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref7_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref7_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref9_ZERO_RATIO,
+			    const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY,
+			    const_bacs_B_acs_stm_ref11_RATE,
+			    const_bacs_B_acs_stm_ref11_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref11_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref11_ZERO_STEER,
+			    const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND,
+			    const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST,
+			    const_lutz_Lutz_stm_ref0_CONTROL_PERIOD,
+			    const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY,
+			    const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT)
+assert P_autonomous_vehicle_system_AutonomousVehicle :[deadlock-free]	
+assert P_autonomous_vehicle_system_AutonomousVehicle;RUN({r__}) :[deadlock-free]
+assert P_autonomous_vehicle_system_AutonomousVehicle :[deterministic]
+assert P_autonomous_vehicle_system_AutonomousVehicle :[divergence-free]
+
+-- generate autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl
+P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl = let
+	id__ = 0
+	
+	
+	
+	const_bacs_B_acs_stm_ref3_ZERO_SPEED = const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED
+	const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION = const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref2_zeroSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit
+	const_bacs_B_acs_stm_ref2_oneSpeedLimit = const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+	const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD = const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD
+	const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND = const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+	const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION = const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND = const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND
+	const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND = const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+	const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION = const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref7_ZERO_SPEED = const_bacs_AutoDemand_AutoDemand_ZERO_SPEED
+	const_bacs_B_acs_stm_ref7_MINIMIM_SPEED = const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED = const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref7_ZERO_STEER = const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+	const_bacs_B_acs_stm_ref9_ZERO_RATIO = const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+	const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION = const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION
+	const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY = const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY
+	const_bacs_B_acs_stm_ref11_RATE = const_bacs_AgeChecker_AgeChecker_RATE
+	const_bacs_B_acs_stm_ref11_ZERO_SPEED = const_bacs_AgeChecker_AgeChecker_ZERO_SPEED
+	const_bacs_B_acs_stm_ref11_MINIMIM_SPEED = const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED
+	const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED = const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED
+	const_bacs_B_acs_stm_ref11_ZERO_STEER = const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+		
+within
+	autonomous_vehicle_system::AutonomousVehicle::ctrl_ref_ctrlAutonomousControl::O__(id__,
+			    const_bacs_B_acs_ZERO_SPEED,
+			    const_bacs_B_acs_MINIMIM_SPEED,
+			    const_bacs_B_acs_MAXIMUM_SPEED,
+			    const_bacs_B_acs_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref3_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref2_zeroSpeedLimit,
+			    const_bacs_B_acs_stm_ref2_oneSpeedLimit,
+			    const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD,
+			    const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND,
+			    const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND,
+			    const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND,
+			    const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref7_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref7_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref7_ZERO_STEER,
+			    const_bacs_B_acs_stm_ref9_ZERO_RATIO,
+			    const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION,
+			    const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY,
+			    const_bacs_B_acs_stm_ref11_RATE,
+			    const_bacs_B_acs_stm_ref11_ZERO_SPEED,
+			    const_bacs_B_acs_stm_ref11_MINIMIM_SPEED,
+			    const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED,
+			    const_bacs_B_acs_stm_ref11_ZERO_STEER)
+
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl :[deadlock-free]	
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl;RUN({r__}) :[deadlock-free]
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl :[deterministic]
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlAutonomousControl
+-- generate autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle
+P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle = let
+	id__ = 0
+	
+	
+	
+	const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND = const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND
+	const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND = const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND
+	const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST = const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST
+	const_lutz_Lutz_stm_ref0_CONTROL_PERIOD = const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD
+	const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY = const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY
+	const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD = const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS = const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD = const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD
+	const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT = const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT
+		
+within
+	autonomous_vehicle_system::AutonomousVehicle::ctrl_ref_ctrlVehicle::O__(id__,
+			    const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND,
+			    const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST,
+			    const_lutz_Lutz_stm_ref0_CONTROL_PERIOD,
+			    const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY,
+			    const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT)
+
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle :[deadlock-free]	
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle;RUN({r__}) :[deadlock-free]
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle :[deterministic]
+assert P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_autonomous_vehicle_system_AutonomousVehicle_ctrl_ref_ctrlVehicle
+-- timed deadlock free
+assert prioritise(P_autonomous_vehicle_system_AutonomousVehicle[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_autonomous_vehicle_system_AutonomousVehicle

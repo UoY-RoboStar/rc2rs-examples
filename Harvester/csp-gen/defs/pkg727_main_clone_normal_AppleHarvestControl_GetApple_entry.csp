@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:58
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -42,10 +42,10 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel graspCall: main_JointsPos
-	channel moveCall: main_JointsPos
-	channel dropCall: main_JointsPos
 	channel pickCall
+	channel graspCall: main_JointsPos
+	channel dropCall: main_JointsPos
+	channel moveCall: main_JointsPos
 	channel clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall: core_nat
 	
 	enterSS = {|
@@ -69,10 +69,10 @@ exports
 		terminate
 	,	set_EXT_positions, set_positions,
 		set_EXT_nextApple, set_nextApple
-	,	graspCall,
-		moveCall,
+	,	pickCall,
+		graspCall,
 		dropCall,
-		pickCall,
+		moveCall,
 		clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_fCall
 		, share__
 		|}
@@ -166,6 +166,12 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__pick(id__,
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime) 	= pickCall -> SKIP
 	CALL__grasp(id__,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
@@ -173,13 +179,6 @@ exports
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
 				param_jp) 	= graspCall.param_jp -> SKIP
-	CALL__move(id__,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
-				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__drop(id__,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
@@ -187,12 +186,13 @@ exports
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
 				param_jp) 	= dropCall.param_jp -> SKIP
-	CALL__pick(id__,
+	CALL__move(id__,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_dropTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime) 	= pickCall -> SKIP
+			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_graspTime,
+				param_jp) 	= moveCall.param_jp -> SKIP
 	CALL__clone_deadlineAction_normal_AppleHarvestControl_GetApple_entry_t_i_f(id__,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_pickTime,
 			    const_pkg727_main_clone_normal_AppleHarvestControl_GetApple_entry_approachTime,

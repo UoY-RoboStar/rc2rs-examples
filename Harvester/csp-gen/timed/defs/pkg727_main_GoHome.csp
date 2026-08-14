@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -43,13 +43,13 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel pickCall
-	channel hideArmCall
-	channel dropCall: main_JointsPos
 	channel goHomeCall
-	channel clone_normal_GoHome_Going_entryCall
-	channel clone_normal_GoHome_Going_t2_opCall
 	channel graspCall: main_JointsPos
+	channel hideArmCall
+	channel clone_normal_GoHome_Going_t2_opCall
+	channel clone_normal_GoHome_Going_entryCall
 	channel moveCall: main_JointsPos
+	channel dropCall: main_JointsPos
 	
 	enterSS = {|
 	i0::enter,
@@ -73,13 +73,13 @@ exports
 	,	startGoHome,
 		endGoHome
 	,	pickCall,
-		hideArmCall,
-		dropCall,
 		goHomeCall,
-		clone_normal_GoHome_Going_entryCall,
-		clone_normal_GoHome_Going_t2_opCall,
 		graspCall,
-		moveCall
+		hideArmCall,
+		clone_normal_GoHome_Going_t2_opCall,
+		clone_normal_GoHome_Going_entryCall,
+		moveCall,
+		dropCall
 		|}
 	
 	channel clockReset, clockResetL, clockResetR 
@@ -87,11 +87,11 @@ exports
 	localClockResets = {||}
 	
 	
-	channel get_CLID_Ready : core_clock_type 
 	channel get_CLID_Going : core_clock_type 
+	channel get_CLID_Ready : core_clock_type 
 	--channel increment__
 	
-	CLID_Ready_clock_type(id__,
+	CLID_Going_clock_type(id__,
 			          const_pkg727_main_GoHome_goHTime) = 
 		let
 			max = (clock_type_max(Union({
@@ -100,7 +100,7 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_Going_clock_type(id__,
+	CLID_Ready_clock_type(id__,
 			          const_pkg727_main_GoHome_goHTime) = 
 		let
 			max = (clock_type_max(Union({
@@ -902,23 +902,23 @@ exports
 		-- context of the Controller module, and therefore within scope of the state machine module.
 		CALL__pick(id__,
 				    const_pkg727_main_GoHome_goHTime) = EDeadline(pickCall,0)
-		CALL__hideArm(id__,
-				    const_pkg727_main_GoHome_goHTime) = EDeadline(hideArmCall,0)
-		CALL__drop(id__,
-				    const_pkg727_main_GoHome_goHTime,
-					param_jp) = EDeadline(dropCall.param_jp,0)
 		CALL__goHome(id__,
 				    const_pkg727_main_GoHome_goHTime) = EDeadline(goHomeCall,0)
-		CALL__clone_normal_GoHome_Going_entry(id__,
-				    const_pkg727_main_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_entryCall,0)
-		CALL__clone_normal_GoHome_Going_t2_op(id__,
-				    const_pkg727_main_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_t2_opCall,0)
 		CALL__grasp(id__,
 				    const_pkg727_main_GoHome_goHTime,
 					param_jp) = EDeadline(graspCall.param_jp,0)
+		CALL__hideArm(id__,
+				    const_pkg727_main_GoHome_goHTime) = EDeadline(hideArmCall,0)
+		CALL__clone_normal_GoHome_Going_t2_op(id__,
+				    const_pkg727_main_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_t2_opCall,0)
+		CALL__clone_normal_GoHome_Going_entry(id__,
+				    const_pkg727_main_GoHome_goHTime) = EDeadline(clone_normal_GoHome_Going_entryCall,0)
 		CALL__move(id__,
 				    const_pkg727_main_GoHome_goHTime,
 					param_jp) = EDeadline(moveCall.param_jp,0)
+		CALL__drop(id__,
+				    const_pkg727_main_GoHome_goHTime,
+					param_jp) = EDeadline(dropCall.param_jp,0)
 		
 		-- END of Operation calls --
 	
@@ -1053,7 +1053,7 @@ exports
 		Behaviour(id__,
 				    const_pkg727_main_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
 			 within
 				(MachineBody(id__,
 						    const_pkg727_main_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -1064,7 +1064,7 @@ exports
 		IteratedBehaviour(id__,
 				    const_pkg727_main_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1072,15 +1072,15 @@ exports
 							sbisim(
 								MachineBody(id__,
 										    const_pkg727_main_GoHome_goHTime)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
 										          const_pkg727_main_GoHome_goHTime))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Ready|}
 						)
-						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-						dbisim(Clock_CLID_Ready(id__,0,
+						[| {|get_CLID_Going,Going::entered,terminate|} |]
+						dbisim(Clock_CLID_Going(id__,0,
 								          const_pkg727_main_GoHome_goHTime))
-					)\{|get_CLID_Ready|}
+					)\{|get_CLID_Going|}
 				)
 				) \ union(stateClockSync,enteredSS)
 			)
@@ -1178,7 +1178,7 @@ exports
 		Behaviour_VS_O(id__,
 				    const_pkg727_main_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 						    const_pkg727_main_GoHome_goHTime) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
@@ -1189,7 +1189,7 @@ exports
 		IteratedBehaviour_VS_O(id__,
 				    const_pkg727_main_GoHome_goHTime) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
+				stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
 			 within
 				(dbisim(
 					sbisim(
@@ -1197,15 +1197,15 @@ exports
 							sbisim(
 								MachineBody_VS_O(id__,
 										    const_pkg727_main_GoHome_goHTime)
-								[| {|get_CLID_Going,Going::entered,terminate|} |]
-								dbisim(Clock_CLID_Going(id__,0,
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
 										          const_pkg727_main_GoHome_goHTime))
-							)\{|get_CLID_Going|}
+							)\{|get_CLID_Ready|}
 						)
-						[| {|get_CLID_Ready,Ready::entered,terminate|} |]
-						dbisim(Clock_CLID_Ready(id__,0,
+						[| {|get_CLID_Going,Going::entered,terminate|} |]
+						dbisim(Clock_CLID_Going(id__,0,
 								          const_pkg727_main_GoHome_goHTime))
-					)\{|get_CLID_Ready|}
+					)\{|get_CLID_Going|}
 				)
 				) \ diff(union(stateClockSync,enteredSS),enteredSS)
 			)
@@ -1276,18 +1276,6 @@ exports
 		
 		clockSync = {||}
 		
-		Clock_CLID_Ready(id__,x__,
-				          const_pkg727_main_GoHome_goHTime) = 
-			TimeOut_1(
-				Ready::entered -> Clock_CLID_Ready(id__,0,
-						          const_pkg727_main_GoHome_goHTime)
-				[]
-				get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__,
-						          const_pkg727_main_GoHome_goHTime)
-				[]
-				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
-						          const_pkg727_main_GoHome_goHTime)),
-						          const_pkg727_main_GoHome_goHTime))
 		Clock_CLID_Going(id__,x__,
 				          const_pkg727_main_GoHome_goHTime) = 
 			TimeOut_1(
@@ -1300,16 +1288,28 @@ exports
 				terminate -> SKIP,Clock_CLID_Going(id__,clock_type_plus(x__,1,CLID_Going_clock_type(id__,
 						          const_pkg727_main_GoHome_goHTime)),
 						          const_pkg727_main_GoHome_goHTime))
+		Clock_CLID_Ready(id__,x__,
+				          const_pkg727_main_GoHome_goHTime) = 
+			TimeOut_1(
+				Ready::entered -> Clock_CLID_Ready(id__,0,
+						          const_pkg727_main_GoHome_goHTime)
+				[]
+				get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__,
+						          const_pkg727_main_GoHome_goHTime)
+				[]
+				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
+						          const_pkg727_main_GoHome_goHTime)),
+						          const_pkg727_main_GoHome_goHTime))
 		
 		StateClocks(id__,
-				          const_pkg727_main_GoHome_goHTime) = dbisim(Clock_CLID_Ready(id__,0,
+				          const_pkg727_main_GoHome_goHTime) = dbisim(Clock_CLID_Going(id__,0,
 				          const_pkg727_main_GoHome_goHTime))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_Going(id__,0,
+		dbisim(Clock_CLID_Ready(id__,0,
 				          const_pkg727_main_GoHome_goHTime))
 		)
 		
-		stateClockSync = {|get_CLID_Ready,Ready::entered,get_CLID_Going,Going::entered|}
+		stateClockSync = {|get_CLID_Going,Going::entered,get_CLID_Ready,Ready::entered|}
 		
 		-- Shared memory
 		-- Shared memory variables

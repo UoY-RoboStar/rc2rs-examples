@@ -8,91 +8,91 @@ exports
 	
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
-	InputEvents = {|pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in|}
-	OutputEvents = {|pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::disableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall|}
-	ExternalEvents = {|pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in
-					   ,pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::disableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall|}
+	InputEvents = {|pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in|}
+	OutputEvents = {|pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall,pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::disableInterruptsCall|}
+	ExternalEvents = {|pkg867_main::Segway::angle.in,pkg867_main::Segway::gyroZ.in,pkg867_main::Segway::gyroX.in,pkg867_main::Segway::gyroY.in,pkg867_main::Segway::leftMotorVelocity.in,pkg867_main::Segway::rightMotorVelocity.in
+					   ,pkg867_main::Segway::enableInterruptsCall,pkg867_main::Segway::setLeftMotorSpeedCall,pkg867_main::Segway::setRightMotorSpeedCall,pkg867_main::Segway::disableInterruptsCall|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
-	datatype RegisterDataInput = i_leftMotorVelocity.Bool.core_real
-		| i_rightMotorVelocity.Bool.core_real
+	datatype RegisterDataInput = i_angle.Bool.core_real
+		| i_gyroZ.Bool.core_real
 		| i_gyroX.Bool.core_real
 		| i_gyroY.Bool.core_real
-		| i_angle.Bool.core_real
-		| i_gyroZ.Bool.core_real
+		| i_leftMotorVelocity.Bool.core_real
+		| i_rightMotorVelocity.Bool.core_real
 	
-	datatype RegisterDataOutput = o_setRightMotorSpeed.core_real
-		| o_enableInterrupts
-		| o_disableInterrupts
+	datatype RegisterDataOutput = o_enableInterrupts
 		| o_setLeftMotorSpeed.core_real
+		| o_setRightMotorSpeed.core_real
+		| o_disableInterrupts
 	
 	
 	nametype RegisterOutputs = {|
-	o_setRightMotorSpeed,
 	o_enableInterrupts,
-	o_disableInterrupts,
-	o_setLeftMotorSpeed|}
+	o_setLeftMotorSpeed,
+	o_setRightMotorSpeed,
+	o_disableInterrupts|}
 	
 	nametype RegisterInputs = {|
-	i_leftMotorVelocity,
-	i_rightMotorVelocity,
+	i_angle,
+	i_gyroZ,
 	i_gyroX,
 	i_gyroY,
-	i_angle,
-	i_gyroZ|}
+	i_leftMotorVelocity,
+	i_rightMotorVelocity|}
 	
-	datatype COutputEvents = COutput_setRightMotorSpeed
-		| COutput_enableInterrupts
-		| COutput_disableInterrupts
+	datatype COutputEvents = COutput_enableInterrupts
 		| COutput_setLeftMotorSpeed
+		| COutput_setRightMotorSpeed
+		| COutput_disableInterrupts
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
 	
 	A1 =
 	let
-		A1_leftMotorVelocity = registerRead.i_leftMotorVelocity?b__.x__ ->
-								if b__ then (pkg867_main::Segway::leftMotorVelocity.in.x__ -> A1_leftMotorVelocity [] A1_leftMotorVelocity)
-									   else A1_leftMotorVelocity
-		A1_rightMotorVelocity = registerRead.i_rightMotorVelocity?b__.x__ ->
-								if b__ then (pkg867_main::Segway::rightMotorVelocity.in.x__ -> A1_rightMotorVelocity [] A1_rightMotorVelocity)
-									   else A1_rightMotorVelocity
-		A1_gyroX = registerRead.i_gyroX?b__.x__ ->
-								if b__ then (pkg867_main::Segway::gyroX.in.x__ -> A1_gyroX [] A1_gyroX)
-									   else A1_gyroX
-		A1_gyroY = registerRead.i_gyroY?b__.x__ ->
-								if b__ then (pkg867_main::Segway::gyroY.in.x__ -> A1_gyroY [] A1_gyroY)
-									   else A1_gyroY
 		A1_angle = registerRead.i_angle?b__.x__ ->
 								if b__ then (pkg867_main::Segway::angle.in.x__ -> A1_angle [] A1_angle)
 									   else A1_angle
 		A1_gyroZ = registerRead.i_gyroZ?b__.x__ ->
 								if b__ then (pkg867_main::Segway::gyroZ.in.x__ -> A1_gyroZ [] A1_gyroZ)
 									   else A1_gyroZ
+		A1_gyroX = registerRead.i_gyroX?b__.x__ ->
+								if b__ then (pkg867_main::Segway::gyroX.in.x__ -> A1_gyroX [] A1_gyroX)
+									   else A1_gyroX
+		A1_gyroY = registerRead.i_gyroY?b__.x__ ->
+								if b__ then (pkg867_main::Segway::gyroY.in.x__ -> A1_gyroY [] A1_gyroY)
+									   else A1_gyroY
+		A1_leftMotorVelocity = registerRead.i_leftMotorVelocity?b__.x__ ->
+								if b__ then (pkg867_main::Segway::leftMotorVelocity.in.x__ -> A1_leftMotorVelocity [] A1_leftMotorVelocity)
+									   else A1_leftMotorVelocity
+		A1_rightMotorVelocity = registerRead.i_rightMotorVelocity?b__.x__ ->
+								if b__ then (pkg867_main::Segway::rightMotorVelocity.in.x__ -> A1_rightMotorVelocity [] A1_rightMotorVelocity)
+									   else A1_rightMotorVelocity
 		
 														
 	within
-			     	A1_leftMotorVelocity
+			     	A1_angle
 			     	 |||
-			     	A1_rightMotorVelocity
+			     	A1_gyroZ
 			     	 |||
 			     	A1_gyroX
 			     	 |||
 			     	A1_gyroY
 			     	 |||
-			     	A1_angle
+			     	A1_leftMotorVelocity
 			     	 |||
-			     	A1_gyroZ
+			     	A1_rightMotorVelocity
 							
 	TA1 = A1 /\ terminate -> SKIP 
 	
 	TA2(cycle_NormalForm_NormalForm) = let
 			
-			read(COutput_setRightMotorSpeed) = pkg867_main::Segway::setRightMotorSpeedCall?x__ -> registerWrite.o_setRightMotorSpeed.x__ -> SKIP
 			read(COutput_enableInterrupts) = pkg867_main::Segway::enableInterruptsCall -> registerWrite.o_enableInterrupts -> SKIP
-			read(COutput_disableInterrupts) = pkg867_main::Segway::disableInterruptsCall -> registerWrite.o_disableInterrupts -> SKIP
 			read(COutput_setLeftMotorSpeed) = pkg867_main::Segway::setLeftMotorSpeedCall?x__ -> registerWrite.o_setLeftMotorSpeed.x__ -> SKIP
+			read(COutput_setRightMotorSpeed) = pkg867_main::Segway::setRightMotorSpeedCall?x__ -> registerWrite.o_setRightMotorSpeed.x__ -> SKIP
+			read(COutput_disableInterrupts) = pkg867_main::Segway::disableInterruptsCall -> registerWrite.o_disableInterrupts -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))
@@ -102,17 +102,17 @@ exports
 		  	A2(COutputEvents)
 					
 	TA3(cycle_NormalForm_NormalForm) = let
-			A3 = ((registerRead.i_leftMotorVelocity?x__ -> SKIP)
+			A3 = ((registerRead.i_angle?x__ -> SKIP)
 				|||
-			(registerRead.i_rightMotorVelocity?x__ -> SKIP)
+			(registerRead.i_gyroZ?x__ -> SKIP)
 				|||
 			(registerRead.i_gyroX?x__ -> SKIP)
 				|||
 			(registerRead.i_gyroY?x__ -> SKIP)
 				|||
-			(registerRead.i_angle?x__ -> SKIP)
+			(registerRead.i_leftMotorVelocity?x__ -> SKIP)
 				|||
-			(registerRead.i_gyroZ?x__ -> SKIP));
+			(registerRead.i_rightMotorVelocity?x__ -> SKIP));
 				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_NormalForm_NormalForm);A3))
 		  within
 		  	A3

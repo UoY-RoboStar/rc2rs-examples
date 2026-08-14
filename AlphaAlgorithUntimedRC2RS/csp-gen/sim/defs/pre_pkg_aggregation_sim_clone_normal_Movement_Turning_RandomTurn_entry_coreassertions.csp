@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 17:36:55
+--
+
+include "core_timed_defs.csp"
+include "pre_pkg_aggregation_sim_clone_normal_Movement_Turning_RandomTurn_entry.csp"
+include "core_defs.csp"
+include "pre_pkg_aggregation_sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry
+P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry = let
+	id__ = 0
+	
+	
+	const_pre_pkg_aggregation_sim_clone_normal_Movement_Turning_RandomTurn_entry_av = 0
+	
+	
+within
+	pre_pkg_aggregation_sim::OP_clone_normal_Movement_Turning_RandomTurn_entry::O__(id__,
+			    const_pre_pkg_aggregation_sim_clone_normal_Movement_Turning_RandomTurn_entry_av)
+assert P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry :[deadlock-free]	
+assert P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry :[deterministic]
+assert P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_aggregation_sim_OP_clone_normal_Movement_Turning_RandomTurn_entry

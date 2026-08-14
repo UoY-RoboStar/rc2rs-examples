@@ -1,0 +1,466 @@
+-- generate lutz_DetermineUserInstruction_MakeEstopFalse
+lutz_DetermineUserInstruction_MakeEstopFalse(readyState) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate bacs_ConvertPointRouteToAuxiliaryDemand
+bacs_ConvertPointRouteToAuxiliaryDemand(route) = (true,true,true,0,(0,0,""))
+
+-- generate const_bacs_AutoDemand_AutoDemand_ZERO_STEER
+const_bacs_AutoDemand_AutoDemand_ZERO_STEER = 0
+
+-- generate bacs_DemandGoalReached
+bacs_DemandGoalReached(currentLocation,goalPoint,config) = true
+
+-- generate const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND
+const_lutz_Lutz_stm_ref0_ZERO_VEHICLE_DEMAND = (0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,""))
+
+-- generate bacs_DemandLimiterRatio_ScaleSpeed
+bacs_DemandLimiterRatio_ScaleSpeed(speedA,speedB) = 0
+
+-- generate RealToSpeed
+RealToSpeed(speedValue) = 0
+
+-- generate const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO
+const_bacs_DemandLimiterRatio_DemandLimiterRatio_ZERO_RATIO = 0
+
+-- generate bacs_CombineAuxiliaryDemands
+bacs_CombineAuxiliaryDemands(demands) = (true,true,true,0,(0,0,""))
+
+-- generate lutz_MakeValidSession
+lutz_MakeValidSession(ready) = (VehicleReadyState_DRIVER_SEAT_ERROR,(UserCode_DRIVER_SEAT))
+
+-- generate lutz_GetOverrideState
+lutz_GetOverrideState(currentSession,podStatus,podPowertrain,podParkbrake,podHandshake) = VehicleReadyState_DRIVER_SEAT_ERROR
+
+-- generate const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND
+const_bacs_B_acs_stm_ref4_ZERO_AUXILIARY_DEMAND = (true,true,true,0,(0,0,""))
+
+-- generate bacs_CalculateSteer
+bacs_CalculateSteer(config,objective,position) = 0
+
+-- generate const_bacs_AgeChecker_AgeChecker_ZERO_SPEED
+const_bacs_AgeChecker_AgeChecker_ZERO_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref11_ZERO_STEER
+const_bacs_B_acs_stm_ref11_ZERO_STEER = 0
+
+-- generate Distance
+nametype Distance = {0,1}
+
+-- generate const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION
+const_bacs_B_acs_stm_ref11_DEFAULT_CONFIGURATION = (0,0,0,true)
+
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{{0},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))..calc_type_max(Union({{0},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))})
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS
+
+-- generate bacs_ConvertLocationToLocalLocation
+bacs_ConvertLocationToLocalLocation(location,origin) = (0,0,0)
+
+-- generate bacs_VehicleStopped
+bacs_VehicleStopped(vehicleState,demand,objective) = true
+
+-- generate const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION
+const_bacs_AutoDemand_AutoDemand_DEFAULT_CONFIGURATION = (0,0)
+
+-- generate const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD
+const_bacs_B_acs_stm_ref4_AUXILIARY_SELECTION_PERIOD = 0
+
+-- generate ThreePositionSwitch
+nametype ThreePositionSwitch = {0,1}
+
+-- generate bacs_GamepadCalculateSteer
+bacs_GamepadCalculateSteer(gamepadValues,config) = 0
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND
+const_lutz_Lutz_stm_ref0_ZERO_AUXILIARY_DEMAND = (true,true,true,0,(0,0,""))
+
+-- generate HandshakeKey
+nametype HandshakeKey = {0,1}
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+
+-- generate const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION
+const_bacs_TurnigyJoy_TurnigyJoy_DEFAULT_CONFIGURATION = (0,0,0)
+
+-- generate ServiceQuality
+nametype ServiceQuality = {0,1}
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD
+const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD = 0
+
+-- generate const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND
+const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND = (0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,""))
+
+-- generate bacs_ZeroSteering
+bacs_ZeroSteering() = 0
+
+-- generate const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION
+const_bacs_B_acs_stm_ref2_DEFAULT_CONFIGURATION = (0,0,true)
+
+-- generate const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD
+const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD = 0
+
+-- generate bacs_ConvertPointRouteToGoal
+bacs_ConvertPointRouteToGoal(route) = (0,0,(0,0,0))
+
+-- generate const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST
+const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST = (VehicleState_INVALID,0)
+
+-- generate const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED
+const_bacs_AgeChecker_AgeChecker_MAXIMUM_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref9_ZERO_RATIO
+const_bacs_B_acs_stm_ref9_ZERO_RATIO = 0
+
+-- generate const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND
+const_bacs_B_acs_stm_ref6_ZERO_VEHICLE_DEMAND = (0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,""))
+
+-- generate const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY
+const_lutz_Lutz_stm_ref0_MESSAGE_HANDLING_DELAY = 0
+
+-- generate bacs_TimeCompareEqual
+bacs_TimeCompareEqual(a,b) = true
+
+-- generate AnalogueValue
+nametype AnalogueValue = {0,1}
+
+-- generate lutz_KeyPostionManual
+lutz_KeyPostionManual(positionManual) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION
+const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION = (0,0,true)
+
+-- generate lutz_GetOverrideUserInstructions
+lutz_GetOverrideUserInstructions(readyState) = (UserCode_DRIVER_SEAT)
+
+-- generate lutz_DetermineUserInstruction_GetEstopReason
+lutz_DetermineUserInstruction_GetEstopReason(readyState) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate const_bacs_B_acs_MAXIMUM_SPEED
+const_bacs_B_acs_MAXIMUM_SPEED = 0
+
+-- generate bacs_DeadmanPositionToRatio
+bacs_DeadmanPositionToRatio(position,config) = 0
+
+-- generate const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND = 0
+
+-- generate Ratio
+nametype Ratio = {0,1}
+
+-- generate const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED
+const_bacs_AgeChecker_AgeChecker_MINIMIM_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref7_ZERO_STEER
+const_bacs_B_acs_stm_ref7_ZERO_STEER = 0
+
+-- generate Deadband
+nametype Deadband = {0,1}
+
+-- generate const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS
+const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS = <>
+
+-- generate lutz_DetermineUserInstruction_MakeErrorFalse
+lutz_DetermineUserInstruction_MakeErrorFalse(readyState) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate const_bacs_B_acs_stm_ref3_ZERO_SPEED
+const_bacs_B_acs_stm_ref3_ZERO_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED
+const_bacs_B_acs_stm_ref7_MAXIMUM_SPEED = 0
+
+-- generate SpeedToReal
+SpeedToReal(speedValue) = 0
+
+-- generate bacs_deadManHandlePositionToSpeedLimit
+bacs_deadManHandlePositionToSpeedLimit(handlePosition) = 0
+
+-- generate const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD
+const_lutz_Lutz_stm_ref2_HANDSHAKE_CHECK_PERIOD = 0
+
+-- generate const_bacs_B_acs_ZERO_SPEED
+const_bacs_B_acs_ZERO_SPEED = 0
+
+-- generate const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit
+const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit = 0
+
+-- generate natToSpeed
+natToSpeed(speedValue) = 0
+
+-- generate const_bacs_B_acs_MINIMIM_SPEED
+const_bacs_B_acs_MINIMIM_SPEED = 0
+
+-- generate lutz_DecreaseQualityOfService
+lutz_DecreaseQualityOfService(quality) = 0
+
+-- generate bacs_TimeCompareGreaterThan
+bacs_TimeCompareGreaterThan(a,b) = true
+
+-- generate const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED
+const_bacs_B_acs_stm_ref11_MAXIMUM_SPEED = 0
+
+-- generate const_lutz_Lutz_stm_ref0_CONTROL_PERIOD
+const_lutz_Lutz_stm_ref0_CONTROL_PERIOD = 0
+
+-- generate const_bacs_B_acs_stm_ref11_MINIMIM_SPEED
+const_bacs_B_acs_stm_ref11_MINIMIM_SPEED = 0
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate Angle
+nametype Angle = {0,1}
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate bacs_DemandLimiterSpeed_MinSpeed
+bacs_DemandLimiterSpeed_MinSpeed(speedsToSearch) = 0
+
+-- generate realToSpeed
+realToSpeed(speedValue) = 0
+
+-- generate const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS
+const_lutz_Lutz_stm_ref2_HANDSHAKE_RESPONSE_KEYS = <>
+
+-- generate const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT
+const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT = 0
+
+-- generate const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED
+const_bacs_AutoDemand_AutoDemand_MINIMIM_SPEED = 0
+
+-- generate lutz_DetermineUserInstruction_GetEstopState
+lutz_DetermineUserInstruction_GetEstopState(battery,status) = VehicleReadyState_DRIVER_SEAT_ERROR
+
+-- generate const_bacs_AutoDemand_AutoDemand_ZERO_SPEED
+const_bacs_AutoDemand_AutoDemand_ZERO_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION
+const_bacs_B_acs_stm_ref7_DEFAULT_CONFIGURATION = (0,0)
+
+-- generate autonomous_vehicle_system_GetSystemTime
+autonomous_vehicle_system_GetSystemTime() = 0
+
+-- generate const_bacs_B_acs_stm_ref11_ZERO_SPEED
+const_bacs_B_acs_stm_ref11_ZERO_SPEED = 0
+
+-- generate lutz_DetermineUserInstruction_GetErrorTrue
+lutz_DetermineUserInstruction_GetErrorTrue(status) = VehicleReadyState_DRIVER_SEAT_ERROR
+
+-- generate const_bacs_B_acs_stm_ref7_MINIMIM_SPEED
+const_bacs_B_acs_stm_ref7_MINIMIM_SPEED = 0
+
+-- generate const_bacs_AgeChecker_AgeChecker_RATE
+const_bacs_AgeChecker_AgeChecker_RATE = 0
+
+-- generate lutz_DetermineUserInstruction_GetSessionControlFromUserInstructionAndSessionControl
+lutz_DetermineUserInstruction_GetSessionControlFromUserInstructionAndSessionControl(combined) = (VehicleState_INVALID,0)
+
+-- generate LocationCompareEqual
+LocationCompareEqual(a,b) = true
+
+-- generate const_bacs_B_acs_stm_ref7_ZERO_SPEED
+const_bacs_B_acs_stm_ref7_ZERO_SPEED = 0
+
+-- generate bacs_ZeroVehicleDemand
+bacs_ZeroVehicleDemand() = (0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,""))
+
+-- generate const_bacs_B_acs_stm_ref2_zeroSpeedLimit
+const_bacs_B_acs_stm_ref2_zeroSpeedLimit = 0
+
+-- generate const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST
+const_lutz_Lutz_stm_ref0_ZERO_SESSION_REQUEST = (VehicleState_INVALID,0)
+
+-- generate const_bacs_AgeChecker_AgeChecker_ZERO_STEER
+const_bacs_AgeChecker_AgeChecker_ZERO_STEER = 0
+
+-- generate const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT
+const_lutz_Lutz_stm_ref2_HANDSHAKE_TIMEOUT = 0
+
+-- OPERATION CONSTANTS
+
+-- BASIC TYPES
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate SessionId
+nametype SessionId = {0,1}
+
+-- generate bacs_CalculateSpeed
+bacs_CalculateSpeed(config,objective,steerDemand) = 0
+
+-- generate --
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- generate bacs_TimeSubtract
+bacs_TimeSubtract(a,b) = 0
+
+-- generate bacs_TimeCompareGreaterThanEqual
+bacs_TimeCompareGreaterThanEqual(a,b) = true
+
+-- generate const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit
+const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit = 0
+
+-- generate const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY
+const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY = 0
+
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{ConfigAgeChecker_rate(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStartRamp(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStop(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_rate(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStartRamp(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStop(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), { -2..2})|demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), { -2..2})|demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{autonomous_vehicle_system_GetSystemTime()},{ConfigDeadMans_rangeMin(retrievedConfiguration)|retrievedConfiguration <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMax(retrievedConfiguration)|retrievedConfiguration <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMin(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMax(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{zeroSpeedLimit|zeroSpeedLimit <- { -2..2}},{Div((Minus(DeadMansHandleReading_analogReading(msg), rangeMin, { -2..2})), no_zero_div((Minus(rangeMax, rangeMin, { -2..2}))), { -2..2})|msg <- {(f_analogReading,f_header)|f_analogReading <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}},rangeMin <- { -2..2},rangeMax <- { -2..2}},{oneSpeedLimit|oneSpeedLimit <- { -2..2}},{Header_stamp(DeadMansHandleReading_header(msg))|msg <- {(f_analogReading,f_header)|f_analogReading <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{ZERO_RATIO|ZERO_RATIO <- { -2..2}},{ZERO_SPEED|ZERO_SPEED <- { -2..2}},{Header_stamp(LatLngHeadingFix_header(msg))|msg <- {(f_latitude,f_longitude,f_header)|f_latitude <- { -2..2},f_longitude <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{bacs_Geofence_GeoFenceLocalMaxSpeed(msg,ConfigGeofence_fence(currentConfiguration),ConfigGeofence_maxSpeed(currentConfiguration))|msg <- {(f_latitude,f_longitude,f_header)|f_latitude <- { -2..2},f_longitude <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}},currentConfiguration <- {(f_fence,f_maxSpeed)|f_fence <- LSeq(GeofenceRectangle,2),f_maxSpeed <- {0}}},{autonomous_vehicle_system_GetSystemTime()},{currentTime|currentTime <- { -2..2}},{currentTime|currentTime <- { -2..2}},{0},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{Div(Mult(SpeedToReal(PodDemand_speed(demand)), (Minus(ageToStop, age, { -2..2})), { -2..2}), no_zero_div((Minus(ageToStop, ageToStartRamp, { -2..2}))), { -2..2})|age <- { -2..2},ageToStartRamp <- { -2..2},ageToStop <- { -2..2},demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{SpeedLimit_speedLimit(currentSpeedLimit)|currentSpeedLimit <- {(f_header,f_speedLimit)|f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}},f_speedLimit <- { -2..2}}},{SpeedLimit_speedLimit(limitingRatio)|limitingRatio <- {(f_header,f_speedLimit)|f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}},f_speedLimit <- { -2..2}}}}))..calc_type_max(Union({{ConfigAgeChecker_rate(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStartRamp(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStop(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_rate(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStartRamp(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_ageToStop(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), { -2..2})|demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{Minus(autonomous_vehicle_system_GetSystemTime(), Header_stamp(PodDemand_header(demand)), { -2..2})|demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{autonomous_vehicle_system_GetSystemTime()},{ConfigDeadMans_rangeMin(retrievedConfiguration)|retrievedConfiguration <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMax(retrievedConfiguration)|retrievedConfiguration <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMin(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{ConfigDeadMans_rangeMax(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rangeMin,f_rangeMax,f_retrieved)|f_rangeMin <- { -2..2},f_rangeMax <- { -2..2},f_retrieved <- Bool}},{zeroSpeedLimit|zeroSpeedLimit <- { -2..2}},{Div((Minus(DeadMansHandleReading_analogReading(msg), rangeMin, { -2..2})), no_zero_div((Minus(rangeMax, rangeMin, { -2..2}))), { -2..2})|msg <- {(f_analogReading,f_header)|f_analogReading <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}},rangeMin <- { -2..2},rangeMax <- { -2..2}},{oneSpeedLimit|oneSpeedLimit <- { -2..2}},{Header_stamp(DeadMansHandleReading_header(msg))|msg <- {(f_analogReading,f_header)|f_analogReading <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{ZERO_RATIO|ZERO_RATIO <- { -2..2}},{ZERO_SPEED|ZERO_SPEED <- { -2..2}},{Header_stamp(LatLngHeadingFix_header(msg))|msg <- {(f_latitude,f_longitude,f_header)|f_latitude <- { -2..2},f_longitude <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{bacs_Geofence_GeoFenceLocalMaxSpeed(msg,ConfigGeofence_fence(currentConfiguration),ConfigGeofence_maxSpeed(currentConfiguration))|msg <- {(f_latitude,f_longitude,f_header)|f_latitude <- { -2..2},f_longitude <- { -2..2},f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}},currentConfiguration <- {(f_fence,f_maxSpeed)|f_fence <- LSeq(GeofenceRectangle,2),f_maxSpeed <- {0}}},{autonomous_vehicle_system_GetSystemTime()},{currentTime|currentTime <- { -2..2}},{currentTime|currentTime <- { -2..2}},{0},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{Div(Mult(SpeedToReal(PodDemand_speed(demand)), (Minus(ageToStop, age, { -2..2})), { -2..2}), no_zero_div((Minus(ageToStop, ageToStartRamp, { -2..2}))), { -2..2})|age <- { -2..2},ageToStartRamp <- { -2..2},ageToStop <- { -2..2},demand <- {(f_steer,f_speed,f_brake,f_abdicate,f_source,f_driveByWireRequest,f_header)|f_steer <- {0},f_speed <- {0},f_brake <- BrakeState,f_abdicate <- Bool,f_source <- DemandSource,f_driveByWireRequest <- Bool,f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}}}},{SpeedLimit_speedLimit(currentSpeedLimit)|currentSpeedLimit <- {(f_header,f_speedLimit)|f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}},f_speedLimit <- { -2..2}}},{SpeedLimit_speedLimit(limitingRatio)|limitingRatio <- {(f_header,f_speedLimit)|f_header <- {(f_stamp,f_seq,f_frameId)|f_stamp <- { -2..2},f_seq <- {0..2},f_frameId <- {""}},f_speedLimit <- { -2..2}}}}))})
+
+-- generate const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND = (true,true,true,0,(0,0,""))
+
+-- generate lutz_KeyPositionAutonomous
+lutz_KeyPositionAutonomous(positionAuto) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED
+const_bacs_DemandLimiterSpeed_DemandLimiterSpeed_ZERO_SPEED = 0
+
+-- generate bacs_ConvertPointRouteToOriginPoint
+bacs_ConvertPointRouteToOriginPoint(point) = ((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0)
+
+-- generate const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY
+const_bacs_AgeChecker_AgeChecker_MESSAGE_HANDLING_DELAY = 0
+
+-- generate realToRatio
+realToRatio(ratioValue) = 0
+
+-- generate bacs_SortRouteToCurrentLocation
+bacs_SortRouteToCurrentLocation(location,route) = <>
+
+-- generate bacs_PathGoalReached
+bacs_PathGoalReached(objective,location,config) = true
+
+-- generate bacs_GamepadCalculateAuxiliaryDemand
+bacs_GamepadCalculateAuxiliaryDemand(gamepadValues,config) = (true,true,true,0,(0,0,""))
+
+-- generate bacs_TimeCompareLessThan
+bacs_TimeCompareLessThan(a,b) = true
+
+-- generate const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD
+const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD = 0
+
+-- generate bacs_GamepadCalculateSpeed
+bacs_GamepadCalculateSpeed(gamepadValues,config) = 0
+
+-- generate const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD
+const_lutz_Lutz_stm_ref1_SESSION_CONTROL_PERIOD = 0
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate natToRatio
+natToRatio(ratioValue) = 0
+
+-- generate Time
+nametype Time = {0,1}
+
+-- generate lutz_DetermineUserInstruction_MakeSessionValid
+lutz_DetermineUserInstruction_MakeSessionValid(readyState,currentSession) = (true,(UserCode_DRIVER_SEAT),(VehicleState_INVALID,0))
+
+-- generate lutz_MakeVehicleReady
+lutz_MakeVehicleReady(status) = 0
+
+-- generate -- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- generate bacs_Geofence_GeoFenceLocalMaxSpeed
+bacs_Geofence_GeoFenceLocalMaxSpeed(loc,fence,maxSpeed) = 0
+
+-- generate SpeedCompareLessThan
+SpeedCompareLessThan(a,b) = true
+
+-- generate bacs_GamepadGetAbdication
+bacs_GamepadGetAbdication(gamepadValues) = true
+
+-- generate bacs_ZeroSpeed
+bacs_ZeroSpeed() = 0
+
+-- generate const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION
+const_bacs_AgeChecker_AgeChecker_DEFAULT_CONFIGURATION = (0,0,0,true)
+
+-- generate lutz_IncreaseQualityOfService
+lutz_IncreaseQualityOfService(quality) = 0
+
+-- generate lutz_LutzState_KilometersPerHourToMetersPerSecond
+lutz_LutzState_KilometersPerHourToMetersPerSecond(speedkph) = 0
+
+-- generate Speed
+nametype Speed = {0,1}
+
+-- generate bacs_TimeCompareLessThanEqual
+bacs_TimeCompareLessThanEqual(a,b) = true
+
+-- generate const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND
+const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND = (true,true,true,0,(0,0,""))
+
+-- generate const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION
+const_bacs_B_acs_stm_ref5_DEFAULT_CONFIGURATION = (0,0,0)
+
+-- generate const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND
+const_bacs_B_acs_stm_ref6_MAX_TIME_BETWEEN_DEMAND = 0
+
+-- generate const_bacs_B_acs_stm_ref11_RATE
+const_bacs_B_acs_stm_ref11_RATE = 0
+
+-- generate lutz_DetermineUserInstruction_GetUserInstructionFromUserInstructionAndSessionControl
+lutz_DetermineUserInstruction_GetUserInstructionFromUserInstructionAndSessionControl(combined) = (true,(UserCode_DRIVER_SEAT))
+
+-- generate const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED
+const_bacs_AutoDemand_AutoDemand_MAXIMUM_SPEED = 0
+
+-- generate const_bacs_B_acs_stm_ref2_oneSpeedLimit
+const_bacs_B_acs_stm_ref2_oneSpeedLimit = 0
+
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{{ConfigAgeChecker_rate(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_rate(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{0},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))..calc_type_max(Union({{ConfigAgeChecker_rate(retrievedConfiguration)|retrievedConfiguration <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{ConfigAgeChecker_rate(DEFAULT_CONFIGURATION)|DEFAULT_CONFIGURATION <- {(f_rate,f_ageToStartRamp,f_ageToStop,f_retrieved)|f_rate <- { -2..2},f_ageToStartRamp <- { -2..2},f_ageToStop <- { -2..2},f_retrieved <- Bool}},{0},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))})
+
+-- generate const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND
+const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND = (0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,""))
+
+-- generate const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY
+const_bacs_B_acs_stm_ref11_MESSAGE_HANDLING_DELAY = 0
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD
+const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD = 0
+
+-- generate bacs_GamepadGetAutonomousRequest
+bacs_GamepadGetAutonomousRequest(gamepadValues) = true
+
+-- generate const_bacs_B_acs_ZERO_STEER
+const_bacs_B_acs_ZERO_STEER = 0
+
+-- STATEMACHINE CONSTANTS
+
+-- generate lutz_DetermineUserInstruction_GetSessionValidState
+lutz_DetermineUserInstruction_GetSessionValidState(currentSession,eps,powertrain,status,parkBrake,handshake) = VehicleReadyState_DRIVER_SEAT_ERROR
+

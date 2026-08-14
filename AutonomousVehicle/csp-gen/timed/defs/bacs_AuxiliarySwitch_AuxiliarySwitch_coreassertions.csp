@@ -1,0 +1,41 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "bacs_AuxiliarySwitch_AuxiliarySwitch.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "bacs_AuxiliarySwitch_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate bacs_AuxiliarySwitch_AuxiliarySwitch
+P_bacs_AuxiliarySwitch_AuxiliarySwitch = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_AuxiliarySwitch_AuxiliarySwitch::O__(
+		id__,
+		const_bacs_AuxiliarySwitch_AuxiliarySwitch_AUXILIARY_SELECTION_PERIOD,
+		const_bacs_AuxiliarySwitch_AuxiliarySwitch_ZERO_AUXILIARY_DEMAND
+	)
+assert P_bacs_AuxiliarySwitch_AuxiliarySwitch :[deadlock-free]	
+assert P_bacs_AuxiliarySwitch_AuxiliarySwitch;RUN({r__}) :[deadlock-free]
+assert P_bacs_AuxiliarySwitch_AuxiliarySwitch :[deterministic]
+assert P_bacs_AuxiliarySwitch_AuxiliarySwitch :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_AuxiliarySwitch_AuxiliarySwitch[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_AuxiliarySwitch_AuxiliarySwitch

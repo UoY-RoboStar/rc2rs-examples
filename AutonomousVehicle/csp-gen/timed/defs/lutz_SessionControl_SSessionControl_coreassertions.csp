@@ -1,0 +1,52 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "function_toolkit_defs.csp"
+include "lutz_VehicleControl_defs.csp"
+include "relation_toolkit_defs.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "state_timed_defs.csp"
+include "lutz_SessionControl_defs.csp"
+include "autonomous_vehicle_system_defs.csp"
+include "lutz_LutzState_defs.csp"
+include "lutz_FaultDetection_defs.csp"
+include "lutz_SessionControl_SSessionControl.csp"
+include "../instantiations.csp"
+include "lutz_defs.csp"
+include "data_logging_defs.csp"
+include "set_toolkit_defs.csp"
+include "core_timed_defs.csp"
+include "sequence_toolkit_defs.csp"
+include "lutz_DetermineUserInstruction_defs.csp"
+include "utility_defs.csp"
+include "robochart_defs.csp"
+
+transparent wbisim
+channel r__
+-- generate lutz_SessionControl_SSessionControl
+P_lutz_SessionControl_SSessionControl = let
+	id__ = 0
+	
+	
+	
+within
+	lutz_SessionControl_SSessionControl::O__(
+		id__,
+		const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD
+	)
+assert P_lutz_SessionControl_SSessionControl :[deadlock-free]	
+assert P_lutz_SessionControl_SSessionControl;RUN({r__}) :[deadlock-free]
+assert P_lutz_SessionControl_SSessionControl :[deterministic]
+assert P_lutz_SessionControl_SSessionControl :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_lutz_SessionControl_SSessionControl[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_lutz_SessionControl_SSessionControl

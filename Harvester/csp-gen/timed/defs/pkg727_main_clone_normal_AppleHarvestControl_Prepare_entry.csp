@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:08
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -40,8 +40,8 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_fCall: core_nat.core_nat
-	channel waitIntervalCall: core_nat.core_nat
 	channel hideArmCall
+	channel waitIntervalCall: core_nat.core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -62,8 +62,8 @@ exports
 	sem__events = {|
 		terminate
 	,	clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_fCall,
-		waitIntervalCall,
-		hideArmCall
+		hideArmCall,
+		waitIntervalCall
 		, share__
 		|}
 	
@@ -186,12 +186,12 @@ exports
 				    const_pkg727_main_clone_normal_AppleHarvestControl_Prepare_entry_hideTime,
 					param_m,
 					param_n) = EDeadline(clone_normal_AppleHarvestControl_Prepare_entry_clone_waitInterval_j_2_3_fCall.param_m.param_n,0)
+		CALL__hideArm(id__,
+				    const_pkg727_main_clone_normal_AppleHarvestControl_Prepare_entry_hideTime) = EDeadline(hideArmCall,0)
 		CALL__waitInterval(id__,
 				    const_pkg727_main_clone_normal_AppleHarvestControl_Prepare_entry_hideTime,
 					param_m,
 					param_n) = EDeadline(waitIntervalCall.param_m.param_n,0)
-		CALL__hideArm(id__,
-				    const_pkg727_main_clone_normal_AppleHarvestControl_Prepare_entry_hideTime) = EDeadline(hideArmCall,0)
 		
 		-- END of Operation calls --
 	

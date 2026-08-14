@@ -1,0 +1,3208 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module lutz_DetermineUserInstruction
+exports
+
+
+
+
+
+-- compileSelfContainedOperation
+module OP_DetermineUserInstruction
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_Off|
+	              NID_Manual|
+	              NID_NoSession|
+	              NID_NewSession|
+	              NID_Primed|
+	              NID_Autonomous|
+	              NID_Error|
+	              NID_Override|
+	              NID_EmergencyStop|
+	              NID_CheckSteeringCentered|
+	              NID_SteeringCentering|
+	              NID_j0|
+	              NID_f0|
+	              NID_i0|
+	              NID_UpdateSession|
+	              NID_UpdateUserInstruction|
+	              NID_UpdateReadyState|
+	              NID_PrepareUserInstruction|
+	              NID_PrepareSession|
+	              NID_Ready
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_next, set_next, setL_next, setR_next: SessionControl
+	channel get_newInstruction, set_newInstruction, setL_newInstruction, setR_newInstruction: {(x0__,x1__) | x0__ <- core_boolean,x1__ <- UICode}
+	channel get_newReadyState, set_newReadyState, setL_newReadyState, setR_newReadyState: VehicleReadyState
+	channel get_newInstructionAndSession, set_newInstructionAndSession, setL_newInstructionAndSession, setR_newInstructionAndSession: {(x0__,x1__,x2__) | x0__ <- core_boolean,x1__ <- UICode,x2__ <- SessionControl}
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel instruction__: NIDS.InOut.UICode
+	channel instruction: InOut.UICode
+	channel session__: NIDS.InOut.SessionControl
+	channel session: InOut.SessionControl
+	channel readyStateOut__: NIDS.InOut.VehicleReadyState
+	channel readyStateOut: InOut.VehicleReadyState
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	Off::enter,
+	Manual::enter,
+	NoSession::enter,
+	NewSession::enter,
+	Primed::enter,
+	Autonomous::enter,
+	Error::enter,
+	Override::enter,
+	EmergencyStop::enter,
+	CheckSteeringCentered::enter,
+	SteeringCentering::enter,
+	j0::enter,
+	f0::enter,
+	i0::enter,
+	UpdateSession::enter,
+	UpdateUserInstruction::enter,
+	UpdateReadyState::enter,
+	PrepareUserInstruction::enter,
+	PrepareSession::enter,
+	Ready::enter
+	|}
+	
+	enteredSS = 	{|
+	Off::entered,
+	Manual::entered,
+	NoSession::entered,
+	NewSession::entered,
+	Primed::entered,
+	Autonomous::entered,
+	Error::entered,
+	Override::entered,
+	EmergencyStop::entered,
+	CheckSteeringCentered::entered,
+	SteeringCentering::entered,
+	f0::entered,
+	UpdateSession::entered,
+	UpdateUserInstruction::entered,
+	UpdateReadyState::entered,
+	PrepareUserInstruction::entered,
+	PrepareSession::entered,
+	Ready::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	instruction,
+		session,
+		readyStateOut
+		, share__
+		|}
+	
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: Off
+	module Off
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newInstruction!lutz_KeyPostionManual(Battery_ignitionManual(param_podBattery)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newInstruction!lutz_KeyPostionManual(Battery_ignitionManual(param_podBattery)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Manual
+	module Manual
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newInstruction!lutz_KeyPositionAutonomous(Battery_ignitionAuto(param_podBattery)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newInstruction!lutz_KeyPositionAutonomous(Battery_ignitionAuto(param_podBattery)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: NoSession
+	module NoSession
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_next?next -> true & (share__choice(set_next!update_SessionControl_requestedState(next,VehicleState_NEW_SESSION) -> SKIP))));share__choice(share__choice(get_next?next -> true & (share__choice(set_next!update_SessionControl_sesionId(next,0) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_next?next -> true & (share__choice(set_next!update_SessionControl_requestedState(next,VehicleState_NEW_SESSION) -> SKIP))));share__choice(share__choice(get_next?next -> true & (share__choice(set_next!update_SessionControl_sesionId(next,0) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: NewSession
+	module NewSession
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetSessionValidState(param_currentSession,param_podEps,param_podPowertrain,param_podStatus,param_podParkBrake,param_podHandshake) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstructionAndSession!lutz_DetermineUserInstruction_MakeSessionValid(newReadyState,param_currentSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetSessionValidState(param_currentSession,param_podEps,param_podPowertrain,param_podStatus,param_podParkBrake,param_podHandshake) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstructionAndSession!lutz_DetermineUserInstruction_MakeSessionValid(newReadyState,param_currentSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Primed
+	module Primed
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Autonomous
+	module Autonomous
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Error
+	module Error
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetErrorTrue(param_podStatus) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_MakeErrorFalse(newReadyState) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetErrorTrue(param_podStatus) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_MakeErrorFalse(newReadyState) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Override
+	module Override
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: EmergencyStop
+	module EmergencyStop
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetEstopState(param_podBattery,param_podStatus) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_GetEstopReason(newReadyState) -> SKIP))));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_MakeEstopFalse(newReadyState) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_newReadyState!lutz_DetermineUserInstruction_GetEstopState(param_podBattery,param_podStatus) -> SKIP)));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_GetEstopReason(newReadyState) -> SKIP))));share__choice(share__choice(get_newReadyState?newReadyState -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_MakeEstopFalse(newReadyState) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: CheckSteeringCentered
+	module CheckSteeringCentered
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: SteeringCentering
+	module SteeringCentering
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j0
+	module j0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Final state: f0
+	module f0
+	
+	exports
+	
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+		--	Rule: behaviours(Node)
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+				
+				Entering 	= entered -> SKIP ; Active
+				Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+				Interrupted	= share__choice(exit -> exited -> Inactive)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: UpdateSession
+	module UpdateSession
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_next?next -> true&(share__choice(session.out!next -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_next?next -> true&(share__choice(session.out!next -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: UpdateUserInstruction
+	module UpdateUserInstruction
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_newInstruction?newInstruction -> true&(share__choice(instruction.out!(tuple2_2(newInstruction)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_newInstruction?newInstruction -> true&(share__choice(instruction.out!(tuple2_2(newInstruction)) -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: UpdateReadyState
+	module UpdateReadyState
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_newReadyState?newReadyState -> true&(share__choice(readyStateOut.out!newReadyState -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(get_newReadyState?newReadyState -> true&(share__choice(readyStateOut.out!newReadyState -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: PrepareUserInstruction
+	module PrepareUserInstruction
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_newInstructionAndSession?newInstructionAndSession -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_GetUserInstructionFromUserInstructionAndSessionControl(newInstructionAndSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_newInstructionAndSession?newInstructionAndSession -> true & (share__choice(set_newInstruction!lutz_DetermineUserInstruction_GetUserInstructionFromUserInstructionAndSessionControl(newInstructionAndSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: PrepareSession
+	module PrepareSession
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_newInstructionAndSession?newInstructionAndSession -> true & (share__choice(set_next!lutz_DetermineUserInstruction_GetSessionControlFromUserInstructionAndSessionControl(newInstructionAndSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_newInstructionAndSession?newInstructionAndSession -> true & (share__choice(set_next!lutz_DetermineUserInstruction_GetSessionControlFromUserInstructionAndSessionControl(newInstructionAndSession) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Ready
+	module Ready
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) \ {terminate}
+	
+	STM_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = -- RULE: [[stm:OperationDef]]_STM^nops : CSPProcess
+	Stateful(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) \ {terminate}
+	
+	-- Transitions
+	Transitions(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = ((let
+		Trans = share__choice(get_newInstructionAndSession?newInstructionAndSession -> get_newInstruction?newInstruction -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Off::enter -> SKIP)))
+			 	 [] dbisim(((Status_systemState(param_podStatus)==VehicleState_OVERRIDE))&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Override::enter -> SKIP)))
+			 	 [] dbisim(((not (tuple2_1(newInstruction))))&(internal__!NID_Off -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Override -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim(((Status_systemState(param_podStatus)==VehicleState_MANUAL))&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Manual::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Autonomous::enter -> SKIP)))
+			 	 [] dbisim(((Status_systemState(param_podStatus)==VehicleState_ERROR))&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Error::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Primed::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckSteeringCentered::enter -> SKIP)))
+			 	 [] dbisim(((Status_systemState(param_podStatus)==VehicleState_EMERGENCY_STOP))&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; EmergencyStop::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; NoSession::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SteeringCentering::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Autonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Primed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_CheckSteeringCentered -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_SteeringCentering -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim(((not (tuple3_1(newInstructionAndSession))))&(internal__!NID_NewSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; PrepareSession::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_NoSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateSession::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_EmergencyStop -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateReadyState::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Error -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateReadyState::enter -> SKIP)))
+			 	 [] dbisim(((not (tuple2_1(newInstruction))))&(internal__!NID_Manual -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((tuple2_1(newInstruction))&(internal__!NID_Off -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateUserInstruction::enter -> SKIP)))
+			 	 [] dbisim((tuple2_1(newInstruction))&(internal__!NID_Manual -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateUserInstruction::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_UpdateUserInstruction -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; f0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; f0::enter -> SKIP))))
+			 	 [] dbisim((tuple2_1(newInstruction))&(internal__!NID_UpdateReadyState -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateUserInstruction::enter -> SKIP)))
+			 	 [] dbisim(((not (tuple2_1(newInstruction))))&(internal__!NID_UpdateReadyState -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; f0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_UpdateSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; f0::enter -> SKIP)))
+			 	 [] dbisim((tuple3_1(newInstructionAndSession))&(internal__!NID_NewSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; PrepareUserInstruction::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; NewSession::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_PrepareUserInstruction -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateUserInstruction::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_PrepareSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateSession::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Ready::enter -> SKIP))))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f0::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				Off::enter,
+				Manual::enter,
+				NoSession::enter,
+				NewSession::enter,
+				Primed::enter,
+				Autonomous::enter,
+				Error::enter,
+				Override::enter,
+				EmergencyStop::enter,
+				CheckSteeringCentered::enter,
+				SteeringCentering::enter,
+				j0::enter,
+				f0::enter,
+				i0::enter,
+				UpdateSession::enter,
+				UpdateUserInstruction::enter,
+				UpdateReadyState::enter,
+				PrepareUserInstruction::enter,
+				PrepareSession::enter,
+				Ready::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Off,internal__.NID_Override,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Autonomous,internal__.NID_Primed,internal__.NID_CheckSteeringCentered,internal__.NID_SteeringCentering,internal__.NID_NewSession,internal__.NID_NoSession,internal__.NID_EmergencyStop,internal__.NID_Error,internal__.NID_Manual,internal__.NID_Off,internal__.NID_Manual,internal__.NID_UpdateUserInstruction,internal__.NID_j0,internal__.NID_UpdateReadyState,internal__.NID_UpdateReadyState,internal__.NID_UpdateSession,internal__.NID_NewSession,internal__.NID_Ready,internal__.NID_PrepareUserInstruction,internal__.NID_PrepareSession,internal__.NID_i0|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   Off::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Manual::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   NoSession::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   NewSession::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Primed::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Autonomous::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Error::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Override::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   EmergencyStop::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   CheckSteeringCentered::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   SteeringCentering::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   j0::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   f0::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateSession::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateUserInstruction::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateReadyState::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   PrepareUserInstruction::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   PrepareSession::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Ready::D__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Off::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Off,internal__.NID_Off|}]]
+					 [[Manual::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Manual,internal__.NID_Manual|}]]
+					 [[NoSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NoSession|}]]
+					 [[NewSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NewSession,internal__.NID_NewSession|}]]
+					 [[Primed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Primed|}]]
+					 [[Autonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Autonomous|}]]
+					 [[Error::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Error|}]]
+					 [[Override::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Override|}]]
+					 [[EmergencyStop::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmergencyStop|}]]
+					 [[CheckSteeringCentered::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckSteeringCentered|}]]
+					 [[SteeringCentering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SteeringCentering|}]]
+					 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[UpdateSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateSession|}]]
+					 [[UpdateUserInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateUserInstruction|}]]
+					 [[UpdateReadyState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateReadyState,internal__.NID_UpdateReadyState|}]]
+					 [[PrepareUserInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareUserInstruction|}]]
+					 [[PrepareSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareSession|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_newInstructionAndSession <- setL_newInstructionAndSession,set_newInstruction <- setL_newInstruction]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_newInstructionAndSession
+					 			,setL_newInstruction
+					|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 			param_readyState,
+					 			param_currentSession,
+					 			param_podStatus,
+					 			param_podPowertrain,
+					 			param_podEps,
+					 			param_podEpsInboard,
+					 			param_podEpsOutboard,
+					 			param_podParkBrake,
+					 			param_podBattery,
+					 			param_podControlCommand1,
+					 			param_podHandshake))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_newInstructionAndSession,setL_newInstruction |} ]]
+					 )
+					)[[setL_newInstructionAndSession <- set_newInstructionAndSession,setL_newInstruction <- set_newInstruction]]
+					)
+				)
+				 \ hideSet)
+				[[
+					instruction__.x____ <- instruction,
+					session__.x____ <- session,
+					readyStateOut__.x____ <- readyStateOut
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((MachineBody(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((MachineBody(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake)\ enteredSS)
+		)
+	
+	Stateful(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		((
+			(Behaviour(id__,
+						param_readyState,
+						param_currentSession,
+						param_podStatus,
+						param_podPowertrain,
+						param_podEps,
+						param_podEpsInboard,
+						param_podEpsOutboard,
+						param_podParkBrake,
+						param_podBattery,
+						param_podControlCommand1,
+						param_podHandshake) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+						param_readyState,
+						param_currentSession,
+						param_podStatus,
+						param_podPowertrain,
+						param_podEps,
+						param_podEpsInboard,
+						param_podEpsOutboard,
+						param_podParkBrake,
+						param_podBattery,
+						param_podControlCommand1,
+						param_podHandshake))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										Behaviour(id__,
+													param_readyState,
+													param_currentSession,
+													param_podStatus,
+													param_podPowertrain,
+													param_podEps,
+													param_podEpsInboard,
+													param_podEpsOutboard,
+													param_podParkBrake,
+													param_podBattery,
+													param_podControlCommand1,
+													param_podHandshake)
+										[| {|get_newInstructionAndSession,set_newInstructionAndSession,terminate|} |]
+										Memory_newInstructionAndSession((true,(UserCode_DRIVER_SEAT),(VehicleState_INVALID,0)))
+									)\{|get_newInstructionAndSession,set_newInstructionAndSession|}
+								)
+								[| {|get_newReadyState,set_newReadyState,terminate|} |]
+								Memory_newReadyState(VehicleReadyState_DRIVER_SEAT_ERROR)
+							)\{|get_newReadyState,set_newReadyState|}
+						)
+						[| {|get_newInstruction,set_newInstruction,terminate|} |]
+						Memory_newInstruction((true,(UserCode_DRIVER_SEAT)))
+					)\{|get_newInstruction,set_newInstruction|}
+				)
+				[| {|get_next,set_next,terminate|} |]
+				Memory_next((VehicleState_INVALID,0))
+			)\{|get_next,set_next|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((
+		let
+			finalNodesEntered = {|f0::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				Off::enter,
+				Manual::enter,
+				NoSession::enter,
+				NewSession::enter,
+				Primed::enter,
+				Autonomous::enter,
+				Error::enter,
+				Override::enter,
+				EmergencyStop::enter,
+				CheckSteeringCentered::enter,
+				SteeringCentering::enter,
+				j0::enter,
+				f0::enter,
+				i0::enter,
+				UpdateSession::enter,
+				UpdateUserInstruction::enter,
+				UpdateReadyState::enter,
+				PrepareUserInstruction::enter,
+				PrepareSession::enter,
+				Ready::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Off,internal__.NID_Override,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Autonomous,internal__.NID_Primed,internal__.NID_CheckSteeringCentered,internal__.NID_SteeringCentering,internal__.NID_NewSession,internal__.NID_NoSession,internal__.NID_EmergencyStop,internal__.NID_Error,internal__.NID_Manual,internal__.NID_Off,internal__.NID_Manual,internal__.NID_UpdateUserInstruction,internal__.NID_j0,internal__.NID_UpdateReadyState,internal__.NID_UpdateReadyState,internal__.NID_UpdateSession,internal__.NID_NewSession,internal__.NID_Ready,internal__.NID_PrepareUserInstruction,internal__.NID_PrepareSession,internal__.NID_i0|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   Off::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Manual::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   NoSession::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   NewSession::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Primed::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Autonomous::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Error::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Override::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   EmergencyStop::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   CheckSteeringCentered::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   SteeringCentering::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   j0::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   f0::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateSession::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateUserInstruction::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   UpdateReadyState::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   PrepareUserInstruction::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   PrepareSession::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   [| { share__, terminate } |] (
+					   Ready::VS_O__(id__,
+					   			param_readyState,
+					   			param_currentSession,
+					   			param_podStatus,
+					   			param_podPowertrain,
+					   			param_podEps,
+					   			param_podEpsInboard,
+					   			param_podEpsOutboard,
+					   			param_podParkBrake,
+					   			param_podBattery,
+					   			param_podControlCommand1,
+					   			param_podHandshake)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Off::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Off,internal__.NID_Off|}]]
+					 [[Manual::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Manual,internal__.NID_Manual|}]]
+					 [[NoSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NoSession|}]]
+					 [[NewSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NewSession,internal__.NID_NewSession|}]]
+					 [[Primed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Primed|}]]
+					 [[Autonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Autonomous|}]]
+					 [[Error::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Error|}]]
+					 [[Override::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Override|}]]
+					 [[EmergencyStop::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmergencyStop|}]]
+					 [[CheckSteeringCentered::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckSteeringCentered|}]]
+					 [[SteeringCentering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SteeringCentering|}]]
+					 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[UpdateSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateSession|}]]
+					 [[UpdateUserInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateUserInstruction|}]]
+					 [[UpdateReadyState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateReadyState,internal__.NID_UpdateReadyState|}]]
+					 [[PrepareUserInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareUserInstruction|}]]
+					 [[PrepareSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareSession|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready,internal__.NID_Ready|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_newInstructionAndSession <- setL_newInstructionAndSession,set_newInstruction <- setL_newInstruction]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_newInstructionAndSession
+					 			,setL_newInstruction
+					|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 			param_readyState,
+					 			param_currentSession,
+					 			param_podStatus,
+					 			param_podPowertrain,
+					 			param_podEps,
+					 			param_podEpsInboard,
+					 			param_podEpsOutboard,
+					 			param_podParkBrake,
+					 			param_podBattery,
+					 			param_podControlCommand1,
+					 			param_podHandshake))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_newInstructionAndSession,setL_newInstruction |} ]]
+					 )
+					)[[setL_newInstructionAndSession <- set_newInstructionAndSession,setL_newInstruction <- set_newInstruction]]
+					)
+				)
+				 \ hideSet)
+				[[
+					instruction__.x____ <- instruction,
+					session__.x____ <- session,
+					readyStateOut__.x____ <- readyStateOut
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((MachineBody_VS_O(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((MachineBody_VS_O(id__,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake))
+		)
+	
+	Stateful_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+						param_readyState,
+						param_currentSession,
+						param_podStatus,
+						param_podPowertrain,
+						param_podEps,
+						param_podEpsInboard,
+						param_podEpsOutboard,
+						param_podParkBrake,
+						param_podBattery,
+						param_podControlCommand1,
+						param_podHandshake) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+						param_readyState,
+						param_currentSession,
+						param_podStatus,
+						param_podPowertrain,
+						param_podEps,
+						param_podEpsInboard,
+						param_podEpsOutboard,
+						param_podParkBrake,
+						param_podBattery,
+						param_podControlCommand1,
+						param_podHandshake))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										Behaviour_VS_O(id__,
+													param_readyState,
+													param_currentSession,
+													param_podStatus,
+													param_podPowertrain,
+													param_podEps,
+													param_podEpsInboard,
+													param_podEpsOutboard,
+													param_podParkBrake,
+													param_podBattery,
+													param_podControlCommand1,
+													param_podHandshake)
+										[| {|get_newInstructionAndSession,set_newInstructionAndSession,terminate|} |]
+										Memory_newInstructionAndSession((true,(UserCode_DRIVER_SEAT),(VehicleState_INVALID,0)))
+									)\{|get_newInstructionAndSession,set_newInstructionAndSession|}
+								)
+								[| {|get_newReadyState,set_newReadyState,terminate|} |]
+								Memory_newReadyState(VehicleReadyState_DRIVER_SEAT_ERROR)
+							)\{|get_newReadyState,set_newReadyState|}
+						)
+						[| {|get_newInstruction,set_newInstruction,terminate|} |]
+						Memory_newInstruction((true,(UserCode_DRIVER_SEAT)))
+					)\{|get_newInstruction,set_newInstruction|}
+				)
+				[| {|get_next,set_next,terminate|} |]
+				Memory_next((VehicleState_INVALID,0))
+			)\{|get_next,set_next|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_next(next) =
+		get_next!next -> Memory_next(next)
+		[]
+		set_next?x__ -> Memory_next(x__)
+		[]
+		terminate -> SKIP
+	Memory_newInstruction(newInstruction) =
+		get_newInstruction!newInstruction -> Memory_newInstruction(newInstruction)
+		[]
+		set_newInstruction?x__ -> Memory_newInstruction(x__)
+		[]
+		terminate -> SKIP
+	Memory_newReadyState(newReadyState) =
+		get_newReadyState!newReadyState -> Memory_newReadyState(newReadyState)
+		[]
+		set_newReadyState?x__ -> Memory_newReadyState(x__)
+		[]
+		terminate -> SKIP
+	Memory_newInstructionAndSession(newInstructionAndSession) =
+		get_newInstructionAndSession!newInstructionAndSession -> Memory_newInstructionAndSession(newInstructionAndSession)
+		[]
+		set_newInstructionAndSession?x__ -> Memory_newInstructionAndSession(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = Memory_next((VehicleState_INVALID,0))
+	[| { terminate } |] (
+	Memory_newInstruction((true,(UserCode_DRIVER_SEAT)))
+	[| { terminate } |] (
+	Memory_newReadyState(VehicleReadyState_DRIVER_SEAT_ERROR)
+	[| { terminate } |] (
+	Memory_newInstructionAndSession((true,(UserCode_DRIVER_SEAT),(VehicleState_INVALID,0)))
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_next,set_next,get_newInstruction,set_newInstruction,get_newReadyState,set_newReadyState,get_newInstructionAndSession,set_newInstructionAndSession|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = STM_VS_O(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake)
+	
+	D__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = STM(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) \ internal_events
+	O__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = sbisim(diamond(D__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake)))
+	VS__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = FVS__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake)
+	VS_O__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = sbisim(diamond(FVS__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake)))
+	HEXT__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = O__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) [|shared_variable_events|] SKIP
+	HUP__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) = O__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake) [|{share__}|] SKIP
+			endmodule
+
+endmodule

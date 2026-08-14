@@ -1,0 +1,2389 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_DeadMansHandle_DeadMansHandle
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_Initialise|
+	              NID_Spin|
+	              NID_i0|
+	              NID_RxCallback
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_retrievedConfiguration, set_retrievedConfiguration, setL_retrievedConfiguration, setR_retrievedConfiguration: ConfigDeadMans
+	channel get_rangeMin, set_rangeMin, setL_rangeMin, setR_rangeMin: core_real
+	channel get_rangeMax, set_rangeMax, setL_rangeMax, setR_rangeMax: core_real
+	channel get_msg, set_msg, setL_msg, setR_msg: DeadMansHandleReading
+	channel get_executingRxCallback, set_executingRxCallback, setL_executingRxCallback, setR_executingRxCallback: core_boolean
+	channel get_speedLimit, set_speedLimit, setL_speedLimit, setR_speedLimit: SpeedLimit
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel deadmanshandle__: NIDS.InOut.DeadMansHandleReading
+	channel deadmanshandle: InOut.DeadMansHandleReading
+	channel speed_limit__: NIDS.InOut.SpeedLimit
+	channel speed_limit: InOut.SpeedLimit
+	channel configuration__: NIDS.InOut.ConfigDeadMans
+	channel configuration: InOut.ConfigDeadMans
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	Initialise::enter,
+	Spin::enter,
+	i0::enter,
+	RxCallback::enter
+	|}
+	
+	enteredSS = 	{|
+	Initialise::entered,
+	Spin::entered,
+	RxCallback::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	deadmanshandle,
+		speed_limit,
+		configuration
+		|}
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Initialise : core_clock_type 
+	channel get_CLID_RxCallback : core_clock_type 
+	channel get_CLID_Spin : core_clock_type 
+	--channel increment__
+	
+	CLID_Initialise_clock_type(id__,
+			          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+			          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+			          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_RxCallback_clock_type(id__,
+			          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+			          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+			          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Spin_clock_type(id__,
+			          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+			          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+			          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: Initialise
+		module Initialise
+		
+		enterSS = 
+				{|			i0::enter,
+					f0::enter,
+					j0::enter
+				|}
+		enteredSS = 
+				{|			f0::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i0|
+			              NID_f0|
+			              NID_j0
+			
+			channel internal__ : NIDS
+			channel deadmanshandle__: NIDS.InOut.DeadMansHandleReading
+			channel speed_limit__: NIDS.InOut.SpeedLimit
+			channel configuration__: NIDS.InOut.ConfigDeadMans
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i0
+			module i0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Final state: f0
+			module f0
+			
+			exports
+			
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+							
+							Entering 	= entered -> SKIP ; Active
+							Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+							Interrupted	= share__choice(exit -> exited -> Inactive)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j0
+			module j0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_rangeMin!ConfigDeadMans_rangeMin(const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_rangeMax!ConfigDeadMans_rangeMax(const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION) -> SKIP)));true&(share__choice(configuration.in?retrievedConfiguration -> (SStop /\ set_retrievedConfiguration!retrievedConfiguration -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 ((((let
+						 	-- IMPLEMENTATION NOTE:
+						 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 	-- modules for defining the semantics of each node.
+						 	enterSS = {|
+						 	i0::enter,
+						 	f0::enter,
+						 	j0::enter
+						 	|}
+						 	hideSet = union(enterSS,{|exit,exited,internal__|})
+						 within 
+						 	((let
+						 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 		-- because CSPM modules are used for the semantics of Node.
+						 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 		transSync = {|internal__.NID_j0,internal__.NID_j0,internal__.NID_i0|}
+						 	within
+						 		((
+						 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 		   i0::D__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   [| { share__, terminate } |] (
+						 		   f0::D__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   [| { share__, terminate } |] (
+						 		   j0::D__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   )
+						 		   )
+						 		 )
+						 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 		 )
+						 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 		  [[set_retrievedConfiguration <- setL_retrievedConfiguration]]
+						 		 )
+						 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 		 			,setL_retrievedConfiguration
+						 		|}) |]
+						 		 ((i0::enter -> Transitions(id__,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 		  [[ share__ <- x__ | x__ <- {| share__,setL_retrievedConfiguration |} ]]
+						 		 )
+						 		)[[setL_retrievedConfiguration <- set_retrievedConfiguration]]
+						 		)
+						 	)
+						 	 \ hideSet)
+						 	[[
+						 		deadmanshandle__.x____ <- deadmanshandle,
+						 		speed_limit__.x____ <- speed_limit,
+						 		configuration__.x____ <- configuration
+						 		| x____ <- NIDS
+						 	]]
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_executingRxCallback,setR_msg,setR_speedLimit,setR_rangeMin,setR_retrievedConfiguration,setR_rangeMax |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback,set_msg <- setL_msg,set_speedLimit <- setL_speedLimit,set_rangeMin <- setL_rangeMin,set_retrievedConfiguration <- setL_retrievedConfiguration,set_rangeMax <- setL_rangeMax]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_executingRxCallback
+						 			,setL_msg
+						 			,setL_speedLimit
+						 			,setL_rangeMin
+						 			,setL_retrievedConfiguration
+						 			,setL_rangeMax
+						 			,setR_executingRxCallback
+						 			 			,setR_msg
+						 			 			,setR_speedLimit
+						 			 			,setR_rangeMin
+						 			 			,setR_retrievedConfiguration
+						 			 			,setR_rangeMax
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback,setL_msg,setL_speedLimit,setL_rangeMin,setL_retrievedConfiguration,setL_rangeMax |} ]]
+						  [[set_executingRxCallback <- setR_executingRxCallback,set_msg <- setR_msg,set_speedLimit <- setR_speedLimit,set_rangeMin <- setR_rangeMin,set_retrievedConfiguration <- setR_retrievedConfiguration,set_rangeMax <- setR_rangeMax]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback,setL_msg <- set_msg,setL_speedLimit <- set_speedLimit,setL_rangeMin <- set_rangeMin,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_rangeMax <- set_rangeMax]]
+						 [[setR_executingRxCallback <- set_executingRxCallback,setR_msg <- set_msg,setR_speedLimit <- set_speedLimit,setR_rangeMin <- set_rangeMin,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_rangeMax <- set_rangeMax]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_rangeMin!ConfigDeadMans_rangeMin(const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION) -> SKIP)));share__choice(true & (share__choice(set_rangeMax!ConfigDeadMans_rangeMax(const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION) -> SKIP)));true&(share__choice(configuration.in?retrievedConfiguration -> (SStop /\ set_retrievedConfiguration!retrievedConfiguration -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 ((((let
+						 	-- IMPLEMENTATION NOTE:
+						 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 	-- modules for defining the semantics of each node.
+						 	enterSS = {|
+						 	i0::enter,
+						 	f0::enter,
+						 	j0::enter
+						 	|}
+						 	hideSet = union(enterSS,{|exit,exited,internal__|})
+						 within 
+						 	((let
+						 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 		-- because CSPM modules are used for the semantics of Node.
+						 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 		transSync = {|internal__.NID_j0,internal__.NID_j0,internal__.NID_i0|}
+						 	within
+						 		((
+						 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 		   i0::VS_O__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   [| { share__, terminate } |] (
+						 		   f0::VS_O__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   [| { share__, terminate } |] (
+						 		   j0::VS_O__(id__,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 		   )
+						 		   )
+						 		 )
+						 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 		 )
+						 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 		  [[set_retrievedConfiguration <- setL_retrievedConfiguration]]
+						 		 )
+						 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 		 			,setL_retrievedConfiguration
+						 		|}) |]
+						 		 ((i0::enter -> Transitions(id__,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 		  [[ share__ <- x__ | x__ <- {| share__,setL_retrievedConfiguration |} ]]
+						 		 )
+						 		)[[setL_retrievedConfiguration <- set_retrievedConfiguration]]
+						 		)
+						 	)
+						 	 \ hideSet)
+						 	[[
+						 		deadmanshandle__.x____ <- deadmanshandle,
+						 		speed_limit__.x____ <- speed_limit,
+						 		configuration__.x____ <- configuration
+						 		| x____ <- NIDS
+						 	]]
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_executingRxCallback,setR_msg,setR_speedLimit,setR_rangeMin,setR_retrievedConfiguration,setR_rangeMax |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback,set_msg <- setL_msg,set_speedLimit <- setL_speedLimit,set_rangeMin <- setL_rangeMin,set_retrievedConfiguration <- setL_retrievedConfiguration,set_rangeMax <- setL_rangeMax]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_executingRxCallback
+						 			,setL_msg
+						 			,setL_speedLimit
+						 			,setL_rangeMin
+						 			,setL_retrievedConfiguration
+						 			,setL_rangeMax
+						 			,setR_executingRxCallback
+						 			 			,setR_msg
+						 			 			,setR_speedLimit
+						 			 			,setR_rangeMin
+						 			 			,setR_retrievedConfiguration
+						 			 			,setR_rangeMax
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback,setL_msg,setL_speedLimit,setL_rangeMin,setL_retrievedConfiguration,setL_rangeMax |} ]]
+						  [[set_executingRxCallback <- setR_executingRxCallback,set_msg <- setR_msg,set_speedLimit <- setR_speedLimit,set_rangeMin <- setR_rangeMin,set_retrievedConfiguration <- setR_retrievedConfiguration,set_rangeMax <- setR_rangeMax]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback,setL_msg <- set_msg,setL_speedLimit <- set_speedLimit,setL_rangeMin <- set_rangeMin,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_rangeMax <- set_rangeMax]]
+						 [[setR_executingRxCallback <- set_executingRxCallback,setR_msg <- set_msg,setR_speedLimit <- set_speedLimit,setR_rangeMin <- set_rangeMin,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_rangeMax <- set_rangeMax]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = ((let
+					Trans = share__choice(get_retrievedConfiguration?retrievedConfiguration -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((ConfigDeadMans_retrieved(retrievedConfiguration))&(internal__!NID_j0 -> SKIP ;  ((share__choice(share__choice(get_retrievedConfiguration?retrievedConfiguration -> true & (share__choice(set_rangeMin!ConfigDeadMans_rangeMin(retrievedConfiguration) -> SKIP))));share__choice(share__choice(get_retrievedConfiguration?retrievedConfiguration -> true & (share__choice(set_rangeMax!ConfigDeadMans_rangeMax(retrievedConfiguration) -> SKIP)))) ; f0::enter -> SKIP))))
+						 [] dbisim(((not (ConfigDeadMans_retrieved(retrievedConfiguration))))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; f0::enter -> SKIP))))
+						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Spin
+		module Spin
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: RxCallback
+		module RxCallback
+		
+		enterSS = 
+				{|			BelowRange::enter,
+					Scale::enter,
+					AboveRange::enter,
+					i0::enter,
+					f0::enter,
+					j0::enter,
+					j1::enter
+				|}
+		enteredSS = 
+				{|			BelowRange::entered,
+					Scale::entered,
+					AboveRange::entered,
+					f0::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_BelowRange|
+			              NID_Scale|
+			              NID_AboveRange|
+			              NID_i0|
+			              NID_f0|
+			              NID_j0|
+			              NID_j1
+			
+			channel internal__ : NIDS
+			channel deadmanshandle__: NIDS.InOut.DeadMansHandleReading
+			channel speed_limit__: NIDS.InOut.SpeedLimit
+			channel configuration__: NIDS.InOut.ConfigDeadMans
+			
+			channel get_CLID_AboveRange : core_clock_type 
+			channel get_CLID_BelowRange : core_clock_type 
+			channel get_CLID_Scale : core_clock_type 
+			--channel increment__
+			
+			CLID_AboveRange_clock_type(id__,
+					          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+					          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+					          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_BelowRange_clock_type(id__,
+					          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+					          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+					          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Scale_clock_type(id__,
+					          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+					          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+					          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- State: BelowRange
+			module BelowRange
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit) -> SKIP)))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit) -> SKIP)))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Scale
+			module Scale
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> share__choice(get_rangeMin?rangeMin -> share__choice(get_rangeMax?rangeMax -> (Minus(rangeMax, rangeMin, core_real)) != 0 & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,Div((Minus(DeadMansHandleReading_analogReading(msg), rangeMin, core_real)), no_zero_div((Minus(rangeMax, rangeMin, core_real))), core_real)) -> SKIP))))))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> share__choice(get_rangeMin?rangeMin -> share__choice(get_rangeMax?rangeMax -> (Minus(rangeMax, rangeMin, core_real)) != 0 & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,Div((Minus(DeadMansHandleReading_analogReading(msg), rangeMin, core_real)), no_zero_div((Minus(rangeMax, rangeMin, core_real))), core_real)) -> SKIP))))))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: AboveRange
+			module AboveRange
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) -> SKIP)))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_speedLimit(speedLimit,const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) -> SKIP)))) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Initial: i0
+			module i0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Final state: f0
+			module f0
+			
+			exports
+			
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+							
+							Entering 	= entered -> SKIP ; Active
+							Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+							Interrupted	= share__choice(exit -> exited -> Inactive)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j0
+			module j0
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: j1
+			module j1
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = D__(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_executingRxCallback!true -> SKIP)));share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_header(speedLimit,update_Header_stamp(SpeedLimit_header(speedLimit),Header_stamp(DeadMansHandleReading_header(msg)))) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						(let
+						 							-- IMPLEMENTATION NOTE:
+						 							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 							-- modules for defining the semantics of each node.
+						 							enterSS = {|
+						 							BelowRange::enter,
+						 							Scale::enter,
+						 							AboveRange::enter,
+						 							i0::enter,
+						 							f0::enter,
+						 							j0::enter,
+						 							j1::enter
+						 							|}
+						 							hideSet = union(enterSS,{|exit,exited,internal__|})
+						 						within 
+						 							((let
+						 								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 								-- because CSPM modules are used for the semantics of Node.
+						 								flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 								transSync = {|internal__.NID_BelowRange,internal__.NID_j1,internal__.NID_AboveRange,internal__.NID_j0,internal__.NID_j0,internal__.NID_j0,internal__.NID_i0,internal__.NID_Scale|}
+						 							within
+						 								((
+						 								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 								   BelowRange::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   Scale::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   AboveRange::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   i0::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   f0::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   j0::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   j1::D__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								 )
+						 								 [[BelowRange::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_BelowRange|}]]
+						 								 [[Scale::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Scale|}]]
+						 								 [[AboveRange::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AboveRange|}]]
+						 								 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0,internal__.NID_j0|}]]
+						 								 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+						 								 )
+						 								  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 								  [[set_msg <- setL_msg,set_rangeMin <- setL_rangeMin,set_rangeMax <- setL_rangeMax]]
+						 								 )
+						 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 								 			,setL_msg
+						 								 			,setL_rangeMin
+						 								 			,setL_rangeMax
+						 								|}) |]
+						 								 ((i0::enter -> Transitions(id__,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 								  [[ share__ <- x__ | x__ <- {| share__,setL_msg,setL_rangeMin,setL_rangeMax |} ]]
+						 								 )
+						 								)[[setL_msg <- set_msg,setL_rangeMin <- set_rangeMin,setL_rangeMax <- set_rangeMax]]
+						 								)
+						 							)
+						 							 \ hideSet)
+						 							[[
+						 								deadmanshandle__.x____ <- deadmanshandle,
+						 								speed_limit__.x____ <- speed_limit,
+						 								configuration__.x____ <- configuration
+						 								| x____ <- NIDS
+						 							]]
+						 						)
+						 						[| {|get_CLID_Scale,Scale::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Scale(id__,0,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 					)\{|get_CLID_Scale|}
+						 				)
+						 				[| {|get_CLID_BelowRange,BelowRange::entered,terminate|} |]
+						 				dbisim(Clock_CLID_BelowRange(id__,0,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 			)\{|get_CLID_BelowRange|}
+						 		)
+						 		[| {|get_CLID_AboveRange,AboveRange::entered,terminate|} |]
+						 		dbisim(Clock_CLID_AboveRange(id__,0,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 	)\{|get_CLID_AboveRange|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_executingRxCallback,setR_msg,setR_speedLimit,setR_rangeMin,setR_retrievedConfiguration,setR_rangeMax |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback,set_msg <- setL_msg,set_speedLimit <- setL_speedLimit,set_rangeMin <- setL_rangeMin,set_retrievedConfiguration <- setL_retrievedConfiguration,set_rangeMax <- setL_rangeMax]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_executingRxCallback
+						 			,setL_msg
+						 			,setL_speedLimit
+						 			,setL_rangeMin
+						 			,setL_retrievedConfiguration
+						 			,setL_rangeMax
+						 			,setR_executingRxCallback
+						 			 			,setR_msg
+						 			 			,setR_speedLimit
+						 			 			,setR_rangeMin
+						 			 			,setR_retrievedConfiguration
+						 			 			,setR_rangeMax
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback,setL_msg,setL_speedLimit,setL_rangeMin,setL_retrievedConfiguration,setL_rangeMax |} ]]
+						  [[set_executingRxCallback <- setR_executingRxCallback,set_msg <- setR_msg,set_speedLimit <- setR_speedLimit,set_rangeMin <- setR_rangeMin,set_retrievedConfiguration <- setR_retrievedConfiguration,set_rangeMax <- setR_rangeMax]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback,setL_msg <- set_msg,setL_speedLimit <- set_speedLimit,setL_rangeMin <- set_rangeMin,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_rangeMax <- set_rangeMax]]
+						 [[setR_executingRxCallback <- set_executingRxCallback,setR_msg <- set_msg,setR_speedLimit <- set_speedLimit,setR_rangeMin <- set_rangeMin,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_rangeMax <- set_rangeMax]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(true & (share__choice(set_executingRxCallback!true -> SKIP)));share__choice(share__choice(get_msg?msg -> share__choice(get_speedLimit?speedLimit -> true & (share__choice(set_speedLimit!update_SpeedLimit_header(speedLimit,update_Header_stamp(SpeedLimit_header(speedLimit),Header_stamp(DeadMansHandleReading_header(msg)))) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						(let
+						 							-- IMPLEMENTATION NOTE:
+						 							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 							-- modules for defining the semantics of each node.
+						 							enterSS = {|
+						 							BelowRange::enter,
+						 							Scale::enter,
+						 							AboveRange::enter,
+						 							i0::enter,
+						 							f0::enter,
+						 							j0::enter,
+						 							j1::enter
+						 							|}
+						 							hideSet = union(enterSS,{|exit,exited,internal__|})
+						 						within 
+						 							((let
+						 								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 								-- because CSPM modules are used for the semantics of Node.
+						 								flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 								transSync = {|internal__.NID_BelowRange,internal__.NID_j1,internal__.NID_AboveRange,internal__.NID_j0,internal__.NID_j0,internal__.NID_j0,internal__.NID_i0,internal__.NID_Scale|}
+						 							within
+						 								((
+						 								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 								   BelowRange::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   Scale::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   AboveRange::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   i0::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   f0::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   j0::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   [| { share__, terminate } |] (
+						 								   j1::VS_O__(id__,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								   )
+						 								 )
+						 								 [[BelowRange::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_BelowRange|}]]
+						 								 [[Scale::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Scale|}]]
+						 								 [[AboveRange::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AboveRange|}]]
+						 								 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 								 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0,internal__.NID_j0|}]]
+						 								 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+						 								 )
+						 								  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 								  [[set_msg <- setL_msg,set_rangeMin <- setL_rangeMin,set_rangeMax <- setL_rangeMax]]
+						 								 )
+						 								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 								 			,setL_msg
+						 								 			,setL_rangeMin
+						 								 			,setL_rangeMax
+						 								|}) |]
+						 								 ((i0::enter -> Transitions(id__,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 								  [[ share__ <- x__ | x__ <- {| share__,setL_msg,setL_rangeMin,setL_rangeMax |} ]]
+						 								 )
+						 								)[[setL_msg <- set_msg,setL_rangeMin <- set_rangeMin,setL_rangeMax <- set_rangeMax]]
+						 								)
+						 							)
+						 							 \ hideSet)
+						 							[[
+						 								deadmanshandle__.x____ <- deadmanshandle,
+						 								speed_limit__.x____ <- speed_limit,
+						 								configuration__.x____ <- configuration
+						 								| x____ <- NIDS
+						 							]]
+						 						)
+						 						[| {|get_CLID_Scale,Scale::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Scale(id__,0,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 					)\{|get_CLID_Scale|}
+						 				)
+						 				[| {|get_CLID_BelowRange,BelowRange::entered,terminate|} |]
+						 				dbisim(Clock_CLID_BelowRange(id__,0,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 			)\{|get_CLID_BelowRange|}
+						 		)
+						 		[| {|get_CLID_AboveRange,AboveRange::entered,terminate|} |]
+						 		dbisim(Clock_CLID_AboveRange(id__,0,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						 	)\{|get_CLID_AboveRange|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_executingRxCallback,setR_msg,setR_speedLimit,setR_rangeMin,setR_retrievedConfiguration,setR_rangeMax |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback,set_msg <- setL_msg,set_speedLimit <- setL_speedLimit,set_rangeMin <- setL_rangeMin,set_retrievedConfiguration <- setL_retrievedConfiguration,set_rangeMax <- setL_rangeMax]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_executingRxCallback
+						 			,setL_msg
+						 			,setL_speedLimit
+						 			,setL_rangeMin
+						 			,setL_retrievedConfiguration
+						 			,setL_rangeMax
+						 			,setR_executingRxCallback
+						 			 			,setR_msg
+						 			 			,setR_speedLimit
+						 			 			,setR_rangeMin
+						 			 			,setR_retrievedConfiguration
+						 			 			,setR_rangeMax
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback,setL_msg,setL_speedLimit,setL_rangeMin,setL_retrievedConfiguration,setL_rangeMax |} ]]
+						  [[set_executingRxCallback <- setR_executingRxCallback,set_msg <- setR_msg,set_speedLimit <- setR_speedLimit,set_rangeMin <- setR_rangeMin,set_retrievedConfiguration <- setR_retrievedConfiguration,set_rangeMax <- setR_rangeMax]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback,setL_msg <- set_msg,setL_speedLimit <- set_speedLimit,setL_rangeMin <- set_rangeMin,setL_retrievedConfiguration <- set_retrievedConfiguration,setL_rangeMax <- set_rangeMax]]
+						 [[setR_executingRxCallback <- set_executingRxCallback,setR_msg <- set_msg,setR_speedLimit <- set_speedLimit,setR_rangeMin <- set_rangeMin,setR_retrievedConfiguration <- set_retrievedConfiguration,setR_rangeMax <- set_rangeMax]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = ((let
+					Trans = share__choice(get_msg?msg -> get_rangeMin?rangeMin -> get_rangeMax?rangeMax -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_BelowRange -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_j1 -> SKIP ;  ((share__choice(get_speedLimit?speedLimit -> true&(share__choice(speed_limit.out!speedLimit -> SKIP)));share__choice(true & (share__choice(set_executingRxCallback!false -> SKIP))) ; f0::enter -> SKIP))))
+						 [] dbisim((true)&(internal__!NID_AboveRange -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+						 [] dbisim(((DeadMansHandleReading_analogReading(msg)<rangeMin))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; BelowRange::enter -> SKIP))))
+						 [] dbisim((((DeadMansHandleReading_analogReading(msg)>rangeMin) and (DeadMansHandleReading_analogReading(msg)<rangeMax)))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; Scale::enter -> SKIP))))
+						 [] dbisim(((not ((((DeadMansHandleReading_analogReading(msg)<rangeMin) or ((DeadMansHandleReading_analogReading(msg)>rangeMin) and (DeadMansHandleReading_analogReading(msg)<rangeMax)))))))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; AboveRange::enter -> SKIP))))
+						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; j0::enter -> SKIP))))
+						 [] dbisim((true)&(internal__!NID_Scale -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_AboveRange(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					TimeOut_1(
+						AboveRange::entered -> Clock_CLID_AboveRange(id__,0,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						get_CLID_AboveRange!x__ -> Clock_CLID_AboveRange(id__,x__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						terminate -> SKIP,Clock_CLID_AboveRange(id__,clock_type_plus(x__,1,CLID_AboveRange_clock_type(id__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				Clock_CLID_BelowRange(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					TimeOut_1(
+						BelowRange::entered -> Clock_CLID_BelowRange(id__,0,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						get_CLID_BelowRange!x__ -> Clock_CLID_BelowRange(id__,x__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						terminate -> SKIP,Clock_CLID_BelowRange(id__,clock_type_plus(x__,1,CLID_BelowRange_clock_type(id__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				Clock_CLID_Scale(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+					TimeOut_1(
+						Scale::entered -> Clock_CLID_Scale(id__,0,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						get_CLID_Scale!x__ -> Clock_CLID_Scale(id__,x__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						[]
+						terminate -> SKIP,Clock_CLID_Scale(id__,clock_type_plus(x__,1,CLID_Scale_clock_type(id__,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				
+				StateClocks(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = dbisim(Clock_CLID_AboveRange(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_BelowRange(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_Scale(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+				)
+				)
+				
+				stateClockSync = {|get_CLID_AboveRange,AboveRange::entered,get_CLID_BelowRange,BelowRange::entered,get_CLID_Scale,Scale::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+					    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+					    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		)\sharedVarHide
+		
+		STM_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__,
+							    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+							    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+							    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+					    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+					    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = ((let
+			Trans = share__choice(get_executingRxCallback?executingRxCallback -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Spin::enter -> SKIP)))
+				 [] dbisim((true)&(deadmanshandle__!NID_Spin.in?msg:{msg|msg <- DeadMansHandleReading, true} -> share__choice(set_msg!msg -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; RxCallback::enter -> SKIP)))
+				 [] dbisim(((not (executingRxCallback)))&(internal__!NID_RxCallback -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Spin::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Initialise::enter,
+					Spin::enter,
+					i0::enter,
+					RxCallback::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,internal__.NID_Initialise,deadmanshandle__.NID_Spin.in,internal__.NID_RxCallback|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Initialise::D__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   Spin::D__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   i0::D__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   RxCallback::D__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[Spin::interrupt <- x__ | x__ <- {|interrupt,deadmanshandle__.NID_Spin.in|}]]
+						 [[RxCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RxCallback|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_msg |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_executingRxCallback
+						 			,setR_msg
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback |} ]]
+						  [[set_msg <- setR_msg]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback]]
+						 [[setR_msg <- set_msg]]
+						)
+					)
+					 \ hideSet)
+					[[
+						deadmanshandle__.x____ <- deadmanshandle,
+						speed_limit__.x____ <- speed_limit,
+						configuration__.x____ <- configuration
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Initialise,Initialise::entered,get_CLID_RxCallback,RxCallback::entered,get_CLID_Spin,Spin::entered|}
+			 within
+				(MachineBody(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Initialise,Initialise::entered,get_CLID_RxCallback,RxCallback::entered,get_CLID_Spin,Spin::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody(id__,
+												    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+												    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+												    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+										[| {|get_CLID_Spin,Spin::entered,terminate|} |]
+										dbisim(Clock_CLID_Spin(id__,0,
+												          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+												          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+												          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+									)\{|get_CLID_Spin|}
+								)
+								[| {|get_CLID_RxCallback,RxCallback::entered,terminate|} |]
+								dbisim(Clock_CLID_RxCallback(id__,0,
+										          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+										          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+										          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+							)\{|get_CLID_RxCallback|}
+						)
+						[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+						dbisim(Clock_CLID_Initialise(id__,0,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+					)\{|get_CLID_Initialise|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			((let
+				getsetLocalChannels = {|get_retrievedConfiguration,set_retrievedConfiguration,
+				get_rangeMin,set_rangeMin,
+				get_rangeMax,set_rangeMax,
+				get_msg,set_msg,
+				get_executingRxCallback,set_executingRxCallback,
+				get_speedLimit,set_speedLimit|}
+				clockSync = {||}
+			within
+				(Behaviour(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [| {terminate} |] Clocks(id__,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															IteratedBehaviour(id__,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+															[| {|get_speedLimit,set_speedLimit,terminate|} |]
+															Memory_speedLimit(((0,0,""),0))
+														)\{|get_speedLimit,set_speedLimit|}
+													)
+													[| {|get_executingRxCallback,set_executingRxCallback,terminate|} |]
+													Memory_executingRxCallback(true)
+												)\{|get_executingRxCallback,set_executingRxCallback|}
+											)
+											[| {|get_msg,set_msg,terminate|} |]
+											Memory_msg((0,(0,0,"")))
+										)\{|get_msg,set_msg|}
+									)
+									[| {|get_rangeMax,set_rangeMax,terminate|} |]
+									Memory_rangeMax(0)
+								)\{|get_rangeMax,set_rangeMax|}
+							)
+							[| {|get_rangeMin,set_rangeMin,terminate|} |]
+							Memory_rangeMin(0)
+						)\{|get_rangeMin,set_rangeMin|}
+					)
+					[| {|get_retrievedConfiguration,set_retrievedConfiguration,terminate|} |]
+					Memory_retrievedConfiguration((0,0,true))
+				)\{|get_retrievedConfiguration,set_retrievedConfiguration|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					Initialise::enter,
+					Spin::enter,
+					i0::enter,
+					RxCallback::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,internal__.NID_Initialise,deadmanshandle__.NID_Spin.in,internal__.NID_RxCallback|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   Initialise::VS_O__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   Spin::VS_O__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   i0::VS_O__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   [| { share__, terminate } |] (
+						   RxCallback::VS_O__(id__,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						   		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[Spin::interrupt <- x__ | x__ <- {|interrupt,deadmanshandle__.NID_Spin.in|}]]
+						 [[RxCallback::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_RxCallback|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_msg |} ]] 
+						  [[set_executingRxCallback <- setL_executingRxCallback]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_executingRxCallback
+						 			,setR_msg
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_executingRxCallback |} ]]
+						  [[set_msg <- setR_msg]]
+						 )
+						)[[setL_executingRxCallback <- set_executingRxCallback]]
+						 [[setR_msg <- set_msg]]
+						)
+					)
+					 \ hideSet)
+					[[
+						deadmanshandle__.x____ <- deadmanshandle,
+						speed_limit__.x____ <- speed_limit,
+						configuration__.x____ <- configuration
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Initialise,Initialise::entered,get_CLID_RxCallback,RxCallback::entered,get_CLID_Spin,Spin::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Initialise,Initialise::entered,get_CLID_RxCallback,RxCallback::entered,get_CLID_Spin,Spin::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody_VS_O(id__,
+												    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+												    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+												    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+										[| {|get_CLID_Spin,Spin::entered,terminate|} |]
+										dbisim(Clock_CLID_Spin(id__,0,
+												          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+												          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+												          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+									)\{|get_CLID_Spin|}
+								)
+								[| {|get_CLID_RxCallback,RxCallback::entered,terminate|} |]
+								dbisim(Clock_CLID_RxCallback(id__,0,
+										          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+										          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+										          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+							)\{|get_CLID_RxCallback|}
+						)
+						[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+						dbisim(Clock_CLID_Initialise(id__,0,
+								          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+								          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+								          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+					)\{|get_CLID_Initialise|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			dbisim((let
+				getsetLocalChannels = {|get_retrievedConfiguration,set_retrievedConfiguration,
+				get_rangeMin,set_rangeMin,
+				get_rangeMax,set_rangeMax,
+				get_msg,set_msg,
+				get_executingRxCallback,set_executingRxCallback,
+				get_speedLimit,set_speedLimit|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,
+						    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [| {terminate} |] Clocks(id__,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				 		          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															IteratedBehaviour_VS_O(id__,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+																	    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+															[| {|get_speedLimit,set_speedLimit,terminate|} |]
+															Memory_speedLimit(((0,0,""),0))
+														)\{|get_speedLimit,set_speedLimit|}
+													)
+													[| {|get_executingRxCallback,set_executingRxCallback,terminate|} |]
+													Memory_executingRxCallback(true)
+												)\{|get_executingRxCallback,set_executingRxCallback|}
+											)
+											[| {|get_msg,set_msg,terminate|} |]
+											Memory_msg((0,(0,0,"")))
+										)\{|get_msg,set_msg|}
+									)
+									[| {|get_rangeMax,set_rangeMax,terminate|} |]
+									Memory_rangeMax(0)
+								)\{|get_rangeMax,set_rangeMax|}
+							)
+							[| {|get_rangeMin,set_rangeMin,terminate|} |]
+							Memory_rangeMin(0)
+						)\{|get_rangeMin,set_rangeMin|}
+					)
+					[| {|get_retrievedConfiguration,set_retrievedConfiguration,terminate|} |]
+					Memory_retrievedConfiguration((0,0,true))
+				)\{|get_retrievedConfiguration,set_retrievedConfiguration|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_retrievedConfiguration(retrievedConfiguration) =
+			get_retrievedConfiguration!retrievedConfiguration -> Memory_retrievedConfiguration(retrievedConfiguration)
+			[]
+			set_retrievedConfiguration?x__ -> Memory_retrievedConfiguration(x__)
+			[]
+			terminate -> SKIP
+		Memory_rangeMin(rangeMin) =
+			get_rangeMin!rangeMin -> Memory_rangeMin(rangeMin)
+			[]
+			set_rangeMin?x__ -> Memory_rangeMin(x__)
+			[]
+			terminate -> SKIP
+		Memory_rangeMax(rangeMax) =
+			get_rangeMax!rangeMax -> Memory_rangeMax(rangeMax)
+			[]
+			set_rangeMax?x__ -> Memory_rangeMax(x__)
+			[]
+			terminate -> SKIP
+		Memory_msg(msg) =
+			get_msg!msg -> Memory_msg(msg)
+			[]
+			set_msg?x__ -> Memory_msg(x__)
+			[]
+			terminate -> SKIP
+		Memory_executingRxCallback(executingRxCallback) =
+			get_executingRxCallback!executingRxCallback -> Memory_executingRxCallback(executingRxCallback)
+			[]
+			set_executingRxCallback?x__ -> Memory_executingRxCallback(x__)
+			[]
+			terminate -> SKIP
+		Memory_speedLimit(speedLimit) =
+			get_speedLimit!speedLimit -> Memory_speedLimit(speedLimit)
+			[]
+			set_speedLimit?x__ -> Memory_speedLimit(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = Memory_retrievedConfiguration((0,0,true))
+		[| { terminate } |] (
+		Memory_rangeMin(0)
+		[| { terminate } |] (
+		Memory_rangeMax(0)
+		[| { terminate } |] (
+		Memory_msg((0,(0,0,"")))
+		[| { terminate } |] (
+		Memory_executingRxCallback(true)
+		[| { terminate } |] (
+		Memory_speedLimit(((0,0,""),0))
+		)
+		)
+		)
+		)
+		)
+		
+		getsetLocalChannels = {|get_retrievedConfiguration,set_retrievedConfiguration,get_rangeMin,set_rangeMin,get_rangeMax,set_rangeMax,get_msg,set_msg,get_executingRxCallback,set_executingRxCallback,get_speedLimit,set_speedLimit|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = STM_VS_O(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) \ localClockResets
+		D__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = timed_priority(STM(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) \ union(internal_events,localClockResets))
+		O__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = dbisim(D__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		VS__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = FVS__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+		VS_O__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = dbisim(FVS__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		HEXT__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = O__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = dbisim(timed_priority(STM(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) \ internal_events))
+		HUP__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = timed_priority(O__(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Initialise(id__,x__,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			TimeOut_1(
+				Initialise::entered -> Clock_CLID_Initialise(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				get_CLID_Initialise!x__ -> Clock_CLID_Initialise(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				terminate -> SKIP,Clock_CLID_Initialise(id__,clock_type_plus(x__,1,CLID_Initialise_clock_type(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		Clock_CLID_RxCallback(id__,x__,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			TimeOut_1(
+				RxCallback::entered -> Clock_CLID_RxCallback(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				get_CLID_RxCallback!x__ -> Clock_CLID_RxCallback(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				terminate -> SKIP,Clock_CLID_RxCallback(id__,clock_type_plus(x__,1,CLID_RxCallback_clock_type(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		Clock_CLID_Spin(id__,x__,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = 
+			TimeOut_1(
+				Spin::entered -> Clock_CLID_Spin(id__,0,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				get_CLID_Spin!x__ -> Clock_CLID_Spin(id__,x__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)
+				[]
+				terminate -> SKIP,Clock_CLID_Spin(id__,clock_type_plus(x__,1,CLID_Spin_clock_type(id__,
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit)),
+						          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+						          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+						          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		
+		StateClocks(id__,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = dbisim(Clock_CLID_Initialise(id__,0,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_RxCallback(id__,0,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Spin(id__,0,
+				          const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				          const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				          const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit))
+		)
+		)
+		
+		stateClockSync = {|get_CLID_Initialise,Initialise::entered,get_CLID_RxCallback,RxCallback::entered,get_CLID_Spin,Spin::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,
+				    const_bacs_DeadMansHandle_DeadMansHandle_DEFAULT_CONFIGURATION,
+				    const_bacs_DeadMansHandle_DeadMansHandle_zeroSpeedLimit,
+				    const_bacs_DeadMansHandle_DeadMansHandle_oneSpeedLimit) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule

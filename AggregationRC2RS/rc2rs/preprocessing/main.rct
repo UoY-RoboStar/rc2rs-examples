@@ -1,0 +1,497 @@
+package pre_pkg_main interface AggregationIface {
+	MoveClockwise ( n: real , j:real )
+	RotateClockwise ( n: real )
+}
+
+interface Ivars {
+	var linearSpeed : real
+	var angularSpeed : real
+}
+
+interface Ievents {
+	event seeWall
+	event seeRobot
+}
+
+interface IvarsAggregationFSM {
+	var linearSpeed : real
+	var angularSpeed : real
+}
+
+interface IvarsRotateClockwise {
+	var linearSpeed : real
+	var angularSpeed : real
+}
+
+interface IvarsMoveClockwise {
+	var linearSpeed : real
+	var angularSpeed : real
+}
+
+interface req_normal_RotateClockwise_S_entry {
+	var linearSpeed : real , angularSpeed : real
+}
+
+interface I_normal_RotateClockwise_S_entry {
+	normal_RotateClockwise_S_entry ( n : real )
+}
+
+interface req_normal_MoveClockwise_S_entry {
+	var angularSpeed : real , linearSpeed : real
+}
+
+interface I_normal_MoveClockwise_S_entry {
+	normal_MoveClockwise_S_entry ( n : real , j : real )
+}
+
+interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+interface I_req_normal_RotateClockwise_S_entry_j_2_3_t_2_3 {
+	var angularSpeed : real
+}
+
+interface I_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op {
+	normal_RotateClockwise_S_entry_j_2_3_t_2_3_op ( n : real )
+}
+
+interface I_req_normal_MoveClockwise_S_entry_j_2_2_t_2_2 {
+	var angularSpeed : real
+}
+
+interface I_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op {
+	normal_MoveClockwise_S_entry_j_2_2_t_2_2_op ( j : real )
+}
+
+interface I_req_normal_RotateClockwise_S_entry_i_t {
+	var linearSpeed : real
+}
+
+interface I_normal_RotateClockwise_S_entry_i_t_op {
+	normal_RotateClockwise_S_entry_i_t_op ( )
+}
+
+interface I_req_normal_MoveClockwise_S_entry_i_t {
+	var linearSpeed : real
+}
+
+interface I_normal_MoveClockwise_S_entry_i_t_op {
+	normal_MoveClockwise_S_entry_i_t_op ( n : real )
+}
+
+interface I_clone_AggregationFSM_MoveClockwise_entry_1 {
+	clone_AggregationFSM_MoveClockwise_entry_1 ( n : real , j : real )
+}
+
+interface I_clone_AggregationFSM_RotateClockwise_entry_2 {
+	clone_AggregationFSM_RotateClockwise_entry_2 ( n : real )
+}
+
+interface I_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 {
+	clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 ( n : real )
+}
+
+interface I_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 {
+	clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 ( n : real , j : real )
+}
+
+interface I_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 {
+	clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 ( n : real )
+}
+
+interface I_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 {
+	clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 ( n : real )
+}
+
+interface I_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 {
+	clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 ( j : real )
+}
+
+interface I_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 {
+	clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 ( )
+}
+
+controller ctrl0 {
+	uses Ievents opref op1 = RotateClockwise
+	opref op2 = MoveClockwise
+	opref ctrl0_ref_normal_RotateClockwise_S_entry = normal_RotateClockwise_S_entry
+	opref ctrl0_ref_normal_MoveClockwise_S_entry = normal_MoveClockwise_S_entry
+	opref ctrl0_ref_tStop = tStop
+	opref ctrl0_ref_deadlineCheck = deadlineCheck
+	opref ctrl0_ref_waitOp = waitOp
+	opref ctrl0_ref_waitInterval = waitInterval
+	opref ctrl0_ref_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op = normal_RotateClockwise_S_entry_j_2_3_t_2_3_op
+	opref ctrl0_ref_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op = normal_MoveClockwise_S_entry_j_2_2_t_2_2_op
+	opref ctrl0_ref_normal_RotateClockwise_S_entry_i_t_op = normal_RotateClockwise_S_entry_i_t_op
+	opref ctrl0_ref_normal_MoveClockwise_S_entry_i_t_op = normal_MoveClockwise_S_entry_i_t_op
+	opref ctrl0_ref_clone_AggregationFSM_MoveClockwise_entry_1 = clone_AggregationFSM_MoveClockwise_entry_1
+	opref ctrl0_ref_clone_AggregationFSM_RotateClockwise_entry_2 = clone_AggregationFSM_RotateClockwise_entry_2
+	opref ctrl0_ref_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 = clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3
+	opref ctrl0_ref_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 = clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4
+	opref ctrl0_ref_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 = clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5
+	opref ctrl0_ref_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 = clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6
+	opref ctrl0_ref_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 = clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7
+	opref ctrl0_ref_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 = clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8
+	sref stm_ref0 = AggregationFSM
+	connection ctrl0 on seeWall to stm_ref0 on seeWall
+	connection ctrl0 on seeRobot to stm_ref0 on seeRobot
+}
+
+stm AggregationFSM {
+	uses Ievents uses IvarsAggregationFSM requires AggregationIface requires I_clone_AggregationFSM_MoveClockwise_entry_1 requires I_clone_AggregationFSM_RotateClockwise_entry_2 initial I
+	state S1 {
+		state EmptyCycle {
+		}
+		initial i
+		transition tS1 {
+			from i
+			to EmptyCycle
+		}
+		entry clone_AggregationFSM_MoveClockwise_entry_1 ( 1 , 1 )
+	}
+	state S2 {
+		state EmptyCycle {
+		}
+		initial i
+		transition tS2 {
+			from i
+			to EmptyCycle
+		}
+		entry clone_AggregationFSM_RotateClockwise_entry_2 ( 1 )
+	}
+	transition T1 {
+		from I
+		to S1
+	}
+	transition T2 {
+		from S2
+		to S1
+		trigger seeWall
+	}
+	transition T3 {
+		from S1
+		to S2
+		trigger seeRobot
+	}
+}
+
+operation RotateClockwise ( n:real
+) {
+	requires IvarsRotateClockwise requires I_normal_RotateClockwise_S_entry initial I
+	final F
+	state S {
+		entry normal_RotateClockwise_S_entry ( n )
+	}
+	transition T1 {
+		from I
+		to S
+	}
+	transition T2 {
+		from S
+		to F
+	}
+}
+
+operation MoveClockwise ( n: real
+, j:real
+) {
+	requires IvarsMoveClockwise requires I_normal_MoveClockwise_S_entry initial I
+	final F
+	state S {
+		entry normal_MoveClockwise_S_entry ( n , j )
+	}
+	transition T1 {
+		from I
+		to S
+	}
+	transition T2 {
+		from S
+		to F
+	}
+}
+
+operation normal_RotateClockwise_S_entry ( n : real
+) {
+	requires req_normal_RotateClockwise_S_entry requires I_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op requires I_normal_RotateClockwise_S_entry_i_t_op initial i
+	final f
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action normal_RotateClockwise_S_entry_i_t_op ( )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action normal_RotateClockwise_S_entry_j_2_3_t_2_3_op ( n )
+	}
+}
+
+operation normal_MoveClockwise_S_entry ( n : real
+, j : real
+) {
+	requires req_normal_MoveClockwise_S_entry requires I_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op requires I_normal_MoveClockwise_S_entry_i_t_op initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action normal_MoveClockwise_S_entry_i_t_op ( n )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action normal_MoveClockwise_S_entry_j_2_2_t_2_2_op ( j )
+	}
+}
+
+operation tStop ( ) {
+	initial i
+	state sStop {
+	}
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop final f
+	initial i
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	initial i0
+	final f
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp junction j
+	initial i
+	final f
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	clock C
+}
+
+operation normal_RotateClockwise_S_entry_j_2_3_t_2_3_op ( n : real
+) {
+	requires I_req_normal_RotateClockwise_S_entry_j_2_3_t_2_3 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action angularSpeed = n
+	}
+}
+
+operation normal_MoveClockwise_S_entry_j_2_2_t_2_2_op ( j : real
+) {
+	requires I_req_normal_MoveClockwise_S_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action angularSpeed = j
+	}
+}
+
+operation normal_RotateClockwise_S_entry_i_t_op ( ) {
+	requires I_req_normal_RotateClockwise_S_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action linearSpeed = 0
+	}
+}
+
+operation normal_MoveClockwise_S_entry_i_t_op ( n : real
+) {
+	requires I_req_normal_MoveClockwise_S_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action linearSpeed = n
+	}
+}
+
+operation clone_AggregationFSM_MoveClockwise_entry_1 ( n : real
+, j : real
+) {
+	requires IvarsMoveClockwise requires I_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 initial I
+	final F
+	state S {
+		entry clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 ( n , j )
+	}
+	transition T1 {
+		from I
+		to S
+	}
+	transition T2 {
+		from S
+		to F
+	}
+}
+
+operation clone_AggregationFSM_RotateClockwise_entry_2 ( n : real
+) {
+	requires IvarsRotateClockwise requires I_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 initial I
+	final F
+	state S {
+		entry clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 ( n )
+	}
+	transition T1 {
+		from I
+		to S
+	}
+	transition T2 {
+		from S
+		to F
+	}
+}
+
+operation clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3 ( n : real
+) {
+	requires req_normal_RotateClockwise_S_entry requires I_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 requires I_clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 initial i
+	final f
+	junction j_2_3
+	transition t {
+		from i
+		to j_2_3
+		action clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 ( )
+	}
+	transition t_2_3 {
+		from j_2_3
+		to f
+		action clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 ( n )
+	}
+}
+
+operation clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4 ( n : real
+, j : real
+) {
+	requires req_normal_MoveClockwise_S_entry requires I_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 requires I_clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 ( n )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 ( j )
+	}
+}
+
+operation clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_i_t_op_i_j_2_2_5 ( n : real
+) {
+	requires I_req_normal_MoveClockwise_S_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action linearSpeed = n
+	}
+}
+
+operation clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_j_2_3_t_2_3_op_j_2_3_f_6 ( n : real
+) {
+	requires I_req_normal_RotateClockwise_S_entry_j_2_3_t_2_3 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action angularSpeed = n
+	}
+}
+
+operation clone_clone_clone_AggregationFSM_MoveClockwise_entry_1_normal_MoveClockwise_S_entry_entry_4_normal_MoveClockwise_S_entry_j_2_2_t_2_2_op_j_2_2_f_7 ( j : real
+) {
+	requires I_req_normal_MoveClockwise_S_entry_j_2_2_t_2_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action angularSpeed = j
+	}
+}
+
+operation clone_clone_clone_AggregationFSM_RotateClockwise_entry_2_normal_RotateClockwise_S_entry_entry_3_normal_RotateClockwise_S_entry_i_t_op_i_j_2_3_8 ( ) {
+	requires I_req_normal_RotateClockwise_S_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action linearSpeed = 0
+	}
+}
+
+module M {
+	connection rp0 on seeWall to ctrl_ref0 on seeWall ( _async )
+	connection rp0 on seeRobot to ctrl_ref0 on seeRobot ( _async )
+	cref ctrl_ref0 = ctrl0
+	robotic platform rp0 {
+		uses Ievents }
+
+}
+

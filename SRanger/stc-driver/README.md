@@ -1,0 +1,1 @@
+python3 stcDriver.py "../test-gen/sim/file_SimMovement_normalised.rtspec" "../code-gen/C/SRanger/main"

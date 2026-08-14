@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:51
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -10,7 +10,7 @@
 include "core_defs.csp"
 include "state_defs.csp"
 include "Segway.csp"
-include "file_Segway_defs.csp"
+include "__defs.csp"
 include "robochart_defs.csp"
 include "../instantiations.csp"
 channel r__
@@ -122,12 +122,12 @@ within
 		const_BalanceSTM_speedBudget,
 		const_BalanceSTM_rotationBudget,
 		const_BalanceSTM_motorBudget,
-		const_SpeedPID_P,
-		const_SpeedPID_I,
-		const_SpeedPID_maxIntegral,
 		const_RotationPID_D,
 		const_AnglePID_P,
-		const_AnglePID_D
+		const_AnglePID_D,
+		const_SpeedPID_P,
+		const_SpeedPID_I,
+		const_SpeedPID_maxIntegral
 	)
 assert P_Segway_SegwayController_stm_ref0 :[deadlock-free]	
 assert P_Segway_SegwayController_stm_ref0;RUN({r__}) :[deadlock-free]

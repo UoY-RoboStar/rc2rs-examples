@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "lutz_VehicleControlcsp"
+
+-- generate lutz_VehicleControl_VehicleControl
+P_lutz_VehicleControl_VehicleControl = let
+	id__ = 0
+	
+	
+	
+within
+	lutz_VehicleControl::VehicleControl::O__(
+		id__,
+		const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+		const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+		const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+		const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+		const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY
+	)
+assert P_lutz_VehicleControl_VehicleControl :[deadlock-free]	
+assert P_lutz_VehicleControl_VehicleControl;RUN({r__}) :[deadlock-free]
+assert P_lutz_VehicleControl_VehicleControl :[deterministic]
+assert P_lutz_VehicleControl_VehicleControl :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_lutz_VehicleControl_VehicleControl[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_lutz_VehicleControl_VehicleControl
+
+
+

@@ -1,0 +1,72 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "function_toolkit_defs.csp"
+include "lutz_VehicleControl_defs.csp"
+include "relation_toolkit_defs.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "state_timed_defs.csp"
+include "lutz_SessionControl_defs.csp"
+include "autonomous_vehicle_system_defs.csp"
+include "lutz_LutzState_defs.csp"
+include "lutz_FaultDetection_defs.csp"
+include "../instantiations.csp"
+include "lutz_defs.csp"
+include "data_logging_defs.csp"
+include "set_toolkit_defs.csp"
+include "core_timed_defs.csp"
+include "lutz_DetermineUserInstruction_defs.csp"
+include "sequence_toolkit_defs.csp"
+include "utility_defs.csp"
+include "lutz_DetermineUserInstruction_DetermineUserInstruction.csp"
+include "robochart_defs.csp"
+
+transparent wbisim
+channel r__
+-- generate lutz_DetermineUserInstruction_OP_DetermineUserInstruction
+P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction = let
+	id__ = 0
+	
+	param_readyState = VehicleReadyState_DRIVER_SEAT_ERROR
+	param_currentSession = (VehicleState_INVALID,0)
+	param_podStatus = (VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0)
+	param_podPowertrain = (0,true,true,true)
+	param_podEps = (0,0,0,0,0,0)
+	param_podEpsInboard = (0,0,0,0,0,0,0)
+	param_podEpsOutboard = (0,0,0,0,0,0,0)
+	param_podParkBrake = (0,0,0,0,true,true,true,true,true,true,0)
+	param_podBattery = (true,true,true,true,0,0,0,true)
+	param_podControlCommand1 = (0,0,true,true,true,true,true,0,0,0,0)
+	param_podHandshake = (0,0,0,0,0)
+	
+	
+	
+within
+	lutz_DetermineUserInstruction::OP_DetermineUserInstruction::O__(id__,
+				param_readyState,
+				param_currentSession,
+				param_podStatus,
+				param_podPowertrain,
+				param_podEps,
+				param_podEpsInboard,
+				param_podEpsOutboard,
+				param_podParkBrake,
+				param_podBattery,
+				param_podControlCommand1,
+				param_podHandshake)
+assert P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction :[deadlock-free]	
+assert P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction;RUN({r__}) :[deadlock-free]
+assert P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction :[deterministic]
+assert P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_lutz_DetermineUserInstruction_OP_DetermineUserInstruction

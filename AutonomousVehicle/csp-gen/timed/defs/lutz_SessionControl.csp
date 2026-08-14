@@ -1,0 +1,4064 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module lutz_SessionControl
+exports
+
+
+
+
+module SSessionControl
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i0|
+	              NID_Initialise|
+	              NID_Ready|
+	              NID_UpdateSession|
+	              NID_CheckChanges|
+	              NID_AutonomousRequestTypeChanged|
+	              NID_j0|
+	              NID_AutonomousCancelled|
+	              NID_HandleAutonomousStates|
+	              NID_j1|
+	              NID_AutonomousRequested|
+	              NID_SessionChanged|
+	              NID_j2|
+	              NID_SessionCurrent|
+	              NID_SessionNotAutonomous|
+	              NID_PrepareAutonomous|
+	              NID_SessionAutonomous|
+	              NID_SessionOverride|
+	              NID_CheckChangesBeforeAutonomous|
+	              NID_Autonomous|
+	              NID_NotAutonomous|
+	              NID_Override|
+	              NID_UpdateState|
+	              NID_SessionUpdateState|
+	              NID_InternalInstruction
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_currentDemand, set_currentDemand, setL_currentDemand, setR_currentDemand: PodDemand
+	channel get_newSessionRequest, set_newSessionRequest, setL_newSessionRequest, setR_newSessionRequest: SessionControl
+	channel get_newDemand, set_newDemand, setL_newDemand, setR_newDemand: PodDemand
+	channel get_newInstruction, set_newInstruction, setL_newInstruction, setR_newInstruction: UICode
+	channel get_currentPodStatus, set_currentPodStatus, setL_currentPodStatus, setR_currentPodStatus: Status
+	channel get_newReadyness, set_newReadyness, setL_newReadyness, setR_newReadyness: VehicleReadyState
+	channel get_sessionStateChanged, set_sessionStateChanged, setL_sessionStateChanged, setR_sessionStateChanged: core_boolean
+	channel get_oldReadyness, set_oldReadyness, setL_oldReadyness, setR_oldReadyness: VehicleReadyState
+	channel get_podStatus, set_podStatus, setL_podStatus, setR_podStatus: Status
+	channel get_podPowertrain, set_podPowertrain, setL_podPowertrain, setR_podPowertrain: Powertrain
+	channel get_podEps, set_podEps, setL_podEps, setR_podEps: Eps
+	channel get_podEpsInboard, set_podEpsInboard, setL_podEpsInboard, setR_podEpsInboard: Steer
+	channel get_podEpsOutboard, set_podEpsOutboard, setL_podEpsOutboard, setR_podEpsOutboard: Steer
+	channel get_podParkBrake, set_podParkBrake, setL_podParkBrake, setR_podParkBrake: ParkBrake
+	channel get_podBattery, set_podBattery, setL_podBattery, setR_podBattery: Battery
+	channel get_podControlCommand1, set_podControlCommand1, setL_podControlCommand1, setR_podControlCommand1: ControlCommand1
+	channel get_podHandshake, set_podHandshake, setL_podHandshake, setR_podHandshake: Handshake
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel session_control__: NIDS.InOut.SessionControl
+	channel session_control: InOut.SessionControl
+	channel pod_demand__: NIDS.InOut.PodDemand
+	channel pod_demand: InOut.PodDemand
+	channel status__: NIDS.InOut.Status
+	channel status: InOut.Status
+	channel ui_code__: NIDS.InOut.UICode
+	channel ui_code: InOut.UICode
+	channel updatedSession__: NIDS.InOut.SessionControl
+	channel updatedSession: InOut.SessionControl
+	channel updatedReadyness__: NIDS.InOut.VehicleReadyState
+	channel updatedReadyness: InOut.VehicleReadyState
+	channel powertrain__: NIDS.InOut.Powertrain
+	channel powertrain: InOut.Powertrain
+	channel eps__: NIDS.InOut.Eps
+	channel eps: InOut.Eps
+	channel eps_inboard__: NIDS.InOut.Steer
+	channel eps_inboard: InOut.Steer
+	channel eps_outboard__: NIDS.InOut.Steer
+	channel eps_outboard: InOut.Steer
+	channel epb__: NIDS.InOut.ParkBrake
+	channel epb: InOut.ParkBrake
+	channel battery__: NIDS.InOut.Battery
+	channel battery: InOut.Battery
+	channel control_command1__: NIDS.InOut.ControlCommand1
+	channel control_command1: InOut.ControlCommand1
+	channel quality__: NIDS.InOut.ServiceQuality
+	channel quality: InOut.ServiceQuality
+	channel instruction__: NIDS.InOut.UICode
+	channel instruction: InOut.UICode
+	channel readyStateOut__: NIDS.InOut.VehicleReadyState
+	channel readyStateOut: InOut.VehicleReadyState
+	channel session__: NIDS.InOut.SessionControl
+	channel session: InOut.SessionControl
+	
+	-- Declaring call and ret events for undefined operations
+	channel DetermineUserInstructionCall: VehicleReadyState.SessionControl.Status.Powertrain.Eps.Steer.Steer.ParkBrake.Battery.ControlCommand1.Handshake
+	
+	enterSS = {|
+	i0::enter,
+	Initialise::enter,
+	Ready::enter,
+	UpdateSession::enter,
+	CheckChanges::enter,
+	AutonomousRequestTypeChanged::enter,
+	j0::enter,
+	AutonomousCancelled::enter,
+	HandleAutonomousStates::enter,
+	j1::enter,
+	AutonomousRequested::enter,
+	SessionChanged::enter,
+	j2::enter,
+	SessionCurrent::enter,
+	SessionNotAutonomous::enter,
+	PrepareAutonomous::enter,
+	SessionAutonomous::enter,
+	SessionOverride::enter,
+	CheckChangesBeforeAutonomous::enter,
+	Autonomous::enter,
+	NotAutonomous::enter,
+	Override::enter,
+	UpdateState::enter,
+	SessionUpdateState::enter,
+	InternalInstruction::enter
+	|}
+	
+	enteredSS = 	{|
+	Initialise::entered,
+	Ready::entered,
+	UpdateSession::entered,
+	CheckChanges::entered,
+	AutonomousRequestTypeChanged::entered,
+	AutonomousCancelled::entered,
+	HandleAutonomousStates::entered,
+	AutonomousRequested::entered,
+	SessionChanged::entered,
+	SessionCurrent::entered,
+	SessionNotAutonomous::entered,
+	PrepareAutonomous::entered,
+	SessionAutonomous::entered,
+	SessionOverride::entered,
+	CheckChangesBeforeAutonomous::entered,
+	Autonomous::entered,
+	NotAutonomous::entered,
+	Override::entered,
+	UpdateState::entered,
+	SessionUpdateState::entered,
+	InternalInstruction::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	session_control,
+		pod_demand,
+		status,
+		ui_code,
+		updatedSession,
+		updatedReadyness,
+		powertrain,
+		eps,
+		eps_inboard,
+		eps_outboard,
+		epb,
+		battery,
+		control_command1,
+		quality,
+		instruction,
+		readyStateOut,
+		session
+	,	DetermineUserInstructionCall
+		|}
+	datatype ClockSet = 
+		CLID_sessionControlPeriod
+	
+	channel clockReset, clockResetL, clockResetR : ClockSet
+	
+	localClockResets = {|clockReset.CLID_sessionControlPeriod|}
+	
+	
+	channel get_CLID_SessionUpdateState : core_clock_type 
+	channel get_CLID_Ready : core_clock_type 
+	channel get_CLID_CheckChangesBeforeAutonomous : core_clock_type 
+	channel get_CLID_Override : core_clock_type 
+	channel get_CLID_SessionAutonomous : core_clock_type 
+	channel get_CLID_SessionNotAutonomous : core_clock_type 
+	channel get_CLID_CheckChanges : core_clock_type 
+	channel get_CLID_UpdateState : core_clock_type 
+	channel get_CLID_SessionChanged : core_clock_type 
+	channel get_CLID_PrepareAutonomous : core_clock_type 
+	channel get_CLID_AutonomousCancelled : core_clock_type 
+	channel get_CLID_AutonomousRequestTypeChanged : core_clock_type 
+	channel get_CLID_AutonomousRequested : core_clock_type 
+	channel get_CLID_SessionOverride : core_clock_type 
+	channel get_CLID_HandleAutonomousStates : core_clock_type 
+	channel get_CLID_NotAutonomous : core_clock_type 
+	channel get_CLID_Initialise : core_clock_type 
+	channel get_CLID_SessionCurrent : core_clock_type 
+	channel get_CLID_sessionControlPeriod : core_clock_type 
+	channel get_CLID_Autonomous : core_clock_type 
+	channel get_CLID_InternalInstruction : core_clock_type 
+	channel get_CLID_UpdateSession : core_clock_type 
+	--channel increment__
+	
+	CLID_SessionUpdateState_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Ready_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CheckChangesBeforeAutonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Override_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SessionAutonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SessionNotAutonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CheckChanges_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_UpdateState_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SessionChanged_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_PrepareAutonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_AutonomousCancelled_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_AutonomousRequestTypeChanged_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_AutonomousRequested_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SessionOverride_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_HandleAutonomousStates_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_NotAutonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Initialise_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SessionCurrent_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_sessionControlPeriod_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	({const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD|SESSION_CONTROL_PERIOD <- core_nat}),
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Autonomous_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_InternalInstruction_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_UpdateSession_clock_type(id__,
+			          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Initialise
+		module Initialise
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Ready
+		module Ready
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateSession
+		module UpdateSession
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_newSessionRequest?newSessionRequest -> true&(share__choice(session_control.out!newSessionRequest -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_newSessionRequest?newSessionRequest -> true&(share__choice(session_control.out!newSessionRequest -> SKIP))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: CheckChanges
+		module CheckChanges
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_currentDemand?currentDemand -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podStatus?podStatus -> share__choice(get_newDemand?newDemand -> share__choice(get_oldReadyness?oldReadyness -> share__choice(get_currentPodStatus?currentPodStatus -> true & (share__choice(set_sessionStateChanged!((((currentPodStatus!=podStatus)) or ((PodDemand_driveByWireRequest(currentDemand)!=PodDemand_driveByWireRequest(newDemand)))) or ((oldReadyness!=newReadyness))) -> SKIP))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_currentDemand?currentDemand -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podStatus?podStatus -> share__choice(get_newDemand?newDemand -> share__choice(get_oldReadyness?oldReadyness -> share__choice(get_currentPodStatus?currentPodStatus -> true & (share__choice(set_sessionStateChanged!((((currentPodStatus!=podStatus)) or ((PodDemand_driveByWireRequest(currentDemand)!=PodDemand_driveByWireRequest(newDemand)))) or ((oldReadyness!=newReadyness))) -> SKIP))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: AutonomousRequestTypeChanged
+		module AutonomousRequestTypeChanged
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: AutonomousCancelled
+		module AutonomousCancelled
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newInstruction?newInstruction -> true & (share__choice(set_newInstruction!update_UICode_code(newInstruction,UserCode_AUTONOMOUS_CANCELLED) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newInstruction?newInstruction -> true & (share__choice(set_newInstruction!update_UICode_code(newInstruction,UserCode_AUTONOMOUS_CANCELLED) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: HandleAutonomousStates
+		module HandleAutonomousStates
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podControlCommand1?podControlCommand1 -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_podEpsOutboard?podEpsOutboard -> share__choice(get_podEpsInboard?podEpsInboard -> share__choice(get_podEps?podEps -> share__choice(get_podBattery?podBattery -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true&CALL__DetermineUserInstruction(
+								id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD,
+								newReadyness,
+								newSessionRequest,
+								currentPodStatus,
+								podPowertrain,
+								podEps,
+								podEpsInboard,
+								podEpsOutboard,
+								podParkBrake,
+								podBattery,
+								podControlCommand1,
+								podHandshake
+							)))))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podControlCommand1?podControlCommand1 -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_podEpsOutboard?podEpsOutboard -> share__choice(get_podEpsInboard?podEpsInboard -> share__choice(get_podEps?podEps -> share__choice(get_podBattery?podBattery -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true&CALL__DetermineUserInstruction(
+								id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD,
+								newReadyness,
+								newSessionRequest,
+								currentPodStatus,
+								podPowertrain,
+								podEps,
+								podEpsInboard,
+								podEpsOutboard,
+								podParkBrake,
+								podBattery,
+								podControlCommand1,
+								podHandshake
+							)))))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j1
+		module j1
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: AutonomousRequested
+		module AutonomousRequested
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newInstruction?newInstruction -> true & (share__choice(set_newInstruction!update_UICode_code(newInstruction,UserCode_AUTONOMOUS_REQUESTED) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newInstruction?newInstruction -> true & (share__choice(set_newInstruction!update_UICode_code(newInstruction,UserCode_AUTONOMOUS_REQUESTED) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionChanged
+		module SessionChanged
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podControlCommand1?podControlCommand1 -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_podEpsOutboard?podEpsOutboard -> share__choice(get_podEpsInboard?podEpsInboard -> share__choice(get_podEps?podEps -> share__choice(get_podBattery?podBattery -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true&CALL__DetermineUserInstruction(
+								id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD,
+								newReadyness,
+								newSessionRequest,
+								currentPodStatus,
+								podPowertrain,
+								podEps,
+								podEpsInboard,
+								podEpsOutboard,
+								podParkBrake,
+								podBattery,
+								podControlCommand1,
+								podHandshake
+							)))))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podControlCommand1?podControlCommand1 -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_podEpsOutboard?podEpsOutboard -> share__choice(get_podEpsInboard?podEpsInboard -> share__choice(get_podEps?podEps -> share__choice(get_podBattery?podBattery -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true&CALL__DetermineUserInstruction(
+								id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD,
+								newReadyness,
+								newSessionRequest,
+								currentPodStatus,
+								podPowertrain,
+								podEps,
+								podEpsInboard,
+								podEpsOutboard,
+								podParkBrake,
+								podBattery,
+								podControlCommand1,
+								podHandshake
+							)))))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j2
+		module j2
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionCurrent
+		module SessionCurrent
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionNotAutonomous
+		module SessionNotAutonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newSessionRequest?newSessionRequest -> true & (share__choice(set_newSessionRequest!update_SessionControl_requestedState(newSessionRequest,VehicleState_NO_SESSION) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newSessionRequest?newSessionRequest -> true & (share__choice(set_newSessionRequest!update_SessionControl_requestedState(newSessionRequest,VehicleState_NO_SESSION) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: PrepareAutonomous
+		module PrepareAutonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionAutonomous
+		module SessionAutonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_oldReadyness!newReadyness -> SKIP))));share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_oldReadyness!newReadyness -> SKIP))));share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionOverride
+		module SessionOverride
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true & (share__choice(set_newReadyness!lutz_GetOverrideState(newSessionRequest,currentPodStatus,podPowertrain,podParkBrake,podHandshake) -> SKIP))))))));share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_newInstruction!lutz_GetOverrideUserInstructions(newReadyness) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true & (share__choice(set_newReadyness!lutz_GetOverrideState(newSessionRequest,currentPodStatus,podPowertrain,podParkBrake,podHandshake) -> SKIP))))))));share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_newInstruction!lutz_GetOverrideUserInstructions(newReadyness) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: CheckChangesBeforeAutonomous
+		module CheckChangesBeforeAutonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_currentDemand?currentDemand -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podStatus?podStatus -> share__choice(get_newDemand?newDemand -> share__choice(get_oldReadyness?oldReadyness -> share__choice(get_currentPodStatus?currentPodStatus -> true & (share__choice(set_sessionStateChanged!((((currentPodStatus!=podStatus)) or ((PodDemand_driveByWireRequest(currentDemand)!=PodDemand_driveByWireRequest(newDemand)))) or ((oldReadyness!=newReadyness))) -> SKIP))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_currentDemand?currentDemand -> share__choice(get_newReadyness?newReadyness -> share__choice(get_podStatus?podStatus -> share__choice(get_newDemand?newDemand -> share__choice(get_oldReadyness?oldReadyness -> share__choice(get_currentPodStatus?currentPodStatus -> true & (share__choice(set_sessionStateChanged!((((currentPodStatus!=podStatus)) or ((PodDemand_driveByWireRequest(currentDemand)!=PodDemand_driveByWireRequest(newDemand)))) or ((oldReadyness!=newReadyness))) -> SKIP))))))))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Autonomous
+		module Autonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_oldReadyness!newReadyness -> SKIP))));share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_oldReadyness!newReadyness -> SKIP))));share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: NotAutonomous
+		module NotAutonomous
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newSessionRequest?newSessionRequest -> true & (share__choice(set_newSessionRequest!update_SessionControl_requestedState(newSessionRequest,VehicleState_NO_SESSION) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_newSessionRequest?newSessionRequest -> true & (share__choice(set_newSessionRequest!update_SessionControl_requestedState(newSessionRequest,VehicleState_NO_SESSION) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Override
+		module Override
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true & (share__choice(set_newReadyness!lutz_GetOverrideState(newSessionRequest,currentPodStatus,podPowertrain,podParkBrake,podHandshake) -> SKIP))))))));share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_newInstruction!lutz_GetOverrideUserInstructions(newReadyness) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podParkBrake?podParkBrake -> share__choice(get_newSessionRequest?newSessionRequest -> share__choice(get_podPowertrain?podPowertrain -> share__choice(get_currentPodStatus?currentPodStatus -> share__choice(get_podHandshake?podHandshake -> true & (share__choice(set_newReadyness!lutz_GetOverrideState(newSessionRequest,currentPodStatus,podPowertrain,podParkBrake,podHandshake) -> SKIP))))))));share__choice(share__choice(get_newReadyness?newReadyness -> true & (share__choice(set_newInstruction!lutz_GetOverrideUserInstructions(newReadyness) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: UpdateState
+		module UpdateState
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SessionUpdateState
+		module SessionUpdateState
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((share__choice(share__choice(get_podStatus?podStatus -> true & (share__choice(set_currentPodStatus!podStatus -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: InternalInstruction
+		module InternalInstruction
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__DetermineUserInstruction(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD,
+					param_readyState,
+					param_currentSession,
+					param_podStatus,
+					param_podPowertrain,
+					param_podEps,
+					param_podEpsInboard,
+					param_podEpsOutboard,
+					param_podParkBrake,
+					param_podBattery,
+					param_podControlCommand1,
+					param_podHandshake) = EDeadline(DetermineUserInstructionCall.param_readyState.param_currentSession.param_podStatus.param_podPowertrain.param_podEps.param_podEpsInboard.param_podEpsOutboard.param_podParkBrake.param_podBattery.param_podControlCommand1.param_podHandshake,0)
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		)\sharedVarHide
+		
+		STM_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__,
+							    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__,
+					    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = ((let
+			Trans = share__choice(get_currentDemand?currentDemand -> get_podStatus?podStatus -> get_newDemand?newDemand -> get_sessionStateChanged?sessionStateChanged -> get_CLID_sessionControlPeriod?sessionControlPeriod:CLID_sessionControlPeriod_clock_type(id__,
+					          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim(((sessionControlPeriod>const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateSession::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_UpdateSession -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(clockReset.CLID_sessionControlPeriod -> SKIP) ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; InternalInstruction::enter -> SKIP)))
+				 [] dbisim((true)&(pod_demand__!NID_Ready.in?newDemand:{newDemand|newDemand <- PodDemand, true} -> share__choice(set_newDemand!newDemand -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+				 [] dbisim(((PodDemand_driveByWireRequest(currentDemand)!=PodDemand_driveByWireRequest(newDemand)))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; AutonomousRequestTypeChanged::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_HandleAutonomousStates -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(updatedSession__!NID_Ready.in?newSessionRequest:{newSessionRequest|newSessionRequest <- SessionControl, true} -> share__choice(set_newSessionRequest!newSessionRequest -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((true)&(status__!NID_Ready.in?podStatus:{podStatus|podStatus <- Status, true} -> share__choice(set_podStatus!podStatus -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckChanges::enter -> SKIP)))
+				 [] dbisim(((not (PodDemand_driveByWireRequest(newDemand))))&(internal__!NID_AutonomousRequestTypeChanged -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; AutonomousCancelled::enter -> SKIP)))
+				 [] dbisim(((PodDemand_driveByWireRequest(currentDemand)==PodDemand_driveByWireRequest(newDemand)))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; PrepareAutonomous::enter -> SKIP))))
+				 [] dbisim((true)&(internal__!NID_j1 -> SKIP ;  ((share__choice(get_newInstruction?newInstruction -> true&(share__choice(ui_code.out!newInstruction -> SKIP))) ; PrepareAutonomous::enter -> SKIP))))
+				 [] dbisim((PodDemand_driveByWireRequest(newDemand))&(internal__!NID_AutonomousRequestTypeChanged -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; AutonomousRequested::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_AutonomousRequested -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_AutonomousCancelled -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SessionCurrent -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j2::enter -> SKIP)))
+				 [] dbisim((true)&(updatedReadyness__!NID_Ready.in?newReadyness:{newReadyness|newReadyness <- VehicleReadyState, true} -> share__choice(set_newReadyness!newReadyness -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((sessionStateChanged)&(internal__!NID_CheckChanges -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionChanged::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SessionUpdateState -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j2::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_j2 -> SKIP ;  ((SKIP ; Ready::enter -> SKIP))))
+				 [] dbisim(((not (sessionStateChanged)))&(internal__!NID_CheckChanges -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionCurrent::enter -> SKIP)))
+				 [] dbisim(((not (PodDemand_driveByWireRequest(newDemand))))&(internal__!NID_SessionChanged -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionNotAutonomous::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_InternalInstruction -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 [] dbisim((PodDemand_driveByWireRequest(newDemand))&(internal__!NID_SessionChanged -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionAutonomous::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SessionAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; HandleAutonomousStates::enter -> SKIP)))
+				 [] dbisim(((Status_systemState(podStatus)==VehicleState_OVERRIDE))&(internal__!NID_SessionNotAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionOverride::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_PrepareAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckChangesBeforeAutonomous::enter -> SKIP)))
+				 [] dbisim(((not (PodDemand_driveByWireRequest(newDemand))))&(internal__!NID_CheckChangesBeforeAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; NotAutonomous::enter -> SKIP)))
+				 [] dbisim((PodDemand_driveByWireRequest(newDemand))&(internal__!NID_CheckChangesBeforeAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Autonomous::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Autonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; HandleAutonomousStates::enter -> SKIP)))
+				 [] dbisim(((not ((Status_systemState(podStatus)==VehicleState_OVERRIDE))))&(internal__!NID_NotAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; UpdateState::enter -> SKIP)))
+				 [] dbisim(((Status_systemState(podStatus)==VehicleState_OVERRIDE))&(internal__!NID_NotAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Override::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Override -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_newInstruction?newInstruction -> true&(share__choice(ui_code.out!newInstruction -> SKIP))) ; UpdateState::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SessionOverride -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_newInstruction?newInstruction -> true&(share__choice(ui_code.out!newInstruction -> SKIP))) ; SessionUpdateState::enter -> SKIP)))
+				 [] dbisim(((not ((Status_systemState(podStatus)==VehicleState_OVERRIDE))))&(internal__!NID_SessionNotAutonomous -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SessionUpdateState::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_UpdateState -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					Initialise::enter,
+					Ready::enter,
+					UpdateSession::enter,
+					CheckChanges::enter,
+					AutonomousRequestTypeChanged::enter,
+					j0::enter,
+					AutonomousCancelled::enter,
+					HandleAutonomousStates::enter,
+					j1::enter,
+					AutonomousRequested::enter,
+					SessionChanged::enter,
+					j2::enter,
+					SessionCurrent::enter,
+					SessionNotAutonomous::enter,
+					PrepareAutonomous::enter,
+					SessionAutonomous::enter,
+					SessionOverride::enter,
+					CheckChangesBeforeAutonomous::enter,
+					Autonomous::enter,
+					NotAutonomous::enter,
+					Override::enter,
+					UpdateState::enter,
+					SessionUpdateState::enter,
+					InternalInstruction::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,internal__.NID_Initialise,internal__.NID_Ready,internal__.NID_UpdateSession,internal__.NID_Ready,pod_demand__.NID_Ready.in,internal__.NID_j0,internal__.NID_HandleAutonomousStates,updatedSession__.NID_Ready.in,status__.NID_Ready.in,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_j0,internal__.NID_j1,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_AutonomousRequested,internal__.NID_AutonomousCancelled,internal__.NID_SessionCurrent,updatedReadyness__.NID_Ready.in,internal__.NID_CheckChanges,internal__.NID_SessionUpdateState,internal__.NID_j2,internal__.NID_CheckChanges,internal__.NID_SessionChanged,internal__.NID_InternalInstruction,internal__.NID_SessionChanged,internal__.NID_SessionAutonomous,internal__.NID_SessionNotAutonomous,internal__.NID_PrepareAutonomous,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_Autonomous,internal__.NID_NotAutonomous,internal__.NID_NotAutonomous,internal__.NID_Override,internal__.NID_SessionOverride,internal__.NID_SessionNotAutonomous,internal__.NID_UpdateState|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Initialise::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Ready::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   UpdateSession::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   CheckChanges::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousRequestTypeChanged::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j0::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousCancelled::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   HandleAutonomousStates::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j1::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousRequested::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionChanged::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j2::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionCurrent::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionNotAutonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   PrepareAutonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionAutonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionOverride::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   CheckChangesBeforeAutonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Autonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   NotAutonomous::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Override::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   UpdateState::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionUpdateState::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   InternalInstruction::D__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready,pod_demand__.NID_Ready.in,updatedSession__.NID_Ready.in,status__.NID_Ready.in,updatedReadyness__.NID_Ready.in|}]]
+						 [[UpdateSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateSession|}]]
+						 [[CheckChanges::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckChanges,internal__.NID_CheckChanges|}]]
+						 [[AutonomousRequestTypeChanged::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_AutonomousRequestTypeChanged|}]]
+						 [[AutonomousCancelled::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousCancelled|}]]
+						 [[HandleAutonomousStates::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandleAutonomousStates|}]]
+						 [[AutonomousRequested::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousRequested|}]]
+						 [[SessionChanged::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionChanged,internal__.NID_SessionChanged|}]]
+						 [[SessionCurrent::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionCurrent|}]]
+						 [[SessionNotAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionNotAutonomous,internal__.NID_SessionNotAutonomous|}]]
+						 [[PrepareAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareAutonomous|}]]
+						 [[SessionAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionAutonomous|}]]
+						 [[SessionOverride::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionOverride|}]]
+						 [[CheckChangesBeforeAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_CheckChangesBeforeAutonomous|}]]
+						 [[Autonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Autonomous|}]]
+						 [[NotAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NotAutonomous,internal__.NID_NotAutonomous|}]]
+						 [[Override::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Override|}]]
+						 [[UpdateState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateState|}]]
+						 [[SessionUpdateState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionUpdateState|}]]
+						 [[InternalInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_InternalInstruction|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+						 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_newDemand,setR_newReadyness,setR_podStatus,setR_newSessionRequest |} ]] 
+						  [[set_currentDemand <- setL_currentDemand,set_podStatus <- setL_podStatus,set_newDemand <- setL_newDemand,set_sessionStateChanged <- setL_sessionStateChanged,clockReset.CLID_sessionControlPeriod <- clockResetL.CLID_sessionControlPeriod]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_currentDemand
+						 			,setL_podStatus
+						 			,setL_newDemand
+						 			,setL_sessionStateChanged
+						 			,clockResetL.CLID_sessionControlPeriod
+						 			,setR_newDemand
+						 			 			,setR_newReadyness
+						 			 			,setR_podStatus
+						 			 			,setR_newSessionRequest
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currentDemand,setL_podStatus,setL_newDemand,setL_sessionStateChanged,clockResetL.CLID_sessionControlPeriod |} ]]
+						  [[set_newDemand <- setR_newDemand,set_newReadyness <- setR_newReadyness,set_podStatus <- setR_podStatus,set_newSessionRequest <- setR_newSessionRequest]]
+						 )
+						)[[setL_currentDemand <- set_currentDemand,setL_podStatus <- set_podStatus,setL_newDemand <- set_newDemand,setL_sessionStateChanged <- set_sessionStateChanged,clockResetL.CLID_sessionControlPeriod <- clockReset.CLID_sessionControlPeriod]]
+						 [[setR_newDemand <- set_newDemand,setR_newReadyness <- set_newReadyness,setR_podStatus <- set_podStatus,setR_newSessionRequest <- set_newSessionRequest]]
+						)
+					)
+					 \ hideSet)
+					[[
+						session_control__.x____ <- session_control,
+						pod_demand__.x____ <- pod_demand,
+						status__.x____ <- status,
+						ui_code__.x____ <- ui_code,
+						updatedSession__.x____ <- updatedSession,
+						updatedReadyness__.x____ <- updatedReadyness,
+						powertrain__.x____ <- powertrain,
+						eps__.x____ <- eps,
+						eps_inboard__.x____ <- eps_inboard,
+						eps_outboard__.x____ <- eps_outboard,
+						epb__.x____ <- epb,
+						battery__.x____ <- battery,
+						control_command1__.x____ <- control_command1,
+						quality__.x____ <- quality,
+						instruction__.x____ <- instruction,
+						readyStateOut__.x____ <- readyStateOut,
+						session__.x____ <- session
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SessionUpdateState,SessionUpdateState::entered,get_CLID_Ready,Ready::entered,get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,get_CLID_Override,Override::entered,get_CLID_SessionAutonomous,SessionAutonomous::entered,get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,get_CLID_CheckChanges,CheckChanges::entered,get_CLID_UpdateState,UpdateState::entered,get_CLID_SessionChanged,SessionChanged::entered,get_CLID_PrepareAutonomous,PrepareAutonomous::entered,get_CLID_AutonomousCancelled,AutonomousCancelled::entered,get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,get_CLID_AutonomousRequested,AutonomousRequested::entered,get_CLID_SessionOverride,SessionOverride::entered,get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,get_CLID_NotAutonomous,NotAutonomous::entered,get_CLID_Initialise,Initialise::entered,get_CLID_SessionCurrent,SessionCurrent::entered,get_CLID_Autonomous,Autonomous::entered,get_CLID_InternalInstruction,InternalInstruction::entered,get_CLID_UpdateSession,UpdateSession::entered|}
+			 within
+				(MachineBody(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SessionUpdateState,SessionUpdateState::entered,get_CLID_Ready,Ready::entered,get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,get_CLID_Override,Override::entered,get_CLID_SessionAutonomous,SessionAutonomous::entered,get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,get_CLID_CheckChanges,CheckChanges::entered,get_CLID_UpdateState,UpdateState::entered,get_CLID_SessionChanged,SessionChanged::entered,get_CLID_PrepareAutonomous,PrepareAutonomous::entered,get_CLID_AutonomousCancelled,AutonomousCancelled::entered,get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,get_CLID_AutonomousRequested,AutonomousRequested::entered,get_CLID_SessionOverride,SessionOverride::entered,get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,get_CLID_NotAutonomous,NotAutonomous::entered,get_CLID_Initialise,Initialise::entered,get_CLID_SessionCurrent,SessionCurrent::entered,get_CLID_Autonomous,Autonomous::entered,get_CLID_InternalInstruction,InternalInstruction::entered,get_CLID_UpdateSession,UpdateSession::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		dbisim(
+																			sbisim(
+																				dbisim(
+																					sbisim(
+																						dbisim(
+																							sbisim(
+																								dbisim(
+																									sbisim(
+																										dbisim(
+																											sbisim(
+																												dbisim(
+																													sbisim(
+																														dbisim(
+																															sbisim(
+																																dbisim(
+																																	sbisim(
+																																		dbisim(
+																																			sbisim(
+																																				dbisim(
+																																					sbisim(
+																																						dbisim(
+																																							sbisim(
+																																								dbisim(
+																																									sbisim(
+																																										dbisim(
+																																											sbisim(
+																																												dbisim(
+																																													sbisim(
+																																														MachineBody(id__,
+																																																    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+																																														[| {|get_CLID_UpdateSession,UpdateSession::entered,terminate|} |]
+																																														dbisim(Clock_CLID_UpdateSession(id__,0,
+																																																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																													)\{|get_CLID_UpdateSession|}
+																																												)
+																																												[| {|get_CLID_InternalInstruction,InternalInstruction::entered,terminate|} |]
+																																												dbisim(Clock_CLID_InternalInstruction(id__,0,
+																																														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																											)\{|get_CLID_InternalInstruction|}
+																																										)
+																																										[| {|get_CLID_Autonomous,Autonomous::entered,terminate|} |]
+																																										dbisim(Clock_CLID_Autonomous(id__,0,
+																																												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																									)\{|get_CLID_Autonomous|}
+																																								)
+																																								[| {|get_CLID_SessionCurrent,SessionCurrent::entered,terminate|} |]
+																																								dbisim(Clock_CLID_SessionCurrent(id__,0,
+																																										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																							)\{|get_CLID_SessionCurrent|}
+																																						)
+																																						[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+																																						dbisim(Clock_CLID_Initialise(id__,0,
+																																								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																					)\{|get_CLID_Initialise|}
+																																				)
+																																				[| {|get_CLID_NotAutonomous,NotAutonomous::entered,terminate|} |]
+																																				dbisim(Clock_CLID_NotAutonomous(id__,0,
+																																						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																			)\{|get_CLID_NotAutonomous|}
+																																		)
+																																		[| {|get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,terminate|} |]
+																																		dbisim(Clock_CLID_HandleAutonomousStates(id__,0,
+																																				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																	)\{|get_CLID_HandleAutonomousStates|}
+																																)
+																																[| {|get_CLID_SessionOverride,SessionOverride::entered,terminate|} |]
+																																dbisim(Clock_CLID_SessionOverride(id__,0,
+																																		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																															)\{|get_CLID_SessionOverride|}
+																														)
+																														[| {|get_CLID_AutonomousRequested,AutonomousRequested::entered,terminate|} |]
+																														dbisim(Clock_CLID_AutonomousRequested(id__,0,
+																																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																													)\{|get_CLID_AutonomousRequested|}
+																												)
+																												[| {|get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,terminate|} |]
+																												dbisim(Clock_CLID_AutonomousRequestTypeChanged(id__,0,
+																														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																											)\{|get_CLID_AutonomousRequestTypeChanged|}
+																										)
+																										[| {|get_CLID_AutonomousCancelled,AutonomousCancelled::entered,terminate|} |]
+																										dbisim(Clock_CLID_AutonomousCancelled(id__,0,
+																												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																									)\{|get_CLID_AutonomousCancelled|}
+																								)
+																								[| {|get_CLID_PrepareAutonomous,PrepareAutonomous::entered,terminate|} |]
+																								dbisim(Clock_CLID_PrepareAutonomous(id__,0,
+																										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																							)\{|get_CLID_PrepareAutonomous|}
+																						)
+																						[| {|get_CLID_SessionChanged,SessionChanged::entered,terminate|} |]
+																						dbisim(Clock_CLID_SessionChanged(id__,0,
+																								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																					)\{|get_CLID_SessionChanged|}
+																				)
+																				[| {|get_CLID_UpdateState,UpdateState::entered,terminate|} |]
+																				dbisim(Clock_CLID_UpdateState(id__,0,
+																						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																			)\{|get_CLID_UpdateState|}
+																		)
+																		[| {|get_CLID_CheckChanges,CheckChanges::entered,terminate|} |]
+																		dbisim(Clock_CLID_CheckChanges(id__,0,
+																				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																	)\{|get_CLID_CheckChanges|}
+																)
+																[| {|get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,terminate|} |]
+																dbisim(Clock_CLID_SessionNotAutonomous(id__,0,
+																		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+															)\{|get_CLID_SessionNotAutonomous|}
+														)
+														[| {|get_CLID_SessionAutonomous,SessionAutonomous::entered,terminate|} |]
+														dbisim(Clock_CLID_SessionAutonomous(id__,0,
+																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+													)\{|get_CLID_SessionAutonomous|}
+												)
+												[| {|get_CLID_Override,Override::entered,terminate|} |]
+												dbisim(Clock_CLID_Override(id__,0,
+														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+											)\{|get_CLID_Override|}
+										)
+										[| {|get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,terminate|} |]
+										dbisim(Clock_CLID_CheckChangesBeforeAutonomous(id__,0,
+												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+									)\{|get_CLID_CheckChangesBeforeAutonomous|}
+								)
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
+										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+							)\{|get_CLID_Ready|}
+						)
+						[| {|get_CLID_SessionUpdateState,SessionUpdateState::entered,terminate|} |]
+						dbisim(Clock_CLID_SessionUpdateState(id__,0,
+								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+					)\{|get_CLID_SessionUpdateState|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			((let
+				getsetLocalChannels = {|get_currentDemand,set_currentDemand,
+				get_newSessionRequest,set_newSessionRequest,
+				get_newDemand,set_newDemand,
+				get_newInstruction,set_newInstruction,
+				get_currentPodStatus,set_currentPodStatus,
+				get_newReadyness,set_newReadyness,
+				get_sessionStateChanged,set_sessionStateChanged,
+				get_oldReadyness,set_oldReadyness,
+				get_podStatus,set_podStatus,
+				get_podPowertrain,set_podPowertrain,
+				get_podEps,set_podEps,
+				get_podEpsInboard,set_podEpsInboard,
+				get_podEpsOutboard,set_podEpsOutboard,
+				get_podParkBrake,set_podParkBrake,
+				get_podBattery,set_podBattery,
+				get_podControlCommand1,set_podControlCommand1,
+				get_podHandshake,set_podHandshake|}
+				clockSync = {|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod|}
+			within
+				(Behaviour(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [| {terminate} |] Clocks(id__,
+				 		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	dbisim(
+																		sbisim(
+																			dbisim(
+																				sbisim(
+																					dbisim(
+																						sbisim(
+																							dbisim(
+																								sbisim(
+																									dbisim(
+																										sbisim(
+																											dbisim(
+																												sbisim(
+																													dbisim(
+																														sbisim(
+																															dbisim(
+																																sbisim(
+																																	dbisim(
+																																		sbisim(
+																																			dbisim(
+																																				sbisim(
+																																					dbisim(
+																																						sbisim(
+																																							IteratedBehaviour(id__,
+																																									    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+																																							[| {|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod,terminate|} |]
+																																							dbisim(Clock_CLID_sessionControlPeriod(id__,0,
+																																									          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																						)\{|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod|}
+																																					)
+																																					[| {|get_podHandshake,set_podHandshake,terminate|} |]
+																																					Memory_podHandshake((0,0,0,0,0))
+																																				)\{|get_podHandshake,set_podHandshake|}
+																																			)
+																																			[| {|get_podControlCommand1,set_podControlCommand1,terminate|} |]
+																																			Memory_podControlCommand1((0,0,true,true,true,true,true,0,0,0,0))
+																																		)\{|get_podControlCommand1,set_podControlCommand1|}
+																																	)
+																																	[| {|get_podBattery,set_podBattery,terminate|} |]
+																																	Memory_podBattery((true,true,true,true,0,0,0,true))
+																																)\{|get_podBattery,set_podBattery|}
+																															)
+																															[| {|get_podParkBrake,set_podParkBrake,terminate|} |]
+																															Memory_podParkBrake((0,0,0,0,true,true,true,true,true,true,0))
+																														)\{|get_podParkBrake,set_podParkBrake|}
+																													)
+																													[| {|get_podEpsOutboard,set_podEpsOutboard,terminate|} |]
+																													Memory_podEpsOutboard((0,0,0,0,0,0,0))
+																												)\{|get_podEpsOutboard,set_podEpsOutboard|}
+																											)
+																											[| {|get_podEpsInboard,set_podEpsInboard,terminate|} |]
+																											Memory_podEpsInboard((0,0,0,0,0,0,0))
+																										)\{|get_podEpsInboard,set_podEpsInboard|}
+																									)
+																									[| {|get_podEps,set_podEps,terminate|} |]
+																									Memory_podEps((0,0,0,0,0,0))
+																								)\{|get_podEps,set_podEps|}
+																							)
+																							[| {|get_podPowertrain,set_podPowertrain,terminate|} |]
+																							Memory_podPowertrain((0,true,true,true))
+																						)\{|get_podPowertrain,set_podPowertrain|}
+																					)
+																					[| {|get_podStatus,set_podStatus,terminate|} |]
+																					Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+																				)\{|get_podStatus,set_podStatus|}
+																			)
+																			[| {|get_oldReadyness,set_oldReadyness,terminate|} |]
+																			Memory_oldReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+																		)\{|get_oldReadyness,set_oldReadyness|}
+																	)
+																	[| {|get_sessionStateChanged,set_sessionStateChanged,terminate|} |]
+																	Memory_sessionStateChanged(true)
+																)\{|get_sessionStateChanged,set_sessionStateChanged|}
+															)
+															[| {|get_newReadyness,set_newReadyness,terminate|} |]
+															Memory_newReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+														)\{|get_newReadyness,set_newReadyness|}
+													)
+													[| {|get_currentPodStatus,set_currentPodStatus,terminate|} |]
+													Memory_currentPodStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+												)\{|get_currentPodStatus,set_currentPodStatus|}
+											)
+											[| {|get_newInstruction,set_newInstruction,terminate|} |]
+											Memory_newInstruction((UserCode_DRIVER_SEAT))
+										)\{|get_newInstruction,set_newInstruction|}
+									)
+									[| {|get_newDemand,set_newDemand,terminate|} |]
+									Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+								)\{|get_newDemand,set_newDemand|}
+							)
+							[| {|get_newSessionRequest,set_newSessionRequest,terminate|} |]
+							Memory_newSessionRequest((VehicleState_INVALID,0))
+						)\{|get_newSessionRequest,set_newSessionRequest|}
+					)
+					[| {|get_currentDemand,set_currentDemand,terminate|} |]
+					Memory_currentDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+				)\{|get_currentDemand,set_currentDemand|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					i0::enter,
+					Initialise::enter,
+					Ready::enter,
+					UpdateSession::enter,
+					CheckChanges::enter,
+					AutonomousRequestTypeChanged::enter,
+					j0::enter,
+					AutonomousCancelled::enter,
+					HandleAutonomousStates::enter,
+					j1::enter,
+					AutonomousRequested::enter,
+					SessionChanged::enter,
+					j2::enter,
+					SessionCurrent::enter,
+					SessionNotAutonomous::enter,
+					PrepareAutonomous::enter,
+					SessionAutonomous::enter,
+					SessionOverride::enter,
+					CheckChangesBeforeAutonomous::enter,
+					Autonomous::enter,
+					NotAutonomous::enter,
+					Override::enter,
+					UpdateState::enter,
+					SessionUpdateState::enter,
+					InternalInstruction::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_i0,internal__.NID_Initialise,internal__.NID_Ready,internal__.NID_UpdateSession,internal__.NID_Ready,pod_demand__.NID_Ready.in,internal__.NID_j0,internal__.NID_HandleAutonomousStates,updatedSession__.NID_Ready.in,status__.NID_Ready.in,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_j0,internal__.NID_j1,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_AutonomousRequested,internal__.NID_AutonomousCancelled,internal__.NID_SessionCurrent,updatedReadyness__.NID_Ready.in,internal__.NID_CheckChanges,internal__.NID_SessionUpdateState,internal__.NID_j2,internal__.NID_CheckChanges,internal__.NID_SessionChanged,internal__.NID_InternalInstruction,internal__.NID_SessionChanged,internal__.NID_SessionAutonomous,internal__.NID_SessionNotAutonomous,internal__.NID_PrepareAutonomous,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_Autonomous,internal__.NID_NotAutonomous,internal__.NID_NotAutonomous,internal__.NID_Override,internal__.NID_SessionOverride,internal__.NID_SessionNotAutonomous,internal__.NID_UpdateState|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   i0::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Initialise::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Ready::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   UpdateSession::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   CheckChanges::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousRequestTypeChanged::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j0::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousCancelled::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   HandleAutonomousStates::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j1::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   AutonomousRequested::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionChanged::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   j2::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionCurrent::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionNotAutonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   PrepareAutonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionAutonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionOverride::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   CheckChangesBeforeAutonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Autonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   NotAutonomous::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   Override::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   UpdateState::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   SessionUpdateState::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   [| { share__, terminate } |] (
+						   InternalInstruction::VS_O__(id__,
+						   		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+						 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,internal__.NID_Ready,pod_demand__.NID_Ready.in,updatedSession__.NID_Ready.in,status__.NID_Ready.in,updatedReadyness__.NID_Ready.in|}]]
+						 [[UpdateSession::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateSession|}]]
+						 [[CheckChanges::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckChanges,internal__.NID_CheckChanges|}]]
+						 [[AutonomousRequestTypeChanged::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousRequestTypeChanged,internal__.NID_AutonomousRequestTypeChanged|}]]
+						 [[AutonomousCancelled::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousCancelled|}]]
+						 [[HandleAutonomousStates::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandleAutonomousStates|}]]
+						 [[AutonomousRequested::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_AutonomousRequested|}]]
+						 [[SessionChanged::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionChanged,internal__.NID_SessionChanged|}]]
+						 [[SessionCurrent::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionCurrent|}]]
+						 [[SessionNotAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionNotAutonomous,internal__.NID_SessionNotAutonomous|}]]
+						 [[PrepareAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_PrepareAutonomous|}]]
+						 [[SessionAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionAutonomous|}]]
+						 [[SessionOverride::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionOverride|}]]
+						 [[CheckChangesBeforeAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckChangesBeforeAutonomous,internal__.NID_CheckChangesBeforeAutonomous|}]]
+						 [[Autonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Autonomous|}]]
+						 [[NotAutonomous::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NotAutonomous,internal__.NID_NotAutonomous|}]]
+						 [[Override::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Override|}]]
+						 [[UpdateState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_UpdateState|}]]
+						 [[SessionUpdateState::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SessionUpdateState|}]]
+						 [[InternalInstruction::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_InternalInstruction|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1|}]]
+						 [[j2::interrupt <- x__ | x__ <- {|internal__.NID_j2|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_newDemand,setR_newReadyness,setR_podStatus,setR_newSessionRequest |} ]] 
+						  [[set_currentDemand <- setL_currentDemand,set_podStatus <- setL_podStatus,set_newDemand <- setL_newDemand,set_sessionStateChanged <- setL_sessionStateChanged,clockReset.CLID_sessionControlPeriod <- clockResetL.CLID_sessionControlPeriod]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_currentDemand
+						 			,setL_podStatus
+						 			,setL_newDemand
+						 			,setL_sessionStateChanged
+						 			,clockResetL.CLID_sessionControlPeriod
+						 			,setR_newDemand
+						 			 			,setR_newReadyness
+						 			 			,setR_podStatus
+						 			 			,setR_newSessionRequest
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__,
+						 		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_currentDemand,setL_podStatus,setL_newDemand,setL_sessionStateChanged,clockResetL.CLID_sessionControlPeriod |} ]]
+						  [[set_newDemand <- setR_newDemand,set_newReadyness <- setR_newReadyness,set_podStatus <- setR_podStatus,set_newSessionRequest <- setR_newSessionRequest]]
+						 )
+						)[[setL_currentDemand <- set_currentDemand,setL_podStatus <- set_podStatus,setL_newDemand <- set_newDemand,setL_sessionStateChanged <- set_sessionStateChanged,clockResetL.CLID_sessionControlPeriod <- clockReset.CLID_sessionControlPeriod]]
+						 [[setR_newDemand <- set_newDemand,setR_newReadyness <- set_newReadyness,setR_podStatus <- set_podStatus,setR_newSessionRequest <- set_newSessionRequest]]
+						)
+					)
+					 \ hideSet)
+					[[
+						session_control__.x____ <- session_control,
+						pod_demand__.x____ <- pod_demand,
+						status__.x____ <- status,
+						ui_code__.x____ <- ui_code,
+						updatedSession__.x____ <- updatedSession,
+						updatedReadyness__.x____ <- updatedReadyness,
+						powertrain__.x____ <- powertrain,
+						eps__.x____ <- eps,
+						eps_inboard__.x____ <- eps_inboard,
+						eps_outboard__.x____ <- eps_outboard,
+						epb__.x____ <- epb,
+						battery__.x____ <- battery,
+						control_command1__.x____ <- control_command1,
+						quality__.x____ <- quality,
+						instruction__.x____ <- instruction,
+						readyStateOut__.x____ <- readyStateOut,
+						session__.x____ <- session
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SessionUpdateState,SessionUpdateState::entered,get_CLID_Ready,Ready::entered,get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,get_CLID_Override,Override::entered,get_CLID_SessionAutonomous,SessionAutonomous::entered,get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,get_CLID_CheckChanges,CheckChanges::entered,get_CLID_UpdateState,UpdateState::entered,get_CLID_SessionChanged,SessionChanged::entered,get_CLID_PrepareAutonomous,PrepareAutonomous::entered,get_CLID_AutonomousCancelled,AutonomousCancelled::entered,get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,get_CLID_AutonomousRequested,AutonomousRequested::entered,get_CLID_SessionOverride,SessionOverride::entered,get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,get_CLID_NotAutonomous,NotAutonomous::entered,get_CLID_Initialise,Initialise::entered,get_CLID_SessionCurrent,SessionCurrent::entered,get_CLID_Autonomous,Autonomous::entered,get_CLID_InternalInstruction,InternalInstruction::entered,get_CLID_UpdateSession,UpdateSession::entered|}
+			 within
+				(MachineBody_VS_O(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SessionUpdateState,SessionUpdateState::entered,get_CLID_Ready,Ready::entered,get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,get_CLID_Override,Override::entered,get_CLID_SessionAutonomous,SessionAutonomous::entered,get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,get_CLID_CheckChanges,CheckChanges::entered,get_CLID_UpdateState,UpdateState::entered,get_CLID_SessionChanged,SessionChanged::entered,get_CLID_PrepareAutonomous,PrepareAutonomous::entered,get_CLID_AutonomousCancelled,AutonomousCancelled::entered,get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,get_CLID_AutonomousRequested,AutonomousRequested::entered,get_CLID_SessionOverride,SessionOverride::entered,get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,get_CLID_NotAutonomous,NotAutonomous::entered,get_CLID_Initialise,Initialise::entered,get_CLID_SessionCurrent,SessionCurrent::entered,get_CLID_Autonomous,Autonomous::entered,get_CLID_InternalInstruction,InternalInstruction::entered,get_CLID_UpdateSession,UpdateSession::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		dbisim(
+																			sbisim(
+																				dbisim(
+																					sbisim(
+																						dbisim(
+																							sbisim(
+																								dbisim(
+																									sbisim(
+																										dbisim(
+																											sbisim(
+																												dbisim(
+																													sbisim(
+																														dbisim(
+																															sbisim(
+																																dbisim(
+																																	sbisim(
+																																		dbisim(
+																																			sbisim(
+																																				dbisim(
+																																					sbisim(
+																																						dbisim(
+																																							sbisim(
+																																								dbisim(
+																																									sbisim(
+																																										dbisim(
+																																											sbisim(
+																																												dbisim(
+																																													sbisim(
+																																														MachineBody_VS_O(id__,
+																																																    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+																																														[| {|get_CLID_UpdateSession,UpdateSession::entered,terminate|} |]
+																																														dbisim(Clock_CLID_UpdateSession(id__,0,
+																																																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																													)\{|get_CLID_UpdateSession|}
+																																												)
+																																												[| {|get_CLID_InternalInstruction,InternalInstruction::entered,terminate|} |]
+																																												dbisim(Clock_CLID_InternalInstruction(id__,0,
+																																														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																											)\{|get_CLID_InternalInstruction|}
+																																										)
+																																										[| {|get_CLID_Autonomous,Autonomous::entered,terminate|} |]
+																																										dbisim(Clock_CLID_Autonomous(id__,0,
+																																												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																									)\{|get_CLID_Autonomous|}
+																																								)
+																																								[| {|get_CLID_SessionCurrent,SessionCurrent::entered,terminate|} |]
+																																								dbisim(Clock_CLID_SessionCurrent(id__,0,
+																																										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																							)\{|get_CLID_SessionCurrent|}
+																																						)
+																																						[| {|get_CLID_Initialise,Initialise::entered,terminate|} |]
+																																						dbisim(Clock_CLID_Initialise(id__,0,
+																																								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																					)\{|get_CLID_Initialise|}
+																																				)
+																																				[| {|get_CLID_NotAutonomous,NotAutonomous::entered,terminate|} |]
+																																				dbisim(Clock_CLID_NotAutonomous(id__,0,
+																																						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																			)\{|get_CLID_NotAutonomous|}
+																																		)
+																																		[| {|get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,terminate|} |]
+																																		dbisim(Clock_CLID_HandleAutonomousStates(id__,0,
+																																				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																	)\{|get_CLID_HandleAutonomousStates|}
+																																)
+																																[| {|get_CLID_SessionOverride,SessionOverride::entered,terminate|} |]
+																																dbisim(Clock_CLID_SessionOverride(id__,0,
+																																		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																															)\{|get_CLID_SessionOverride|}
+																														)
+																														[| {|get_CLID_AutonomousRequested,AutonomousRequested::entered,terminate|} |]
+																														dbisim(Clock_CLID_AutonomousRequested(id__,0,
+																																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																													)\{|get_CLID_AutonomousRequested|}
+																												)
+																												[| {|get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,terminate|} |]
+																												dbisim(Clock_CLID_AutonomousRequestTypeChanged(id__,0,
+																														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																											)\{|get_CLID_AutonomousRequestTypeChanged|}
+																										)
+																										[| {|get_CLID_AutonomousCancelled,AutonomousCancelled::entered,terminate|} |]
+																										dbisim(Clock_CLID_AutonomousCancelled(id__,0,
+																												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																									)\{|get_CLID_AutonomousCancelled|}
+																								)
+																								[| {|get_CLID_PrepareAutonomous,PrepareAutonomous::entered,terminate|} |]
+																								dbisim(Clock_CLID_PrepareAutonomous(id__,0,
+																										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																							)\{|get_CLID_PrepareAutonomous|}
+																						)
+																						[| {|get_CLID_SessionChanged,SessionChanged::entered,terminate|} |]
+																						dbisim(Clock_CLID_SessionChanged(id__,0,
+																								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																					)\{|get_CLID_SessionChanged|}
+																				)
+																				[| {|get_CLID_UpdateState,UpdateState::entered,terminate|} |]
+																				dbisim(Clock_CLID_UpdateState(id__,0,
+																						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																			)\{|get_CLID_UpdateState|}
+																		)
+																		[| {|get_CLID_CheckChanges,CheckChanges::entered,terminate|} |]
+																		dbisim(Clock_CLID_CheckChanges(id__,0,
+																				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																	)\{|get_CLID_CheckChanges|}
+																)
+																[| {|get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,terminate|} |]
+																dbisim(Clock_CLID_SessionNotAutonomous(id__,0,
+																		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+															)\{|get_CLID_SessionNotAutonomous|}
+														)
+														[| {|get_CLID_SessionAutonomous,SessionAutonomous::entered,terminate|} |]
+														dbisim(Clock_CLID_SessionAutonomous(id__,0,
+																          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+													)\{|get_CLID_SessionAutonomous|}
+												)
+												[| {|get_CLID_Override,Override::entered,terminate|} |]
+												dbisim(Clock_CLID_Override(id__,0,
+														          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+											)\{|get_CLID_Override|}
+										)
+										[| {|get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,terminate|} |]
+										dbisim(Clock_CLID_CheckChangesBeforeAutonomous(id__,0,
+												          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+									)\{|get_CLID_CheckChangesBeforeAutonomous|}
+								)
+								[| {|get_CLID_Ready,Ready::entered,terminate|} |]
+								dbisim(Clock_CLID_Ready(id__,0,
+										          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+							)\{|get_CLID_Ready|}
+						)
+						[| {|get_CLID_SessionUpdateState,SessionUpdateState::entered,terminate|} |]
+						dbisim(Clock_CLID_SessionUpdateState(id__,0,
+								          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+					)\{|get_CLID_SessionUpdateState|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			dbisim((let
+				getsetLocalChannels = {|get_currentDemand,set_currentDemand,
+				get_newSessionRequest,set_newSessionRequest,
+				get_newDemand,set_newDemand,
+				get_newInstruction,set_newInstruction,
+				get_currentPodStatus,set_currentPodStatus,
+				get_newReadyness,set_newReadyness,
+				get_sessionStateChanged,set_sessionStateChanged,
+				get_oldReadyness,set_oldReadyness,
+				get_podStatus,set_podStatus,
+				get_podPowertrain,set_podPowertrain,
+				get_podEps,set_podEps,
+				get_podEpsInboard,set_podEpsInboard,
+				get_podEpsOutboard,set_podEpsOutboard,
+				get_podParkBrake,set_podParkBrake,
+				get_podBattery,set_podBattery,
+				get_podControlCommand1,set_podControlCommand1,
+				get_podHandshake,set_podHandshake|}
+				clockSync = {|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod|}
+			within
+				(Behaviour_VS_O(id__,
+						    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,
+				 		    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [| {terminate} |] Clocks(id__,
+				 		          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	dbisim(
+																		sbisim(
+																			dbisim(
+																				sbisim(
+																					dbisim(
+																						sbisim(
+																							dbisim(
+																								sbisim(
+																									dbisim(
+																										sbisim(
+																											dbisim(
+																												sbisim(
+																													dbisim(
+																														sbisim(
+																															dbisim(
+																																sbisim(
+																																	dbisim(
+																																		sbisim(
+																																			dbisim(
+																																				sbisim(
+																																					dbisim(
+																																						sbisim(
+																																							IteratedBehaviour_VS_O(id__,
+																																									    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+																																							[| {|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod,terminate|} |]
+																																							dbisim(Clock_CLID_sessionControlPeriod(id__,0,
+																																									          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+																																						)\{|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod|}
+																																					)
+																																					[| {|get_podHandshake,set_podHandshake,terminate|} |]
+																																					Memory_podHandshake((0,0,0,0,0))
+																																				)\{|get_podHandshake,set_podHandshake|}
+																																			)
+																																			[| {|get_podControlCommand1,set_podControlCommand1,terminate|} |]
+																																			Memory_podControlCommand1((0,0,true,true,true,true,true,0,0,0,0))
+																																		)\{|get_podControlCommand1,set_podControlCommand1|}
+																																	)
+																																	[| {|get_podBattery,set_podBattery,terminate|} |]
+																																	Memory_podBattery((true,true,true,true,0,0,0,true))
+																																)\{|get_podBattery,set_podBattery|}
+																															)
+																															[| {|get_podParkBrake,set_podParkBrake,terminate|} |]
+																															Memory_podParkBrake((0,0,0,0,true,true,true,true,true,true,0))
+																														)\{|get_podParkBrake,set_podParkBrake|}
+																													)
+																													[| {|get_podEpsOutboard,set_podEpsOutboard,terminate|} |]
+																													Memory_podEpsOutboard((0,0,0,0,0,0,0))
+																												)\{|get_podEpsOutboard,set_podEpsOutboard|}
+																											)
+																											[| {|get_podEpsInboard,set_podEpsInboard,terminate|} |]
+																											Memory_podEpsInboard((0,0,0,0,0,0,0))
+																										)\{|get_podEpsInboard,set_podEpsInboard|}
+																									)
+																									[| {|get_podEps,set_podEps,terminate|} |]
+																									Memory_podEps((0,0,0,0,0,0))
+																								)\{|get_podEps,set_podEps|}
+																							)
+																							[| {|get_podPowertrain,set_podPowertrain,terminate|} |]
+																							Memory_podPowertrain((0,true,true,true))
+																						)\{|get_podPowertrain,set_podPowertrain|}
+																					)
+																					[| {|get_podStatus,set_podStatus,terminate|} |]
+																					Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+																				)\{|get_podStatus,set_podStatus|}
+																			)
+																			[| {|get_oldReadyness,set_oldReadyness,terminate|} |]
+																			Memory_oldReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+																		)\{|get_oldReadyness,set_oldReadyness|}
+																	)
+																	[| {|get_sessionStateChanged,set_sessionStateChanged,terminate|} |]
+																	Memory_sessionStateChanged(true)
+																)\{|get_sessionStateChanged,set_sessionStateChanged|}
+															)
+															[| {|get_newReadyness,set_newReadyness,terminate|} |]
+															Memory_newReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+														)\{|get_newReadyness,set_newReadyness|}
+													)
+													[| {|get_currentPodStatus,set_currentPodStatus,terminate|} |]
+													Memory_currentPodStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+												)\{|get_currentPodStatus,set_currentPodStatus|}
+											)
+											[| {|get_newInstruction,set_newInstruction,terminate|} |]
+											Memory_newInstruction((UserCode_DRIVER_SEAT))
+										)\{|get_newInstruction,set_newInstruction|}
+									)
+									[| {|get_newDemand,set_newDemand,terminate|} |]
+									Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+								)\{|get_newDemand,set_newDemand|}
+							)
+							[| {|get_newSessionRequest,set_newSessionRequest,terminate|} |]
+							Memory_newSessionRequest((VehicleState_INVALID,0))
+						)\{|get_newSessionRequest,set_newSessionRequest|}
+					)
+					[| {|get_currentDemand,set_currentDemand,terminate|} |]
+					Memory_currentDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+				)\{|get_currentDemand,set_currentDemand|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_currentDemand(currentDemand) =
+			get_currentDemand!currentDemand -> Memory_currentDemand(currentDemand)
+			[]
+			set_currentDemand?x__ -> Memory_currentDemand(x__)
+			[]
+			terminate -> SKIP
+		Memory_newSessionRequest(newSessionRequest) =
+			get_newSessionRequest!newSessionRequest -> Memory_newSessionRequest(newSessionRequest)
+			[]
+			set_newSessionRequest?x__ -> Memory_newSessionRequest(x__)
+			[]
+			terminate -> SKIP
+		Memory_newDemand(newDemand) =
+			get_newDemand!newDemand -> Memory_newDemand(newDemand)
+			[]
+			set_newDemand?x__ -> Memory_newDemand(x__)
+			[]
+			terminate -> SKIP
+		Memory_newInstruction(newInstruction) =
+			get_newInstruction!newInstruction -> Memory_newInstruction(newInstruction)
+			[]
+			set_newInstruction?x__ -> Memory_newInstruction(x__)
+			[]
+			terminate -> SKIP
+		Memory_currentPodStatus(currentPodStatus) =
+			get_currentPodStatus!currentPodStatus -> Memory_currentPodStatus(currentPodStatus)
+			[]
+			set_currentPodStatus?x__ -> Memory_currentPodStatus(x__)
+			[]
+			terminate -> SKIP
+		Memory_newReadyness(newReadyness) =
+			get_newReadyness!newReadyness -> Memory_newReadyness(newReadyness)
+			[]
+			set_newReadyness?x__ -> Memory_newReadyness(x__)
+			[]
+			terminate -> SKIP
+		Memory_sessionStateChanged(sessionStateChanged) =
+			get_sessionStateChanged!sessionStateChanged -> Memory_sessionStateChanged(sessionStateChanged)
+			[]
+			set_sessionStateChanged?x__ -> Memory_sessionStateChanged(x__)
+			[]
+			terminate -> SKIP
+		Memory_oldReadyness(oldReadyness) =
+			get_oldReadyness!oldReadyness -> Memory_oldReadyness(oldReadyness)
+			[]
+			set_oldReadyness?x__ -> Memory_oldReadyness(x__)
+			[]
+			terminate -> SKIP
+		Memory_podStatus(podStatus) =
+			get_podStatus!podStatus -> Memory_podStatus(podStatus)
+			[]
+			set_podStatus?x__ -> Memory_podStatus(x__)
+			[]
+			terminate -> SKIP
+		Memory_podPowertrain(podPowertrain) =
+			get_podPowertrain!podPowertrain -> Memory_podPowertrain(podPowertrain)
+			[]
+			set_podPowertrain?x__ -> Memory_podPowertrain(x__)
+			[]
+			terminate -> SKIP
+		Memory_podEps(podEps) =
+			get_podEps!podEps -> Memory_podEps(podEps)
+			[]
+			set_podEps?x__ -> Memory_podEps(x__)
+			[]
+			terminate -> SKIP
+		Memory_podEpsInboard(podEpsInboard) =
+			get_podEpsInboard!podEpsInboard -> Memory_podEpsInboard(podEpsInboard)
+			[]
+			set_podEpsInboard?x__ -> Memory_podEpsInboard(x__)
+			[]
+			terminate -> SKIP
+		Memory_podEpsOutboard(podEpsOutboard) =
+			get_podEpsOutboard!podEpsOutboard -> Memory_podEpsOutboard(podEpsOutboard)
+			[]
+			set_podEpsOutboard?x__ -> Memory_podEpsOutboard(x__)
+			[]
+			terminate -> SKIP
+		Memory_podParkBrake(podParkBrake) =
+			get_podParkBrake!podParkBrake -> Memory_podParkBrake(podParkBrake)
+			[]
+			set_podParkBrake?x__ -> Memory_podParkBrake(x__)
+			[]
+			terminate -> SKIP
+		Memory_podBattery(podBattery) =
+			get_podBattery!podBattery -> Memory_podBattery(podBattery)
+			[]
+			set_podBattery?x__ -> Memory_podBattery(x__)
+			[]
+			terminate -> SKIP
+		Memory_podControlCommand1(podControlCommand1) =
+			get_podControlCommand1!podControlCommand1 -> Memory_podControlCommand1(podControlCommand1)
+			[]
+			set_podControlCommand1?x__ -> Memory_podControlCommand1(x__)
+			[]
+			terminate -> SKIP
+		Memory_podHandshake(podHandshake) =
+			get_podHandshake!podHandshake -> Memory_podHandshake(podHandshake)
+			[]
+			set_podHandshake?x__ -> Memory_podHandshake(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = Memory_currentDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+		[| { terminate } |] (
+		Memory_newSessionRequest((VehicleState_INVALID,0))
+		[| { terminate } |] (
+		Memory_newDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+		[| { terminate } |] (
+		Memory_newInstruction((UserCode_DRIVER_SEAT))
+		[| { terminate } |] (
+		Memory_currentPodStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+		[| { terminate } |] (
+		Memory_newReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+		[| { terminate } |] (
+		Memory_sessionStateChanged(true)
+		[| { terminate } |] (
+		Memory_oldReadyness(VehicleReadyState_DRIVER_SEAT_ERROR)
+		[| { terminate } |] (
+		Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+		[| { terminate } |] (
+		Memory_podPowertrain((0,true,true,true))
+		[| { terminate } |] (
+		Memory_podEps((0,0,0,0,0,0))
+		[| { terminate } |] (
+		Memory_podEpsInboard((0,0,0,0,0,0,0))
+		[| { terminate } |] (
+		Memory_podEpsOutboard((0,0,0,0,0,0,0))
+		[| { terminate } |] (
+		Memory_podParkBrake((0,0,0,0,true,true,true,true,true,true,0))
+		[| { terminate } |] (
+		Memory_podBattery((true,true,true,true,0,0,0,true))
+		[| { terminate } |] (
+		Memory_podControlCommand1((0,0,true,true,true,true,true,0,0,0,0))
+		[| { terminate } |] (
+		Memory_podHandshake((0,0,0,0,0))
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		getsetLocalChannels = {|get_currentDemand,set_currentDemand,get_newSessionRequest,set_newSessionRequest,get_newDemand,set_newDemand,get_newInstruction,set_newInstruction,get_currentPodStatus,set_currentPodStatus,get_newReadyness,set_newReadyness,get_sessionStateChanged,set_sessionStateChanged,get_oldReadyness,set_oldReadyness,get_podStatus,set_podStatus,get_podPowertrain,set_podPowertrain,get_podEps,set_podEps,get_podEpsInboard,set_podEpsInboard,get_podEpsOutboard,set_podEpsOutboard,get_podParkBrake,set_podParkBrake,get_podBattery,set_podBattery,get_podControlCommand1,set_podControlCommand1,get_podHandshake,set_podHandshake|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = STM_VS_O(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) \ localClockResets
+		D__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = timed_priority(STM(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) \ union(internal_events,localClockResets))
+		O__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = dbisim(D__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		VS__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = FVS__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+		VS_O__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = dbisim(FVS__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		HEXT__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = O__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [|shared_variable_events|] SKIP
+		FVS_C__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = dbisim(timed_priority(STM(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) \ internal_events))
+		HUP__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = timed_priority(O__(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) [|{share__}|] SKIP)
+		
+		-- Clocks
+		Clock_CLID_sessionControlPeriod(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				clockReset.CLID_sessionControlPeriod -> Clock_CLID_sessionControlPeriod(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_sessionControlPeriod!x__ -> Clock_CLID_sessionControlPeriod(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_sessionControlPeriod(id__,clock_type_plus(x__,1,CLID_sessionControlPeriod_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		
+		Clocks(id__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = dbisim(Clock_CLID_sessionControlPeriod(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		
+		clockSync = {|get_CLID_sessionControlPeriod,clockReset.CLID_sessionControlPeriod|}
+		
+		Clock_CLID_SessionUpdateState(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionUpdateState::entered -> Clock_CLID_SessionUpdateState(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionUpdateState!x__ -> Clock_CLID_SessionUpdateState(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionUpdateState(id__,clock_type_plus(x__,1,CLID_SessionUpdateState_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_Ready(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				Ready::entered -> Clock_CLID_Ready(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_Ready!x__ -> Clock_CLID_Ready(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_Ready(id__,clock_type_plus(x__,1,CLID_Ready_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_CheckChangesBeforeAutonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				CheckChangesBeforeAutonomous::entered -> Clock_CLID_CheckChangesBeforeAutonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_CheckChangesBeforeAutonomous!x__ -> Clock_CLID_CheckChangesBeforeAutonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_CheckChangesBeforeAutonomous(id__,clock_type_plus(x__,1,CLID_CheckChangesBeforeAutonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_Override(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				Override::entered -> Clock_CLID_Override(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_Override!x__ -> Clock_CLID_Override(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_Override(id__,clock_type_plus(x__,1,CLID_Override_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_SessionAutonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionAutonomous::entered -> Clock_CLID_SessionAutonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionAutonomous!x__ -> Clock_CLID_SessionAutonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionAutonomous(id__,clock_type_plus(x__,1,CLID_SessionAutonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_SessionNotAutonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionNotAutonomous::entered -> Clock_CLID_SessionNotAutonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionNotAutonomous!x__ -> Clock_CLID_SessionNotAutonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionNotAutonomous(id__,clock_type_plus(x__,1,CLID_SessionNotAutonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_CheckChanges(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				CheckChanges::entered -> Clock_CLID_CheckChanges(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_CheckChanges!x__ -> Clock_CLID_CheckChanges(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_CheckChanges(id__,clock_type_plus(x__,1,CLID_CheckChanges_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_UpdateState(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				UpdateState::entered -> Clock_CLID_UpdateState(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_UpdateState!x__ -> Clock_CLID_UpdateState(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateState(id__,clock_type_plus(x__,1,CLID_UpdateState_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_SessionChanged(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionChanged::entered -> Clock_CLID_SessionChanged(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionChanged!x__ -> Clock_CLID_SessionChanged(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionChanged(id__,clock_type_plus(x__,1,CLID_SessionChanged_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_PrepareAutonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				PrepareAutonomous::entered -> Clock_CLID_PrepareAutonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_PrepareAutonomous!x__ -> Clock_CLID_PrepareAutonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_PrepareAutonomous(id__,clock_type_plus(x__,1,CLID_PrepareAutonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_AutonomousCancelled(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				AutonomousCancelled::entered -> Clock_CLID_AutonomousCancelled(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_AutonomousCancelled!x__ -> Clock_CLID_AutonomousCancelled(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_AutonomousCancelled(id__,clock_type_plus(x__,1,CLID_AutonomousCancelled_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_AutonomousRequestTypeChanged(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				AutonomousRequestTypeChanged::entered -> Clock_CLID_AutonomousRequestTypeChanged(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_AutonomousRequestTypeChanged!x__ -> Clock_CLID_AutonomousRequestTypeChanged(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_AutonomousRequestTypeChanged(id__,clock_type_plus(x__,1,CLID_AutonomousRequestTypeChanged_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_AutonomousRequested(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				AutonomousRequested::entered -> Clock_CLID_AutonomousRequested(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_AutonomousRequested!x__ -> Clock_CLID_AutonomousRequested(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_AutonomousRequested(id__,clock_type_plus(x__,1,CLID_AutonomousRequested_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_SessionOverride(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionOverride::entered -> Clock_CLID_SessionOverride(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionOverride!x__ -> Clock_CLID_SessionOverride(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionOverride(id__,clock_type_plus(x__,1,CLID_SessionOverride_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_HandleAutonomousStates(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				HandleAutonomousStates::entered -> Clock_CLID_HandleAutonomousStates(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_HandleAutonomousStates!x__ -> Clock_CLID_HandleAutonomousStates(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_HandleAutonomousStates(id__,clock_type_plus(x__,1,CLID_HandleAutonomousStates_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_NotAutonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				NotAutonomous::entered -> Clock_CLID_NotAutonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_NotAutonomous!x__ -> Clock_CLID_NotAutonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_NotAutonomous(id__,clock_type_plus(x__,1,CLID_NotAutonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_Initialise(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				Initialise::entered -> Clock_CLID_Initialise(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_Initialise!x__ -> Clock_CLID_Initialise(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_Initialise(id__,clock_type_plus(x__,1,CLID_Initialise_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_SessionCurrent(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				SessionCurrent::entered -> Clock_CLID_SessionCurrent(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_SessionCurrent!x__ -> Clock_CLID_SessionCurrent(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_SessionCurrent(id__,clock_type_plus(x__,1,CLID_SessionCurrent_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_Autonomous(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				Autonomous::entered -> Clock_CLID_Autonomous(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_Autonomous!x__ -> Clock_CLID_Autonomous(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_Autonomous(id__,clock_type_plus(x__,1,CLID_Autonomous_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_InternalInstruction(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				InternalInstruction::entered -> Clock_CLID_InternalInstruction(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_InternalInstruction!x__ -> Clock_CLID_InternalInstruction(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_InternalInstruction(id__,clock_type_plus(x__,1,CLID_InternalInstruction_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		Clock_CLID_UpdateSession(id__,x__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = 
+			TimeOut_1(
+				UpdateSession::entered -> Clock_CLID_UpdateSession(id__,0,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				get_CLID_UpdateSession!x__ -> Clock_CLID_UpdateSession(id__,x__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)
+				[]
+				terminate -> SKIP,Clock_CLID_UpdateSession(id__,clock_type_plus(x__,1,CLID_UpdateSession_clock_type(id__,
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD)),
+						          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		
+		StateClocks(id__,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = dbisim(Clock_CLID_SessionUpdateState(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Ready(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CheckChangesBeforeAutonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Override(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SessionAutonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SessionNotAutonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CheckChanges(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_UpdateState(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SessionChanged(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_PrepareAutonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_AutonomousCancelled(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_AutonomousRequestTypeChanged(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_AutonomousRequested(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SessionOverride(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_HandleAutonomousStates(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_NotAutonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Initialise(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SessionCurrent(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Autonomous(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_InternalInstruction(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_UpdateSession(id__,0,
+				          const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD))
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		stateClockSync = {|get_CLID_SessionUpdateState,SessionUpdateState::entered,get_CLID_Ready,Ready::entered,get_CLID_CheckChangesBeforeAutonomous,CheckChangesBeforeAutonomous::entered,get_CLID_Override,Override::entered,get_CLID_SessionAutonomous,SessionAutonomous::entered,get_CLID_SessionNotAutonomous,SessionNotAutonomous::entered,get_CLID_CheckChanges,CheckChanges::entered,get_CLID_UpdateState,UpdateState::entered,get_CLID_SessionChanged,SessionChanged::entered,get_CLID_PrepareAutonomous,PrepareAutonomous::entered,get_CLID_AutonomousCancelled,AutonomousCancelled::entered,get_CLID_AutonomousRequestTypeChanged,AutonomousRequestTypeChanged::entered,get_CLID_AutonomousRequested,AutonomousRequested::entered,get_CLID_SessionOverride,SessionOverride::entered,get_CLID_HandleAutonomousStates,HandleAutonomousStates::entered,get_CLID_NotAutonomous,NotAutonomous::entered,get_CLID_Initialise,Initialise::entered,get_CLID_SessionCurrent,SessionCurrent::entered,get_CLID_Autonomous,Autonomous::entered,get_CLID_InternalInstruction,InternalInstruction::entered,get_CLID_UpdateSession,UpdateSession::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,
+				    const_lutz_SessionControl_SSessionControl_SESSION_CONTROL_PERIOD) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule
+
+
+endmodule

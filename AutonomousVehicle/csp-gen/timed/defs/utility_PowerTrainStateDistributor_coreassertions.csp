@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:45
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "utility_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "utility_PowerTrainStateDistributor.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate utility_PowerTrainStateDistributor
+P_utility_PowerTrainStateDistributor = let
+	id__ = 0
+	
+	
+	
+within
+	utility_PowerTrainStateDistributor::O__(
+		id__
+	)
+assert P_utility_PowerTrainStateDistributor :[deadlock-free]	
+assert P_utility_PowerTrainStateDistributor;RUN({r__}) :[deadlock-free]
+assert P_utility_PowerTrainStateDistributor :[deterministic]
+assert P_utility_PowerTrainStateDistributor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_utility_PowerTrainStateDistributor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_utility_PowerTrainStateDistributor

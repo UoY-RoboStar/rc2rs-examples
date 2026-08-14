@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:45
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "utility_defs.csp"
+include "core_defs.csp"
+include "utility_LocationDistributor.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate utility_LocationDistributor
+P_utility_LocationDistributor = let
+	id__ = 0
+	
+	
+	
+within
+	utility_LocationDistributor::O__(
+		id__
+	)
+assert P_utility_LocationDistributor :[deadlock-free]	
+assert P_utility_LocationDistributor;RUN({r__}) :[deadlock-free]
+assert P_utility_LocationDistributor :[deterministic]
+assert P_utility_LocationDistributor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_utility_LocationDistributor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_utility_LocationDistributor

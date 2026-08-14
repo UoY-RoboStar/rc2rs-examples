@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -47,8 +47,8 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6Call: core_nat.core_nat
-	channel setLeftMotorSpeedCall: core_real
 	channel setRightMotorSpeedCall: core_real
+	channel setLeftMotorSpeedCall: core_real
 	
 	enterSS = {|
 	f::enter,
@@ -76,8 +76,8 @@ exports
 		set_EXT_rotationOutput, set_rotationOutput,
 		set_EXT_speedOutput, set_speedOutput
 	,	clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6Call,
-		setLeftMotorSpeedCall,
-		setRightMotorSpeedCall
+		setRightMotorSpeedCall,
+		setLeftMotorSpeedCall
 		, share__
 		|}
 	
@@ -198,12 +198,12 @@ exports
 			    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
 				param_m,
 				param_n) 	= clone_clone_normal_BalanceSTM_SetMotors_entry_waitInterval_j_2_11_f_6Call.param_m.param_n -> SKIP
-	CALL__setLeftMotorSpeed(id__,
-			    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
-				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
 	CALL__setRightMotorSpeed(id__,
 			    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
 				param_speed) 	= setRightMotorSpeedCall.param_speed -> SKIP
+	CALL__setLeftMotorSpeed(id__,
+			    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
+				param_speed) 	= setLeftMotorSpeedCall.param_speed -> SKIP
 	
 	-- END of Operation calls --
 	
@@ -223,12 +223,12 @@ exports
 			    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget) = ((let
 		Trans = (
 			((share__ -> SKIP
-			 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((share__choice(get_speedOutput?speedOutput -> share__choice(get_rotationOutput?rotationOutput -> share__choice(get_angleOutput?angleOutput -> true&CALL__setLeftMotorSpeed(
+			 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((share__choice(get_rotationOutput?rotationOutput -> share__choice(get_angleOutput?angleOutput -> share__choice(get_speedOutput?speedOutput -> true&CALL__setLeftMotorSpeed(
 			 			id__,
 			 		    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
 			 			Minus(Plus(angleOutput, speedOutput, core_real), rotationOutput, core_real)
 			 		)))) ; j_3_4::enter -> SKIP))))
-			 	 [] dbisim((true)&(internal__!NID_j_3_4 -> SKIP ;  ((share__choice(get_speedOutput?speedOutput -> share__choice(get_rotationOutput?rotationOutput -> share__choice(get_angleOutput?angleOutput -> true&CALL__setRightMotorSpeed(
+			 	 [] dbisim((true)&(internal__!NID_j_3_4 -> SKIP ;  ((share__choice(get_rotationOutput?rotationOutput -> share__choice(get_angleOutput?angleOutput -> share__choice(get_speedOutput?speedOutput -> true&CALL__setRightMotorSpeed(
 			 			id__,
 			 		    const_pkg867__clone_normal_BalanceSTM_SetMotors_entry_motorBudget,
 			 			Plus(Plus(angleOutput, speedOutput, core_real), rotationOutput, core_real)

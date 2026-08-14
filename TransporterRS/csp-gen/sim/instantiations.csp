@@ -1,0 +1,68 @@
+-- OPERATION BOUNDS
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+-- generate const_SimPusher_close
+const_SimPusher_close = 0
+-- generate const_SimPusher_Ta
+const_SimPusher_Ta = 0
+-- generate const_SimPusher_Tb
+const_SimPusher_Tb = 0
+-- generate const_SimPusher_Tc
+const_SimPusher_Tc = 0
+-- generate const_SimPusher_Td
+const_SimPusher_Td = 0
+-- generate const_SimPusher_Te
+const_SimPusher_Te = 0
+-- generate const_SimPusher_S
+const_SimPusher_S = 0
+
+-- OPERATION CONSTANTS
+
+-- BASIC TYPES
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))..calc_type_max(Union({{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))})
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))..calc_type_max(Union({{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))})
+-- generate string
+nametype core_string = LSeq(Char,2)
+-- generate boolean
+nametype core_boolean = Bool
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))..calc_type_max(Union({{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{d|d <- {0..2}},{n|n <- {0..2}},{n|n <- {0..2}},{2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2}}))}) 
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS			
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- CYCLE DEFINITIONS
+-- generate cycle_SimPusher_SimPusher
+cycle_SimPusher_SimPusher = 1

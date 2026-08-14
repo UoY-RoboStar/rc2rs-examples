@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -53,10 +53,10 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel enableInterruptsCall
-	channel waitIntervalCall: core_nat.core_nat
+	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call: core_nat
 	channel AnglePIDCall: core_real.core_real
 	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call: core_nat
-	channel deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call: core_nat
+	channel waitIntervalCall: core_nat.core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -88,10 +88,10 @@ exports
 	,	angle,
 		gyroX
 	,	enableInterruptsCall,
-		waitIntervalCall,
+		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
 		AnglePIDCall,
 		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call,
-		deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
+		waitIntervalCall
 		, share__
 		|}
 	
@@ -258,10 +258,9 @@ exports
 	-- context of the Controller module, and therefore within scope of the state machine module.
 	CALL__enableInterrupts(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget) 	= enableInterruptsCall -> SKIP
-	CALL__waitInterval(id__,
+	CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
-				param_m,
-				param_n) 	= waitIntervalCall.param_m.param_n -> SKIP
+				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d -> SKIP
 	CALL__AnglePID(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 				param_newError,
@@ -269,9 +268,10 @@ exports
 	CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
 				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_5_5Call.param_d -> SKIP
-	CALL__deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__,
+	CALL__waitInterval(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateAngle_entry_angleBudget,
-				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call.param_d -> SKIP
+				param_m,
+				param_n) 	= waitIntervalCall.param_m.param_n -> SKIP
 	
 	-- END of Operation calls --
 	

@@ -1,0 +1,168 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 17:36:56
+--
+
+include "defs/state_timed_defs.csp"
+include "../defs/aggregation_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "defs/pre_pkg__sim.csp"
+include "../timed/defs/_.csp"
+include "../defs/Mathematics_defs.csp"
+include "../timed/defs/aggregation.csp"
+include "rc2rs/defs/aggregation_defs.csp"
+include "../timed/defs/main.csp"
+include "defs/core_timed_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "defs/relation_toolkit_defs.csp"
+include "rc2rs/defs/AggregationSw_defs.csp"
+include "defs/pre_pkg_main_sim.csp"
+include "defs/core_defs.csp"
+include "../defs/communicationC_defs.csp"
+include "defs/pre_pkg_aggregation_sim.csp"
+include "../defs/AggregationSw_defs.csp"
+include "../defs/movementC_defs.csp"
+include "../timed/defs/Mathematics.csp"
+include "rc2rs/defs/communication_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "rc2rs/defs/communicationC_defs.csp"
+include "../defs/communication_defs.csp"
+include "sims/defs/RC_defs.csp"
+include "instantiations.csp"
+include "rc2rs/defs/movementC_defs.csp"
+
+channel r__
+
+-- A1 - schedulable
+assert let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	RC::TLF(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A2 - refinement
+assert let
+	rename_in_RC(RC::i_receive.x__.y__) = pre_pkg_main_sim::AggregationSoftware::i_receive.x__.y__
+	rename_in_RC(RC::i_broadcast.x__.y__) = pre_pkg_main_sim::AggregationSoftware::i_broadcast.x__.y__
+	rename_in_RC(RC::i_obstacle.x__.y__) = pre_pkg_main_sim::AggregationSoftware::i_obstacle.x__.y__
+	rename_out_RC(RC::o_receive.x__) = pre_pkg_main_sim::AggregationSoftware::o_receive.x__
+	rename_out_RC(RC::o_move.l.a) = pre_pkg_main_sim::AggregationSoftware::o_move.l.a
+	rename_out_RC(RC::o_broadcast.x__) = pre_pkg_main_sim::AggregationSoftware::o_broadcast.x__
+within
+	prioritise(let 
+		cycle_RC_RC = 1
+		id__ = 0
+		
+		
+		
+		const_CommunicationC_stm_ref0_id = const_Communication_id
+		const_CommunicationC_stm_ref0_RC = const_Communication_RC
+		const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+		const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+		const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+		const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+			
+	within
+		RC::D__(id__,cycle_RC_RC,
+				    const_MovementC_stm_ref0_lv,
+				    const_MovementC_stm_ref0_av,
+				    const_MovementC_stm_ref0_MB,
+				    const_MovementC_stm_ref0_alpha,
+				    const_CommunicationC_stm_ref0_id,
+				    const_CommunicationC_stm_ref0_RC),<{},{tock}>)
+	[[ RC::registerRead.x__ <- pre_pkg_main_sim::AggregationSoftware::registerRead.rename_in_RC(x__) | x__ <- RC::RegisterInputs ]]
+	[[ RC::registerWrite.x__ <- pre_pkg_main_sim::AggregationSoftware::registerWrite.rename_out_RC(x__) | x__ <- RC::RegisterOutputs ]]
+ [T= let 
+	cycle_pre_pkg_main_sim_AggregationSoftware_AggregationSoftware = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__sim_MovementC_stm_ref0_lv = const_pre_pkg_aggregation_sim_Movement_lv
+	const_pre_pkg__sim_MovementC_stm_ref0_av = const_pre_pkg_aggregation_sim_Movement_av
+	const_pre_pkg__sim_MovementC_stm_ref0_MB = const_pre_pkg_aggregation_sim_Movement_MB
+	const_pre_pkg__sim_MovementC_stm_ref0_alpha = const_pre_pkg_aggregation_sim_Movement_alpha
+	const_pre_pkg__sim_CommunicationC_stm_ref0_id = const_pre_pkg__sim_Communication_id
+	const_pre_pkg__sim_CommunicationC_stm_ref0_RC = const_pre_pkg__sim_Communication_RC
+		
+within
+	pre_pkg_main_sim::AggregationSoftware::D__(id__,cycle_pre_pkg_main_sim_AggregationSoftware_AggregationSoftware,
+			    const_pre_pkg__sim_MovementC_stm_ref0_lv,
+			    const_pre_pkg__sim_MovementC_stm_ref0_av,
+			    const_pre_pkg__sim_MovementC_stm_ref0_MB,
+			    const_pre_pkg__sim_MovementC_stm_ref0_alpha,
+			    const_pre_pkg__sim_CommunicationC_stm_ref0_id,
+			    const_pre_pkg__sim_CommunicationC_stm_ref0_RC) :[tau priority]: {tock}
+
+-- A3 - refinement
+assert let
+	rename_in_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::i_obstacle.x__.y__) = RC::i_obstacle.x__.y__
+	rename_in_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::i_broadcast.x__.y__) = RC::i_broadcast.x__.y__
+	rename_in_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::i_receive.x__.y__) = RC::i_receive.x__.y__
+	rename_out_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::o_broadcast.x__) = RC::o_broadcast.x__
+	rename_out_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::o_receive.x__) = RC::o_receive.x__
+	rename_out_AggregationSoftware(pre_pkg_main_sim::AggregationSoftware::o_move.l.a) = RC::o_move.l.a
+within
+	prioritise(let 
+		cycle_pre_pkg_main_sim_AggregationSoftware_AggregationSoftware = 1
+		id__ = 0
+		
+		
+		
+		const_pre_pkg__sim_MovementC_stm_ref0_lv = const_pre_pkg_aggregation_sim_Movement_lv
+		const_pre_pkg__sim_MovementC_stm_ref0_av = const_pre_pkg_aggregation_sim_Movement_av
+		const_pre_pkg__sim_MovementC_stm_ref0_MB = const_pre_pkg_aggregation_sim_Movement_MB
+		const_pre_pkg__sim_MovementC_stm_ref0_alpha = const_pre_pkg_aggregation_sim_Movement_alpha
+		const_pre_pkg__sim_CommunicationC_stm_ref0_id = const_pre_pkg__sim_Communication_id
+		const_pre_pkg__sim_CommunicationC_stm_ref0_RC = const_pre_pkg__sim_Communication_RC
+			
+	within
+		pre_pkg_main_sim::AggregationSoftware::D__(id__,cycle_pre_pkg_main_sim_AggregationSoftware_AggregationSoftware,
+				    const_pre_pkg__sim_MovementC_stm_ref0_lv,
+				    const_pre_pkg__sim_MovementC_stm_ref0_av,
+				    const_pre_pkg__sim_MovementC_stm_ref0_MB,
+				    const_pre_pkg__sim_MovementC_stm_ref0_alpha,
+				    const_pre_pkg__sim_CommunicationC_stm_ref0_id,
+				    const_pre_pkg__sim_CommunicationC_stm_ref0_RC),<{},{tock}>)
+	[[ pre_pkg_main_sim::AggregationSoftware::registerRead.x__ <- RC::registerRead.rename_in_AggregationSoftware(x__) | x__ <- pre_pkg_main_sim::AggregationSoftware::RegisterInputs ]]
+	[[ pre_pkg_main_sim::AggregationSoftware::registerWrite.x__ <- RC::registerWrite.rename_out_AggregationSoftware(x__) | x__ <- pre_pkg_main_sim::AggregationSoftware::RegisterOutputs ]]
+ [T= let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_CommunicationC_stm_ref0_id = const_Communication_id
+	const_CommunicationC_stm_ref0_RC = const_Communication_RC
+	const_MovementC_stm_ref0_lv = const_aggregation_Movement_lv
+	const_MovementC_stm_ref0_av = const_aggregation_Movement_av
+	const_MovementC_stm_ref0_MB = const_aggregation_Movement_MB
+	const_MovementC_stm_ref0_alpha = const_aggregation_Movement_alpha
+		
+within
+	RC::D__(id__,cycle_RC_RC,
+			    const_MovementC_stm_ref0_lv,
+			    const_MovementC_stm_ref0_av,
+			    const_MovementC_stm_ref0_MB,
+			    const_MovementC_stm_ref0_alpha,
+			    const_CommunicationC_stm_ref0_id,
+			    const_CommunicationC_stm_ref0_RC) :[tau priority]: {tock}
+

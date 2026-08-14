@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 15:50:32
 --
 
 -- compileSelfContainedOperation
@@ -43,16 +43,16 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_speedIntegral: core_real
+	channel set_EXT_speedCount: core_nat
+	channel set_EXT_angleF: core_boolean
+	channel set_EXT_speedOutput: core_real
+	channel set_EXT_currRightVel: core_real
 	channel set_EXT_gyroXF: core_boolean
 	channel set_EXT_leftMotorVelocityF: core_boolean
-	channel set_EXT_speedOutput: core_real
-	channel set_EXT_rightMotorVelocityF: core_boolean
 	channel set_EXT_currLeftVel: core_real
-	channel set_EXT_angleF: core_boolean
-	channel set_EXT_speedCount: core_nat
-	channel set_EXT_currRightVel: core_real
-	channel set_EXT_speedIntegral: core_real
+	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_rightMotorVelocityF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -60,10 +60,10 @@ exports
 	
 	-- Declaring call and ret events for undefined operations
 	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7Call: core_nat
-	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call: core_nat
 	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17Call: core_nat.core_nat
-	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16Call: core_real
 	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2Call
+	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call: core_nat
+	channel clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16Call: core_real
 	
 	enterSS = {|
 	i::enter,
@@ -81,16 +81,16 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
+		set_EXT_speedIntegral,
+		set_EXT_speedCount,
+		set_EXT_angleF,
+		set_EXT_speedOutput,
+		set_EXT_currRightVel,
 		set_EXT_gyroXF,
 		set_EXT_leftMotorVelocityF,
-		set_EXT_speedOutput,
-		set_EXT_rightMotorVelocityF,
 		set_EXT_currLeftVel,
-		set_EXT_angleF,
-		set_EXT_speedCount,
-		set_EXT_currRightVel,
-		set_EXT_speedIntegral
+		set_EXT_gyroZF,
+		set_EXT_rightMotorVelocityF
 	|}
 	
 	
@@ -140,10 +140,10 @@ exports
 	sem__events = {|endexec,terminate
 				,registerRead
 	,	clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7Call,
-		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call,
 		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17Call,
-		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16Call,
-		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2Call
+		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2Call,
+		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call,
+		clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16Call
 		, share__
 		|}
 	
@@ -324,18 +324,18 @@ exports
 		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 					param_d) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7Call.param_d,0)
-		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12(id__,
-				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-					param_d) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call.param_d,0)
 		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 					param_m,
 					param_n) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_waitInterval_j_2_21_f_17Call.param_m.param_n,0)
+		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2(id__,
+				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2Call,0)
+		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12(id__,
+				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+					param_d) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6_j_5_6_j_4_13_12Call.param_d,0)
 		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16(id__,
 				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 					param_newError) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16Call.param_newError,0)
-		CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2(id__,
-				    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget) = EDeadline(clone_clone_normal_BalanceSTM_CalculateSpeed_entry_normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op_j_3_17_j_2_21_2Call,0)
 		
 		-- END of Operation calls --
 	
@@ -365,7 +365,7 @@ exports
 				 		    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 				 			0
 				 		))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; j_4_13::enter -> SKIP))))
-				 [] dbisim((true)&(internal__!NID_j_4_13 -> SKIP ;  ((((share__choice(get_currLeftVel?currLeftVel -> share__choice(get_currRightVel?currRightVel -> true&CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16(
+				 [] dbisim((true)&(internal__!NID_j_4_13 -> SKIP ;  ((((share__choice(get_currRightVel?currRightVel -> share__choice(get_currLeftVel?currLeftVel -> true&CALL__clone_clone_normal_BalanceSTM_CalculateSpeed_entry_SpeedPID_j_4_13_j_3_17_16(
 				 			id__,
 				 		    const_pkg867__sim_clone_normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 				 			Plus(currLeftVel, currRightVel, core_real)

@@ -1,0 +1,80 @@
+package bacs::TurnigyJoy
+import autonomous_vehicle_system::*
+import bacs::*
+stm TurnigyJoy {
+	const DEFAULT_CONFIGURATION : ConfigGamepad
+	var currentGamepadValues : Gamepad
+	var newVehicleDemand : PodDemand
+	var newAuxiliaryDemand : AuxiliaryDemand
+	
+	
+	
+	
+	event rc_in : Gamepad
+	
+	event turnigy_pod_demand : PodDemand
+	
+	
+	
+	event turnigy_auxiliary_demand : AuxiliaryDemand
+	state ConstructVehicleDemand {
+		entry newVehicleDemand . speed = GamepadCalculateSpeed ( currentGamepadValues
+		, currentConfiguration ) ; newVehicleDemand . steer = GamepadCalculateSteer (
+		currentGamepadValues , currentConfiguration ) ; newVehicleDemand . abdicate =
+		GamepadGetAbdication ( currentGamepadValues ) ; newVehicleDemand .
+		driveByWireRequest = GamepadGetAutonomousRequest ( currentGamepadValues ) ;
+		newVehicleDemand . source = DemandSource::DEMAND_DRIVE_BY_WIRE
+	}
+	state Ready {
+	}
+	initial i0
+	
+	state SetBrake {
+		entry newVehicleDemand . brake = BrakeState::BRAKE_DONT_CARE
+	}
+	state ConstructAuxiliaryDemand {
+		entry newAuxiliaryDemand = GamepadCalculateAuxiliaryDemand (
+		currentGamepadValues , currentConfiguration )
+	}
+	transition t0 {
+		from i0
+		to Ready
+	action currentConfiguration = DEFAULT_CONFIGURATION
+	}
+	transition t1 {
+		from Ready
+		to Timestamp
+		trigger rc_in ? currentGamepadValues
+	}
+	transition t2 {
+		from SetBrake
+		to Ready
+	action turnigy_pod_demand ! newVehicleDemand ; turnigy_auxiliary_demand ! newAuxiliaryDemand
+	}
+	
+	
+	transition t5 {
+		from ConstructAuxiliaryDemand
+		to SetBrake
+	}
+var currentConfiguration : ConfigGamepad
+	event config : ConfigGamepad
+	transition t6 {
+		from Ready
+		to Ready
+		trigger config ? currentConfiguration
+	}
+var currentTime : real
+	state Timestamp {
+		entry currentTime = GetSystemTime ( ) ; newVehicleDemand . header .stamp= currentTime
+		; newAuxiliaryDemand . header .stamp = currentTime
+	}
+	transition t3 {
+		from ConstructVehicleDemand
+		to ConstructAuxiliaryDemand
+	}
+	transition t4 {
+		from Timestamp
+		to ConstructVehicleDemand
+	}
+}

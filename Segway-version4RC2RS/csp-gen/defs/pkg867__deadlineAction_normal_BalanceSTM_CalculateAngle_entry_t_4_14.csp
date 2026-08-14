@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -44,8 +44,8 @@ exports
 	channel gyroX: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel deadlineCheckCall: core_nat
 	channel normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
+	channel deadlineCheckCall: core_nat
 	
 	enterSS = {|
 	i::enter,
@@ -69,8 +69,8 @@ exports
 		terminate
 	,	set_EXT_currGyroX, set_currGyroX
 	,	gyroX
-	,	deadlineCheckCall,
-		normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call
+	,	normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call,
+		deadlineCheckCall
 		, share__
 		|}
 	
@@ -512,9 +512,9 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call -> SKIP
 	CALL__deadlineCheck(id__,
 				param_d) 	= deadlineCheckCall.param_d -> SKIP
-	CALL__normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14(id__) 	= normal_deadlineAction_normal_BalanceSTM_CalculateAngle_entry_t_4_14Call -> SKIP
 	
 	-- END of Operation calls --
 	

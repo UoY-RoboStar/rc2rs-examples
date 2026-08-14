@@ -1,0 +1,30 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:56:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "siren_SirenS.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "siren_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate siren_SirenS
+P_siren_SirenS = let
+	id__ = 0
+	
+	
+	
+within
+	siren_SirenS::O__(
+		id__
+	)
+assert P_siren_SirenS :[deadlock-free]	
+assert P_siren_SirenS;RUN({r__}) :[deadlock-free]
+assert P_siren_SirenS :[deterministic]
+assert P_siren_SirenS :[divergence-free]

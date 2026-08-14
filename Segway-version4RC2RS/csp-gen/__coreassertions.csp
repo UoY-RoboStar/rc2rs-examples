@@ -1,0 +1,209 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:36
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "_csp"
+
+-- generate BalanceSTM
+P_BalanceSTM = let
+	id__ = 0
+	
+	
+	
+within
+	BalanceSTM::O__(
+		id__,
+		const_BalanceSTM_maxAngle,
+		const_BalanceSTM_loopTime,
+		const_BalanceSTM_startupDelay,
+		const_BalanceSTM_speedUpdate,
+		const_BalanceSTM_rotationUpdate,
+		const_BalanceSTM_angleBudget,
+		const_BalanceSTM_speedBudget,
+		const_BalanceSTM_rotationBudget,
+		const_BalanceSTM_motorBudget
+	)
+assert P_BalanceSTM :[deadlock-free]	
+assert P_BalanceSTM;RUN({r__}) :[deadlock-free]
+assert P_BalanceSTM :[deterministic]
+assert P_BalanceSTM :[divergence-free]
+
+-- generate OP_RotationPID
+P_OP_RotationPID = let
+	id__ = 0
+	
+	param_diff = 0
+	
+	
+	
+within
+	OP_RotationPID::O__(id__,
+				param_diff,
+			    const_RotationPID_D)
+assert P_OP_RotationPID :[deadlock-free]	
+assert P_OP_RotationPID;RUN({r__}) :[deadlock-free]
+assert P_OP_RotationPID :[deterministic]
+assert P_OP_RotationPID :[divergence-free]
+-- generate OP_AnglePID
+P_OP_AnglePID = let
+	id__ = 0
+	
+	param_newError = 0
+	param_diff = 0
+	
+	
+	
+within
+	OP_AnglePID::O__(id__,
+				param_newError,
+				param_diff,
+			    const_AnglePID_P,
+			    const_AnglePID_D)
+assert P_OP_AnglePID :[deadlock-free]	
+assert P_OP_AnglePID;RUN({r__}) :[deadlock-free]
+assert P_OP_AnglePID :[deterministic]
+assert P_OP_AnglePID :[divergence-free]
+-- generate OP_SpeedPID
+P_OP_SpeedPID = let
+	id__ = 0
+	
+	param_newError = 0
+	
+	
+	
+within
+	OP_SpeedPID::O__(id__,
+				param_newError,
+			    const_SpeedPID_P,
+			    const_SpeedPID_I,
+			    const_SpeedPID_maxIntegral)
+assert P_OP_SpeedPID :[deadlock-free]	
+assert P_OP_SpeedPID;RUN({r__}) :[deadlock-free]
+assert P_OP_SpeedPID :[deterministic]
+assert P_OP_SpeedPID :[divergence-free]
+
+
+-- generate Segway
+P_Segway = let
+	id__ = 0
+	
+	
+	
+	const_Segway_SegwayController_stm_ref0_maxAngle = const_BalanceSTM_maxAngle
+	const_Segway_SegwayController_stm_ref0_loopTime = const_BalanceSTM_loopTime
+	const_Segway_SegwayController_stm_ref0_startupDelay = const_BalanceSTM_startupDelay
+	const_Segway_SegwayController_stm_ref0_speedUpdate = const_BalanceSTM_speedUpdate
+	const_Segway_SegwayController_stm_ref0_rotationUpdate = const_BalanceSTM_rotationUpdate
+	const_Segway_SegwayController_stm_ref0_angleBudget = const_BalanceSTM_angleBudget
+	const_Segway_SegwayController_stm_ref0_speedBudget = const_BalanceSTM_speedBudget
+	const_Segway_SegwayController_stm_ref0_rotationBudget = const_BalanceSTM_rotationBudget
+	const_Segway_SegwayController_stm_ref0_motorBudget = const_BalanceSTM_motorBudget
+		
+	const_Segway_SegwayController_op_ref0_P = const_AnglePID_P
+	const_Segway_SegwayController_op_ref0_D = const_AnglePID_D
+	const_Segway_SegwayController_op_ref2_D = const_RotationPID_D
+	const_Segway_SegwayController_op_ref1_P = const_SpeedPID_P
+	const_Segway_SegwayController_op_ref1_I = const_SpeedPID_I
+	const_Segway_SegwayController_op_ref1_maxIntegral = const_SpeedPID_maxIntegral
+	
+within
+	Segway::O__(id__,
+			    const_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_Segway_SegwayController_stm_ref0_loopTime,
+			    const_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_Segway_SegwayController_op_ref0_P,
+			   	const_Segway_SegwayController_op_ref0_D,
+			   	const_Segway_SegwayController_op_ref1_P,
+			   	const_Segway_SegwayController_op_ref1_I,
+			   	const_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_Segway_SegwayController_op_ref2_D)
+assert P_Segway :[deadlock-free]	
+assert P_Segway;RUN({r__}) :[deadlock-free]
+assert P_Segway :[deterministic]
+assert P_Segway :[divergence-free]
+
+-- generate Segway_SegwayController
+P_Segway_SegwayController = let
+	id__ = 0
+	
+	
+	
+	const_Segway_SegwayController_stm_ref0_maxAngle = const_BalanceSTM_maxAngle
+	const_Segway_SegwayController_stm_ref0_loopTime = const_BalanceSTM_loopTime
+	const_Segway_SegwayController_stm_ref0_startupDelay = const_BalanceSTM_startupDelay
+	const_Segway_SegwayController_stm_ref0_speedUpdate = const_BalanceSTM_speedUpdate
+	const_Segway_SegwayController_stm_ref0_rotationUpdate = const_BalanceSTM_rotationUpdate
+	const_Segway_SegwayController_stm_ref0_angleBudget = const_BalanceSTM_angleBudget
+	const_Segway_SegwayController_stm_ref0_speedBudget = const_BalanceSTM_speedBudget
+	const_Segway_SegwayController_stm_ref0_rotationBudget = const_BalanceSTM_rotationBudget
+	const_Segway_SegwayController_stm_ref0_motorBudget = const_BalanceSTM_motorBudget
+		
+	const_Segway_SegwayController_op_ref0_P = const_AnglePID_P
+	const_Segway_SegwayController_op_ref0_D = const_AnglePID_D
+	const_Segway_SegwayController_op_ref1_P = const_SpeedPID_P
+	const_Segway_SegwayController_op_ref1_I = const_SpeedPID_I
+	const_Segway_SegwayController_op_ref1_maxIntegral = const_SpeedPID_maxIntegral
+	const_Segway_SegwayController_op_ref2_D = const_RotationPID_D
+within
+	Segway::SegwayController::O__(id__,
+			    const_Segway_SegwayController_stm_ref0_maxAngle,
+			    const_Segway_SegwayController_stm_ref0_loopTime,
+			    const_Segway_SegwayController_stm_ref0_startupDelay,
+			    const_Segway_SegwayController_stm_ref0_speedUpdate,
+			    const_Segway_SegwayController_stm_ref0_rotationUpdate,
+			    const_Segway_SegwayController_stm_ref0_angleBudget,
+			    const_Segway_SegwayController_stm_ref0_speedBudget,
+			    const_Segway_SegwayController_stm_ref0_rotationBudget,
+			    const_Segway_SegwayController_stm_ref0_motorBudget,
+			   	const_Segway_SegwayController_op_ref0_P,
+			   	const_Segway_SegwayController_op_ref0_D,
+			   	const_Segway_SegwayController_op_ref1_P,
+			   	const_Segway_SegwayController_op_ref1_I,
+			   	const_Segway_SegwayController_op_ref1_maxIntegral,
+			   	const_Segway_SegwayController_op_ref2_D)
+
+assert P_Segway_SegwayController :[deadlock-free]	
+assert P_Segway_SegwayController;RUN({r__}) :[deadlock-free]
+assert P_Segway_SegwayController :[deterministic]
+assert P_Segway_SegwayController :[divergence-free]
+
+-- generate Segway_SegwayController_stm_ref0
+P_Segway_SegwayController_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	Segway::SegwayController::stm_ref0::O__(
+		id__,
+		const_BalanceSTM_maxAngle,
+		const_BalanceSTM_loopTime,
+		const_BalanceSTM_startupDelay,
+		const_BalanceSTM_speedUpdate,
+		const_BalanceSTM_rotationUpdate,
+		const_BalanceSTM_angleBudget,
+		const_BalanceSTM_speedBudget,
+		const_BalanceSTM_rotationBudget,
+		const_BalanceSTM_motorBudget,
+		const_RotationPID_D,
+		const_AnglePID_P,
+		const_AnglePID_D,
+		const_SpeedPID_P,
+		const_SpeedPID_I,
+		const_SpeedPID_maxIntegral
+	)
+assert P_Segway_SegwayController_stm_ref0 :[deadlock-free]	
+assert P_Segway_SegwayController_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_Segway_SegwayController_stm_ref0 :[deterministic]
+assert P_Segway_SegwayController_stm_ref0 :[divergence-free]

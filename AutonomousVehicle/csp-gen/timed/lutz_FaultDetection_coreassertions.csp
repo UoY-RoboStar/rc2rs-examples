@@ -1,0 +1,36 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "lutz_FaultDetectioncsp"
+
+-- generate lutz_FaultDetection_SHandshake
+P_lutz_FaultDetection_SHandshake = let
+	id__ = 0
+	
+	
+	
+within
+	lutz_FaultDetection::SHandshake::O__(
+		id__,
+		const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+		const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+		const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT
+	)
+assert P_lutz_FaultDetection_SHandshake :[deadlock-free]	
+assert P_lutz_FaultDetection_SHandshake;RUN({r__}) :[deadlock-free]
+assert P_lutz_FaultDetection_SHandshake :[deterministic]
+assert P_lutz_FaultDetection_SHandshake :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_lutz_FaultDetection_SHandshake[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_lutz_FaultDetection_SHandshake
+
+
+

@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 14-05-2026 19:42:45
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 14-08-2026 15:26:44
 --
 
 -- compileSelfContainedOperation
@@ -35,11 +35,11 @@ exports
 	channel get_obstacleF, set_obstacleF, setL_obstacleF, setR_obstacleF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_obstacleF: core_boolean
-	channel set_EXT_odometerF: core_boolean
-	channel set_EXT_stopF: core_boolean
-	channel set_EXT_resumeF: core_boolean
 	channel set_EXT_turnF: core_boolean
+	channel set_EXT_resumeF: core_boolean
+	channel set_EXT_odometerF: core_boolean
+	channel set_EXT_obstacleF: core_boolean
+	channel set_EXT_stopF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -61,11 +61,11 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_obstacleF,
-		set_EXT_odometerF,
-		set_EXT_stopF,
+		set_EXT_turnF,
 		set_EXT_resumeF,
-		set_EXT_turnF
+		set_EXT_odometerF,
+		set_EXT_obstacleF,
+		set_EXT_stopF
 	|}
 	
 	datatype ClockSet = 
@@ -393,29 +393,29 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,setR_odometerF,setR_stopF,setR_resumeF,clockResetR.CLID_C,setR_turnF |} ]] 
-						  [[set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,clockReset.CLID_C <- clockResetL.CLID_C,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_turnF,setR_resumeF,setR_odometerF,setR_obstacleF,setR_stopF,clockResetR.CLID_C |} ]] 
+						  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_stopF
-						 			,setL_resumeF
-						 			,clockResetL.CLID_C
 						 			,setL_turnF
-						 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_stopF
+						 			,setL_resumeF
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetL.CLID_C
+						 			,setR_turnF
 						 			 			,setR_resumeF
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			 			,clockResetR.CLID_C
-						 			 			,setR_turnF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_odometerF,setL_stopF,setL_resumeF,clockResetL.CLID_C,setL_turnF |} ]]
-						  [[set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_stopF <- setR_stopF,set_resumeF <- setR_resumeF,clockReset.CLID_C <- clockResetR.CLID_C,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_odometerF,setL_obstacleF,setL_stopF,clockResetL.CLID_C |} ]]
+						  [[set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,clockResetL.CLID_C <- clockReset.CLID_C,setL_turnF <- set_turnF]]
-						 [[setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_stopF <- set_stopF,setR_resumeF <- set_resumeF,clockResetR.CLID_C <- clockReset.CLID_C,setR_turnF <- set_turnF]]
+						)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -491,29 +491,29 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_obstacleF,setR_odometerF,setR_stopF,setR_resumeF,clockResetR.CLID_C,setR_turnF |} ]] 
-						  [[set_obstacleF <- setL_obstacleF,set_odometerF <- setL_odometerF,set_stopF <- setL_stopF,set_resumeF <- setL_resumeF,clockReset.CLID_C <- clockResetL.CLID_C,set_turnF <- setL_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_turnF,setR_resumeF,setR_odometerF,setR_obstacleF,setR_stopF,clockResetR.CLID_C |} ]] 
+						  [[set_turnF <- setL_turnF,set_resumeF <- setL_resumeF,set_odometerF <- setL_odometerF,set_obstacleF <- setL_obstacleF,set_stopF <- setL_stopF,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_obstacleF
-						 			,setL_odometerF
-						 			,setL_stopF
-						 			,setL_resumeF
-						 			,clockResetL.CLID_C
 						 			,setL_turnF
-						 			,setR_obstacleF
-						 			 			,setR_odometerF
-						 			 			,setR_stopF
+						 			,setL_resumeF
+						 			,setL_odometerF
+						 			,setL_obstacleF
+						 			,setL_stopF
+						 			,clockResetL.CLID_C
+						 			,setR_turnF
 						 			 			,setR_resumeF
+						 			 			,setR_odometerF
+						 			 			,setR_obstacleF
+						 			 			,setR_stopF
 						 			 			,clockResetR.CLID_C
-						 			 			,setR_turnF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_obstacleF,setL_odometerF,setL_stopF,setL_resumeF,clockResetL.CLID_C,setL_turnF |} ]]
-						  [[set_obstacleF <- setR_obstacleF,set_odometerF <- setR_odometerF,set_stopF <- setR_stopF,set_resumeF <- setR_resumeF,clockReset.CLID_C <- clockResetR.CLID_C,set_turnF <- setR_turnF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_turnF,setL_resumeF,setL_odometerF,setL_obstacleF,setL_stopF,clockResetL.CLID_C |} ]]
+						  [[set_turnF <- setR_turnF,set_resumeF <- setR_resumeF,set_odometerF <- setR_odometerF,set_obstacleF <- setR_obstacleF,set_stopF <- setR_stopF,clockReset.CLID_C <- clockResetR.CLID_C]]
 						 )
-						)[[setL_obstacleF <- set_obstacleF,setL_odometerF <- set_odometerF,setL_stopF <- set_stopF,setL_resumeF <- set_resumeF,clockResetL.CLID_C <- clockReset.CLID_C,setL_turnF <- set_turnF]]
-						 [[setR_obstacleF <- set_obstacleF,setR_odometerF <- set_odometerF,setR_stopF <- set_stopF,setR_resumeF <- set_resumeF,clockResetR.CLID_C <- clockReset.CLID_C,setR_turnF <- set_turnF]]
+						)[[setL_turnF <- set_turnF,setL_resumeF <- set_resumeF,setL_odometerF <- set_odometerF,setL_obstacleF <- set_obstacleF,setL_stopF <- set_stopF,clockResetL.CLID_C <- clockReset.CLID_C]]
+						 [[setR_turnF <- set_turnF,setR_resumeF <- set_resumeF,setR_odometerF <- set_odometerF,setR_obstacleF <- set_obstacleF,setR_stopF <- set_stopF,clockResetR.CLID_C <- clockReset.CLID_C]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

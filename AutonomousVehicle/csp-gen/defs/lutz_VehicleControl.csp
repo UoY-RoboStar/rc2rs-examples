@@ -1,0 +1,2144 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module lutz_VehicleControl
+exports
+
+
+
+
+module VehicleControl
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_SpinOnce|
+	              NID_ApplyControl|
+	              NID_i0|
+	              NID_Initialise|
+	              NID_Sleep
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_podDemand, set_podDemand, setL_podDemand, setR_podDemand: PodDemand
+	channel get_auxDemand, set_auxDemand, setL_auxDemand, setR_auxDemand: AuxiliaryDemand
+	channel get_sessionControl, set_sessionControl, setL_sessionControl, setR_sessionControl: SessionControl
+	channel get_executingApplyControl, set_executingApplyControl, setL_executingApplyControl, setR_executingApplyControl: core_boolean
+	channel get_podStatus, set_podStatus, setL_podStatus, setR_podStatus: Status
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel podstatus__: NIDS.InOut.Status
+	channel podstatus: InOut.Status
+	channel output_pod_demand__: NIDS.InOut.PodDemand
+	channel output_pod_demand: InOut.PodDemand
+	channel auxiliary_demand__: NIDS.InOut.AuxiliaryDemand
+	channel auxiliary_demand: InOut.AuxiliaryDemand
+	channel session_control__: NIDS.InOut.SessionControl
+	channel session_control: InOut.SessionControl
+	channel control_command1__: NIDS.InOut.PodDemand
+	channel control_command1: InOut.PodDemand
+	
+	-- Declaring call and ret events for undefined operations
+	channel setParkingBrakeCall: BrakeState
+	channel setFrontSteeringCall: Angle
+	channel sendHandshakeResponseCall: Handshake
+	channel setSpeedCall: Speed
+	channel requestStateCall: VehicleState
+	channel setRearSteeringCall: Angle
+	channel setAuxiliariesCall: AuxiliaryDemand
+	
+	enterSS = {|
+	SpinOnce::enter,
+	ApplyControl::enter,
+	i0::enter,
+	Initialise::enter,
+	Sleep::enter
+	|}
+	
+	enteredSS = 	{|
+	SpinOnce::entered,
+	ApplyControl::entered,
+	Initialise::entered,
+	Sleep::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	podstatus,
+		output_pod_demand,
+		auxiliary_demand,
+		session_control,
+		control_command1
+	,	setParkingBrakeCall,
+		setFrontSteeringCall,
+		sendHandshakeResponseCall,
+		setSpeedCall,
+		requestStateCall,
+		setRearSteeringCall,
+		setAuxiliariesCall
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: SpinOnce
+	module SpinOnce
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: ApplyControl
+	module ApplyControl
+	
+	enterSS = 
+			{|			Steering::enter,
+				Speed::enter,
+				Auxiliaries::enter,
+				State::enter,
+				i0::enter,
+				f0::enter,
+				ZeroSpeed::enter,
+				j0::enter
+			|}
+	enteredSS = 
+			{|			Steering::entered,
+				Speed::entered,
+				Auxiliaries::entered,
+				State::entered,
+				f0::entered,
+				ZeroSpeed::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_Steering|
+		              NID_Speed|
+		              NID_Auxiliaries|
+		              NID_State|
+		              NID_i0|
+		              NID_f0|
+		              NID_ZeroSpeed|
+		              NID_j0
+		
+		channel internal__ : NIDS
+		channel podstatus__: NIDS.InOut.Status
+		channel output_pod_demand__: NIDS.InOut.PodDemand
+		channel auxiliary_demand__: NIDS.InOut.AuxiliaryDemand
+		channel session_control__: NIDS.InOut.SessionControl
+		channel control_command1__: NIDS.InOut.PodDemand
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: Steering
+		module Steering
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_podDemand?podDemand -> true&CALL__setFrontSteering(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_steer(podDemand)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_podDemand?podDemand -> true&CALL__setFrontSteering(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_steer(podDemand)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Speed
+		module Speed
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_podDemand?podDemand -> true&CALL__setSpeed(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_speed(podDemand)
+						));share__choice(get_podDemand?podDemand -> true&CALL__setParkingBrake(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_brake(podDemand)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_podDemand?podDemand -> true&CALL__setSpeed(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_speed(podDemand)
+						));share__choice(get_podDemand?podDemand -> true&CALL__setParkingBrake(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_brake(podDemand)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Auxiliaries
+		module Auxiliaries
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_auxDemand?auxDemand -> true&CALL__setAuxiliaries(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							auxDemand
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_auxDemand?auxDemand -> true&CALL__setAuxiliaries(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							auxDemand
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: State
+		module State
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_sessionControl?sessionControl -> true&CALL__requestState(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							SessionControl_requestedState(sessionControl)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(get_sessionControl?sessionControl -> true&CALL__requestState(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							SessionControl_requestedState(sessionControl)
+						)) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: f0
+		module f0
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			--	Rule: behaviours(Node)
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+					
+					Entering 	= entered -> SKIP ; Active
+					Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+					Interrupted	= share__choice(exit -> exited -> Inactive)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: ZeroSpeed
+		module ZeroSpeed
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__setSpeed(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_speed(const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND)
+						);true&CALL__setParkingBrake(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_brake(const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND)
+						) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= true&CALL__setSpeed(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_speed(const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND)
+						);true&CALL__setParkingBrake(
+							id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+							PodDemand_brake(const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND)
+						) ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = D__(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_executingApplyControl!true -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	Steering::enter,
+				 	Speed::enter,
+				 	Auxiliaries::enter,
+				 	State::enter,
+				 	i0::enter,
+				 	f0::enter,
+				 	ZeroSpeed::enter,
+				 	j0::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_Steering,internal__.NID_j0,internal__.NID_State,internal__.NID_Auxiliaries,internal__.NID_i0,internal__.NID_Steering,internal__.NID_Speed,internal__.NID_ZeroSpeed,internal__.NID_Steering|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   Steering::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   Speed::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   Auxiliaries::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   State::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   i0::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   f0::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   ZeroSpeed::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   j0::D__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Steering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Steering,internal__.NID_Steering,internal__.NID_Steering|}]]
+				 		 [[Speed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Speed|}]]
+				 		 [[Auxiliaries::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Auxiliaries|}]]
+				 		 [[State::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_State|}]]
+				 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[ZeroSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ZeroSpeed|}]]
+				 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_podStatus <- setL_podStatus,set_sessionControl <- setL_sessionControl]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_podStatus
+				 		 			,setL_sessionControl
+				 		|}) |]
+				 		 ((i0::enter -> Transitions(id__,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		 		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		 		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_podStatus,setL_sessionControl |} ]]
+				 		 )
+				 		)[[setL_podStatus <- set_podStatus,setL_sessionControl <- set_sessionControl]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		podstatus__.x____ <- podstatus,
+				 		output_pod_demand__.x____ <- output_pod_demand,
+				 		auxiliary_demand__.x____ <- auxiliary_demand,
+				 		session_control__.x____ <- session_control,
+				 		control_command1__.x____ <- control_command1
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_podStatus,setR_sessionControl,setR_auxDemand,setR_executingApplyControl,setR_podDemand |} ]] 
+				  [[set_podStatus <- setL_podStatus,set_sessionControl <- setL_sessionControl,set_auxDemand <- setL_auxDemand,set_executingApplyControl <- setL_executingApplyControl,set_podDemand <- setL_podDemand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_podStatus
+				 			,setL_sessionControl
+				 			,setL_auxDemand
+				 			,setL_executingApplyControl
+				 			,setL_podDemand
+				 			,setR_podStatus
+				 			 			,setR_sessionControl
+				 			 			,setR_auxDemand
+				 			 			,setR_executingApplyControl
+				 			 			,setR_podDemand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_podStatus,setL_sessionControl,setL_auxDemand,setL_executingApplyControl,setL_podDemand |} ]]
+				  [[set_podStatus <- setR_podStatus,set_sessionControl <- setR_sessionControl,set_auxDemand <- setR_auxDemand,set_executingApplyControl <- setR_executingApplyControl,set_podDemand <- setR_podDemand]]
+				 )
+				)[[setL_podStatus <- set_podStatus,setL_sessionControl <- set_sessionControl,setL_auxDemand <- set_auxDemand,setL_executingApplyControl <- set_executingApplyControl,setL_podDemand <- set_podDemand]]
+				 [[setR_podStatus <- set_podStatus,setR_sessionControl <- set_sessionControl,setR_auxDemand <- set_auxDemand,setR_executingApplyControl <- set_executingApplyControl,setR_podDemand <- set_podDemand]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_executingApplyControl!true -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	Steering::enter,
+				 	Speed::enter,
+				 	Auxiliaries::enter,
+				 	State::enter,
+				 	i0::enter,
+				 	f0::enter,
+				 	ZeroSpeed::enter,
+				 	j0::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_Steering,internal__.NID_j0,internal__.NID_State,internal__.NID_Auxiliaries,internal__.NID_i0,internal__.NID_Steering,internal__.NID_Speed,internal__.NID_ZeroSpeed,internal__.NID_Steering|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   Steering::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   Speed::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   Auxiliaries::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   State::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   i0::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   f0::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   ZeroSpeed::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   [| { share__, terminate } |] (
+				 		   j0::VS_O__(id__,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		   )
+				 		 )
+				 		 [[Steering::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Steering,internal__.NID_Steering,internal__.NID_Steering|}]]
+				 		 [[Speed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Speed|}]]
+				 		 [[Auxiliaries::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Auxiliaries|}]]
+				 		 [[State::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_State|}]]
+				 		 [[f0::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[ZeroSpeed::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ZeroSpeed|}]]
+				 		 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+				 		 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		  [[set_podStatus <- setL_podStatus,set_sessionControl <- setL_sessionControl]]
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		 			,setL_podStatus
+				 		 			,setL_sessionControl
+				 		|}) |]
+				 		 ((i0::enter -> Transitions(id__,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				 		 		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				 		 		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				 		 		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+				 		  [[ share__ <- x__ | x__ <- {| share__,setL_podStatus,setL_sessionControl |} ]]
+				 		 )
+				 		)[[setL_podStatus <- set_podStatus,setL_sessionControl <- set_sessionControl]]
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		podstatus__.x____ <- podstatus,
+				 		output_pod_demand__.x____ <- output_pod_demand,
+				 		auxiliary_demand__.x____ <- auxiliary_demand,
+				 		session_control__.x____ <- session_control,
+				 		control_command1__.x____ <- control_command1
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_podStatus,setR_sessionControl,setR_auxDemand,setR_executingApplyControl,setR_podDemand |} ]] 
+				  [[set_podStatus <- setL_podStatus,set_sessionControl <- setL_sessionControl,set_auxDemand <- setL_auxDemand,set_executingApplyControl <- setL_executingApplyControl,set_podDemand <- setL_podDemand]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_podStatus
+				 			,setL_sessionControl
+				 			,setL_auxDemand
+				 			,setL_executingApplyControl
+				 			,setL_podDemand
+				 			,setR_podStatus
+				 			 			,setR_sessionControl
+				 			 			,setR_auxDemand
+				 			 			,setR_executingApplyControl
+				 			 			,setR_podDemand
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_podStatus,setL_sessionControl,setL_auxDemand,setL_executingApplyControl,setL_podDemand |} ]]
+				  [[set_podStatus <- setR_podStatus,set_sessionControl <- setR_sessionControl,set_auxDemand <- setR_auxDemand,set_executingApplyControl <- setR_executingApplyControl,set_podDemand <- setR_podDemand]]
+				 )
+				)[[setL_podStatus <- set_podStatus,setL_sessionControl <- set_sessionControl,setL_auxDemand <- set_auxDemand,setL_executingApplyControl <- set_executingApplyControl,setL_podDemand <- set_podDemand]]
+				 [[setR_podStatus <- set_podStatus,setR_sessionControl <- set_sessionControl,setR_auxDemand <- set_auxDemand,setR_executingApplyControl <- set_executingApplyControl,setR_podDemand <- set_podDemand]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = ((let
+			Trans = share__choice(get_podStatus?podStatus -> get_sessionControl?sessionControl -> (
+				((share__ -> SKIP
+				 [] dbisim(((Status_systemState(podStatus)==VehicleState_AUTONOMOUS))&(internal__!NID_Steering -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Speed::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((share__choice(get_podDemand?podDemand -> true&(share__choice(control_command1.out!podDemand -> SKIP))) ; State::enter -> SKIP))))
+				 	 [] dbisim((true)&(internal__!NID_State -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Auxiliaries::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_Auxiliaries -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(true & (share__choice(set_executingApplyControl!false -> SKIP))) ; f0::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Steering::enter -> SKIP))))
+				 	 [] dbisim((((SessionControl_requestedState(sessionControl)==VehicleState_AUTONOMOUS) and (Status_systemState(podStatus)!=VehicleState_AUTONOMOUS)))&(internal__!NID_Steering -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ZeroSpeed::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_Speed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+				 	 [] dbisim((true)&(internal__!NID_ZeroSpeed -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+				 	 [] dbisim((((SessionControl_requestedState(sessionControl)!=VehicleState_AUTONOMOUS) and (Status_systemState(podStatus)!=VehicleState_AUTONOMOUS)))&(internal__!NID_Steering -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; State::enter -> SKIP)))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Initialise
+	module Initialise
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_podDemand!const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND -> SKIP)));share__choice(true & (share__choice(set_auxDemand!const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND -> SKIP)));share__choice(true & (share__choice(set_sessionControl!const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST -> SKIP)));share__choice(true & (share__choice(set_executingApplyControl!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_podDemand!const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND -> SKIP)));share__choice(true & (share__choice(set_auxDemand!const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND -> SKIP)));share__choice(true & (share__choice(set_sessionControl!const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST -> SKIP)));share__choice(true & (share__choice(set_executingApplyControl!false -> SKIP))) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Sleep
+	module Sleep
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__setParkingBrake(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_brake) 	= setParkingBrakeCall.param_brake -> SKIP
+	CALL__setFrontSteering(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_degrees) 	= setFrontSteeringCall.param_degrees -> SKIP
+	CALL__sendHandshakeResponse(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_message) 	= sendHandshakeResponseCall.param_message -> SKIP
+	CALL__setSpeed(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_kilometersPerHour) 	= setSpeedCall.param_kilometersPerHour -> SKIP
+	CALL__requestState(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_newState) 	= requestStateCall.param_newState -> SKIP
+	CALL__setRearSteering(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_degrees) 	= setRearSteeringCall.param_degrees -> SKIP
+	CALL__setAuxiliaries(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY,
+				param_newState) 	= setAuxiliariesCall.param_newState -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+						    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+						    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+						    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = ((let
+		Trans = share__choice(get_executingApplyControl?executingApplyControl -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_Sleep -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_SpinOnce -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ApplyControl::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(output_pod_demand__!NID_SpinOnce.in?podDemand:{podDemand|podDemand <- PodDemand, true} -> share__choice(set_podDemand!podDemand -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(auxiliary_demand__!NID_SpinOnce.in?auxDemand:{auxDemand|auxDemand <- AuxiliaryDemand, true} -> share__choice(set_auxDemand!auxDemand -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(session_control__!NID_SpinOnce.in?sessionControl:{sessionControl|sessionControl <- SessionControl, true} -> share__choice(set_sessionControl!sessionControl -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim((true)&(podstatus__!NID_SpinOnce.in?podStatus:{podStatus|podStatus <- Status, true} -> share__choice(set_podStatus!podStatus -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SpinOnce::enter -> SKIP)))
+			 	 [] dbisim(((not (executingApplyControl)))&(internal__!NID_ApplyControl -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Sleep::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				SpinOnce::enter,
+				ApplyControl::enter,
+				i0::enter,
+				Initialise::enter,
+				Sleep::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Sleep,internal__.NID_SpinOnce,internal__.NID_Initialise,output_pod_demand__.NID_SpinOnce.in,auxiliary_demand__.NID_SpinOnce.in,session_control__.NID_SpinOnce.in,podstatus__.NID_SpinOnce.in,internal__.NID_ApplyControl|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   SpinOnce::D__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   ApplyControl::D__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   Initialise::D__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   Sleep::D__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[SpinOnce::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SpinOnce,output_pod_demand__.NID_SpinOnce.in,auxiliary_demand__.NID_SpinOnce.in,session_control__.NID_SpinOnce.in,podstatus__.NID_SpinOnce.in|}]]
+					 [[ApplyControl::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ApplyControl|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[Sleep::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Sleep|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_podStatus,setR_sessionControl,setR_auxDemand,setR_podDemand |} ]] 
+					  [[set_executingApplyControl <- setL_executingApplyControl]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_executingApplyControl
+					 			,setR_podStatus
+					 			 			,setR_sessionControl
+					 			 			,setR_auxDemand
+					 			 			,setR_podDemand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					 		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					 		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_executingApplyControl |} ]]
+					  [[set_podStatus <- setR_podStatus,set_sessionControl <- setR_sessionControl,set_auxDemand <- setR_auxDemand,set_podDemand <- setR_podDemand]]
+					 )
+					)[[setL_executingApplyControl <- set_executingApplyControl]]
+					 [[setR_podStatus <- set_podStatus,setR_sessionControl <- set_sessionControl,setR_auxDemand <- set_auxDemand,setR_podDemand <- set_podDemand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					podstatus__.x____ <- podstatus,
+					output_pod_demand__.x____ <- output_pod_demand,
+					auxiliary_demand__.x____ <- auxiliary_demand,
+					session_control__.x____ <- session_control,
+					control_command1__.x____ <- control_command1
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((MachineBody(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((MachineBody(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		((
+			(Behaviour(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												Behaviour(id__,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+														    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+														    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+												[| {|get_podStatus,set_podStatus,terminate|} |]
+												Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+											)\{|get_podStatus,set_podStatus|}
+										)
+										[| {|get_executingApplyControl,set_executingApplyControl,terminate|} |]
+										Memory_executingApplyControl(true)
+									)\{|get_executingApplyControl,set_executingApplyControl|}
+								)
+								[| {|get_sessionControl,set_sessionControl,terminate|} |]
+								Memory_sessionControl((VehicleState_INVALID,0))
+							)\{|get_sessionControl,set_sessionControl|}
+						)
+						[| {|get_auxDemand,set_auxDemand,terminate|} |]
+						Memory_auxDemand((true,true,true,0,(0,0,"")))
+					)\{|get_auxDemand,set_auxDemand|}
+				)
+				[| {|get_podDemand,set_podDemand,terminate|} |]
+				Memory_podDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_podDemand,set_podDemand|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				SpinOnce::enter,
+				ApplyControl::enter,
+				i0::enter,
+				Initialise::enter,
+				Sleep::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Sleep,internal__.NID_SpinOnce,internal__.NID_Initialise,output_pod_demand__.NID_SpinOnce.in,auxiliary_demand__.NID_SpinOnce.in,session_control__.NID_SpinOnce.in,podstatus__.NID_SpinOnce.in,internal__.NID_ApplyControl|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   SpinOnce::VS_O__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   ApplyControl::VS_O__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   Initialise::VS_O__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   [| { share__, terminate } |] (
+					   Sleep::VS_O__(id__,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					   		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					   		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					   		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[SpinOnce::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SpinOnce,output_pod_demand__.NID_SpinOnce.in,auxiliary_demand__.NID_SpinOnce.in,session_control__.NID_SpinOnce.in,podstatus__.NID_SpinOnce.in|}]]
+					 [[ApplyControl::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ApplyControl|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[Sleep::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Sleep|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_podStatus,setR_sessionControl,setR_auxDemand,setR_podDemand |} ]] 
+					  [[set_executingApplyControl <- setL_executingApplyControl]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_executingApplyControl
+					 			,setR_podStatus
+					 			 			,setR_sessionControl
+					 			 			,setR_auxDemand
+					 			 			,setR_podDemand
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					 		    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					 		    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					 		    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_executingApplyControl |} ]]
+					  [[set_podStatus <- setR_podStatus,set_sessionControl <- setR_sessionControl,set_auxDemand <- setR_auxDemand,set_podDemand <- setR_podDemand]]
+					 )
+					)[[setL_executingApplyControl <- set_executingApplyControl]]
+					 [[setR_podStatus <- set_podStatus,setR_sessionControl <- set_sessionControl,setR_auxDemand <- set_auxDemand,setR_podDemand <- set_podDemand]]
+					)
+				)
+				 \ hideSet)
+				[[
+					podstatus__.x____ <- podstatus,
+					output_pod_demand__.x____ <- output_pod_demand,
+					auxiliary_demand__.x____ <- auxiliary_demand,
+					session_control__.x____ <- session_control,
+					control_command1__.x____ <- control_command1
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+				    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+				    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+				    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+					    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+					    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+					    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												Behaviour_VS_O(id__,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+														    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+														    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+														    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+												[| {|get_podStatus,set_podStatus,terminate|} |]
+												Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+											)\{|get_podStatus,set_podStatus|}
+										)
+										[| {|get_executingApplyControl,set_executingApplyControl,terminate|} |]
+										Memory_executingApplyControl(true)
+									)\{|get_executingApplyControl,set_executingApplyControl|}
+								)
+								[| {|get_sessionControl,set_sessionControl,terminate|} |]
+								Memory_sessionControl((VehicleState_INVALID,0))
+							)\{|get_sessionControl,set_sessionControl|}
+						)
+						[| {|get_auxDemand,set_auxDemand,terminate|} |]
+						Memory_auxDemand((true,true,true,0,(0,0,"")))
+					)\{|get_auxDemand,set_auxDemand|}
+				)
+				[| {|get_podDemand,set_podDemand,terminate|} |]
+				Memory_podDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+			)\{|get_podDemand,set_podDemand|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_podDemand(podDemand) =
+		get_podDemand!podDemand -> Memory_podDemand(podDemand)
+		[]
+		set_podDemand?x__ -> Memory_podDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_auxDemand(auxDemand) =
+		get_auxDemand!auxDemand -> Memory_auxDemand(auxDemand)
+		[]
+		set_auxDemand?x__ -> Memory_auxDemand(x__)
+		[]
+		terminate -> SKIP
+	Memory_sessionControl(sessionControl) =
+		get_sessionControl!sessionControl -> Memory_sessionControl(sessionControl)
+		[]
+		set_sessionControl?x__ -> Memory_sessionControl(x__)
+		[]
+		terminate -> SKIP
+	Memory_executingApplyControl(executingApplyControl) =
+		get_executingApplyControl!executingApplyControl -> Memory_executingApplyControl(executingApplyControl)
+		[]
+		set_executingApplyControl?x__ -> Memory_executingApplyControl(x__)
+		[]
+		terminate -> SKIP
+	Memory_podStatus(podStatus) =
+		get_podStatus!podStatus -> Memory_podStatus(podStatus)
+		[]
+		set_podStatus?x__ -> Memory_podStatus(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = Memory_podDemand((0,0,BrakeState_BRAKE_ON,true,DemandSource_DEMAND_AUTONOMOUS_CONTROL,true,(0,0,"")))
+	[| { terminate } |] (
+	Memory_auxDemand((true,true,true,0,(0,0,"")))
+	[| { terminate } |] (
+	Memory_sessionControl((VehicleState_INVALID,0))
+	[| { terminate } |] (
+	Memory_executingApplyControl(true)
+	[| { terminate } |] (
+	Memory_podStatus((VehicleState_INVALID,true,true,true,true,Seats_EMPTY,Seats_EMPTY,0,0,0))
+	)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_podDemand,set_podDemand,get_auxDemand,set_auxDemand,get_sessionControl,set_sessionControl,get_executingApplyControl,set_executingApplyControl,get_podStatus,set_podStatus|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = STM_VS_O(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+	
+	D__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = STM(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) \ internal_events
+	O__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = sbisim(diamond(D__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)))
+	VS__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = FVS__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)
+	VS_O__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = sbisim(diamond(FVS__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY)))
+	HEXT__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = O__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = O__(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_VEHICLE_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_AUXILIARY_DEMAND,
+			    const_lutz_VehicleControl_VehicleControl_ZERO_SESSION_REQUEST,
+			    const_lutz_VehicleControl_VehicleControl_CONTROL_PERIOD,
+			    const_lutz_VehicleControl_VehicleControl_MESSAGE_HANDLING_DELAY) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule
+
+
+endmodule

@@ -9,9 +9,9 @@ exports
 	-- TODO: Rework model to be embedded in tick-tock-CSP.
 	
 	InputEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in|}
-	OutputEvents = {|main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
+	OutputEvents = {|main::Rescue::land.out,main::Rescue::turnBackCall,main::Rescue::takeoff.out,main::Rescue::moveCall|}
 	ExternalEvents = {|main::Rescue::found.in,main::Rescue::origin.in,main::Rescue::switchOn.in
-					   ,main::Rescue::moveCall,main::Rescue::takeoff.out,main::Rescue::turnBackCall,main::Rescue::land.out|}
+					   ,main::Rescue::land.out,main::Rescue::turnBackCall,main::Rescue::takeoff.out,main::Rescue::moveCall|}
 	
 	sem__events = {|registerRead,registerWrite|}
 	
@@ -19,27 +19,27 @@ exports
 		| i_origin.Bool
 		| i_switchOn.Bool
 	
-	datatype RegisterDataOutput = o_move.core_nat
-		| o_takeoff
+	datatype RegisterDataOutput = o_land
 		| o_turnBack
-		| o_land
+		| o_takeoff
+		| o_move.core_nat
 	
 	
 	nametype RegisterOutputs = {|
-	o_move,
-	o_takeoff,
+	o_land,
 	o_turnBack,
-	o_land|}
+	o_takeoff,
+	o_move|}
 	
 	nametype RegisterInputs = {|
 	i_found,
 	i_origin,
 	i_switchOn|}
 	
-	datatype COutputEvents = COutput_move
-		| COutput_takeoff
+	datatype COutputEvents = COutput_land
 		| COutput_turnBack
-		| COutput_land
+		| COutput_takeoff
+		| COutput_move
 	
 	channel registerRead 	: RegisterDataInput
 	channel registerWrite 	: RegisterDataOutput
@@ -68,10 +68,10 @@ exports
 	
 	TA2(cycle_RC_RC) = let
 			
-			read(COutput_move) = main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
-			read(COutput_takeoff) = main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
-			read(COutput_turnBack) = main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
 			read(COutput_land) = main::Rescue::land.out -> registerWrite.o_land -> SKIP
+			read(COutput_turnBack) = main::Rescue::turnBackCall -> registerWrite.o_turnBack -> SKIP
+			read(COutput_takeoff) = main::Rescue::takeoff.out -> registerWrite.o_takeoff -> SKIP
+			read(COutput_move) = main::Rescue::moveCall?x__ -> registerWrite.o_move.x__ -> SKIP
 	
 			A2(sout) = 
 					([] s : sout @ read(s) ; A2(diff(sout,{s})))

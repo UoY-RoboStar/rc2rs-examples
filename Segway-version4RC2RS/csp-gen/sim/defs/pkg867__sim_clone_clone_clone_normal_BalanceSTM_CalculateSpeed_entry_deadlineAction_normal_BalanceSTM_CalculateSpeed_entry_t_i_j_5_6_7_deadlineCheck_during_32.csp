@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 15:50:32
 --
 
 -- compileSelfContainedOperation
@@ -33,8 +33,8 @@ exports
 	channel get_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7, setR_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	channel set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
+	channel set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -58,8 +58,8 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,
-		set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
+		set_EXT_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,
+		set_EXT_exec_ds_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
 	|}
 	
 	datatype ClockSet = 
@@ -70,24 +70,22 @@ exports
 	localClockResets = {|clockReset.CLID_C|}
 	
 	
-	channel get_CLID_C : core_clock_type 
 	channel get_CLID_S2 : core_clock_type 
-	channel get_CLID_S1 : core_clock_type 
 	channel get_CLID_sStop : core_clock_type 
+	channel get_CLID_S1 : core_clock_type 
+	channel get_CLID_C : core_clock_type 
 	--channel increment__
 	
-	CLID_C_clock_type(id__) = 
+	CLID_S2_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
-	({Minus(1, 1, core_int)}),
-	{},
-	({Minus(1, 1, core_int)})
+	{}
 	}))+1)
 		ctype = {0..max}
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_S2_clock_type(id__) = 
+	CLID_sStop_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
 	{}
@@ -105,10 +103,12 @@ exports
 	within
 		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
 	
-	CLID_sStop_clock_type(id__) = 
+	CLID_C_clock_type(id__) = 
 		let
 			max = (clock_type_max(Union({
-	{}
+	({Minus(1, 1, core_int)}),
+	{},
+	({Minus(1, 1, core_int)})
 	}))+1)
 		ctype = {0..max}
 	within
@@ -435,7 +435,7 @@ exports
 		-- Transitions
 		Transitions(id__,
 					param_d) = ((let
-			Trans = share__choice(get_CLID_C?C:CLID_C_clock_type(id__) -> get_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7?exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 -> TimeOut_1(
+			Trans = share__choice(get_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7?exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 -> get_CLID_C?C:CLID_C_clock_type(id__) -> TimeOut_1(
 				 (share__ -> SKIP
 				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((share__choice(clockReset.CLID_C -> SKIP))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; S1::enter -> SKIP))))
 				 [] dbisim(((C<=Minus(1, 1, core_int)))&(internal__!NID_S1 -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
@@ -518,17 +518,17 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7]]
+						  [[set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
+						 			,clockResetL.CLID_C
 						|}) |]
 						 ((i::enter -> Transitions(id__,
 						 			param_d))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockResetL.CLID_C |} ]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7]]
+						)[[setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockResetL.CLID_C <- clockReset.CLID_C]]
 						)
 					)
 					 \ hideSet)
@@ -547,7 +547,7 @@ exports
 		Behaviour(id__,
 					param_d) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 			 within
 				(MachineBody(id__,
 							param_d) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
@@ -619,17 +619,17 @@ exports
 						 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
 						 )
 						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
-						  [[clockReset.CLID_C <- clockResetL.CLID_C,set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7]]
+						  [[set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockReset.CLID_C <- clockResetL.CLID_C]]
 						 )
 						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
-						 			,clockResetL.CLID_C
 						 			,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7
+						 			,clockResetL.CLID_C
 						|}) |]
 						 ((i::enter -> Transitions(id__,
 						 			param_d))
-						  [[ share__ <- x__ | x__ <- {| share__,clockResetL.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 |} ]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockResetL.CLID_C |} ]]
 						 )
-						)[[clockResetL.CLID_C <- clockReset.CLID_C,setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7]]
+						)[[setL_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7 <- set_exec_ms_clone_clone_normal_BalanceSTM_CalculateSpeed_entry_deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_i_j_5_6_7,clockResetL.CLID_C <- clockReset.CLID_C]]
 						)
 					)
 					 \ hideSet)
@@ -648,7 +648,7 @@ exports
 		Behaviour_VS_O(id__,
 					param_d) = 
 			dbisim((let
-				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+				stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 			 within
 				(MachineBody_VS_O(id__,
 							param_d) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
@@ -729,13 +729,6 @@ exports
 				get_CLID_S2!x__ -> Clock_CLID_S2(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_S2(id__,clock_type_plus(x__,1,CLID_S2_clock_type(id__))))
-		Clock_CLID_S1(id__,x__) = 
-			TimeOut_1(
-				S1::entered -> Clock_CLID_S1(id__,0)
-				[]
-				get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
-				[]
-				terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 		Clock_CLID_sStop(id__,x__) = 
 			TimeOut_1(
 				sStop::entered -> Clock_CLID_sStop(id__,0)
@@ -743,16 +736,23 @@ exports
 				get_CLID_sStop!x__ -> Clock_CLID_sStop(id__,x__)
 				[]
 				terminate -> SKIP,Clock_CLID_sStop(id__,clock_type_plus(x__,1,CLID_sStop_clock_type(id__))))
+		Clock_CLID_S1(id__,x__) = 
+			TimeOut_1(
+				S1::entered -> Clock_CLID_S1(id__,0)
+				[]
+				get_CLID_S1!x__ -> Clock_CLID_S1(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_S1(id__,clock_type_plus(x__,1,CLID_S1_clock_type(id__))))
 		
 		StateClocks(id__) = dbisim(Clock_CLID_S2(id__,0))
 		[| { terminate } |] (
-		dbisim(Clock_CLID_S1(id__,0))
-		[| { terminate } |] (
 		dbisim(Clock_CLID_sStop(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_S1(id__,0))
 		)
 		)
 		
-		stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_S1,S1::entered,get_CLID_sStop,sStop::entered|}
+		stateClockSync = {|get_CLID_S2,S2::entered,get_CLID_sStop,sStop::entered,get_CLID_S1,S1::entered|}
 		
 		}
 			endmodule

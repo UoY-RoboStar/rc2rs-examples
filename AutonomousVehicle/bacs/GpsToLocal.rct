@@ -1,0 +1,46 @@
+package bacs::GpsToLocal
+import bacs::*
+stm GpsToLocal {
+	var geographic : LatLngHeadingFix
+	var local : Pose2DStamped
+	
+	
+	
+	event latlng : LatLngHeadingFix
+	
+	event location1 : Pose2DStamped
+	
+	event location2 : Pose2DStamped
+	state TranslateLocation {
+
+	entry local = ConvertLocationToLocalLocation ( geographic ,
+		configuredOrigin . position )
+	}
+	initial i0
+	state Ready {
+	}
+	transition t0 {
+		from Ready
+		to TranslateLocation
+		trigger latlng ? geographic
+	}
+	transition t1 {
+		from i0
+		to Initialise
+		}
+	transition t2 {
+		from TranslateLocation
+		to Ready
+		action location1 ! local ; location2 ! local
+	}
+
+	var configuredOrigin : GpsPathPoint
+	event origin : GpsPathPoint
+	state Initialise {
+	}
+	transition t3 {
+		from Initialise
+		to Ready
+		trigger origin ? configuredOrigin
+	}
+}

@@ -1,0 +1,96 @@
+package lutz::FaultDetection
+import sequence_toolkit::*
+
+import lutz::*
+stm SHandshake {
+	requires autonomous_vehicle_system::FaultDetection
+	const HANDSHAKE_RESPONSE_KEYS : Seq( HandshakeKey )
+	const HANDSHAKE_CHECK_PERIOD : nat
+	var responseKeys : Seq( HandshakeKey )
+	var currentQuality : ServiceQuality
+	const HANDSHAKE_TIMEOUT : nat
+	var newResponse : Handshake
+	var currentKey : HandshakeKey
+	
+	
+	event acs_handshake : Handshake
+	event quality : ServiceQuality
+	state HandshakeNotReceived {
+		during currentQuality = DecreaseQualityOfService ( currentQuality )
+	}
+	state HandshakeReceived {
+	}
+	state CheckResponse {
+	}
+	state Initialise {
+		during responseKeys = HANDSHAKE_RESPONSE_KEYS ; currentKey =
+		head ( responseKeys )
+	}
+	initial i0
+	state Ready {
+	}
+	state CheckTime {
+	}
+	state IncorrectResponse {
+	}
+	junction j0
+	state SendHandshake {
+	}
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t1 {
+		from Initialise
+		to Ready
+	}
+	transition t2 {
+		from Ready
+		to CheckTime
+		condition since ( lastCheckPeriod ) > HANDSHAKE_CHECK_PERIOD
+	}
+	transition t3 {
+		from Ready
+		to HandshakeReceived
+		trigger acs_handshake ? newResponse
+	}
+	transition t4 {
+		from HandshakeReceived
+		to CheckResponse
+	}
+	transition t5 {
+		from CheckResponse
+		to IncorrectResponse
+	}
+	transition t6 {
+		from CheckResponse
+		to j0
+	}
+	transition t7 {
+		from CheckTime
+		to HandshakeNotReceived
+		condition since ( lastHandshake ) > HANDSHAKE_TIMEOUT
+	}
+	transition t8 {
+		from HandshakeNotReceived
+		to SendHandshake
+	}
+	transition t9 {
+		from CheckTime
+		to SendHandshake
+		condition since ( lastHandshake ) <= HANDSHAKE_TIMEOUT
+	}
+	transition t10 {
+		from IncorrectResponse
+		to j0
+	}
+	transition t11 {
+		from j0
+		to Ready
+	}
+	transition t12 {
+		from SendHandshake
+		to Ready
+	}
+	clock lastHandshake clock lastCheckPeriod
+}

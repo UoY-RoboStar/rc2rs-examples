@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 13:00:30
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "set_v_radius.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_set_v_radius
+P_OP_set_v_radius = let
+	id__ = 0
+	
+	param_v_r = 0
+	
+	
+	
+within
+	OP_set_v_radius::O__(id__,
+				param_v_r)
+assert P_OP_set_v_radius :[deadlock-free]	
+assert P_OP_set_v_radius;RUN({r__}) :[deadlock-free]
+assert P_OP_set_v_radius :[deterministic]
+assert P_OP_set_v_radius :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_set_v_radius[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_set_v_radius

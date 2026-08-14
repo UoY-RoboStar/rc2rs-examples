@@ -1,0 +1,163 @@
+package
+lutz::VehicleControl
+
+stm VehicleControl {
+	requires autonomous_vehicle_system::SpeedControl
+	requires autonomous_vehicle_system::FourWheelSteering
+	requires autonomous_vehicle_system::AuxiliaryControl
+	requires autonomous_vehicle_system::FaultDetection
+	requires autonomous_vehicle_system::State
+	var podDemand : PodDemand, auxDemand : AuxiliaryDemand, sessionControl : SessionControl, executingApplyControl : boolean, podStatus : Status
+	
+	const ZERO_VEHICLE_DEMAND : PodDemand , ZERO_AUXILIARY_DEMAND :
+	AuxiliaryDemand , ZERO_SESSION_REQUEST : SessionControl ,
+	CONTROL_PERIOD : nat , MESSAGE_HANDLING_DELAY : nat
+		
+	event podstatus : Status
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	event output_pod_demand : PodDemand
+	
+	
+	
+	event auxiliary_demand : AuxiliaryDemand
+	
+	
+	
+	event session_control : SessionControl
+	
+	
+	
+	event control_command1 : PodDemand
+	state SpinOnce {
+	}
+	state ApplyControl {
+		state Steering {
+			entry setFrontSteering( podDemand . steer)
+		}
+		state Speed {
+			entry setSpeed( podDemand . speed) ; setParkingBrake( podDemand . brake)
+		}
+		state Auxiliaries {
+			entry setAuxiliaries( auxDemand)
+		}
+		state State {
+			entry requestState( sessionControl . requestedState)
+		}
+		initial i0
+		final f0
+		
+		transition t1 {
+			from Steering
+			to Speed
+		condition podStatus . systemState == VehicleState::AUTONOMOUS
+		}
+		transition t2 {
+			from j0
+			to State
+			action control_command1 ! podDemand
+		}
+		transition t3 {
+			from State
+			to Auxiliaries
+		}
+		transition t4 {
+			from Auxiliaries
+			to f0
+		action executingApplyControl = false
+		}
+		state ZeroSpeed {
+			entry setSpeed( ZERO_VEHICLE_DEMAND . speed) ; setParkingBrake(
+			ZERO_VEHICLE_DEMAND . brake)
+		}
+		junction j0
+		transition t5 {
+			from i0
+			to Steering
+		}
+		transition t6 {
+			from Steering
+			to ZeroSpeed
+			condition sessionControl . requestedState == VehicleState::AUTONOMOUS /\
+			podStatus . systemState != VehicleState::AUTONOMOUS
+		}
+		transition t0 {
+			from Speed
+			to j0
+		}
+		transition t7 {
+			from ZeroSpeed
+			to j0
+		}
+		transition t8 {
+			from Steering
+			to State
+			condition sessionControl . requestedState != VehicleState::AUTONOMOUS /\
+			podStatus . systemState != VehicleState::AUTONOMOUS
+		}
+		entry executingApplyControl = true
+	}
+	initial i0
+	state Initialise {
+		entry podDemand = ZERO_VEHICLE_DEMAND ; auxDemand = ZERO_AUXILIARY_DEMAND ;
+		sessionControl = ZERO_SESSION_REQUEST ; executingApplyControl = false
+	}
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t3 {
+		from Sleep
+		to SpinOnce
+		condition since ( lastControlPeriod ) > CONTROL_PERIOD
+		action # messageHandling
+	}
+	transition t1 {
+		from SpinOnce
+		to ApplyControl
+		condition since ( messageHandling ) > MESSAGE_HANDLING_DELAY
+	}
+	transition t2 {
+		from Initialise
+		to SpinOnce
+	}
+	transition t4 {
+		from SpinOnce
+		to SpinOnce
+		trigger output_pod_demand ? podDemand
+	}
+	transition t5 {
+		from SpinOnce
+		to SpinOnce
+		trigger auxiliary_demand ? auxDemand
+	}
+	transition t6 {
+		from SpinOnce
+		to SpinOnce
+		trigger session_control ? sessionControl
+	}
+	clock lastControlPeriod
+
+
+	transition t7 {
+		from SpinOnce
+		to SpinOnce
+		trigger podstatus ? podStatus
+	}
+state Sleep {
+	}
+	transition t8 {
+		from ApplyControl
+		to Sleep
+		condition not executingApplyControl
+		action # lastControlPeriod
+	}
+clock messageHandling
+}

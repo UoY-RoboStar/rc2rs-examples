@@ -1,0 +1,69 @@
+package bacs::DemandLimiterRatio
+stm DemandLimiterRatio {
+	var newDemand : PodDemand
+	var limitingRatio : SpeedLimit
+	var speedLimitDisabled : boolean
+	
+	const ZERO_RATIO : real
+	
+	
+	
+	
+	
+	event speed_limit : SpeedLimit
+	
+	event pod_demand_geo_limited : PodDemand
+	
+	event pod_demand_limited : PodDemand
+	
+	state Ready {
+	}
+	state LimitSpeed {
+		entry newDemand . speed = ScaleSpeed ( newDemand . speed , realToRatio(limitingRatio.speedLimit) )
+	}
+	initial i0
+	state Initialise {
+		entry limitingRatio.speedLimit = ZERO_RATIO ; speedLimitDisabled = false
+	}
+	junction j0
+	junction j1
+	transition t3 {
+		from j0
+		to Ready
+		action pod_demand_limited ! newDemand
+	}
+	transition t4 {
+		from i0
+		to Initialise
+	}
+	transition t0 {
+		from Ready
+		to j1
+		trigger pod_demand_geo_limited ? newDemand
+	}
+	transition t1 {
+		from Initialise
+		to Ready
+		}
+	transition t2 {
+		from j1
+		to LimitSpeed
+		condition not speedLimitDisabled
+	}
+	transition t5 {
+		from LimitSpeed
+		to j0
+	}
+	transition t6 {
+		from j1
+		to j0
+		condition speedLimitDisabled
+	}
+	transition t7 {
+		from Ready
+		to Ready
+		trigger speed_limit ? limitingRatio
+	}
+}
+function ScaleSpeed(  speedA : Speed , speedB : Ratio) : Speed {
+}

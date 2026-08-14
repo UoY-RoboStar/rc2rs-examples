@@ -1,0 +1,1355 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module lutz_FaultDetection
+exports
+
+
+
+
+module SHandshake
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_HandshakeNotReceived|
+	              NID_HandshakeReceived|
+	              NID_CheckResponse|
+	              NID_Initialise|
+	              NID_i0|
+	              NID_Ready|
+	              NID_CheckTime|
+	              NID_IncorrectResponse|
+	              NID_j0|
+	              NID_SendHandshake
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_responseKeys, set_responseKeys, setL_responseKeys, setR_responseKeys: LSeq(HandshakeKey,2)
+	channel get_currentQuality, set_currentQuality, setL_currentQuality, setR_currentQuality: ServiceQuality
+	channel get_newResponse, set_newResponse, setL_newResponse, setR_newResponse: Handshake
+	channel get_currentKey, set_currentKey, setL_currentKey, setR_currentKey: HandshakeKey
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel acs_handshake__: NIDS.InOut.Handshake
+	channel acs_handshake: InOut.Handshake
+	channel quality__: NIDS.InOut.ServiceQuality
+	channel quality: InOut.ServiceQuality
+	
+	-- Declaring call and ret events for undefined operations
+	channel sendHandshakeResponseCall: Handshake
+	
+	enterSS = {|
+	HandshakeNotReceived::enter,
+	HandshakeReceived::enter,
+	CheckResponse::enter,
+	Initialise::enter,
+	i0::enter,
+	Ready::enter,
+	CheckTime::enter,
+	IncorrectResponse::enter,
+	j0::enter,
+	SendHandshake::enter
+	|}
+	
+	enteredSS = 	{|
+	HandshakeNotReceived::entered,
+	HandshakeReceived::entered,
+	CheckResponse::entered,
+	Initialise::entered,
+	Ready::entered,
+	CheckTime::entered,
+	IncorrectResponse::entered,
+	SendHandshake::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	acs_handshake,
+		quality
+	,	sendHandshakeResponseCall
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- State: HandshakeNotReceived
+	module HandshakeNotReceived
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_currentQuality?currentQuality -> true & (share__choice(set_currentQuality!lutz_DecreaseQualityOfService(currentQuality) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(share__choice(get_currentQuality?currentQuality -> true & (share__choice(set_currentQuality!lutz_DecreaseQualityOfService(currentQuality) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: HandshakeReceived
+	module HandshakeReceived
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: CheckResponse
+	module CheckResponse
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Initialise
+	module Initialise
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_responseKeys!const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS -> SKIP)));share__choice(share__choice(get_responseKeys?responseKeys -> pre_sequence_toolkit_head(responseKeys) & (share__choice(set_currentKey!sequence_toolkit_head(responseKeys) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((share__choice(true & (share__choice(set_responseKeys!const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS -> SKIP)));share__choice(share__choice(get_responseKeys?responseKeys -> pre_sequence_toolkit_head(responseKeys) & (share__choice(set_currentKey!sequence_toolkit_head(responseKeys) -> SKIP)))) ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Initial: i0
+	module i0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Ready
+	module Ready
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: CheckTime
+	module CheckTime
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: IncorrectResponse
+	module IncorrectResponse
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: j0
+	module j0
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: SendHandshake
+	module SendHandshake
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__sendHandshakeResponse(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT,
+				param_message) 	= sendHandshakeResponseCall.param_message -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+						    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = ((let
+		Trans = (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Initialise::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_Initialise -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Ready -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckTime::enter -> SKIP)))
+			 	 [] dbisim((true)&(acs_handshake__!NID_Ready.in?newResponse:{newResponse|newResponse <- Handshake, true} -> share__choice(set_newResponse!newResponse -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; HandshakeReceived::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_HandshakeReceived -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CheckResponse::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_CheckResponse -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; IncorrectResponse::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_CheckResponse -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_CheckTime -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; HandshakeNotReceived::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_HandshakeNotReceived -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SendHandshake::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_CheckTime -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; SendHandshake::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_IncorrectResponse -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_j0 -> SKIP ;  ((SKIP ; Ready::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_SendHandshake -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Ready::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				HandshakeNotReceived::enter,
+				HandshakeReceived::enter,
+				CheckResponse::enter,
+				Initialise::enter,
+				i0::enter,
+				Ready::enter,
+				CheckTime::enter,
+				IncorrectResponse::enter,
+				j0::enter,
+				SendHandshake::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Initialise,internal__.NID_Ready,acs_handshake__.NID_Ready.in,internal__.NID_HandshakeReceived,internal__.NID_CheckResponse,internal__.NID_CheckResponse,internal__.NID_CheckTime,internal__.NID_HandshakeNotReceived,internal__.NID_CheckTime,internal__.NID_IncorrectResponse,internal__.NID_j0,internal__.NID_SendHandshake|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   HandshakeNotReceived::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   HandshakeReceived::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   CheckResponse::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   Initialise::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   i0::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   Ready::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   CheckTime::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   IncorrectResponse::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   j0::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   SendHandshake::D__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[HandshakeNotReceived::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandshakeNotReceived|}]]
+					 [[HandshakeReceived::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandshakeReceived|}]]
+					 [[CheckResponse::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckResponse,internal__.NID_CheckResponse|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,acs_handshake__.NID_Ready.in|}]]
+					 [[CheckTime::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckTime,internal__.NID_CheckTime|}]]
+					 [[IncorrectResponse::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_IncorrectResponse|}]]
+					 [[SendHandshake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SendHandshake|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_newResponse |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setR_newResponse
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					  [[set_newResponse <- setR_newResponse]]
+					 )
+					)
+					 [[setR_newResponse <- set_newResponse]]
+					)
+				)
+				 \ hideSet)
+				[[
+					acs_handshake__.x____ <- acs_handshake,
+					quality__.x____ <- quality
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((MachineBody(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((MachineBody(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		((
+			(Behaviour(id__,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										Behaviour(id__,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+										[| {|get_currentKey,set_currentKey,terminate|} |]
+										Memory_currentKey(0)
+									)\{|get_currentKey,set_currentKey|}
+								)
+								[| {|get_newResponse,set_newResponse,terminate|} |]
+								Memory_newResponse((0,0,0,0,0))
+							)\{|get_newResponse,set_newResponse|}
+						)
+						[| {|get_currentQuality,set_currentQuality,terminate|} |]
+						Memory_currentQuality(0)
+					)\{|get_currentQuality,set_currentQuality|}
+				)
+				[| {|get_responseKeys,set_responseKeys,terminate|} |]
+				Memory_responseKeys(<>)
+			)\{|get_responseKeys,set_responseKeys|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				HandshakeNotReceived::enter,
+				HandshakeReceived::enter,
+				CheckResponse::enter,
+				Initialise::enter,
+				i0::enter,
+				Ready::enter,
+				CheckTime::enter,
+				IncorrectResponse::enter,
+				j0::enter,
+				SendHandshake::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i0,internal__.NID_Initialise,internal__.NID_Ready,acs_handshake__.NID_Ready.in,internal__.NID_HandshakeReceived,internal__.NID_CheckResponse,internal__.NID_CheckResponse,internal__.NID_CheckTime,internal__.NID_HandshakeNotReceived,internal__.NID_CheckTime,internal__.NID_IncorrectResponse,internal__.NID_j0,internal__.NID_SendHandshake|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   HandshakeNotReceived::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   HandshakeReceived::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   CheckResponse::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   Initialise::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   i0::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   Ready::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   CheckTime::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   IncorrectResponse::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   j0::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   [| { share__, terminate } |] (
+					   SendHandshake::VS_O__(id__,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					   		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[HandshakeNotReceived::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandshakeNotReceived|}]]
+					 [[HandshakeReceived::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_HandshakeReceived|}]]
+					 [[CheckResponse::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckResponse,internal__.NID_CheckResponse|}]]
+					 [[Initialise::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Initialise|}]]
+					 [[Ready::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Ready,acs_handshake__.NID_Ready.in|}]]
+					 [[CheckTime::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CheckTime,internal__.NID_CheckTime|}]]
+					 [[IncorrectResponse::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_IncorrectResponse|}]]
+					 [[SendHandshake::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SendHandshake|}]]
+					 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+					 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_newResponse |} ]] 
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setR_newResponse
+					 			|}) |]
+					 ((i0::enter -> Transitions(id__,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					 		    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+					  [[set_newResponse <- setR_newResponse]]
+					 )
+					)
+					 [[setR_newResponse <- set_newResponse]]
+					)
+				)
+				 \ hideSet)
+				[[
+					acs_handshake__.x____ <- acs_handshake,
+					quality__.x____ <- quality
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+				    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+					    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										Behaviour_VS_O(id__,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+												    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+										[| {|get_currentKey,set_currentKey,terminate|} |]
+										Memory_currentKey(0)
+									)\{|get_currentKey,set_currentKey|}
+								)
+								[| {|get_newResponse,set_newResponse,terminate|} |]
+								Memory_newResponse((0,0,0,0,0))
+							)\{|get_newResponse,set_newResponse|}
+						)
+						[| {|get_currentQuality,set_currentQuality,terminate|} |]
+						Memory_currentQuality(0)
+					)\{|get_currentQuality,set_currentQuality|}
+				)
+				[| {|get_responseKeys,set_responseKeys,terminate|} |]
+				Memory_responseKeys(<>)
+			)\{|get_responseKeys,set_responseKeys|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_responseKeys(responseKeys) =
+		get_responseKeys!responseKeys -> Memory_responseKeys(responseKeys)
+		[]
+		set_responseKeys?x__ -> Memory_responseKeys(x__)
+		[]
+		terminate -> SKIP
+	Memory_currentQuality(currentQuality) =
+		get_currentQuality!currentQuality -> Memory_currentQuality(currentQuality)
+		[]
+		set_currentQuality?x__ -> Memory_currentQuality(x__)
+		[]
+		terminate -> SKIP
+	Memory_newResponse(newResponse) =
+		get_newResponse!newResponse -> Memory_newResponse(newResponse)
+		[]
+		set_newResponse?x__ -> Memory_newResponse(x__)
+		[]
+		terminate -> SKIP
+	Memory_currentKey(currentKey) =
+		get_currentKey!currentKey -> Memory_currentKey(currentKey)
+		[]
+		set_currentKey?x__ -> Memory_currentKey(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = Memory_responseKeys(<>)
+	[| { terminate } |] (
+	Memory_currentQuality(0)
+	[| { terminate } |] (
+	Memory_newResponse((0,0,0,0,0))
+	[| { terminate } |] (
+	Memory_currentKey(0)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_responseKeys,set_responseKeys,get_currentQuality,set_currentQuality,get_newResponse,set_newResponse,get_currentKey,set_currentKey|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = STM_VS_O(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+	
+	D__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = STM(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) \ internal_events
+	O__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = sbisim(diamond(D__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)))
+	VS__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = FVS__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)
+	VS_O__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = sbisim(diamond(FVS__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT)))
+	HEXT__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = O__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = O__(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_RESPONSE_KEYS,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_CHECK_PERIOD,
+			    const_lutz_FaultDetection_SHandshake_HANDSHAKE_TIMEOUT) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule
+
+
+endmodule

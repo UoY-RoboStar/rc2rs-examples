@@ -1,0 +1,46 @@
+package bacs::Geofence
+stm Geofence {
+	var currentConfiguration : ConfigGeofence, msg : LatLngHeadingFix, speedLimit : SpeedLimit
+	
+	
+	event latlng : LatLngHeadingFix
+	
+	event geofence_limit : SpeedLimit
+	
+	event configuration : ConfigGeofence
+
+	state Initialise {
+	}
+	state Spin {
+	}
+	state GpsCallback {
+		
+	
+	entry speedLimit . header . stamp = msg . header . stamp ; speedLimit .
+		speedLimit = GeoFenceLocalMaxSpeed ( msg ,
+		currentConfiguration . fence , currentConfiguration . maxSpeed )
+	}
+	initial i0
+	transition t0 {
+		from i0
+		to Initialise
+	}
+	transition t1 {
+		from Initialise
+		to Spin
+		trigger configuration ? currentConfiguration
+	}
+	transition t2 {
+		from Spin
+		to GpsCallback
+		trigger latlng ? msg
+	}
+	transition t3 {
+		from GpsCallback
+		to Spin
+	action geofence_limit ! speedLimit
+	}
+}
+function GeoFenceLocalMaxSpeed(   loc : LatLngHeadingFix ,  fence : Seq(
+GeofenceRectangle ) , maxSpeed : Speed) : real {
+}

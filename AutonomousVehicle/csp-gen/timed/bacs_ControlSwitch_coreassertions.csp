@@ -1,0 +1,35 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "bacs_ControlSwitchcsp"
+
+-- generate bacs_ControlSwitch_ControlSwitch
+P_bacs_ControlSwitch_ControlSwitch = let
+	id__ = 0
+	
+	
+	
+within
+	bacs_ControlSwitch::ControlSwitch::O__(
+		id__,
+		const_bacs_ControlSwitch_ControlSwitch_ZERO_VEHICLE_DEMAND,
+		const_bacs_ControlSwitch_ControlSwitch_MAX_TIME_BETWEEN_DEMAND
+	)
+assert P_bacs_ControlSwitch_ControlSwitch :[deadlock-free]	
+assert P_bacs_ControlSwitch_ControlSwitch;RUN({r__}) :[deadlock-free]
+assert P_bacs_ControlSwitch_ControlSwitch :[deterministic]
+assert P_bacs_ControlSwitch_ControlSwitch :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_bacs_ControlSwitch_ControlSwitch[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_bacs_ControlSwitch_ControlSwitch
+
+
+

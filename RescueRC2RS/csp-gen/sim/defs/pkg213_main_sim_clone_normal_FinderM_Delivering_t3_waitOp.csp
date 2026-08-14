@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 06-05-2026 11:01:27
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 13-08-2026 14:26:26
 --
 
 -- compileSelfContainedOperation
@@ -33,9 +33,9 @@ exports
 	channel get_switchOnF, set_switchOnF, setL_switchOnF, setR_switchOnF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_switchOnF: core_boolean
 	channel set_EXT_originF: core_boolean
 	channel set_EXT_foundF: core_boolean
+	channel set_EXT_switchOnF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -57,9 +57,9 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_switchOnF,
 		set_EXT_originF,
-		set_EXT_foundF
+		set_EXT_foundF,
+		set_EXT_switchOnF
 	|}
 	
 	datatype ClockSet = 
@@ -418,25 +418,25 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,clockResetR.CLID_C,setR_originF,setR_foundF |} ]] 
-						  [[set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_foundF,clockResetR.CLID_C,setR_switchOnF |} ]] 
+						  [[set_originF <- setL_originF,set_foundF <- setL_foundF,clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_switchOnF
-						 			,clockResetL.CLID_C
 						 			,setL_originF
 						 			,setL_foundF
-						 			,setR_switchOnF
-						 			 			,clockResetR.CLID_C
-						 			 			,setR_originF
+						 			,clockResetL.CLID_C
+						 			,setL_switchOnF
+						 			,setR_originF
 						 			 			,setR_foundF
+						 			 			,clockResetR.CLID_C
+						 			 			,setR_switchOnF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,clockResetL.CLID_C,setL_originF,setL_foundF |} ]]
-						  [[set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_foundF,clockResetL.CLID_C,setL_switchOnF |} ]]
+						  [[set_originF <- setR_originF,set_foundF <- setR_foundF,clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF]]
 						 )
-						)[[setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-						 [[setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+						)[[setL_originF <- set_originF,setL_foundF <- set_foundF,clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF]]
+						 [[setR_originF <- set_originF,setR_foundF <- set_foundF,clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF]]
 						)\union(enteredSS,{terminate}) 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
@@ -512,25 +512,25 @@ exports
 						 	)\{|get_CLID_EmptyCycle|}
 						 )
 						 ))
-						  [[ share__ <- x__ | x__ <- {| share__,setR_switchOnF,clockResetR.CLID_C,setR_originF,setR_foundF |} ]] 
-						  [[set_switchOnF <- setL_switchOnF,clockReset.CLID_C <- clockResetL.CLID_C,set_originF <- setL_originF,set_foundF <- setL_foundF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setR_originF,setR_foundF,clockResetR.CLID_C,setR_switchOnF |} ]] 
+						  [[set_originF <- setL_originF,set_foundF <- setL_foundF,clockReset.CLID_C <- clockResetL.CLID_C,set_switchOnF <- setL_switchOnF]]
 						 )
 						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
-						 			,setL_switchOnF
-						 			,clockResetL.CLID_C
 						 			,setL_originF
 						 			,setL_foundF
-						 			,setR_switchOnF
-						 			 			,clockResetR.CLID_C
-						 			 			,setR_originF
+						 			,clockResetL.CLID_C
+						 			,setL_switchOnF
+						 			,setR_originF
 						 			 			,setR_foundF
+						 			 			,clockResetR.CLID_C
+						 			 			,setR_switchOnF
 						 			|}) |]
 						 ((During)
-						  [[ share__ <- x__ | x__ <- {| share__,setL_switchOnF,clockResetL.CLID_C,setL_originF,setL_foundF |} ]]
-						  [[set_switchOnF <- setR_switchOnF,clockReset.CLID_C <- clockResetR.CLID_C,set_originF <- setR_originF,set_foundF <- setR_foundF]]
+						  [[ share__ <- x__ | x__ <- {| share__,setL_originF,setL_foundF,clockResetL.CLID_C,setL_switchOnF |} ]]
+						  [[set_originF <- setR_originF,set_foundF <- setR_foundF,clockReset.CLID_C <- clockResetR.CLID_C,set_switchOnF <- setR_switchOnF]]
 						 )
-						)[[setL_switchOnF <- set_switchOnF,clockResetL.CLID_C <- clockReset.CLID_C,setL_originF <- set_originF,setL_foundF <- set_foundF]]
-						 [[setR_switchOnF <- set_switchOnF,clockResetR.CLID_C <- clockReset.CLID_C,setR_originF <- set_originF,setR_foundF <- set_foundF]]
+						)[[setL_originF <- set_originF,setL_foundF <- set_foundF,clockResetL.CLID_C <- clockReset.CLID_C,setL_switchOnF <- set_switchOnF]]
+						 [[setR_originF <- set_originF,setR_foundF <- set_foundF,clockResetR.CLID_C <- clockReset.CLID_C,setR_switchOnF <- set_switchOnF]]
 						)\{terminate} 
 					)
 					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))

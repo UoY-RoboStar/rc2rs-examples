@@ -1,0 +1,48 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 14-08-2026 15:56:58
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "foot_defs.csp"
+include "state_defs.csp"
+include "foot_Foot.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate foot_Foot
+P_foot_Foot = let
+	id__ = 0
+	
+	
+	
+		
+	const_foot_Foot_op2_c = const_foot_step_c
+within
+	foot_Foot::O__(id__,
+			   	const_foot_Foot_op2_c)
+
+assert P_foot_Foot :[deadlock-free]	
+assert P_foot_Foot;RUN({r__}) :[deadlock-free]
+assert P_foot_Foot :[deterministic]
+assert P_foot_Foot :[divergence-free]
+
+-- generate foot_Foot_stm_ref0
+P_foot_Foot_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	foot_Foot::stm_ref0::O__(
+		id__,
+		const_foot_step_c
+	)
+assert P_foot_Foot_stm_ref0 :[deadlock-free]	
+assert P_foot_Foot_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_foot_Foot_stm_ref0 :[deterministic]
+assert P_foot_Foot_stm_ref0 :[divergence-free]

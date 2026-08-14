@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:45
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "utility_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "utility_StatusDistributor_distribute.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate utility_StatusDistributor_distribute
+P_utility_StatusDistributor_distribute = let
+	id__ = 0
+	
+	
+	
+within
+	utility_StatusDistributor_distribute::O__(
+		id__
+	)
+assert P_utility_StatusDistributor_distribute :[deadlock-free]	
+assert P_utility_StatusDistributor_distribute;RUN({r__}) :[deadlock-free]
+assert P_utility_StatusDistributor_distribute :[deterministic]
+assert P_utility_StatusDistributor_distribute :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_utility_StatusDistributor_distribute[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_utility_StatusDistributor_distribute

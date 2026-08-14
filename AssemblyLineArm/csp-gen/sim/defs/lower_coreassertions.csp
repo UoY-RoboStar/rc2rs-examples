@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 13:00:30
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "lower.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_lower
+P_OP_lower = let
+	id__ = 0
+	
+	param_dist = 0
+	
+	
+	
+within
+	OP_lower::O__(id__,
+				param_dist)
+assert P_OP_lower :[deadlock-free]	
+assert P_OP_lower;RUN({r__}) :[deadlock-free]
+assert P_OP_lower :[deterministic]
+assert P_OP_lower :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_lower[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_lower

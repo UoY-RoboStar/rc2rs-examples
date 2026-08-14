@@ -1,0 +1,111 @@
+package main
+
+interface AggregationIface {
+MoveClockwise(n: real, j:real) 
+RotateClockwise(n: real) 
+} 
+
+interface Ivars{
+	var linearSpeed : real
+var angularSpeed : real
+}
+
+interface Ievents{
+	event seeWall
+event seeRobot
+}
+
+controller ctrl0 {
+	uses Ievents
+	sref stm_ref0 = AggregationFSM
+	opref op1 = RotateClockwise
+	opref op2 = MoveClockwise
+connection ctrl0 on seeWall to stm_ref0 on seeWall
+	connection ctrl0 on seeRobot to stm_ref0 on seeRobot
+}
+
+interface IvarsAggregationFSM {
+		var linearSpeed : real
+var angularSpeed : real
+}
+
+stm AggregationFSM {
+	uses Ievents
+	uses IvarsAggregationFSM 
+requires AggregationIface
+initial I
+state S1 {
+entry MoveClockwise(1, 1)//MoveClockwise(-10.88, -0.75)
+}
+state S2 {
+entry RotateClockwise(1)//RotateClockwise(-5.02)
+}
+transition T1 {
+from I to S1
+}
+transition T2 {
+from S2 to S1
+trigger seeWall
+}
+transition T3 {
+from S1 to S2
+trigger seeRobot
+}
+}
+
+interface IvarsRotateClockwise {
+		var linearSpeed : real
+var angularSpeed : real
+}
+operation RotateClockwise(n:real) {
+//precondition i < 0
+	requires IvarsRotateClockwise
+initial I
+final F
+state S {
+entry linearSpeed = 0; angularSpeed = n
+}
+transition T1 {
+from I
+to S 
+}
+
+transition T2 {
+from S
+to F
+}
+}
+
+interface IvarsMoveClockwise {
+		var linearSpeed : real
+var angularSpeed : real
+}
+
+operation MoveClockwise(n: real, j:real)  {
+//precondition i != 0 /\ j < 0
+	requires IvarsMoveClockwise
+initial I
+final F
+state S {
+entry linearSpeed = n; angularSpeed = j
+}
+transition T1 {
+from I
+to S
+}
+transition T2 {
+from S
+to F
+}
+}
+
+module M {
+	cref ctrl_ref0 = ctrl0
+	robotic platform rp0 {
+		uses Ievents
+	}
+
+connection rp0 on seeWall to ctrl_ref0 on seeWall ( _async )
+	connection rp0 on seeRobot to ctrl_ref0 on seeRobot ( _async )
+}
+

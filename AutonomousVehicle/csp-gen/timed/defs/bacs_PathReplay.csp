@@ -1,0 +1,1517 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module bacs_PathReplay
+exports
+
+
+
+
+module PathReplay
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_ConfigureOrigin|
+	              NID_Reset|
+	              NID_i0|
+	              NID_Unconfigured|
+	              NID_WaitForRoute|
+	              NID_CurrentGoal|
+	              NID_NextGoal|
+	              NID_TranslateAuxiliaries|
+	              NID_j0|
+	              NID_j1
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_origin, set_origin, setL_origin, setR_origin: GpsPathPoint
+	channel get_currentRoute, set_currentRoute, setL_currentRoute, setR_currentRoute: LSeq(GpsPathPoint,2)
+	channel get_goalConfig, set_goalConfig, setL_goalConfig, setR_goalConfig: ConfigGoalGeneration
+	channel get_locationLatest, set_locationLatest, setL_locationLatest, setR_locationLatest: Pose2DStamped
+	channel get_goalPoint, set_goalPoint, setL_goalPoint, setR_goalPoint: GpsPathPoint
+	channel get_newObjective, set_newObjective, setL_newObjective, setR_newObjective: Goal
+	channel get_goalAuxiliaries, set_goalAuxiliaries, setL_goalAuxiliaries, setR_goalAuxiliaries: AuxiliaryDemand
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel location__: NIDS.InOut.Pose2DStamped
+	channel location: InOut.Pose2DStamped
+	channel goal__: NIDS.InOut.Goal
+	channel goal: InOut.Goal
+	channel route__: NIDS.InOut.LSeq(GpsPathPoint,2)
+	channel route: InOut.LSeq(GpsPathPoint,2)
+	channel config__: NIDS.InOut.ConfigGoalGeneration
+	channel config: InOut.ConfigGoalGeneration
+	channel auxiliary_demand__: NIDS.InOut.AuxiliaryDemand
+	channel auxiliary_demand: InOut.AuxiliaryDemand
+	channel routeOrigin__: NIDS.InOut.GpsPathPoint
+	channel routeOrigin: InOut.GpsPathPoint
+	
+	-- Declaring call and ret events for undefined operations
+	
+	enterSS = {|
+	ConfigureOrigin::enter,
+	Reset::enter,
+	i0::enter,
+	Unconfigured::enter,
+	WaitForRoute::enter,
+	CurrentGoal::enter,
+	NextGoal::enter,
+	TranslateAuxiliaries::enter,
+	j0::enter,
+	j1::enter
+	|}
+	
+	enteredSS = 	{|
+	ConfigureOrigin::entered,
+	Reset::entered,
+	Unconfigured::entered,
+	WaitForRoute::entered,
+	CurrentGoal::entered,
+	NextGoal::entered,
+	TranslateAuxiliaries::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	location,
+		goal,
+		route,
+		config,
+		auxiliary_demand,
+		routeOrigin
+		|}
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Reset : core_clock_type 
+	channel get_CLID_Unconfigured : core_clock_type 
+	channel get_CLID_NextGoal : core_clock_type 
+	channel get_CLID_WaitForRoute : core_clock_type 
+	channel get_CLID_TranslateAuxiliaries : core_clock_type 
+	channel get_CLID_CurrentGoal : core_clock_type 
+	channel get_CLID_ConfigureOrigin : core_clock_type 
+	--channel increment__
+	
+	CLID_Reset_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Unconfigured_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_NextGoal_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_WaitForRoute_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_TranslateAuxiliaries_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_CurrentGoal_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_ConfigureOrigin_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: ConfigureOrigin
+		module ConfigureOrigin
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_currentRoute?currentRoute -> pre_sequence_toolkit_head(currentRoute) & (share__choice(set_origin!sequence_toolkit_head(currentRoute) -> SKIP))));share__choice(get_origin?origin -> true&(share__choice(routeOrigin.out!origin -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_currentRoute?currentRoute -> pre_sequence_toolkit_head(currentRoute) & (share__choice(set_origin!sequence_toolkit_head(currentRoute) -> SKIP))));share__choice(get_origin?origin -> true&(share__choice(routeOrigin.out!origin -> SKIP))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Reset
+		module Reset
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_locationLatest?locationLatest -> share__choice(get_currentRoute?currentRoute -> true & (share__choice(set_currentRoute!bacs_SortRouteToCurrentLocation(locationLatest,currentRoute) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_locationLatest?locationLatest -> share__choice(get_currentRoute?currentRoute -> true & (share__choice(set_currentRoute!bacs_SortRouteToCurrentLocation(locationLatest,currentRoute) -> SKIP))))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i0
+		module i0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Unconfigured
+		module Unconfigured
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: WaitForRoute
+		module WaitForRoute
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: CurrentGoal
+		module CurrentGoal
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: NextGoal
+		module NextGoal
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_currentRoute?currentRoute -> pre_sequence_toolkit_head(currentRoute) & (share__choice(set_goalPoint!sequence_toolkit_head(currentRoute) -> SKIP))));share__choice(share__choice(get_goalPoint?goalPoint -> true & (share__choice(set_newObjective!bacs_ConvertPointRouteToGoal(goalPoint) -> SKIP))));share__choice(share__choice(get_currentRoute?currentRoute -> true & (share__choice(set_currentRoute!sequence_toolkit_tail(currentRoute) -> SKIP)))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_currentRoute?currentRoute -> pre_sequence_toolkit_head(currentRoute) & (share__choice(set_goalPoint!sequence_toolkit_head(currentRoute) -> SKIP))));share__choice(share__choice(get_goalPoint?goalPoint -> true & (share__choice(set_newObjective!bacs_ConvertPointRouteToGoal(goalPoint) -> SKIP))));share__choice(share__choice(get_currentRoute?currentRoute -> true & (share__choice(set_currentRoute!sequence_toolkit_tail(currentRoute) -> SKIP)))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: TranslateAuxiliaries
+		module TranslateAuxiliaries
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--channel increment__
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_goalPoint?goalPoint -> true & (share__choice(set_goalAuxiliaries!bacs_ConvertPointRouteToAuxiliaryDemand(goalPoint) -> SKIP)))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(share__choice(get_goalPoint?goalPoint -> true & (share__choice(set_goalAuxiliaries!bacs_ConvertPointRouteToAuxiliaryDemand(goalPoint) -> SKIP)))) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+					Behaviour 	= entered -> During
+					During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				
+				-- Clocks
+				
+				StateClocks(id__) = terminate -> SKIP
+				
+				stateClockSync = {||}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j0
+		module j0
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Junction: j1
+		module j1
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__) = ((let
+			Trans = share__choice(get_goalPoint?goalPoint -> get_goalConfig?goalConfig -> get_locationLatest?locationLatest -> get_currentRoute?currentRoute -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_ConfigureOrigin -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Reset::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; Unconfigured::enter -> SKIP))))
+				 [] dbisim((true)&(config__!NID_Unconfigured.in?goalConfig:{goalConfig|goalConfig <- ConfigGoalGeneration, true} -> share__choice(set_goalConfig!goalConfig -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; WaitForRoute::enter -> SKIP)))
+				 [] dbisim((true)&(route__!NID_WaitForRoute.in?currentRoute:{currentRoute|currentRoute <- LSeq(GpsPathPoint,2), true} -> share__choice(set_currentRoute!currentRoute -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j1::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_Reset -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; NextGoal::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_TranslateAuxiliaries -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_goalAuxiliaries?goalAuxiliaries -> true&(share__choice(auxiliary_demand.out!goalAuxiliaries -> SKIP))) ; CurrentGoal::enter -> SKIP)))
+				 [] dbisim((bacs_DemandGoalReached(locationLatest,goalPoint,goalConfig))&(internal__!NID_CurrentGoal -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; j0::enter -> SKIP)))
+				 [] dbisim((true)&(location__!NID_CurrentGoal.in?locationLatest:{locationLatest|locationLatest <- Pose2DStamped, true} -> share__choice(set_locationLatest!locationLatest -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CurrentGoal::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_NextGoal -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_newObjective?newObjective -> true&(share__choice(goal.out!newObjective -> SKIP))) ; TranslateAuxiliaries::enter -> SKIP)))
+				 [] dbisim((true)&(config__!NID_CurrentGoal.in?goalConfig:{goalConfig|goalConfig <- ConfigGoalGeneration, true} -> share__choice(set_goalConfig!goalConfig -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; CurrentGoal::enter -> SKIP)))
+				 [] dbisim((sequence_toolkit_isNonEmpty(currentRoute))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; NextGoal::enter -> SKIP))))
+				 [] dbisim(((not (sequence_toolkit_isNonEmpty(currentRoute))))&(internal__!NID_j0 -> SKIP ;  ((SKIP ; WaitForRoute::enter -> SKIP))))
+				 [] dbisim((sequence_toolkit_isNonEmpty(currentRoute))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; ConfigureOrigin::enter -> SKIP))))
+				 [] dbisim(((not (sequence_toolkit_isNonEmpty(currentRoute))))&(internal__!NID_j1 -> SKIP ;  ((SKIP ; WaitForRoute::enter -> SKIP))))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					ConfigureOrigin::enter,
+					Reset::enter,
+					i0::enter,
+					Unconfigured::enter,
+					WaitForRoute::enter,
+					CurrentGoal::enter,
+					NextGoal::enter,
+					TranslateAuxiliaries::enter,
+					j0::enter,
+					j1::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_ConfigureOrigin,internal__.NID_i0,config__.NID_Unconfigured.in,route__.NID_WaitForRoute.in,internal__.NID_Reset,internal__.NID_TranslateAuxiliaries,internal__.NID_CurrentGoal,location__.NID_CurrentGoal.in,internal__.NID_NextGoal,config__.NID_CurrentGoal.in,internal__.NID_j0,internal__.NID_j0,internal__.NID_j1,internal__.NID_j1|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   ConfigureOrigin::D__(id__)
+						   [| { share__, terminate } |] (
+						   Reset::D__(id__)
+						   [| { share__, terminate } |] (
+						   i0::D__(id__)
+						   [| { share__, terminate } |] (
+						   Unconfigured::D__(id__)
+						   [| { share__, terminate } |] (
+						   WaitForRoute::D__(id__)
+						   [| { share__, terminate } |] (
+						   CurrentGoal::D__(id__)
+						   [| { share__, terminate } |] (
+						   NextGoal::D__(id__)
+						   [| { share__, terminate } |] (
+						   TranslateAuxiliaries::D__(id__)
+						   [| { share__, terminate } |] (
+						   j0::D__(id__)
+						   [| { share__, terminate } |] (
+						   j1::D__(id__)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[ConfigureOrigin::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ConfigureOrigin|}]]
+						 [[Reset::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Reset|}]]
+						 [[Unconfigured::interrupt <- x__ | x__ <- {|interrupt,config__.NID_Unconfigured.in|}]]
+						 [[WaitForRoute::interrupt <- x__ | x__ <- {|interrupt,route__.NID_WaitForRoute.in|}]]
+						 [[CurrentGoal::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CurrentGoal,location__.NID_CurrentGoal.in,config__.NID_CurrentGoal.in|}]]
+						 [[NextGoal::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NextGoal|}]]
+						 [[TranslateAuxiliaries::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_TranslateAuxiliaries|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_locationLatest,setR_goalConfig,setR_currentRoute |} ]] 
+						  [[set_goalPoint <- setL_goalPoint,set_goalConfig <- setL_goalConfig,set_locationLatest <- setL_locationLatest,set_currentRoute <- setL_currentRoute]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_goalPoint
+						 			,setL_goalConfig
+						 			,setL_locationLatest
+						 			,setL_currentRoute
+						 			,setR_locationLatest
+						 			 			,setR_goalConfig
+						 			 			,setR_currentRoute
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_goalPoint,setL_goalConfig,setL_locationLatest,setL_currentRoute |} ]]
+						  [[set_locationLatest <- setR_locationLatest,set_goalConfig <- setR_goalConfig,set_currentRoute <- setR_currentRoute]]
+						 )
+						)[[setL_goalPoint <- set_goalPoint,setL_goalConfig <- set_goalConfig,setL_locationLatest <- set_locationLatest,setL_currentRoute <- set_currentRoute]]
+						 [[setR_locationLatest <- set_locationLatest,setR_goalConfig <- set_goalConfig,setR_currentRoute <- set_currentRoute]]
+						)
+					)
+					 \ hideSet)
+					[[
+						location__.x____ <- location,
+						goal__.x____ <- goal,
+						route__.x____ <- route,
+						config__.x____ <- config,
+						auxiliary_demand__.x____ <- auxiliary_demand,
+						routeOrigin__.x____ <- routeOrigin
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Reset,Reset::entered,get_CLID_Unconfigured,Unconfigured::entered,get_CLID_NextGoal,NextGoal::entered,get_CLID_WaitForRoute,WaitForRoute::entered,get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,get_CLID_CurrentGoal,CurrentGoal::entered,get_CLID_ConfigureOrigin,ConfigureOrigin::entered|}
+			 within
+				(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Reset,Reset::entered,get_CLID_Unconfigured,Unconfigured::entered,get_CLID_NextGoal,NextGoal::entered,get_CLID_WaitForRoute,WaitForRoute::entered,get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,get_CLID_CurrentGoal,CurrentGoal::entered,get_CLID_ConfigureOrigin,ConfigureOrigin::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		MachineBody(id__)
+																		[| {|get_CLID_ConfigureOrigin,ConfigureOrigin::entered,terminate|} |]
+																		dbisim(Clock_CLID_ConfigureOrigin(id__,0))
+																	)\{|get_CLID_ConfigureOrigin|}
+																)
+																[| {|get_CLID_CurrentGoal,CurrentGoal::entered,terminate|} |]
+																dbisim(Clock_CLID_CurrentGoal(id__,0))
+															)\{|get_CLID_CurrentGoal|}
+														)
+														[| {|get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,terminate|} |]
+														dbisim(Clock_CLID_TranslateAuxiliaries(id__,0))
+													)\{|get_CLID_TranslateAuxiliaries|}
+												)
+												[| {|get_CLID_WaitForRoute,WaitForRoute::entered,terminate|} |]
+												dbisim(Clock_CLID_WaitForRoute(id__,0))
+											)\{|get_CLID_WaitForRoute|}
+										)
+										[| {|get_CLID_NextGoal,NextGoal::entered,terminate|} |]
+										dbisim(Clock_CLID_NextGoal(id__,0))
+									)\{|get_CLID_NextGoal|}
+								)
+								[| {|get_CLID_Unconfigured,Unconfigured::entered,terminate|} |]
+								dbisim(Clock_CLID_Unconfigured(id__,0))
+							)\{|get_CLID_Unconfigured|}
+						)
+						[| {|get_CLID_Reset,Reset::entered,terminate|} |]
+						dbisim(Clock_CLID_Reset(id__,0))
+					)\{|get_CLID_Reset|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__) = 
+			((let
+				getsetLocalChannels = {|get_origin,set_origin,
+				get_currentRoute,set_currentRoute,
+				get_goalConfig,set_goalConfig,
+				get_locationLatest,set_locationLatest,
+				get_goalPoint,set_goalPoint,
+				get_newObjective,set_newObjective,
+				get_goalAuxiliaries,set_goalAuxiliaries|}
+				clockSync = {||}
+			within
+				(Behaviour(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	IteratedBehaviour(id__)
+																	[| {|get_goalAuxiliaries,set_goalAuxiliaries,terminate|} |]
+																	Memory_goalAuxiliaries((true,true,true,0,(0,0,"")))
+																)\{|get_goalAuxiliaries,set_goalAuxiliaries|}
+															)
+															[| {|get_newObjective,set_newObjective,terminate|} |]
+															Memory_newObjective((0,0,(0,0,0)))
+														)\{|get_newObjective,set_newObjective|}
+													)
+													[| {|get_goalPoint,set_goalPoint,terminate|} |]
+													Memory_goalPoint(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+												)\{|get_goalPoint,set_goalPoint|}
+											)
+											[| {|get_locationLatest,set_locationLatest,terminate|} |]
+											Memory_locationLatest((0,0,0))
+										)\{|get_locationLatest,set_locationLatest|}
+									)
+									[| {|get_goalConfig,set_goalConfig,terminate|} |]
+									Memory_goalConfig((0,0))
+								)\{|get_goalConfig,set_goalConfig|}
+							)
+							[| {|get_currentRoute,set_currentRoute,terminate|} |]
+							Memory_currentRoute(<>)
+						)\{|get_currentRoute,set_currentRoute|}
+					)
+					[| {|get_origin,set_origin,terminate|} |]
+					Memory_origin(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+				)\{|get_origin,set_origin|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					ConfigureOrigin::enter,
+					Reset::enter,
+					i0::enter,
+					Unconfigured::enter,
+					WaitForRoute::enter,
+					CurrentGoal::enter,
+					NextGoal::enter,
+					TranslateAuxiliaries::enter,
+					j0::enter,
+					j1::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_ConfigureOrigin,internal__.NID_i0,config__.NID_Unconfigured.in,route__.NID_WaitForRoute.in,internal__.NID_Reset,internal__.NID_TranslateAuxiliaries,internal__.NID_CurrentGoal,location__.NID_CurrentGoal.in,internal__.NID_NextGoal,config__.NID_CurrentGoal.in,internal__.NID_j0,internal__.NID_j0,internal__.NID_j1,internal__.NID_j1|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   ConfigureOrigin::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   Reset::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   i0::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   Unconfigured::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   WaitForRoute::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   CurrentGoal::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   NextGoal::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   TranslateAuxiliaries::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   j0::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   j1::VS_O__(id__)
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						   )
+						 )
+						 [[ConfigureOrigin::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_ConfigureOrigin|}]]
+						 [[Reset::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Reset|}]]
+						 [[Unconfigured::interrupt <- x__ | x__ <- {|interrupt,config__.NID_Unconfigured.in|}]]
+						 [[WaitForRoute::interrupt <- x__ | x__ <- {|interrupt,route__.NID_WaitForRoute.in|}]]
+						 [[CurrentGoal::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_CurrentGoal,location__.NID_CurrentGoal.in,config__.NID_CurrentGoal.in|}]]
+						 [[NextGoal::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NextGoal|}]]
+						 [[TranslateAuxiliaries::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_TranslateAuxiliaries|}]]
+						 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+						 [[j0::interrupt <- x__ | x__ <- {|internal__.NID_j0,internal__.NID_j0|}]]
+						 [[j1::interrupt <- x__ | x__ <- {|internal__.NID_j1,internal__.NID_j1|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__,setR_locationLatest,setR_goalConfig,setR_currentRoute |} ]] 
+						  [[set_goalPoint <- setL_goalPoint,set_goalConfig <- setL_goalConfig,set_locationLatest <- setL_locationLatest,set_currentRoute <- setL_currentRoute]]
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 			,setL_goalPoint
+						 			,setL_goalConfig
+						 			,setL_locationLatest
+						 			,setL_currentRoute
+						 			,setR_locationLatest
+						 			 			,setR_goalConfig
+						 			 			,setR_currentRoute
+						 			|}) |]
+						 ((i0::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_goalPoint,setL_goalConfig,setL_locationLatest,setL_currentRoute |} ]]
+						  [[set_locationLatest <- setR_locationLatest,set_goalConfig <- setR_goalConfig,set_currentRoute <- setR_currentRoute]]
+						 )
+						)[[setL_goalPoint <- set_goalPoint,setL_goalConfig <- set_goalConfig,setL_locationLatest <- set_locationLatest,setL_currentRoute <- set_currentRoute]]
+						 [[setR_locationLatest <- set_locationLatest,setR_goalConfig <- set_goalConfig,setR_currentRoute <- set_currentRoute]]
+						)
+					)
+					 \ hideSet)
+					[[
+						location__.x____ <- location,
+						goal__.x____ <- goal,
+						route__.x____ <- route,
+						config__.x____ <- config,
+						auxiliary_demand__.x____ <- auxiliary_demand,
+						routeOrigin__.x____ <- routeOrigin
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Reset,Reset::entered,get_CLID_Unconfigured,Unconfigured::entered,get_CLID_NextGoal,NextGoal::entered,get_CLID_WaitForRoute,WaitForRoute::entered,get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,get_CLID_CurrentGoal,CurrentGoal::entered,get_CLID_ConfigureOrigin,ConfigureOrigin::entered|}
+			 within
+				(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Reset,Reset::entered,get_CLID_Unconfigured,Unconfigured::entered,get_CLID_NextGoal,NextGoal::entered,get_CLID_WaitForRoute,WaitForRoute::entered,get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,get_CLID_CurrentGoal,CurrentGoal::entered,get_CLID_ConfigureOrigin,ConfigureOrigin::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																dbisim(
+																	sbisim(
+																		MachineBody_VS_O(id__)
+																		[| {|get_CLID_ConfigureOrigin,ConfigureOrigin::entered,terminate|} |]
+																		dbisim(Clock_CLID_ConfigureOrigin(id__,0))
+																	)\{|get_CLID_ConfigureOrigin|}
+																)
+																[| {|get_CLID_CurrentGoal,CurrentGoal::entered,terminate|} |]
+																dbisim(Clock_CLID_CurrentGoal(id__,0))
+															)\{|get_CLID_CurrentGoal|}
+														)
+														[| {|get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,terminate|} |]
+														dbisim(Clock_CLID_TranslateAuxiliaries(id__,0))
+													)\{|get_CLID_TranslateAuxiliaries|}
+												)
+												[| {|get_CLID_WaitForRoute,WaitForRoute::entered,terminate|} |]
+												dbisim(Clock_CLID_WaitForRoute(id__,0))
+											)\{|get_CLID_WaitForRoute|}
+										)
+										[| {|get_CLID_NextGoal,NextGoal::entered,terminate|} |]
+										dbisim(Clock_CLID_NextGoal(id__,0))
+									)\{|get_CLID_NextGoal|}
+								)
+								[| {|get_CLID_Unconfigured,Unconfigured::entered,terminate|} |]
+								dbisim(Clock_CLID_Unconfigured(id__,0))
+							)\{|get_CLID_Unconfigured|}
+						)
+						[| {|get_CLID_Reset,Reset::entered,terminate|} |]
+						dbisim(Clock_CLID_Reset(id__,0))
+					)\{|get_CLID_Reset|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__) = 
+			dbisim((let
+				getsetLocalChannels = {|get_origin,set_origin,
+				get_currentRoute,set_currentRoute,
+				get_goalConfig,set_goalConfig,
+				get_locationLatest,set_locationLatest,
+				get_goalPoint,set_goalPoint,
+				get_newObjective,set_newObjective,
+				get_goalAuxiliaries,set_goalAuxiliaries|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	IteratedBehaviour_VS_O(id__)
+																	[| {|get_goalAuxiliaries,set_goalAuxiliaries,terminate|} |]
+																	Memory_goalAuxiliaries((true,true,true,0,(0,0,"")))
+																)\{|get_goalAuxiliaries,set_goalAuxiliaries|}
+															)
+															[| {|get_newObjective,set_newObjective,terminate|} |]
+															Memory_newObjective((0,0,(0,0,0)))
+														)\{|get_newObjective,set_newObjective|}
+													)
+													[| {|get_goalPoint,set_goalPoint,terminate|} |]
+													Memory_goalPoint(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+												)\{|get_goalPoint,set_goalPoint|}
+											)
+											[| {|get_locationLatest,set_locationLatest,terminate|} |]
+											Memory_locationLatest((0,0,0))
+										)\{|get_locationLatest,set_locationLatest|}
+									)
+									[| {|get_goalConfig,set_goalConfig,terminate|} |]
+									Memory_goalConfig((0,0))
+								)\{|get_goalConfig,set_goalConfig|}
+							)
+							[| {|get_currentRoute,set_currentRoute,terminate|} |]
+							Memory_currentRoute(<>)
+						)\{|get_currentRoute,set_currentRoute|}
+					)
+					[| {|get_origin,set_origin,terminate|} |]
+					Memory_origin(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+				)\{|get_origin,set_origin|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_origin(origin) =
+			get_origin!origin -> Memory_origin(origin)
+			[]
+			set_origin?x__ -> Memory_origin(x__)
+			[]
+			terminate -> SKIP
+		Memory_currentRoute(currentRoute) =
+			get_currentRoute!currentRoute -> Memory_currentRoute(currentRoute)
+			[]
+			set_currentRoute?x__ -> Memory_currentRoute(x__)
+			[]
+			terminate -> SKIP
+		Memory_goalConfig(goalConfig) =
+			get_goalConfig!goalConfig -> Memory_goalConfig(goalConfig)
+			[]
+			set_goalConfig?x__ -> Memory_goalConfig(x__)
+			[]
+			terminate -> SKIP
+		Memory_locationLatest(locationLatest) =
+			get_locationLatest!locationLatest -> Memory_locationLatest(locationLatest)
+			[]
+			set_locationLatest?x__ -> Memory_locationLatest(x__)
+			[]
+			terminate -> SKIP
+		Memory_goalPoint(goalPoint) =
+			get_goalPoint!goalPoint -> Memory_goalPoint(goalPoint)
+			[]
+			set_goalPoint?x__ -> Memory_goalPoint(x__)
+			[]
+			terminate -> SKIP
+		Memory_newObjective(newObjective) =
+			get_newObjective!newObjective -> Memory_newObjective(newObjective)
+			[]
+			set_newObjective?x__ -> Memory_newObjective(x__)
+			[]
+			terminate -> SKIP
+		Memory_goalAuxiliaries(goalAuxiliaries) =
+			get_goalAuxiliaries!goalAuxiliaries -> Memory_goalAuxiliaries(goalAuxiliaries)
+			[]
+			set_goalAuxiliaries?x__ -> Memory_goalAuxiliaries(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__) = Memory_origin(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+		[| { terminate } |] (
+		Memory_currentRoute(<>)
+		[| { terminate } |] (
+		Memory_goalConfig((0,0))
+		[| { terminate } |] (
+		Memory_locationLatest((0,0,0))
+		[| { terminate } |] (
+		Memory_goalPoint(((0,0,(0,0,"")),0,(true,true,true,0,(0,0,"")),0,0))
+		[| { terminate } |] (
+		Memory_newObjective((0,0,(0,0,0)))
+		[| { terminate } |] (
+		Memory_goalAuxiliaries((true,true,true,0,(0,0,"")))
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		getsetLocalChannels = {|get_origin,set_origin,get_currentRoute,set_currentRoute,get_goalConfig,set_goalConfig,get_locationLatest,set_locationLatest,get_goalPoint,set_goalPoint,get_newObjective,set_newObjective,get_goalAuxiliaries,set_goalAuxiliaries|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__) = STM_VS_O(id__) \ localClockResets
+		D__(id__) = timed_priority(STM(id__) \ union(internal_events,localClockResets))
+		O__(id__) = dbisim(D__(id__))
+		VS__(id__) = FVS__(id__)
+		VS_O__(id__) = dbisim(FVS__(id__))
+		HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+		FVS_C__(id__) = dbisim(timed_priority(STM(id__) \ internal_events))
+		HUP__(id__) = timed_priority(O__(id__) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Reset(id__,x__) = 
+			TimeOut_1(
+				Reset::entered -> Clock_CLID_Reset(id__,0)
+				[]
+				get_CLID_Reset!x__ -> Clock_CLID_Reset(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Reset(id__,clock_type_plus(x__,1,CLID_Reset_clock_type(id__))))
+		Clock_CLID_Unconfigured(id__,x__) = 
+			TimeOut_1(
+				Unconfigured::entered -> Clock_CLID_Unconfigured(id__,0)
+				[]
+				get_CLID_Unconfigured!x__ -> Clock_CLID_Unconfigured(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Unconfigured(id__,clock_type_plus(x__,1,CLID_Unconfigured_clock_type(id__))))
+		Clock_CLID_NextGoal(id__,x__) = 
+			TimeOut_1(
+				NextGoal::entered -> Clock_CLID_NextGoal(id__,0)
+				[]
+				get_CLID_NextGoal!x__ -> Clock_CLID_NextGoal(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_NextGoal(id__,clock_type_plus(x__,1,CLID_NextGoal_clock_type(id__))))
+		Clock_CLID_WaitForRoute(id__,x__) = 
+			TimeOut_1(
+				WaitForRoute::entered -> Clock_CLID_WaitForRoute(id__,0)
+				[]
+				get_CLID_WaitForRoute!x__ -> Clock_CLID_WaitForRoute(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_WaitForRoute(id__,clock_type_plus(x__,1,CLID_WaitForRoute_clock_type(id__))))
+		Clock_CLID_TranslateAuxiliaries(id__,x__) = 
+			TimeOut_1(
+				TranslateAuxiliaries::entered -> Clock_CLID_TranslateAuxiliaries(id__,0)
+				[]
+				get_CLID_TranslateAuxiliaries!x__ -> Clock_CLID_TranslateAuxiliaries(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_TranslateAuxiliaries(id__,clock_type_plus(x__,1,CLID_TranslateAuxiliaries_clock_type(id__))))
+		Clock_CLID_CurrentGoal(id__,x__) = 
+			TimeOut_1(
+				CurrentGoal::entered -> Clock_CLID_CurrentGoal(id__,0)
+				[]
+				get_CLID_CurrentGoal!x__ -> Clock_CLID_CurrentGoal(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_CurrentGoal(id__,clock_type_plus(x__,1,CLID_CurrentGoal_clock_type(id__))))
+		Clock_CLID_ConfigureOrigin(id__,x__) = 
+			TimeOut_1(
+				ConfigureOrigin::entered -> Clock_CLID_ConfigureOrigin(id__,0)
+				[]
+				get_CLID_ConfigureOrigin!x__ -> Clock_CLID_ConfigureOrigin(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_ConfigureOrigin(id__,clock_type_plus(x__,1,CLID_ConfigureOrigin_clock_type(id__))))
+		
+		StateClocks(id__) = dbisim(Clock_CLID_Reset(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Unconfigured(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_NextGoal(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_WaitForRoute(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_TranslateAuxiliaries(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_CurrentGoal(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_ConfigureOrigin(id__,0))
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		stateClockSync = {|get_CLID_Reset,Reset::entered,get_CLID_Unconfigured,Unconfigured::entered,get_CLID_NextGoal,NextGoal::entered,get_CLID_WaitForRoute,WaitForRoute::entered,get_CLID_TranslateAuxiliaries,TranslateAuxiliaries::entered,get_CLID_CurrentGoal,CurrentGoal::entered,get_CLID_ConfigureOrigin,ConfigureOrigin::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule
+
+
+endmodule

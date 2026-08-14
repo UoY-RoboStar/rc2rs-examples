@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "taxi_MoveForward.csp"
+include "state_timed_defs.csp"
+include "taxi_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate taxi_OP_MoveForward
+P_taxi_OP_MoveForward = let
+	id__ = 0
+	
+	param_j = 0
+	
+	
+	
+within
+	taxi::OP_MoveForward::O__(id__,
+				param_j)
+assert P_taxi_OP_MoveForward :[deadlock-free]	
+assert P_taxi_OP_MoveForward;RUN({r__}) :[deadlock-free]
+assert P_taxi_OP_MoveForward :[deterministic]
+assert P_taxi_OP_MoveForward :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_taxi_OP_MoveForward[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_taxi_OP_MoveForward

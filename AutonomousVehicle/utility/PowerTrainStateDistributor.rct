@@ -1,0 +1,28 @@
+package utility
+
+stm PowerTrainStateDistributor {
+	var currentPowertrainState : Powertrain
+	event powertrainIn : Powertrain
+	event powertrainOut1 : Powertrain
+	event powertrainOut2 : Powertrain
+	state Distribute {
+		entry powertrainOut1 ! currentPowertrainState ; powertrainOut2 ! currentPowertrainState
+	}
+	initial i0
+	state Initialise {
+	}
+	transition t0 {
+		from Distribute
+		to Distribute
+		trigger powertrainIn ? currentPowertrainState
+	}
+	transition t1 {
+		from Initialise
+		to Distribute
+		trigger powertrainIn ? currentPowertrainState
+	}
+	transition t2 {
+		from i0
+		to Initialise
+	}
+}

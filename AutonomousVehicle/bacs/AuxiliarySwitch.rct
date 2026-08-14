@@ -1,0 +1,62 @@
+package bacs::AuxiliarySwitch
+import bacs::*
+stm AuxiliarySwitch {
+	var demand1 : AuxiliaryDemand , demand2 : AuxiliaryDemand ,
+	auxiliaryDemand : AuxiliaryDemand
+	
+	
+	event auxiliary_demand : AuxiliaryDemand
+	
+	event turnigy_pod_demand : AuxiliaryDemand
+	event resultantDemand : AuxiliaryDemand
+	state Ready {
+	}
+	
+	state CombineDemands {
+		
+	entry auxiliaryDemand = CombineAuxiliaryDemands ( < demand1 , demand2 > ) ; #
+		auxiliarySelectionPeriod
+	}
+	initial i0
+	state Initialise {
+		entry demand1 = ZERO_AUXILIARY_DEMAND ; demand2 = ZERO_AUXILIARY_DEMAND ; #
+		auxiliarySelectionPeriod
+	}
+	const AUXILIARY_SELECTION_PERIOD : nat
+	const ZERO_AUXILIARY_DEMAND : AuxiliaryDemand
+	transition t0 {
+		from i0
+		to Initialise
+	# auxiliarySelectionPeriod
+	}
+	transition t2 {
+		from Ready
+		to Ready
+		trigger auxiliary_demand ? demand1
+	}
+	transition t3 {
+		from Ready
+		to Ready
+		trigger turnigy_pod_demand ? demand2
+	}
+	
+	
+	
+transition t1 {
+		from Ready
+		to CombineDemands
+		condition since ( auxiliarySelectionPeriod ) > AUXILIARY_SELECTION_PERIOD
+	}
+	
+	transition t4 {
+		from CombineDemands
+		to Ready
+		action resultantDemand ! auxiliaryDemand
+	}
+	
+	transition t5 {
+		from Initialise
+		to Ready
+	}
+	clock auxiliarySelectionPeriod
+}

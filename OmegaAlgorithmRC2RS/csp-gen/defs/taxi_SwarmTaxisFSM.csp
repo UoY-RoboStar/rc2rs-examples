@@ -1,0 +1,837 @@
+
+--
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 31-07-2026 17:43:09
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module taxi_SwarmTaxisFSM
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_i1|
+	              NID_Forward|
+	              NID_Coherence|
+	              NID_Avoidance
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_linearSpeed, set_linearSpeed, setL_linearSpeed, setR_linearSpeed: core_real
+	channel get_angularSpeed, set_angularSpeed, setL_angularSpeed, setR_angularSpeed: core_real
+	channel get_reached, set_reached, setL_reached, setR_reached: core_boolean
+	channel get_desiredTurningDegree, set_desiredTurningDegree, setL_desiredTurningDegree, setR_desiredTurningDegree: core_real
+	channel get_degreeTurned, set_degreeTurned, setL_degreeTurned, setR_degreeTurned: core_real
+	channel get_avoidanceRadius, set_avoidanceRadius, setL_avoidanceRadius, setR_avoidanceRadius: core_real
+	channel get_illuminated, set_illuminated, setL_illuminated, setR_illuminated: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel anyRobotToAvoid__: NIDS.InOut
+	channel anyRobotToAvoid: InOut
+	
+	-- Declaring call and ret events for undefined operations
+	channel CalcAvoidanceHeadingCall
+	channel CheckIlluminationStatusCall
+	channel TurnCall
+	channel RotateAntiClockwiseCall: core_real
+	channel CalcCoherenceHeadingCall
+	channel MoveForwardCall: core_real
+	channel UpdateAvoidanceRadiusCall
+	channel RotateClockwiseCall: core_real
+	
+	enterSS = {|
+	i1::enter,
+	Forward::enter,
+	Coherence::enter,
+	Avoidance::enter
+	|}
+	
+	enteredSS = 	{|
+	Forward::entered,
+	Coherence::entered,
+	Avoidance::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	anyRobotToAvoid
+	,	CalcAvoidanceHeadingCall,
+		CheckIlluminationStatusCall,
+		TurnCall,
+		RotateAntiClockwiseCall,
+		CalcCoherenceHeadingCall,
+		MoveForwardCall,
+		UpdateAvoidanceRadiusCall,
+		RotateClockwiseCall
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- Initial: i1
+	module i1
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = D__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Forward
+	module Forward
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_reached!false -> SKIP)));true&CALL__UpdateAvoidanceRadius(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__MoveForward(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal,
+						const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(true & (share__choice(set_reached!false -> SKIP)));true&CALL__UpdateAvoidanceRadius(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__MoveForward(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal,
+						const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Coherence
+	module Coherence
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__CalcCoherenceHeading(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__Turn(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__CalcCoherenceHeading(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__Turn(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Avoidance
+	module Avoidance
+	
+	enterSS = {}
+	
+	enteredSS = {}
+	
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__CalcAvoidanceHeading(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__Turn(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__CalcAvoidanceHeading(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					);true&CALL__Turn(
+						id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+			Behaviour 	= entered -> During
+			During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__CalcAvoidanceHeading(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) 	= CalcAvoidanceHeadingCall -> SKIP
+	CALL__CheckIlluminationStatus(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) 	= CheckIlluminationStatusCall -> SKIP
+	CALL__Turn(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) 	= TurnCall -> SKIP
+	CALL__RotateAntiClockwise(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal,
+				param_j) 	= RotateAntiClockwiseCall.param_j -> SKIP
+	CALL__CalcCoherenceHeading(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) 	= CalcCoherenceHeadingCall -> SKIP
+	CALL__MoveForward(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal,
+				param_j) 	= MoveForwardCall.param_j -> SKIP
+	CALL__UpdateAvoidanceRadius(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) 	= UpdateAvoidanceRadiusCall -> SKIP
+	CALL__RotateClockwise(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal,
+				param_j) 	= RotateClockwiseCall.param_j -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_taxi_SwarmTaxisFSM_MoveForwardVal) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_taxi_SwarmTaxisFSM_MoveForwardVal) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = ((let
+		Trans = share__choice(get_reached?reached -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_i1 -> SKIP ;  ((SKIP ; Forward::enter -> SKIP))))
+			 	 [] dbisim((true)&(internal__!NID_Forward -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Coherence::enter -> SKIP)))
+			 	 [] dbisim((true)&(anyRobotToAvoid__!NID_Forward.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Avoidance::enter -> SKIP)))
+			 	 [] dbisim(((reached==true))&(internal__!NID_Coherence -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Forward::enter -> SKIP)))
+			 	 [] dbisim(((reached==true))&(internal__!NID_Avoidance -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Forward::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i1::enter,
+				Forward::enter,
+				Coherence::enter,
+				Avoidance::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i1,internal__.NID_Forward,anyRobotToAvoid__.NID_Forward.in,internal__.NID_Coherence,internal__.NID_Avoidance|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i1::D__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Forward::D__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Coherence::D__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Avoidance::D__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   )
+					   )
+					   )
+					 )
+					 [[Forward::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Forward,anyRobotToAvoid__.NID_Forward.in|}]]
+					 [[Coherence::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Coherence|}]]
+					 [[Avoidance::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Avoidance|}]]
+					 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_reached <- setL_reached]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_reached
+					|}) |]
+					 ((i1::enter -> Transitions(id__,
+					 		    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_reached |} ]]
+					 )
+					)[[setL_reached <- set_reached]]
+					)
+				)
+				 \ hideSet)
+				[[
+					anyRobotToAvoid__.x____ <- anyRobotToAvoid
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((MachineBody(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((MachineBody(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		((
+			(Behaviour(id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																Behaviour(id__,
+																		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+																[| {|get_illuminated,set_illuminated,terminate|} |]
+																Memory_illuminated(true)
+															)\{|get_illuminated,set_illuminated|}
+														)
+														[| {|get_avoidanceRadius,set_avoidanceRadius,terminate|} |]
+														Memory_avoidanceRadius(0)
+													)\{|get_avoidanceRadius,set_avoidanceRadius|}
+												)
+												[| {|get_degreeTurned,set_degreeTurned,terminate|} |]
+												Memory_degreeTurned(0)
+											)\{|get_degreeTurned,set_degreeTurned|}
+										)
+										[| {|get_desiredTurningDegree,set_desiredTurningDegree,terminate|} |]
+										Memory_desiredTurningDegree(0)
+									)\{|get_desiredTurningDegree,set_desiredTurningDegree|}
+								)
+								[| {|get_reached,set_reached,terminate|} |]
+								Memory_reached(true)
+							)\{|get_reached,set_reached|}
+						)
+						[| {|get_angularSpeed,set_angularSpeed,terminate|} |]
+						Memory_angularSpeed(0)
+					)\{|get_angularSpeed,set_angularSpeed|}
+				)
+				[| {|get_linearSpeed,set_linearSpeed,terminate|} |]
+				Memory_linearSpeed(0)
+			)\{|get_linearSpeed,set_linearSpeed|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((
+		let
+			finalNodesEntered = {||}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				i1::enter,
+				Forward::enter,
+				Coherence::enter,
+				Avoidance::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_i1,internal__.NID_Forward,anyRobotToAvoid__.NID_Forward.in,internal__.NID_Coherence,internal__.NID_Avoidance|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   i1::VS_O__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Forward::VS_O__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Coherence::VS_O__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   [| { share__, terminate } |] (
+					   Avoidance::VS_O__(id__,
+					   		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+					   )
+					   )
+					   )
+					 )
+					 [[Forward::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Forward,anyRobotToAvoid__.NID_Forward.in|}]]
+					 [[Coherence::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Coherence|}]]
+					 [[Avoidance::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Avoidance|}]]
+					 [[i1::interrupt <- x__ | x__ <- {|internal__.NID_i1|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+					  [[set_reached <- setL_reached]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_reached
+					|}) |]
+					 ((i1::enter -> Transitions(id__,
+					 		    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_reached |} ]]
+					 )
+					)[[setL_reached <- set_reached]]
+					)
+				)
+				 \ hideSet)
+				[[
+					anyRobotToAvoid__.x____ <- anyRobotToAvoid
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_taxi_SwarmTaxisFSM_MoveForwardVal))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														dbisim(
+															sbisim(
+																Behaviour_VS_O(id__,
+																		    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+																[| {|get_illuminated,set_illuminated,terminate|} |]
+																Memory_illuminated(true)
+															)\{|get_illuminated,set_illuminated|}
+														)
+														[| {|get_avoidanceRadius,set_avoidanceRadius,terminate|} |]
+														Memory_avoidanceRadius(0)
+													)\{|get_avoidanceRadius,set_avoidanceRadius|}
+												)
+												[| {|get_degreeTurned,set_degreeTurned,terminate|} |]
+												Memory_degreeTurned(0)
+											)\{|get_degreeTurned,set_degreeTurned|}
+										)
+										[| {|get_desiredTurningDegree,set_desiredTurningDegree,terminate|} |]
+										Memory_desiredTurningDegree(0)
+									)\{|get_desiredTurningDegree,set_desiredTurningDegree|}
+								)
+								[| {|get_reached,set_reached,terminate|} |]
+								Memory_reached(true)
+							)\{|get_reached,set_reached|}
+						)
+						[| {|get_angularSpeed,set_angularSpeed,terminate|} |]
+						Memory_angularSpeed(0)
+					)\{|get_angularSpeed,set_angularSpeed|}
+				)
+				[| {|get_linearSpeed,set_linearSpeed,terminate|} |]
+				Memory_linearSpeed(0)
+			)\{|get_linearSpeed,set_linearSpeed|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_linearSpeed(linearSpeed) =
+		get_linearSpeed!linearSpeed -> Memory_linearSpeed(linearSpeed)
+		[]
+		set_linearSpeed?x__ -> Memory_linearSpeed(x__)
+		[]
+		terminate -> SKIP
+	Memory_angularSpeed(angularSpeed) =
+		get_angularSpeed!angularSpeed -> Memory_angularSpeed(angularSpeed)
+		[]
+		set_angularSpeed?x__ -> Memory_angularSpeed(x__)
+		[]
+		terminate -> SKIP
+	Memory_reached(reached) =
+		get_reached!reached -> Memory_reached(reached)
+		[]
+		set_reached?x__ -> Memory_reached(x__)
+		[]
+		terminate -> SKIP
+	Memory_desiredTurningDegree(desiredTurningDegree) =
+		get_desiredTurningDegree!desiredTurningDegree -> Memory_desiredTurningDegree(desiredTurningDegree)
+		[]
+		set_desiredTurningDegree?x__ -> Memory_desiredTurningDegree(x__)
+		[]
+		terminate -> SKIP
+	Memory_degreeTurned(degreeTurned) =
+		get_degreeTurned!degreeTurned -> Memory_degreeTurned(degreeTurned)
+		[]
+		set_degreeTurned?x__ -> Memory_degreeTurned(x__)
+		[]
+		terminate -> SKIP
+	Memory_avoidanceRadius(avoidanceRadius) =
+		get_avoidanceRadius!avoidanceRadius -> Memory_avoidanceRadius(avoidanceRadius)
+		[]
+		set_avoidanceRadius?x__ -> Memory_avoidanceRadius(x__)
+		[]
+		terminate -> SKIP
+	Memory_illuminated(illuminated) =
+		get_illuminated!illuminated -> Memory_illuminated(illuminated)
+		[]
+		set_illuminated?x__ -> Memory_illuminated(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = Memory_linearSpeed(0)
+	[| { terminate } |] (
+	Memory_angularSpeed(0)
+	[| { terminate } |] (
+	Memory_reached(true)
+	[| { terminate } |] (
+	Memory_desiredTurningDegree(0)
+	[| { terminate } |] (
+	Memory_degreeTurned(0)
+	[| { terminate } |] (
+	Memory_avoidanceRadius(0)
+	[| { terminate } |] (
+	Memory_illuminated(true)
+	)
+	)
+	)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_linearSpeed,set_linearSpeed,get_angularSpeed,set_angularSpeed,get_reached,set_reached,get_desiredTurningDegree,set_desiredTurningDegree,get_degreeTurned,set_degreeTurned,get_avoidanceRadius,set_avoidanceRadius,get_illuminated,set_illuminated|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = STM_VS_O(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+	
+	D__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = STM(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) \ internal_events
+	O__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = sbisim(diamond(D__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal)))
+	VS__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = FVS__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal)
+	VS_O__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = sbisim(diamond(FVS__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal)))
+	HEXT__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = O__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = O__(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_taxi_SwarmTaxisFSM_MoveForwardVal) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule

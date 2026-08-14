@@ -1,7 +1,7 @@
 
 --
--- RoboSim generator version 3.0.0.202603091039
--- Automatically generated on 12-05-2026 11:37:02
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 05-08-2026 15:50:32
 --
 
 -- compileSelfContainedOperation
@@ -35,12 +35,12 @@ exports
 	channel get_leftMotorVelocityF, set_leftMotorVelocityF, setL_leftMotorVelocityF, setR_leftMotorVelocityF: core_boolean
 	
 	-- Shared variable channels
-	channel set_EXT_gyroZF: core_boolean
+	channel set_EXT_angleF: core_boolean
 	channel set_EXT_gyroXF: core_boolean
 	channel set_EXT_leftMotorVelocityF: core_boolean
 	channel set_EXT_rotationCount: core_nat
+	channel set_EXT_gyroZF: core_boolean
 	channel set_EXT_rightMotorVelocityF: core_boolean
-	channel set_EXT_angleF: core_boolean
 	
 	-- Local variable channels for defined operations that are required by the state machine
 	
@@ -60,12 +60,12 @@ exports
 	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
 	
 	shared_variable_events = {|
-		set_EXT_gyroZF,
+		set_EXT_angleF,
 		set_EXT_gyroXF,
 		set_EXT_leftMotorVelocityF,
 		set_EXT_rotationCount,
-		set_EXT_rightMotorVelocityF,
-		set_EXT_angleF
+		set_EXT_gyroZF,
+		set_EXT_rightMotorVelocityF
 	|}
 	
 	

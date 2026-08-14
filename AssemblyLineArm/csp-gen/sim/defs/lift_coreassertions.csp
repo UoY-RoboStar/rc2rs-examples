@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202607201720
+-- Automatically generated on 03-08-2026 13:00:30
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "lift.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate OP_lift
+P_OP_lift = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_lift::O__(id__)
+assert P_OP_lift :[deadlock-free]	
+assert P_OP_lift;RUN({r__}) :[deadlock-free]
+assert P_OP_lift :[deterministic]
+assert P_OP_lift :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_lift[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_lift

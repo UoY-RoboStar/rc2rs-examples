@@ -1,0 +1,115 @@
+package lutz 
+
+import autonomous_vehicle_system::*
+import sequence_toolkit::*
+import utility::*
+
+import lutz::LutzState::*
+import lutz::DetermineUserInstruction::*
+import lutz::FaultDetection::*
+import lutz::SessionControl::*
+import lutz::VehicleControl::*
+
+interface UserInstructions {
+    DetermineUserInstruction(
+        readyState : VehicleReadyState, 
+        currentSession : SessionControl, 
+        podStatus : Status,
+        podPowertrain : Powertrain, 
+        podEps : Eps, 
+        podEpsInboard : Steer, 
+        podEpsOutboard : Steer,
+        podParkBrake : ParkBrake, 
+        podBattery : Battery, 
+        podControlCommand1 : ControlCommand1, 
+        podHandshake : Handshake
+    )
+}
+
+controller Lutz {
+    // Required Interfaces
+    requires SpeedControl
+    requires FourWheelSteering
+    requires AuxiliaryControl
+    requires FaultDetection
+    requires State
+
+    // Events
+    event output_pod_demand : PodDemand
+    event auxiliary_demand : AuxiliaryDemand
+    event instruction : UICode
+    event acs_handshake : Handshake
+    event status : Status
+    event powertrain : Powertrain
+    event eps : Eps
+    event eps_inboard : Steer
+    event eps_outboard : Steer
+    event epb : ParkBrake
+    event battery : Battery
+    event control_command1 : ControlCommand1
+    event indicator : Indicator
+    event pod_state : PodState
+
+    // State Machine & Operation References
+    sref stm_ref0 = VehicleControl
+    sref stm_ref1 = SSessionControl
+    sref stm_ref2 = SHandshake
+    sref stm_ref3 = LutzState
+    sref stm_ref4 = PowerTrainStateDistributor
+    sref stm_ref5 = StatusStateDistributor
+
+    opref op_ref0 = DetermineUserInstruction
+
+    // Connections
+    connection Lutz on status to stm_ref5 on statusStateIn
+    connection stm_ref1 on session_control to stm_ref0 on session_control ( _async )
+    connection Lutz on output_pod_demand to stm_ref0 on output_pod_demand
+    connection Lutz on auxiliary_demand to stm_ref0 on auxiliary_demand
+    connection Lutz on acs_handshake to stm_ref2 on acs_handshake
+    connection stm_ref0 on control_command1 to stm_ref1 on pod_demand ( _async )
+    connection stm_ref3 on pod_state to Lutz on pod_state
+    connection stm_ref1 on ui_code to Lutz on instruction
+    connection Lutz on eps to stm_ref1 on eps
+    connection Lutz on eps_inboard to stm_ref1 on eps_inboard
+    connection Lutz on eps_outboard to stm_ref1 on eps_outboard
+    connection Lutz on epb to stm_ref1 on epb
+    connection Lutz on battery to stm_ref1 on battery
+    connection Lutz on control_command1 to stm_ref1 on control_command1
+    connection Lutz on powertrain to stm_ref4 on powertrainIn
+    connection Lutz on indicator to stm_ref3 on indicator
+    connection stm_ref4 on powertrainOut1 to stm_ref1 on powertrain ( _async )
+    connection stm_ref4 on powertrainOut2 to stm_ref3 on powertrain ( _async )
+    connection stm_ref2 on quality to stm_ref1 on quality ( _async )
+    connection stm_ref5 on statusStateOut2 to stm_ref1 on status
+    connection stm_ref5 on statusStateOut1 to stm_ref0 on podstatus
+}
+
+function MakeVehicleReady(status : Speed) : Angle {
+}
+
+function GetOverrideState(
+    currentSession : SessionControl, 
+    podStatus : Status, 
+    podPowertrain : Powertrain,
+    podParkbrake : ParkBrake, 
+    podHandshake : Handshake
+) : VehicleReadyState {
+}
+
+function GetOverrideUserInstructions(readyState : VehicleReadyState) : UICode {
+}
+
+function KeyPositionAutonomous(positionAuto : boolean) : boolean * UICode {
+}
+
+function KeyPostionManual(positionManual : boolean) : boolean * UICode {
+}
+
+function MakeValidSession(ready : VehicleReadyState) : NextStateInstruction {
+}
+
+function DecreaseQualityOfService(quality : ServiceQuality) : ServiceQuality {
+}
+
+function IncreaseQualityOfService(quality : ServiceQuality) : ServiceQuality {
+}

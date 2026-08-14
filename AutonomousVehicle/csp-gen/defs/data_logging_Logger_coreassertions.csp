@@ -1,0 +1,58 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "function_toolkit_defs.csp"
+include "lutz_VehicleControl_defs.csp"
+include "relation_toolkit_defs.csp"
+include "core_defs.csp"
+include "bacs_defs.csp"
+include "lutz_SessionControl_defs.csp"
+include "autonomous_vehicle_system_defs.csp"
+include "lutz_LutzState_defs.csp"
+include "lutz_FaultDetection_defs.csp"
+include "../instantiations.csp"
+include "data_logging_defs.csp"
+include "lutz_defs.csp"
+include "set_toolkit_defs.csp"
+include "sequence_toolkit_defs.csp"
+include "lutz_DetermineUserInstruction_defs.csp"
+include "utility_defs.csp"
+include "data_logging_Logger.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+channel r__
+-- generate data_logging_Logger
+P_data_logging_Logger = let
+	id__ = 0
+	
+	
+	
+		
+within
+	data_logging_Logger::O__(id__)
+
+assert P_data_logging_Logger :[deadlock-free]	
+assert P_data_logging_Logger;RUN({r__}) :[deadlock-free]
+assert P_data_logging_Logger :[deterministic]
+assert P_data_logging_Logger :[divergence-free]
+
+-- generate data_logging_Logger_stm_ref0
+P_data_logging_Logger_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	data_logging_Logger::stm_ref0::O__(
+		id__
+	)
+assert P_data_logging_Logger_stm_ref0 :[deadlock-free]	
+assert P_data_logging_Logger_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_data_logging_Logger_stm_ref0 :[deterministic]
+assert P_data_logging_Logger_stm_ref0 :[divergence-free]

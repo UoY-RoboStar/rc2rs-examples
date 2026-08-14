@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 13:19:59
+-- RoboChart generator version 3.1.0.202607201256
+-- Automatically generated on 03-08-2026 10:48:07
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -42,11 +42,11 @@ exports
 	-- Declaring state machine events
 	
 	-- Declaring call and ret events for undefined operations
-	channel graspCall: main_JointsPos
-	channel deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall: core_nat
-	channel moveCall: main_JointsPos
-	channel dropCall: main_JointsPos
 	channel pickCall
+	channel graspCall: main_JointsPos
+	channel dropCall: main_JointsPos
+	channel moveCall: main_JointsPos
+	channel deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall: core_nat
 	
 	enterSS = {|
 	f::enter,
@@ -69,11 +69,11 @@ exports
 		terminate
 	,	set_EXT_positions, set_positions,
 		set_EXT_nextApple, set_nextApple
-	,	graspCall,
-		deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall,
-		moveCall,
+	,	pickCall,
+		graspCall,
 		dropCall,
-		pickCall
+		moveCall,
+		deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall
 		, share__
 		|}
 	
@@ -194,6 +194,12 @@ exports
 		-- If it is in the context of a controller, the required operations not provided by the
 		-- controller will be declared here, and the defined operations will be defined in the
 		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__pick(id__,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_dropTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime) = EDeadline(pickCall,0)
 		CALL__grasp(id__,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
@@ -201,20 +207,6 @@ exports
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
 					param_jp) = EDeadline(graspCall.param_jp,0)
-		CALL__deadlineAction_normal_AppleHarvestControl_GetApple_entry_t(id__,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_dropTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
-					param_d) = EDeadline(deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall.param_d,0)
-		CALL__move(id__,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_dropTime,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
-					param_jp) = EDeadline(moveCall.param_jp,0)
 		CALL__drop(id__,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
@@ -222,12 +214,20 @@ exports
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
 					param_jp) = EDeadline(dropCall.param_jp,0)
-		CALL__pick(id__,
+		CALL__move(id__,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_dropTime,
 				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
-				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime) = EDeadline(pickCall,0)
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
+					param_jp) = EDeadline(moveCall.param_jp,0)
+		CALL__deadlineAction_normal_AppleHarvestControl_GetApple_entry_t(id__,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_approachTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_dropTime,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_pickDeadl,
+				    const_pkg727_main_normal_AppleHarvestControl_GetApple_entry_graspTime,
+					param_d) = EDeadline(deadlineAction_normal_AppleHarvestControl_GetApple_entry_tCall.param_d,0)
 		
 		-- END of Operation calls --
 	

@@ -1,0 +1,28 @@
+package utility
+
+stm StatusStateDistributor {
+	var currentStatusState : Status
+	event statusStateIn : Status
+	event statusStateOut1 : Status
+	event statusStateOut2 : Status
+	state Distribute {
+		entry statusStateOut1 ! currentStatusState ;statusStateOut2 ! currentStatusState
+	}
+	initial i0
+	state Initialise {
+	}
+	transition t0 {
+		from Distribute
+		to Distribute
+		trigger statusStateIn ? currentStatusState
+	}
+	transition t1 {
+		from Initialise
+		to Distribute
+		trigger statusStateIn ? currentStatusState
+	}
+	transition t2 {
+		from i0
+		to Initialise
+	}
+}

@@ -1,0 +1,44 @@
+package
+data_logging
+import autonomous_vehicle_system::*
+
+stm log {
+	event environmentPointCloud : Seq( Point2d )
+	event environmentObjects : Seq( DetectedObject )
+	event environmentImage : StereoImage
+	event earlyWarning : DriverWarning
+	state Log {
+		}
+		initial i0
+		transition t0 {
+			from i0
+			to Log
+		}
+	requires Logging
+	var pointCloud : Seq( Point2d ) , objects : Seq( DetectedObject ) , image :
+	StereoImage , warning : DriverWarning
+	transition t1 {
+		from Log
+		to Log
+		trigger environmentPointCloud ? pointCloud
+		action LogEnvironmentPointCloud( pointCloud)
+	}
+	transition t2 {
+		from Log
+		to Log
+		trigger environmentObjects ? objects
+		action LogEnvironmentObjects( objects)
+	}
+	transition t3 {
+		from Log
+		to Log
+		trigger environmentImage ? image
+		action LogEnvironmentImage( image)
+	}
+	transition t4 {
+		from Log
+		to Log
+		trigger earlyWarning ? warning
+		action LogEarlyWarning( warning)
+	}
+}

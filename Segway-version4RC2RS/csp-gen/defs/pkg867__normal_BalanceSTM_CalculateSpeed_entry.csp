@@ -1,7 +1,7 @@
 
 --
--- RoboChart generator version 3.0.0.202601080915
--- Automatically generated on 12-05-2026 11:36:56
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 05-08-2026 15:50:34
 --
 -- Iterated compression status: true
 -- Assertions compression status: false
@@ -56,11 +56,11 @@ exports
 	channel leftMotorVelocity: InOut.core_real
 	
 	-- Declaring call and ret events for undefined operations
-	channel waitIntervalCall: core_nat.core_nat
-	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall: core_nat
-	channel normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall
-	channel SpeedPIDCall: core_real
 	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call: core_nat
+	channel deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall: core_nat
+	channel SpeedPIDCall: core_real
+	channel waitIntervalCall: core_nat.core_nat
+	channel normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall
 	
 	enterSS = {|
 	f::enter,
@@ -95,11 +95,11 @@ exports
 		set_EXT_speedOutput, set_speedOutput
 	,	rightMotorVelocity,
 		leftMotorVelocity
-	,	waitIntervalCall,
+	,	deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call,
 		deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall,
-		normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall,
 		SpeedPIDCall,
-		deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call
+		waitIntervalCall,
+		normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall
 		, share__
 		|}
 	
@@ -264,21 +264,21 @@ exports
 	-- If it is in the context of a controller, the required operations not provided by the
 	-- controller will be declared here, and the defined operations will be defined in the
 	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call.param_d -> SKIP
+	CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall.param_d -> SKIP
+	CALL__SpeedPID(id__,
+			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
+				param_newError) 	= SpeedPIDCall.param_newError -> SKIP
 	CALL__waitInterval(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 				param_m,
 				param_n) 	= waitIntervalCall.param_m.param_n -> SKIP
-	CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_tCall.param_d -> SKIP
 	CALL__normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_op(id__,
 			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget) 	= normal_BalanceSTM_CalculateSpeed_entry_j_3_17_t_3_17_opCall -> SKIP
-	CALL__SpeedPID(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-				param_newError) 	= SpeedPIDCall.param_newError -> SKIP
-	CALL__deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6(id__,
-			    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
-				param_d) 	= deadlineAction_normal_BalanceSTM_CalculateSpeed_entry_t_5_6Call.param_d -> SKIP
 	
 	-- END of Operation calls --
 	
@@ -308,7 +308,7 @@ exports
 			 		    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 			 			0
 			 		) ; j_4_13::enter -> SKIP))))
-			 	 [] dbisim((true)&(internal__!NID_j_4_13 -> SKIP ;  ((share__choice(get_currRightVel?currRightVel -> share__choice(get_currLeftVel?currLeftVel -> true&CALL__SpeedPID(
+			 	 [] dbisim((true)&(internal__!NID_j_4_13 -> SKIP ;  ((share__choice(get_currLeftVel?currLeftVel -> share__choice(get_currRightVel?currRightVel -> true&CALL__SpeedPID(
 			 			id__,
 			 		    const_pkg867__normal_BalanceSTM_CalculateSpeed_entry_speedBudget,
 			 			Plus(currLeftVel, currRightVel, core_real)

@@ -1,0 +1,28 @@
+package utility
+
+stm LocationDistributor {
+	var currentLocation : LatLngHeadingFix
+	event locationIn : LatLngHeadingFix
+	event locationOut1 : LatLngHeadingFix
+	event locationOut2 : LatLngHeadingFix
+	state Distribute {
+		entry locationOut1 ! currentLocation ; locationOut2 ! currentLocation
+	}
+	initial i0
+	state Initialise {
+	}
+	transition t0 {
+		from Distribute
+		to Distribute
+		trigger locationIn ? currentLocation
+	}
+	transition t1 {
+		from Initialise
+		to Distribute
+		trigger locationIn ? currentLocation
+	}
+	transition t2 {
+		from i0
+		to Initialise
+	}
+}

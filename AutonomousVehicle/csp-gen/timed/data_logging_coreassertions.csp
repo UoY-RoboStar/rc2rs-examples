@@ -1,0 +1,72 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 11-08-2026 17:18:44
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "data_loggingcsp"
+
+-- generate data_logging_log
+P_data_logging_log = let
+	id__ = 0
+	
+	
+	
+within
+	data_logging::log::O__(
+		id__
+	)
+assert P_data_logging_log :[deadlock-free]	
+assert P_data_logging_log;RUN({r__}) :[deadlock-free]
+assert P_data_logging_log :[deterministic]
+assert P_data_logging_log :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_data_logging_log[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_data_logging_log
+
+
+-- generate data_logging_Logger
+P_data_logging_Logger = let
+	id__ = 0
+	
+	
+	
+		
+within
+	data_logging::Logger::O__(id__)
+
+assert P_data_logging_Logger :[deadlock-free]	
+assert P_data_logging_Logger;RUN({r__}) :[deadlock-free]
+assert P_data_logging_Logger :[deterministic]
+assert P_data_logging_Logger :[divergence-free]
+
+-- generate data_logging_Logger_stm_ref0
+P_data_logging_Logger_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	data_logging::Logger::stm_ref0::O__(
+		id__
+	)
+assert P_data_logging_Logger_stm_ref0 :[deadlock-free]	
+assert P_data_logging_Logger_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_data_logging_Logger_stm_ref0 :[deterministic]
+assert P_data_logging_Logger_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_data_logging_Logger_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_data_logging_Logger_stm_ref0
+-- timed deadlock free
+assert prioritise(P_data_logging_Logger[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_data_logging_Logger
+

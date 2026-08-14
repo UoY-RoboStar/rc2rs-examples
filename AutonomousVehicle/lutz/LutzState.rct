@@ -1,0 +1,42 @@
+package lutz::LutzState
+
+stm LutzState {
+	var newPowertrain : Powertrain
+	var newIndicator : Indicator
+	var newPodstate : PodState
+	event powertrain : Powertrain
+	event indicator : Indicator
+	
+	event pod_state : PodState
+	initial i0
+	state Ready {
+	}
+	state UpdateLutzState {
+		during newPodstate . speedMetersPerSecond =
+		KilometersPerHourToMetersPerSecond ( newPowertrain . speedKilometersPerHour )
+		; newPodstate . indicatorLeft = newIndicator . left ; newPodstate .
+		indicatorRight = newIndicator . right
+	}
+	transition t0 {
+		from i0
+		to Ready
+		action newIndicator . left = false ; newIndicator . right = false
+	}
+	transition t1 {
+		from Ready
+		to UpdateLutzState
+		trigger powertrain ? newPowertrain
+	}
+	transition t2 {
+		from UpdateLutzState
+		to Ready
+		action pod_state ! newPodstate
+	}
+	transition t3 {
+		from Ready
+		to Ready
+		trigger indicator ? newIndicator
+	}
+}
+function KilometersPerHourToMetersPerSecond( speedkph : Speed) : Speed {
+}

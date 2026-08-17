@@ -1,0 +1,41 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pre_pkg__Flight.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__Flight
+P_pre_pkg__Flight = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__Flight::O__(
+		id__,
+		const_pre_pkg__Flight_CLIMB_LIFT,
+		const_pre_pkg__Flight_DELAY_DISARM,
+		const_pre_pkg__Flight_HOME
+	)
+assert P_pre_pkg__Flight :[deadlock-free]	
+assert P_pre_pkg__Flight;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__Flight :[deterministic]
+assert P_pre_pkg__Flight :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__Flight[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__Flight

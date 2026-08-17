@@ -1,0 +1,1271 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:46
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module pre_pkg__Spray
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_I|
+	              NID_Off|
+	              NID_On|
+	              NID_Out
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel monitorOn__: NIDS.InOut
+	channel monitorOn: InOut
+	channel monitorOff__: NIDS.InOut
+	channel monitorOff: InOut
+	channel monitorEmpty__: NIDS.InOut
+	channel monitorEmpty: InOut
+	channel startSpray__: NIDS.InOut
+	channel startSpray: InOut
+	channel stopSpray__: NIDS.InOut
+	channel stopSpray: InOut
+	channel waterEmpty__: NIDS.InOut
+	channel waterEmpty: InOut
+	
+	-- Declaring call and ret events for undefined operations
+	channel pumpOnCall
+	channel clone_normal_Spray_Off_OffOut_opCall
+	channel clone_normal_Spray_Off_SwitchOn_opCall
+	channel pumpOffCall
+	channel clone_normal_Spray_On_SwitchOff_opCall
+	channel clone_normal_Spray_On_OnOut_opCall
+	
+	enterSS = {|
+	I::enter,
+	Off::enter,
+	On::enter,
+	Out::enter
+	|}
+	
+	enteredSS = 	{|
+	Off::entered,
+	On::entered,
+	Out::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	monitorOn,
+		monitorOff,
+		monitorEmpty,
+		startSpray,
+		stopSpray,
+		waterEmpty
+	,	pumpOnCall,
+		clone_normal_Spray_Off_OffOut_opCall,
+		clone_normal_Spray_Off_SwitchOn_opCall,
+		pumpOffCall,
+		clone_normal_Spray_On_SwitchOff_opCall,
+		clone_normal_Spray_On_OnOut_opCall
+		|}
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_On : core_clock_type 
+	channel get_CLID_Out : core_clock_type 
+	channel get_CLID_Off : core_clock_type 
+	--channel increment__
+	
+	CLID_On_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Out_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Off_clock_type(id__) = 
+		let
+			max = (clock_type_max(Union({
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: I
+		module I
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Off
+		module Off
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			channel monitorOn__: NIDS.InOut
+			channel monitorOff__: NIDS.InOut
+			channel monitorEmpty__: NIDS.InOut
+			channel startSpray__: NIDS.InOut
+			channel stopSpray__: NIDS.InOut
+			channel waterEmpty__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__) = D__(id__)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				monitorOn__.x____ <- monitorOn,
+						 				monitorOff__.x____ <- monitorOff,
+						 				monitorEmpty__.x____ <- monitorEmpty,
+						 				startSpray__.x____ <- startSpray,
+						 				stopSpray__.x____ <- stopSpray,
+						 				waterEmpty__.x____ <- waterEmpty
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				monitorOn__.x____ <- monitorOn,
+						 				monitorOff__.x____ <- monitorOff,
+						 				monitorEmpty__.x____ <- monitorEmpty,
+						 				startSpray__.x____ <- startSpray,
+						 				stopSpray__.x____ <- stopSpray,
+						 				waterEmpty__.x____ <- waterEmpty
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__))))
+				
+				StateClocks(id__) = dbisim(Clock_CLID_EmptyCycle(id__,0))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: On
+		module On
+		
+		enterSS = 
+				{|			EmptyCycle::enter,
+					i::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_EmptyCycle|
+			              NID_i
+			
+			channel internal__ : NIDS
+			channel monitorOn__: NIDS.InOut
+			channel monitorOff__: NIDS.InOut
+			channel monitorEmpty__: NIDS.InOut
+			channel startSpray__: NIDS.InOut
+			channel stopSpray__: NIDS.InOut
+			channel waterEmpty__: NIDS.InOut
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__) = D__(id__)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::D__(id__)
+						 				   [| { share__, terminate } |] (
+						 				   i::D__(id__)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				monitorOn__.x____ <- monitorOn,
+						 				monitorOff__.x____ <- monitorOff,
+						 				monitorEmpty__.x____ <- monitorEmpty,
+						 				startSpray__.x____ <- startSpray,
+						 				stopSpray__.x____ <- stopSpray,
+						 				waterEmpty__.x____ <- waterEmpty
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			EmptyCycle::enter,
+						 			i::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited,interrupt|})
+						 				transSync = {|internal__.NID_i|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   EmptyCycle::VS_O__(id__)
+						 				   [| { share__, terminate } |] (
+						 				   i::VS_O__(id__)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[
+						 				monitorOn__.x____ <- monitorOn,
+						 				monitorOff__.x____ <- monitorOff,
+						 				monitorEmpty__.x____ <- monitorEmpty,
+						 				startSpray__.x____ <- startSpray,
+						 				stopSpray__.x____ <- stopSpray,
+						 				waterEmpty__.x____ <- waterEmpty
+						 				| x____ <- NIDS
+						 			]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__))))
+				
+				StateClocks(id__) = dbisim(Clock_CLID_EmptyCycle(id__,0))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Final state: Out
+		module Out
+		
+		exports
+		
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				D__(id__) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+						
+						Entering 	= entered -> SKIP ; Active
+						Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+						Interrupted	= share__choice(exit -> exited -> Inactive)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__) = D__(id__)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__pumpOn(id__) = EDeadline(pumpOnCall,0)
+		CALL__clone_normal_Spray_Off_OffOut_op(id__) = EDeadline(clone_normal_Spray_Off_OffOut_opCall,0)
+		CALL__clone_normal_Spray_Off_SwitchOn_op(id__) = EDeadline(clone_normal_Spray_Off_SwitchOn_opCall,0)
+		CALL__pumpOff(id__) = EDeadline(pumpOffCall,0)
+		CALL__clone_normal_Spray_On_SwitchOff_op(id__) = EDeadline(clone_normal_Spray_On_SwitchOff_opCall,0)
+		CALL__clone_normal_Spray_On_OnOut_op(id__) = EDeadline(clone_normal_Spray_On_OnOut_opCall,0)
+		
+		-- END of Operation calls --
+	
+		-- STM processes
+		STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		( 
+			(
+				(
+					(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+				 	[[ share__ <- x__ | x__ <- {||} ]]
+				)
+			[| {share__} |]
+			SKIP
+			)
+			[| union(sharedVarSync,{terminate}) |]
+			dbisim(sharedVarMemory(id__))
+		)\sharedVarHide
+		
+		-- Transitions
+		Transitions(id__) = ((let
+			Trans = TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((SKIP ; Off::enter -> SKIP))))
+				 [] dbisim((true)&(startSpray__!NID_Off.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Spray_Off_SwitchOn_op(
+				 			id__
+				 		) ; On::enter -> SKIP)))
+				 [] dbisim((true)&(monitorEmpty__!NID_On.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Spray_On_OnOut_op(
+				 			id__
+				 		) ; Out::enter -> SKIP)))
+				 [] dbisim((true)&(stopSpray__!NID_On.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Spray_On_SwitchOff_op(
+				 			id__
+				 		) ; Off::enter -> SKIP)))
+				 [] dbisim((true)&(monitorEmpty__!NID_Off.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Spray_Off_OffOut_op(
+				 			id__
+				 		) ; Out::enter -> SKIP)))
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 )
+			,SKIP);Trans
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {|Out::entered|}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Off::enter,
+					On::enter,
+					Out::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_I,startSpray__.NID_Off.in,monitorEmpty__.NID_On.in,stopSpray__.NID_On.in,monitorEmpty__.NID_Off.in|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::D__(id__)
+						   [| { share__, terminate } |] (
+						   Off::D__(id__)
+						   [| { share__, terminate } |] (
+						   On::D__(id__)
+						   [| { share__, terminate } |] (
+						   Out::D__(id__)
+						   )
+						   )
+						   )
+						 )
+						 [[Off::interrupt <- x__ | x__ <- {|interrupt,startSpray__.NID_Off.in,monitorEmpty__.NID_Off.in|}]]
+						 [[On::interrupt <- x__ | x__ <- {|interrupt,monitorEmpty__.NID_On.in,stopSpray__.NID_On.in|}]]
+						 [[Out::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						|}) |]
+						 ((I::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[
+						monitorOn__.x____ <- monitorOn,
+						monitorOff__.x____ <- monitorOff,
+						monitorEmpty__.x____ <- monitorEmpty,
+						startSpray__.x____ <- startSpray,
+						stopSpray__.x____ <- stopSpray,
+						waterEmpty__.x____ <- waterEmpty
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_On,On::entered,get_CLID_Off,Off::entered|}
+			 within
+				(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_On,On::entered,get_CLID_Off,Off::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody(id__)
+								[| {|get_CLID_Off,Off::entered,terminate|} |]
+								dbisim(Clock_CLID_Off(id__,0))
+							)\{|get_CLID_Off|}
+						)
+						[| {|get_CLID_On,On::entered,terminate|} |]
+						dbisim(Clock_CLID_On(id__,0))
+					)\{|get_CLID_On|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__) = 
+			((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__) =
+			(IteratedBehaviour(id__))
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__) = 
+			dbisim((
+			let
+				finalNodesEntered = {|Out::entered|}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Off::enter,
+					On::enter,
+					Out::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited,interrupt|})
+						transSync = {|internal__.NID_I,startSpray__.NID_Off.in,monitorEmpty__.NID_On.in,stopSpray__.NID_On.in,monitorEmpty__.NID_Off.in|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   Off::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   On::VS_O__(id__)
+						   [| { share__, terminate } |] (
+						   Out::VS_O__(id__)
+						   )
+						   )
+						   )
+						 )
+						 [[Off::interrupt <- x__ | x__ <- {|interrupt,startSpray__.NID_Off.in,monitorEmpty__.NID_Off.in|}]]
+						 [[On::interrupt <- x__ | x__ <- {|interrupt,monitorEmpty__.NID_On.in,stopSpray__.NID_On.in|}]]
+						 [[Out::interrupt <- x__ | x__ <- {|interrupt|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 )
+						 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+						|}) |]
+						 ((I::enter -> Transitions(id__))
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 )
+						)
+						)
+					)
+					 \ hideSet)
+					[[
+						monitorOn__.x____ <- monitorOn,
+						monitorOff__.x____ <- monitorOff,
+						monitorEmpty__.x____ <- monitorEmpty,
+						startSpray__.x____ <- startSpray,
+						stopSpray__.x____ <- stopSpray,
+						waterEmpty__.x____ <- waterEmpty
+						| x____ <- NIDS
+					]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_On,On::entered,get_CLID_Off,Off::entered|}
+			 within
+				(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_On,On::entered,get_CLID_Off,Off::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody_VS_O(id__)
+								[| {|get_CLID_Off,Off::entered,terminate|} |]
+								dbisim(Clock_CLID_Off(id__,0))
+							)\{|get_CLID_Off|}
+						)
+						[| {|get_CLID_On,On::entered,terminate|} |]
+						dbisim(Clock_CLID_On(id__,0))
+					)\{|get_CLID_On|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__) = 
+			dbisim((let
+				getsetLocalChannels = {||}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__) [| {terminate} |] Clocks(id__))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__) =
+			(IteratedBehaviour_VS_O(id__))
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		
+		-- varMemory process
+		varMemory(id__) = terminate -> SKIP
+		
+		getsetLocalChannels = {||}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__) = STM_VS_O(id__) \ localClockResets
+		D__(id__) = timed_priority(STM(id__) \ union(internal_events,localClockResets))
+		O__(id__) = dbisim(D__(id__))
+		VS__(id__) = FVS__(id__)
+		VS_O__(id__) = dbisim(FVS__(id__))
+		HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+		FVS_C__(id__) = dbisim(timed_priority(STM(id__) \ internal_events))
+		HUP__(id__) = timed_priority(O__(id__) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_On(id__,x__) = 
+			TimeOut_1(
+				On::entered -> Clock_CLID_On(id__,0)
+				[]
+				get_CLID_On!x__ -> Clock_CLID_On(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_On(id__,clock_type_plus(x__,1,CLID_On_clock_type(id__))))
+		Clock_CLID_Off(id__,x__) = 
+			TimeOut_1(
+				Off::entered -> Clock_CLID_Off(id__,0)
+				[]
+				get_CLID_Off!x__ -> Clock_CLID_Off(id__,x__)
+				[]
+				terminate -> SKIP,Clock_CLID_Off(id__,clock_type_plus(x__,1,CLID_Off_clock_type(id__))))
+		
+		StateClocks(id__) = dbisim(Clock_CLID_On(id__,0))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Off(id__,0))
+		)
+		
+		stateClockSync = {|get_CLID_On,On::entered,get_CLID_Off,Off::entered|}
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__) = terminate -> SKIP
+		
+		sharedVarSync = {||}
+		
+		sharedVarHide = {||}
+		}
+endmodule

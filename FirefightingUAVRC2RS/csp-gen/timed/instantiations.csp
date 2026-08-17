@@ -1,0 +1,570 @@
+-- generate const_pre_pkg__sim_Flight_CLIMB_LIFT
+const_pre_pkg__sim_Flight_CLIMB_LIFT = 0
+
+-- generate pre_pkg__pumpOn_BOUND
+pre_pkg__pumpOn_BOUND = 2
+
+-- generate const_pre_pkg__RaspberryPi_CFireDetect_LEFT_X
+const_pre_pkg__RaspberryPi_CFireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_Y
+const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_Y = 0
+
+-- generate const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate const_pre_pkg__RaspberryPi_CFlight_DELAY_DISARM
+const_pre_pkg__RaspberryPi_CFlight_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__sim_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46_WALL_LOC
+const_pre_pkg__sim_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27_HOME
+const_pre_pkg__sim_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27_HOME = (0,0,0,0)
+
+-- generate const_RaspberryPi_CGimbalAim_TRACK_DIST
+const_RaspberryPi_CGimbalAim_TRACK_DIST = 0
+
+-- generate const_pre_pkg__RaspberryPi_CFlight_HOME
+const_pre_pkg__RaspberryPi_CFlight_HOME = (0,0,0,0)
+
+-- generate const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+const_BatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_pre_pkg__sim_clone_normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__sim_clone_normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate superimpose
+superimpose(rgb,d,t) = (0)
+
+-- generate const_FireDetect_CENTRE_Y
+const_FireDetect_CENTRE_Y = 0
+
+-- generate const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_X
+const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_X = 0
+
+-- generate const_Planning_FIRE_TO
+const_Planning_FIRE_TO = 0
+
+-- generate const_FireDetect_CENTRE_X
+const_FireDetect_CENTRE_X = 0
+
+-- generate const_Flight_CLIMB_LIFT
+const_Flight_CLIMB_LIFT = 0
+
+-- generate const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD
+const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_Arduino_AAim_GIMBAL_FLOOD_DELAY
+const_Arduino_AAim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27_HOME
+const_pre_pkg__clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD
+const_pre_pkg__sim_clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_pre_pkg__sim_FireDetect_CENTRE_X
+const_pre_pkg__sim_FireDetect_CENTRE_X = 0
+
+-- generate const_pre_pkg__sim_FireDetect_CENTRE_Y
+const_pre_pkg__sim_FireDetect_CENTRE_Y = 0
+
+-- generate const_Flight_DELAY_DISARM
+const_Flight_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__sim_Flight_DELAY_DISARM
+const_pre_pkg__sim_Flight_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD
+const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_pre_pkg__sim_clone_normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC
+const_pre_pkg__sim_clone_normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__Flight_CLIMB_LIFT
+const_pre_pkg__Flight_CLIMB_LIFT = 0
+
+-- generate const_FireDetect_RIGHT_X
+const_FireDetect_RIGHT_X = 0
+
+-- generate clamp
+clamp(n,dz) = 0
+
+-- generate nat
+nametype core_nat = union({0..2},{calc_type_min(Union(
+			{{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{yaw|yaw <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))..calc_type_max(Union({{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{yaw|yaw <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))})
+
+-- generate const_pre_pkg__clone_normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__clone_normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate core_clock_type
+nametype core_clock_type = {0..10}
+
+-- BASIC FUNCTIONS
+
+-- generate const_pre_pkg__sim_clone_normal_Flight_Climbing_entry_CLIMB_LIFT
+const_pre_pkg__sim_clone_normal_Flight_Climbing_entry_CLIMB_LIFT = 0
+
+-- generate pre_pkg__fcLandCall_BOUND
+pre_pkg__fcLandCall_BOUND = 2
+
+-- generate const_pre_pkg__VisualNav_SCAN_DIST
+const_pre_pkg__VisualNav_SCAN_DIST = 0
+
+-- generate const_pre_pkg__Arduino_AAim_GIMBAL_FLOOD_DELAY
+const_pre_pkg__Arduino_AAim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__sim_clone_normal_Flight_Climbing_entry_HOME
+const_pre_pkg__sim_clone_normal_Flight_Climbing_entry_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_VisualNav_TRACK_DIST
+const_pre_pkg__sim_VisualNav_TRACK_DIST = 0
+
+-- generate pre_pkg__gimbalWriteTilt_BOUND
+pre_pkg__gimbalWriteTilt_BOUND = 2
+
+-- generate const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO
+const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO = 0
+
+-- generate const_pre_pkg__RaspberryPi_CPlanning_INIT_TO
+const_pre_pkg__RaspberryPi_CPlanning_INIT_TO = 0
+
+-- generate const_RaspberryPi_CVisualNav_TRACK_DIST
+const_RaspberryPi_CVisualNav_TRACK_DIST = 0
+
+-- generate Modulus
+Modulus(e1,e2,T) = if member(e1%e2,T) then e1%e2 else e1
+
+-- generate const_pre_pkg__clone_normal_VisualNav_Active_Fire_entry_TRACK_DIST
+const_pre_pkg__clone_normal_VisualNav_Active_Fire_entry_TRACK_DIST = 0
+
+-- generate const_pre_pkg__RaspberryPi_CPlanning_WALL_LOC
+const_pre_pkg__RaspberryPi_CPlanning_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__FireDetect_CENTRE_X
+const_pre_pkg__FireDetect_CENTRE_X = 0
+
+-- generate const_pre_pkg__FireDetect_CENTRE_Y
+const_pre_pkg__FireDetect_CENTRE_Y = 0
+
+-- generate pre_pkg__fcTakeoffCall_BOUND
+pre_pkg__fcTakeoffCall_BOUND = 2
+
+-- generate const_pre_pkg__WaterMonitor_WATER_FLOW
+const_pre_pkg__WaterMonitor_WATER_FLOW = 0
+
+-- generate Minus
+Minus(e1,e2,T) = if member(e1-e2,T) then e1-e2 else e1
+
+-- generate const_pre_pkg__normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__normal_Aim_SetYaw_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__clone_normal_Flight_Climbing_entry_HOME
+const_pre_pkg__clone_normal_Flight_Climbing_entry_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21_CLIMB_LIFT
+const_pre_pkg__sim_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21_CLIMB_LIFT = 0
+
+-- generate const_pre_pkg__RaspberryPi_CFireDetect_RIGHT_X
+const_pre_pkg__RaspberryPi_CFireDetect_RIGHT_X = 0
+
+-- generate pumpOn_BOUND
+pumpOn_BOUND = 2
+
+-- generate const_pre_pkg__sim_FireDetect_LEFT_X
+const_pre_pkg__sim_FireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__clone_normal_Flight_Landing_Landed_op_DELAY_DISARM
+const_pre_pkg__clone_normal_Flight_Landing_Landed_op_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X
+const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X = 0
+
+-- generate const_pre_pkg__normal_VisualNav_Active_Fire_entry_TRACK_DIST
+const_pre_pkg__normal_VisualNav_Active_Fire_entry_TRACK_DIST = 0
+
+-- generate const_RaspberryPi_CVisualNav_SCAN_DIST
+const_RaspberryPi_CVisualNav_SCAN_DIST = 0
+
+-- generate const_pre_pkg__sim_FireDetect_RIGHT_X
+const_pre_pkg__sim_FireDetect_RIGHT_X = 0
+
+-- generate const_pre_pkg__normal_WaterMonitor_On_Tick_op_WATER_FLOW
+const_pre_pkg__normal_WaterMonitor_On_Tick_op_WATER_FLOW = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y
+const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y = 0
+
+-- generate pre_pkg__gimbalWritePan_BOUND
+pre_pkg__gimbalWritePan_BOUND = 2
+
+-- generate const_pre_pkg__FireDetect_LEFT_X
+const_pre_pkg__FireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__RaspberryPi_CVisualNav_SCAN_DIST
+const_pre_pkg__RaspberryPi_CVisualNav_SCAN_DIST = 0
+
+-- generate const_RaspberryPi_CFlight_HOME
+const_RaspberryPi_CFlight_HOME = (0,0,0,0)
+
+-- generate const_RaspberryPi_CFlight_DELAY_DISARM
+const_RaspberryPi_CFlight_DELAY_DISARM = 0
+
+-- generate pre_pkg__fcMoveRelativeCall_BOUND
+pre_pkg__fcMoveRelativeCall_BOUND = 2
+
+-- generate const_Arduino_AWaterMonitor_WATER_FLOW
+const_Arduino_AWaterMonitor_WATER_FLOW = 0
+
+-- OPERATION CONSTANTS
+
+-- generate const_pre_pkg__sim_Flight_HOME
+const_pre_pkg__sim_Flight_HOME = (0,0,0,0)
+
+-- generate calcFireTarget
+calcFireTarget(f) = (FireStatus_NoFire,0,0,0)
+
+-- generate Div
+Div(e1,e2,T) = if member(e1/e2,T) then e1/e2 else e1
+
+-- generate Neg
+Neg(e1,T) = if member(-e1,T) then -e1 else e1
+
+-- generate const_pre_pkg__sim_WaterMonitor_WATER_FLOW
+const_pre_pkg__sim_WaterMonitor_WATER_FLOW = 0
+
+-- generate const_pre_pkg__normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD
+const_pre_pkg__normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD = 0
+
+-- generate Mult
+Mult(e1,e2,T) = if member(e1*e2,T) then e1*e2 else e1
+
+-- generate const_pre_pkg__RaspberryPi_CGimbalAim_TRACK_DIST
+const_pre_pkg__RaspberryPi_CGimbalAim_TRACK_DIST = 0
+
+-- generate const_pre_pkg__clone_normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC
+const_pre_pkg__clone_normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC = (0,0,0,0)
+
+-- generate const_Flight_HOME
+const_Flight_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__normal_Flight_Climbing_entry_j_3_12_t_3_12_op_CLIMB_LIFT
+const_pre_pkg__normal_Flight_Climbing_entry_j_3_12_t_3_12_op_CLIMB_LIFT = 0
+
+-- generate const_VisualNav_SCAN_DIST
+const_VisualNav_SCAN_DIST = 0
+
+-- generate const_pre_pkg__clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21_CLIMB_LIFT
+const_pre_pkg__clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21_CLIMB_LIFT = 0
+
+-- generate pumpOff_BOUND
+pumpOff_BOUND = 2
+
+-- generate const_pre_pkg__Planning_INIT_TO
+const_pre_pkg__Planning_INIT_TO = 0
+
+-- generate const_pre_pkg__Arduino_AWaterMonitor_WATER_FLOW
+const_pre_pkg__Arduino_AWaterMonitor_WATER_FLOW = 0
+
+-- generate const_pre_pkg__normal_Flight_Climbing_entry_CLIMB_LIFT
+const_pre_pkg__normal_Flight_Climbing_entry_CLIMB_LIFT = 0
+
+-- generate const_pre_pkg__sim_Planning_WALL_LOC
+const_pre_pkg__sim_Planning_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_Planning_FIRE_TO
+const_pre_pkg__sim_Planning_FIRE_TO = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X
+const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFlight_HOME
+const_pre_pkg__sim_RaspberryPi_CFlight_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__Planning_WALL_LOC
+const_pre_pkg__Planning_WALL_LOC = (0,0,0,0)
+
+-- generate calcGimbalAxis
+calcGimbalAxis(wallDist,normalDist) = 0
+
+-- generate const_GimbalAim_TRACK_DIST
+const_GimbalAim_TRACK_DIST = 0
+
+-- generate const_Aim_GIMBAL_FLOOD_DELAY
+const_Aim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY
+const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__normal_Flight_Climbing_entry_HOME
+const_pre_pkg__normal_Flight_Climbing_entry_HOME = (0,0,0,0)
+
+-- generate const_RaspberryPi_CPlanning_FIRE_TO
+const_RaspberryPi_CPlanning_FIRE_TO = 0
+
+-- generate const_pre_pkg__clone_normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__clone_normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate pre_pkg__fcGoHomeCall_BOUND
+pre_pkg__fcGoHomeCall_BOUND = 2
+
+-- generate pre_pkg__pumpOff_BOUND
+pre_pkg__pumpOff_BOUND = 2
+
+-- generate Plus
+Plus(e1,e2,T) = if member(e1+e2,T) then e1+e2 else e1
+
+-- generate const_pre_pkg__Flight_HOME
+const_pre_pkg__Flight_HOME = (0,0,0,0)
+
+-- generate --
+
+-- generate const_pre_pkg__sim_clone_normal_VisualNav_Active_Fire_entry_TRACK_DIST
+const_pre_pkg__sim_clone_normal_VisualNav_Active_Fire_entry_TRACK_DIST = 0
+
+-- generate const_pre_pkg__GimbalAim_TRACK_DIST
+const_pre_pkg__GimbalAim_TRACK_DIST = 0
+
+-- generate const_pre_pkg__RaspberryPi_CVisualNav_TRACK_DIST
+const_pre_pkg__RaspberryPi_CVisualNav_TRACK_DIST = 0
+
+-- generate const_pre_pkg__FireDetect_RIGHT_X
+const_pre_pkg__FireDetect_RIGHT_X = 0
+
+-- generate const_pre_pkg__sim_Planning_INIT_TO
+const_pre_pkg__sim_Planning_INIT_TO = 0
+
+-- generate const_RaspberryPi_CFireDetect_CENTRE_Y
+const_RaspberryPi_CFireDetect_CENTRE_Y = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST
+const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST = 0
+
+-- generate const_pre_pkg__normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate const_pre_pkg__Planning_FIRE_TO
+const_pre_pkg__Planning_FIRE_TO = 0
+
+-- generate const_pre_pkg__BatteryMonitor_BATTERY_LOW_THRESHOLD
+const_pre_pkg__BatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_RaspberryPi_CPlanning_INIT_TO
+const_RaspberryPi_CPlanning_INIT_TO = 0
+
+-- generate real
+nametype core_real = union({ -2..2},{calc_type_min(Union(
+			{{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{1},{1},{1},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{1},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{Minus(water, WATER_FLOW, { -2..2})|water <- { -2..2},WATER_FLOW <- { -2..2}},{Minus(water, WATER_FLOW, { -2..2})|WATER_FLOW <- { -2..2},water <- { -2..2}},{Minus(water, WATER_FLOW, { -2..2})|WATER_FLOW <- { -2..2},water <- { -2..2}},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{1},{1},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}},TRACK_DIST <- { -2..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{0},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{0},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|TRACK_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{0},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|TRACK_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{0..2},{1},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{0..2},{1},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{yaw|yaw <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))..calc_type_max(Union({{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{1},{1},{1},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{1},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{Plus(Position_alt(wp), CLIMB_LIFT, { -2..2})|CLIMB_LIFT <- { -2..2},wp <- {(f_lat,f_lon,f_alt,f_heading)|f_lat <- { -2..2},f_lon <- { -2..2},f_alt <- { -2..2},f_heading <- { -2..2}}},{Minus(water, WATER_FLOW, { -2..2})|water <- { -2..2},WATER_FLOW <- { -2..2}},{Minus(water, WATER_FLOW, { -2..2})|WATER_FLOW <- { -2..2},water <- { -2..2}},{Minus(water, WATER_FLOW, { -2..2})|WATER_FLOW <- { -2..2},water <- { -2..2}},{WallMetrics_centreDist(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{1},{1},{1},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}},TRACK_DIST <- { -2..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{0},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{0},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|TRACK_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcYawDelta(wm)|wm <- {(f_leftDist,f_centreDist,f_rightDist)|f_leftDist <- { -2..2},f_centreDist <- { -2..2},f_rightDist <- { -2..2}}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{0},{Minus(FireTarget_distance(tgt), TRACK_DIST, { -2..2})|TRACK_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{Minus(FireTarget_distance(tgt), SCAN_DIST, { -2..2})|SCAN_DIST <- { -2..2},tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{0},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{0..2},{1},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{0..2},{1},{ -2..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{yaw|yaw <- {0..2}},{FireTarget_dx(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{FireTarget_distance(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{FireTarget_dy(tgt)|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))}) 
+
+-- VECTOR TYPES AND OPERATIONS
+
+
+-- CLOCKS
+
+-- generate const_pre_pkg__sim_clone_normal_Flight_Landing_Landed_op_DELAY_DISARM
+const_pre_pkg__sim_clone_normal_Flight_Landing_Landed_op_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__normal_Flight_Landing_Landed_op_DELAY_DISARM
+const_pre_pkg__normal_Flight_Landing_Landed_op_DELAY_DISARM = 0
+
+-- generate calcYawDelta
+calcYawDelta(wm) = 0
+
+-- generate gimbalWritePan_BOUND
+gimbalWritePan_BOUND = 2
+
+-- generate const_pre_pkg__normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_WALL_LOC
+const_pre_pkg__normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD
+const_pre_pkg__clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_pre_pkg__clone_normal_VisualNav_Active_NoFire_entry_SCAN_DIST
+const_pre_pkg__clone_normal_VisualNav_Active_NoFire_entry_SCAN_DIST = 0
+
+-- generate const_Planning_WALL_LOC
+const_Planning_WALL_LOC = (0,0,0,0)
+
+-- generate const_RaspberryPi_CFlight_CLIMB_LIFT
+const_RaspberryPi_CFlight_CLIMB_LIFT = 0
+
+-- generate const_pre_pkg__clone_normal_WaterMonitor_On_Tick_op_WATER_FLOW
+const_pre_pkg__clone_normal_WaterMonitor_On_Tick_op_WATER_FLOW = 0
+
+-- generate const_pre_pkg__sim_clone_normal_VisualNav_Active_NoFire_entry_SCAN_DIST
+const_pre_pkg__sim_clone_normal_VisualNav_Active_NoFire_entry_SCAN_DIST = 0
+
+-- generate gimbalWriteTilt_BOUND
+gimbalWriteTilt_BOUND = 2
+
+-- MODULE CONSTANTS
+
+-- CONTROLLER CONSTANTS
+
+-- STATEMACHINE CONSTANTS
+
+-- generate const_RaspberryPi_CFireDetect_CENTRE_X
+const_RaspberryPi_CFireDetect_CENTRE_X = 0
+
+-- generate const_pre_pkg__Aim_GIMBAL_FLOOD_DELAY
+const_pre_pkg__Aim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18_TRACK_DIST
+const_pre_pkg__clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18_TRACK_DIST = 0
+
+-- generate fcGoHomeCall_BOUND
+fcGoHomeCall_BOUND = 2
+
+-- generate const_pre_pkg__sim_clone_normal_WaterMonitor_On_Tick_op_WATER_FLOW
+const_pre_pkg__sim_clone_normal_WaterMonitor_On_Tick_op_WATER_FLOW = 0
+
+-- generate const_pre_pkg__normal_VisualNav_Active_NoFire_entry_SCAN_DIST
+const_pre_pkg__normal_VisualNav_Active_NoFire_entry_SCAN_DIST = 0
+
+-- generate string
+nametype core_string = LSeq(Char,2)
+
+-- generate const_pre_pkg__RaspberryPi_CFlight_CLIMB_LIFT
+const_pre_pkg__RaspberryPi_CFlight_CLIMB_LIFT = 0
+
+-- generate const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT
+const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT = 0
+
+-- generate fcTakeoffCall_BOUND
+fcTakeoffCall_BOUND = 2
+
+-- generate const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD
+const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate -- OPERATION BOUNDS
+
+-- generate const_Planning_INIT_TO
+const_Planning_INIT_TO = 0
+
+-- generate const_RaspberryPi_CFireDetect_RIGHT_X
+const_RaspberryPi_CFireDetect_RIGHT_X = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST
+const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST = 0
+
+-- generate const_pre_pkg__RaspberryPi_CPlanning_FIRE_TO
+const_pre_pkg__RaspberryPi_CPlanning_FIRE_TO = 0
+
+-- generate const_pre_pkg__sim_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18_TRACK_DIST
+const_pre_pkg__sim_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18_TRACK_DIST = 0
+
+-- generate const_RaspberryPi_CPlanning_WALL_LOC
+const_RaspberryPi_CPlanning_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST
+const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST = 0
+
+-- generate const_pre_pkg__sim_clone_normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY
+const_pre_pkg__sim_clone_normal_Aim_SetPitch_entry_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_FireDetect_LEFT_X
+const_FireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X
+const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X = 0
+
+-- generate const_pre_pkg__VisualNav_TRACK_DIST
+const_pre_pkg__VisualNav_TRACK_DIST = 0
+
+-- generate pre_pkg__fcWaypointCall_BOUND
+pre_pkg__fcWaypointCall_BOUND = 2
+
+-- generate const_pre_pkg__sim_GimbalAim_TRACK_DIST
+const_pre_pkg__sim_GimbalAim_TRACK_DIST = 0
+
+-- generate const_pre_pkg__BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_pre_pkg__BatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate const_pre_pkg__clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46_WALL_LOC
+const_pre_pkg__clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate const_pre_pkg__normal_VisualNav_Active_Fire_entry_i_t_op_TRACK_DIST
+const_pre_pkg__normal_VisualNav_Active_Fire_entry_i_t_op_TRACK_DIST = 0
+
+-- generate fcMoveRelativeCall_BOUND
+fcMoveRelativeCall_BOUND = 2
+
+-- generate int
+nametype core_int = union({ -2..2},{calc_type_min(Union(
+			{{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{yaw|yaw <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))..calc_type_max(Union({{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{pitch|pitch <- {0..2}},{pitch|pitch <- {0..2}},{yaw|yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{clamp(yaw,YAW_DEAD_ZONE)|YAW_DEAD_ZONE <- {0..2},yaw <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dy(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{clamp(pitch,PITCH_DEAD_ZONE)|PITCH_DEAD_ZONE <- {0..2},pitch <- {0..2}},{calcGimbalAxis(FireTarget_distance(tgt),FireTarget_dx(tgt))|tgt <- {(f_status,f_distance,f_dx,f_dy)|f_status <- FireStatus,f_distance <- { -2..2},f_dx <- { -2..2},f_dy <- { -2..2}}},{ -2..2},{ -2..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{1},{0..2},{0..2},{0..2},{ -2..2},{ -2..2},{ -2..2},{ -2..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{0..2},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{yaw|yaw <- {0..2}},{yaw|yaw <- {0..2}},{1},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{PITCH_DEAD_ZONE|PITCH_DEAD_ZONE <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{pitch|pitch <- {0..2}},{angle|angle <- {0..2}},{angle|angle <- {0..2}},{pitch|pitch <- {0..2}},{1},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}},{yaw|yaw <- {0..2}},{YAW_DEAD_ZONE|YAW_DEAD_ZONE <- {0..2}},{angle|angle <- {0..2}},{GIMBAL_FLOOD_DELAY|GIMBAL_FLOOD_DELAY <- {0..2}}}))})
+
+-- generate fcLandCall_BOUND
+fcLandCall_BOUND = 2
+
+-- generate const_pre_pkg__Flight_DELAY_DISARM
+const_pre_pkg__Flight_DELAY_DISARM = 0
+
+-- generate const_RaspberryPi_CFireDetect_LEFT_X
+const_RaspberryPi_CFireDetect_LEFT_X = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO
+const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO = 0
+
+-- generate const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = 0
+
+-- generate fcWaypointCall_BOUND
+fcWaypointCall_BOUND = 2
+
+-- generate boolean
+nametype core_boolean = Bool
+
+-- generate const_pre_pkg__sim_VisualNav_SCAN_DIST
+const_pre_pkg__sim_VisualNav_SCAN_DIST = 0
+
+-- generate const_pre_pkg__normal_Flight_Climbing_entry_i_t_op_HOME
+const_pre_pkg__normal_Flight_Climbing_entry_i_t_op_HOME = (0,0,0,0)
+
+-- generate const_pre_pkg__normal_VisualNav_Active_NoFire_entry_i_t_op_SCAN_DIST
+const_pre_pkg__normal_VisualNav_Active_NoFire_entry_i_t_op_SCAN_DIST = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM
+const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM = 0
+
+-- generate const_pre_pkg__clone_normal_Flight_Climbing_entry_CLIMB_LIFT
+const_pre_pkg__clone_normal_Flight_Climbing_entry_CLIMB_LIFT = 0
+
+-- generate const_pre_pkg__clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24_SCAN_DIST
+const_pre_pkg__clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24_SCAN_DIST = 0
+
+-- BASIC TYPES
+
+-- generate const_WaterMonitor_WATER_FLOW
+const_WaterMonitor_WATER_FLOW = 0
+
+-- generate const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD
+const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = 0
+
+-- generate const_VisualNav_TRACK_DIST
+const_VisualNav_TRACK_DIST = 0
+
+-- generate const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC
+const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC = (0,0,0,0)
+
+-- generate const_pre_pkg__sim_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24_SCAN_DIST
+const_pre_pkg__sim_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24_SCAN_DIST = 0
+
+-- generate const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY = 0
+
+-- generate const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW
+const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW = 0
+
+-- generate const_pre_pkg__normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC
+const_pre_pkg__normal_Planning_Connected_Mission_FlyToWall_entry_WALL_LOC = (0,0,0,0)
+

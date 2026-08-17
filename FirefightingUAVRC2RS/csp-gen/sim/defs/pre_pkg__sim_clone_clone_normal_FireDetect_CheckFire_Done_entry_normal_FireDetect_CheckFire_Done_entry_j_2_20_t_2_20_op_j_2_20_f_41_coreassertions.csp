@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:10
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg__sim_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41
+P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg__sim::OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41::O__(id__)
+assert P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 :[deadlock-free]	
+assert P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 :[deterministic]
+assert P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_OP_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41

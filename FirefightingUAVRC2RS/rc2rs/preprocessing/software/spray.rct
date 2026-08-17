@@ -1,0 +1,951 @@
+package pre_pkg_ interface I_normal_WaterMonitor_On_inact_sinceEntry {
+	var inact_WaterMonitor_On : boolean = true
+	clock clk_WaterMonitor_On
+}
+
+interface req_normal_Spray_On_OnOut_op {
+	pumpOff ( )
+}
+
+interface I_events_normal_Spray_On_OnOut_op {
+	event waterEmpty
+}
+
+interface I_normal_Spray_On_OnOut_op {
+	normal_Spray_On_OnOut_op ( )
+}
+
+interface I_events_normal_WaterMonitor_On_Out_op {
+	event monitorEmpty
+}
+
+interface I_normal_WaterMonitor_On_Out_op {
+	normal_WaterMonitor_On_Out_op ( )
+}
+
+interface req_normal_Aim_SetPitch_entry {
+	gimbalWriteTilt ( angle : int )
+	var angle : nat
+	const GIMBAL_FLOOD_DELAY : nat
+}
+
+interface I_normal_Aim_SetPitch_entry {
+	normal_Aim_SetPitch_entry ( )
+}
+
+interface req_normal_WaterMonitor_On_entry {
+	var inact_WaterMonitor_On : boolean = true
+	clock clk_WaterMonitor_On
+}
+
+interface I_normal_WaterMonitor_On_entry {
+	normal_WaterMonitor_On_entry ( )
+}
+
+interface I_events_normal_Spray_Off_OffOut_op {
+	event waterEmpty
+}
+
+interface I_normal_Spray_Off_OffOut_op {
+	normal_Spray_Off_OffOut_op ( )
+}
+
+interface req_normal_Spray_On_SwitchOff_op {
+	pumpOff ( )
+}
+
+interface I_events_normal_Spray_On_SwitchOff_op {
+	event monitorOff
+}
+
+interface I_normal_Spray_On_SwitchOff_op {
+	normal_Spray_On_SwitchOff_op ( )
+}
+
+interface req_normal_WaterMonitor_On_Tick_op {
+	const WATER_FLOW : real
+	var water : real
+}
+
+interface I_normal_WaterMonitor_On_Tick_op {
+	normal_WaterMonitor_On_Tick_op ( )
+}
+
+interface req_normal_Aim_SetYaw_entry {
+	gimbalWritePan ( angle : int )
+	const GIMBAL_FLOOD_DELAY : nat
+	var angle : nat
+}
+
+interface I_normal_Aim_SetYaw_entry {
+	normal_Aim_SetYaw_entry ( )
+}
+
+interface req_normal_Spray_Off_SwitchOn_op {
+	pumpOn ( )
+}
+
+interface I_events_normal_Spray_Off_SwitchOn_op {
+	event monitorOn
+}
+
+interface I_normal_Spray_Off_SwitchOn_op {
+	normal_Spray_Off_SwitchOn_op ( )
+}
+
+interface req_normal_WaterMonitor_On_exit {
+	var inact_WaterMonitor_On : boolean = true
+}
+
+interface I_normal_WaterMonitor_On_exit {
+	normal_WaterMonitor_On_exit ( )
+}
+
+interface I_events_normal_WaterMonitor_Off_OffOut_op {
+	event monitorEmpty
+}
+
+interface I_normal_WaterMonitor_Off_OffOut_op {
+	normal_WaterMonitor_Off_OffOut_op ( )
+}
+
+interface I_events_normal_Aim_SetYaw_GimbalYawAck_op {
+	event gimbalYawAck
+}
+
+interface I_normal_Aim_SetYaw_GimbalYawAck_op {
+	normal_Aim_SetYaw_GimbalYawAck_op ( )
+}
+
+interface I_events_normal_Aim_SetPitch_GimbalPitchAck_op {
+	event gimbalPitchAck
+}
+
+interface I_normal_Aim_SetPitch_GimbalPitchAck_op {
+	normal_Aim_SetPitch_GimbalPitchAck_op ( )
+}
+
+interface I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ {
+	clock clk_WaterMonitor_On
+}
+
+interface I_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op {
+	normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_events_normal_Spray_On_OnOut_op_i_t {
+	event waterEmpty
+}
+
+interface I_normal_Spray_On_OnOut_op_i_t_op {
+	normal_Spray_On_OnOut_op_i_t_op ( )
+}
+
+interface I_req_normal_WaterMonitor_On_entry_j_2_18_t_2_18 {
+	var inact_WaterMonitor_On : boolean = true
+}
+
+interface I_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op {
+	normal_WaterMonitor_On_entry_j_2_18_t_2_18_op ( )
+}
+
+interface I_events_normal_Spray_On_SwitchOff_op_i_t {
+	event monitorOff
+}
+
+interface I_normal_Spray_On_SwitchOff_op_i_t_op {
+	normal_Spray_On_SwitchOff_op_i_t_op ( )
+}
+
+interface I_events_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5 {
+	event monitorOn
+}
+
+interface I_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op {
+	normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op ( )
+}
+
+interface I_clone_normal_Aim_SetPitch_entry {
+	clone_normal_Aim_SetPitch_entry ( )
+}
+
+interface I_clone_normal_Aim_SetYaw_entry {
+	clone_normal_Aim_SetYaw_entry ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_Tick_op {
+	clone_normal_WaterMonitor_On_Tick_op ( )
+}
+
+interface I_clone_normal_Aim_SetPitch_GimbalPitchAck_op {
+	clone_normal_Aim_SetPitch_GimbalPitchAck_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_Off_OffOut_op {
+	clone_normal_WaterMonitor_Off_OffOut_op ( )
+}
+
+interface I_clone_normal_Spray_Off_SwitchOn_op {
+	clone_normal_Spray_Off_SwitchOn_op ( )
+}
+
+interface I_clone_normal_Spray_Off_OffOut_op {
+	clone_normal_Spray_Off_OffOut_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_Out_op {
+	clone_normal_WaterMonitor_On_Out_op ( )
+}
+
+interface I_clone_normal_Aim_SetYaw_GimbalYawAck_op {
+	clone_normal_Aim_SetYaw_GimbalYawAck_op ( )
+}
+
+interface I_clone_normal_Spray_On_SwitchOff_op {
+	clone_normal_Spray_On_SwitchOff_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_entry {
+	clone_normal_WaterMonitor_On_entry ( )
+}
+
+interface I_clone_normal_Spray_On_OnOut_op {
+	clone_normal_Spray_On_OnOut_op ( )
+}
+
+interface I_clone_clone_normal_Aim_SetPitch_entry_waitOp_j_2_13_f_2 {
+	clone_clone_normal_Aim_SetPitch_entry_waitOp_j_2_13_f_2 ( i : nat )
+}
+
+interface I_clone_clone_normal_Spray_On_SwitchOff_op_normal_Spray_On_SwitchOff_op_i_t_op_i_j_2_10_3 {
+	clone_clone_normal_Spray_On_SwitchOff_op_normal_Spray_On_SwitchOff_op_i_t_op_i_j_2_10_3 ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_exit {
+	clone_normal_WaterMonitor_On_exit ( )
+}
+
+interface I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_18_28 {
+	clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_18_28 ( )
+}
+
+interface I_clone_clone_normal_Spray_Off_SwitchOn_op_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op_j_2_5_f_35 {
+	clone_clone_normal_Spray_Off_SwitchOn_op_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op_j_2_5_f_35 ( )
+}
+
+interface I_clone_clone_normal_Spray_On_OnOut_op_normal_Spray_On_OnOut_op_i_t_op_i_j_2_25_40 {
+	clone_clone_normal_Spray_On_OnOut_op_normal_Spray_On_OnOut_op_i_t_op_i_j_2_25_40 ( )
+}
+
+interface I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op_j_2_18_f_44 {
+	clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op_j_2_18_f_44 ( )
+}
+
+interface I_clone_clone_normal_Aim_SetYaw_entry_waitOp_j_2_19_f_49 {
+	clone_clone_normal_Aim_SetYaw_entry_waitOp_j_2_19_f_49 ( i : nat )
+}
+
+stm Aim {
+	uses GimbalSprayEvents requires pre_pkg_::Gimbal requires I_clone_normal_Aim_SetPitch_entry requires I_clone_normal_Aim_SetYaw_entry requires I_clone_normal_Aim_SetPitch_GimbalPitchAck_op requires I_clone_normal_Aim_SetYaw_GimbalYawAck_op const GIMBAL_FLOOD_DELAY : nat
+	var angle : nat
+	initial I
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition tWaiting {
+			from i
+			to EmptyCycle
+		}
+	}
+	state SetYaw {
+		initial i
+		state EmptyCycle {
+		}
+		transition tSetYaw {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_Aim_SetYaw_entry ( )
+	}
+	state SetPitch {
+		initial i
+		state EmptyCycle {
+		}
+		transition tSetPitch {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_Aim_SetPitch_entry ( )
+	}
+	transition Init {
+		from I
+		to Waiting
+	}
+	transition GimbalYaw {
+		from Waiting
+		to SetYaw
+		trigger gimbalYaw ? angle
+	}
+	transition GimbalYawAck {
+		from SetYaw
+		to Waiting
+		action clone_normal_Aim_SetYaw_GimbalYawAck_op ( )
+	}
+	transition GimbalPitch {
+		from Waiting
+		to SetPitch
+		trigger gimbalPitch ? angle
+	}
+	transition GimbalPitchAck {
+		from SetPitch
+		to Waiting
+		action clone_normal_Aim_SetPitch_GimbalPitchAck_op ( )
+	}
+}
+
+stm Spray {
+	uses SprayPlanningEvents requires pre_pkg_::Pump requires I_clone_normal_Spray_Off_SwitchOn_op requires I_clone_normal_Spray_Off_OffOut_op requires I_clone_normal_Spray_On_SwitchOff_op requires I_clone_normal_Spray_On_OnOut_op event monitorOn
+	event monitorOff
+	event monitorEmpty
+	initial I
+	state Off {
+		initial i
+		state EmptyCycle {
+		}
+		transition tOff {
+			from i
+			to EmptyCycle
+		}
+	}
+	state On {
+		state EmptyCycle {
+		}
+		initial i
+		transition tOn {
+			from i
+			to EmptyCycle
+		}
+	}
+	final Out
+	transition Init {
+		from I
+		to Off
+	}
+	transition SwitchOn {
+		from Off
+		to On
+		trigger startSpray
+		action clone_normal_Spray_Off_SwitchOn_op ( )
+	}
+	transition OnOut {
+		from On
+		to Out
+		trigger monitorEmpty
+		action clone_normal_Spray_On_OnOut_op ( )
+	}
+	transition SwitchOff {
+		from On
+		to Off
+		trigger stopSpray
+		action clone_normal_Spray_On_SwitchOff_op ( )
+	}
+	transition OffOut {
+		from Off
+		to Out
+		trigger monitorEmpty
+		action clone_normal_Spray_Off_OffOut_op ( )
+	}
+}
+
+stm WaterMonitor {
+	uses I_normal_WaterMonitor_On_inact_sinceEntry requires I_clone_normal_WaterMonitor_On_Tick_op requires I_clone_normal_WaterMonitor_Off_OffOut_op requires I_clone_normal_WaterMonitor_On_Out_op requires I_clone_normal_WaterMonitor_On_entry requires I_clone_normal_WaterMonitor_On_exit const WATER_FLOW : real
+	const TIME_PER_UNIT : nat = 1
+	var water : real = 1
+	event monitorOn
+	event monitorOff
+	event monitorEmpty
+	initial I
+	state Off {
+		state EmptyCycle {
+		}
+		initial i
+		transition tOff {
+			from i
+			to EmptyCycle
+		}
+	}
+	state On {
+		state EmptyCycle {
+		}
+		initial i
+		transition tOn {
+			from i
+			to EmptyCycle
+		}
+		exit clone_normal_WaterMonitor_On_exit ( )
+		entry clone_normal_WaterMonitor_On_entry ( )
+	}
+	final F
+	transition Init {
+		from I
+		to Off
+	}
+	transition SwitchOn {
+		from Off
+		to On
+		trigger monitorOn
+		condition 0 < water
+	}
+	transition SwitchOff {
+		from On
+		to Off
+		trigger monitorOff
+		condition since ( clk_WaterMonitor_On ) < TIME_PER_UNIT
+	}
+	transition Tick {
+		from On
+		to On
+		condition TIME_PER_UNIT <= since ( clk_WaterMonitor_On )
+		action clone_normal_WaterMonitor_On_Tick_op ( )
+	}
+	transition Out {
+		from On
+		to F
+		condition water <= 0
+		action clone_normal_WaterMonitor_On_Out_op ( )
+	}
+	transition OffOut {
+		from Off
+		to F
+		condition water <= 0
+		action clone_normal_WaterMonitor_Off_OffOut_op ( )
+	}
+}
+
+operation normal_Spray_On_OnOut_op ( ) {
+	uses I_events_normal_Spray_On_OnOut_op requires req_normal_Spray_On_OnOut_op requires I_normal_Spray_On_OnOut_op_i_t_op initial i
+	final f
+	junction j_2_25
+	transition t {
+		from i
+		to j_2_25
+		action normal_Spray_On_OnOut_op_i_t_op ( )
+	}
+	transition t_2_25 {
+		from j_2_25
+		to f
+		action pumpOff ( )
+	}
+}
+
+operation normal_WaterMonitor_On_Out_op ( ) {
+	uses I_events_normal_WaterMonitor_On_Out_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation normal_Aim_SetPitch_entry ( ) {
+	requires req_normal_Aim_SetPitch_entry requires pre_pkg_uav::I_waitOp final f
+	initial i
+	junction j_2_13
+	transition t {
+		from i
+		to j_2_13
+		action gimbalWriteTilt ( angle )
+	}
+	transition t_2_13 {
+		from j_2_13
+		to f
+		action waitOp ( GIMBAL_FLOOD_DELAY )
+	}
+}
+
+operation normal_WaterMonitor_On_entry ( ) {
+	requires req_normal_WaterMonitor_On_entry requires I_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op requires I_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op initial i
+	final f
+	junction j_2_18
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_18 {
+		from j_2_18
+		to f
+		action normal_WaterMonitor_On_entry_j_2_18_t_2_18_op ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_18
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_18
+		action normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_WaterMonitor_On
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_WaterMonitor_On
+	}
+}
+
+operation normal_Spray_Off_OffOut_op ( ) {
+	uses I_events_normal_Spray_Off_OffOut_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action waterEmpty
+	}
+}
+
+operation normal_Spray_On_SwitchOff_op ( ) {
+	uses I_events_normal_Spray_On_SwitchOff_op requires req_normal_Spray_On_SwitchOff_op requires I_normal_Spray_On_SwitchOff_op_i_t_op initial i
+	final f
+	junction j_2_10
+	transition t {
+		from i
+		to j_2_10
+		action normal_Spray_On_SwitchOff_op_i_t_op ( )
+	}
+	transition t_2_10 {
+		from j_2_10
+		to f
+		action pumpOff ( )
+	}
+}
+
+operation normal_WaterMonitor_On_Tick_op ( ) {
+	requires req_normal_WaterMonitor_On_Tick_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action water = water - WATER_FLOW
+	}
+}
+
+operation normal_Aim_SetYaw_entry ( ) {
+	requires req_normal_Aim_SetYaw_entry requires pre_pkg_uav::I_waitOp initial i
+	final f
+	junction j_2_19
+	transition t {
+		from i
+		to j_2_19
+		action gimbalWritePan ( angle )
+	}
+	transition t_2_19 {
+		from j_2_19
+		to f
+		action waitOp ( GIMBAL_FLOOD_DELAY )
+	}
+}
+
+operation normal_Spray_Off_SwitchOn_op ( ) {
+	uses I_events_normal_Spray_Off_SwitchOn_op requires req_normal_Spray_Off_SwitchOn_op requires I_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op final f
+	initial i
+	junction j_2_5
+	transition t {
+		from i
+		to j_2_5
+		action pumpOn ( )
+	}
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op ( )
+	}
+}
+
+operation normal_WaterMonitor_On_exit ( ) {
+	requires req_normal_WaterMonitor_On_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = true
+	}
+}
+
+operation normal_WaterMonitor_Off_OffOut_op ( ) {
+	uses I_events_normal_WaterMonitor_Off_OffOut_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation normal_Aim_SetYaw_GimbalYawAck_op ( ) {
+	uses I_events_normal_Aim_SetYaw_GimbalYawAck_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalYawAck
+	}
+}
+
+operation normal_Aim_SetPitch_GimbalPitchAck_op ( ) {
+	uses I_events_normal_Aim_SetPitch_GimbalPitchAck_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalPitchAck
+	}
+}
+
+operation normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # clk_WaterMonitor_On
+	}
+}
+
+operation normal_Spray_On_OnOut_op_i_t_op ( ) {
+	uses I_events_normal_Spray_On_OnOut_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action waterEmpty
+	}
+}
+
+operation normal_WaterMonitor_On_entry_j_2_18_t_2_18_op ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_j_2_18_t_2_18 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = false
+	}
+}
+
+operation normal_Spray_On_SwitchOff_op_i_t_op ( ) {
+	uses I_events_normal_Spray_On_SwitchOff_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorOff
+	}
+}
+
+operation normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op ( ) {
+	uses I_events_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorOn
+	}
+}
+
+operation clone_normal_Aim_SetPitch_entry ( ) {
+	requires req_normal_Aim_SetPitch_entry requires I_clone_clone_normal_Aim_SetPitch_entry_waitOp_j_2_13_f_2 final f
+	initial i
+	junction j_2_13
+	transition t {
+		from i
+		to j_2_13
+		action gimbalWriteTilt ( angle )
+	}
+	transition t_2_13 {
+		from j_2_13
+		to f
+		action clone_clone_normal_Aim_SetPitch_entry_waitOp_j_2_13_f_2 ( GIMBAL_FLOOD_DELAY )
+	}
+}
+
+operation clone_normal_Aim_SetYaw_entry ( ) {
+	requires req_normal_Aim_SetYaw_entry requires I_clone_clone_normal_Aim_SetYaw_entry_waitOp_j_2_19_f_49 initial i
+	final f
+	junction j_2_19
+	transition t {
+		from i
+		to j_2_19
+		action gimbalWritePan ( angle )
+	}
+	transition t_2_19 {
+		from j_2_19
+		to f
+		action clone_clone_normal_Aim_SetYaw_entry_waitOp_j_2_19_f_49 ( GIMBAL_FLOOD_DELAY )
+	}
+}
+
+operation clone_normal_WaterMonitor_On_Tick_op ( ) {
+	requires req_normal_WaterMonitor_On_Tick_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action water = water - WATER_FLOW
+	}
+}
+
+operation clone_normal_Aim_SetPitch_GimbalPitchAck_op ( ) {
+	uses I_events_normal_Aim_SetPitch_GimbalPitchAck_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalPitchAck
+	}
+}
+
+operation clone_normal_WaterMonitor_Off_OffOut_op ( ) {
+	uses I_events_normal_WaterMonitor_Off_OffOut_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation clone_normal_Spray_Off_SwitchOn_op ( ) {
+	uses I_events_normal_Spray_Off_SwitchOn_op requires req_normal_Spray_Off_SwitchOn_op requires I_clone_clone_normal_Spray_Off_SwitchOn_op_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op_j_2_5_f_35 final f
+	initial i
+	junction j_2_5
+	transition t {
+		from i
+		to j_2_5
+		action pumpOn ( )
+	}
+	transition t_2_5 {
+		from j_2_5
+		to f
+		action clone_clone_normal_Spray_Off_SwitchOn_op_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op_j_2_5_f_35 ( )
+	}
+}
+
+operation clone_normal_Spray_Off_OffOut_op ( ) {
+	uses I_events_normal_Spray_Off_OffOut_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action waterEmpty
+	}
+}
+
+operation clone_normal_WaterMonitor_On_Out_op ( ) {
+	uses I_events_normal_WaterMonitor_On_Out_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation clone_normal_Aim_SetYaw_GimbalYawAck_op ( ) {
+	uses I_events_normal_Aim_SetYaw_GimbalYawAck_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalYawAck
+	}
+}
+
+operation clone_normal_Spray_On_SwitchOff_op ( ) {
+	uses I_events_normal_Spray_On_SwitchOff_op requires req_normal_Spray_On_SwitchOff_op requires I_clone_clone_normal_Spray_On_SwitchOff_op_normal_Spray_On_SwitchOff_op_i_t_op_i_j_2_10_3 initial i
+	final f
+	junction j_2_10
+	transition t {
+		from i
+		to j_2_10
+		action clone_clone_normal_Spray_On_SwitchOff_op_normal_Spray_On_SwitchOff_op_i_t_op_i_j_2_10_3 ( )
+	}
+	transition t_2_10 {
+		from j_2_10
+		to f
+		action pumpOff ( )
+	}
+}
+
+operation clone_normal_WaterMonitor_On_entry ( ) {
+	requires req_normal_WaterMonitor_On_entry requires I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_18_28 requires I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op_j_2_18_f_44 initial i
+	final f
+	junction j_2_18
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_18 {
+		from j_2_18
+		to f
+		action clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op_j_2_18_f_44 ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_18
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_18
+		action clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_18_28 ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_WaterMonitor_On
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_WaterMonitor_On
+	}
+}
+
+operation clone_normal_Spray_On_OnOut_op ( ) {
+	uses I_events_normal_Spray_On_OnOut_op requires req_normal_Spray_On_OnOut_op requires I_clone_clone_normal_Spray_On_OnOut_op_normal_Spray_On_OnOut_op_i_t_op_i_j_2_25_40 initial i
+	final f
+	junction j_2_25
+	transition t {
+		from i
+		to j_2_25
+		action clone_clone_normal_Spray_On_OnOut_op_normal_Spray_On_OnOut_op_i_t_op_i_j_2_25_40 ( )
+	}
+	transition t_2_25 {
+		from j_2_25
+		to f
+		action pumpOff ( )
+	}
+}
+
+operation clone_clone_normal_Aim_SetPitch_entry_waitOp_j_2_13_f_2 ( i : nat
+) {
+	final f
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation clone_clone_normal_Spray_On_SwitchOff_op_normal_Spray_On_SwitchOff_op_i_t_op_i_j_2_10_3 ( ) {
+	uses I_events_normal_Spray_On_SwitchOff_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorOff
+	}
+}
+
+operation clone_normal_WaterMonitor_On_exit ( ) {
+	requires req_normal_WaterMonitor_On_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = true
+	}
+}
+
+operation clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_18_28 ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # clk_WaterMonitor_On
+	}
+}
+
+operation clone_clone_normal_Spray_Off_SwitchOn_op_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5_op_j_2_5_f_35 ( ) {
+	uses I_events_normal_Spray_Off_SwitchOn_op_j_2_5_t_2_5 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorOn
+	}
+}
+
+operation clone_clone_normal_Spray_On_OnOut_op_normal_Spray_On_OnOut_op_i_t_op_i_j_2_25_40 ( ) {
+	uses I_events_normal_Spray_On_OnOut_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action waterEmpty
+	}
+}
+
+operation clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_18_t_2_18_op_j_2_18_f_44 ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_j_2_18_t_2_18 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = false
+	}
+}
+
+operation clone_clone_normal_Aim_SetYaw_entry_waitOp_j_2_19_f_49 ( i : nat
+) {
+	final f
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+

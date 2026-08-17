@@ -1,0 +1,32 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "pre_pkg__VisualNav.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pre_pkg__VisualNav
+P_pre_pkg__VisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__VisualNav::O__(
+		id__,
+		const_pre_pkg__VisualNav_TRACK_DIST,
+		const_pre_pkg__VisualNav_SCAN_DIST
+	)
+assert P_pre_pkg__VisualNav :[deadlock-free]	
+assert P_pre_pkg__VisualNav;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__VisualNav :[deterministic]
+assert P_pre_pkg__VisualNav :[divergence-free]

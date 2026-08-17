@@ -1,0 +1,17 @@
+assertion A1 : pre_pkg__sim::Arduino is deadlock-free
+
+assertion A2 : pre_pkg__sim::RaspberryPi is deadlock-free 
+
+simulation RC of Arduino{
+	cycleDef cycle==1
+}
+ 
+assertion A3: pre_pkg__sim::Arduino refines RC  in the traces model with cycleDef of RC set to 1, and cycleDef of pre_pkg__sim::Arduino set to 1 
+assertion A4: RC refines pre_pkg__sim::Arduino  in the traces model with cycleDef of RC set to 1, and cycleDef of pre_pkg__sim::Arduino set to 1 
+
+simulation RCRaspberryPi of RaspberryPi{
+	cycleDef cycle == 1
+} 
+
+assertion A5: pre_pkg__sim::RaspberryPi refines RCRaspberryPi  in the traces model with cycleDef of RCRaspberryPi set to 1, and cycleDef of pre_pkg__sim::RaspberryPi set to 1 
+assertion A6: RCRaspberryPi refines pre_pkg__sim::RaspberryPi  in the traces model with cycleDef of RCRaspberryPi set to 1, and cycleDef of pre_pkg__sim::RaspberryPi set to 1 

@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:51
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_defs.csp"
+include "pre_pkg__fcWaypointCall.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pre_pkg__OP_fcWaypointCall
+P_pre_pkg__OP_fcWaypointCall = let
+	id__ = 0
+	
+	param_pos = (0,0,0,0)
+	
+	
+	
+within
+	pre_pkg_::OP_fcWaypointCall::O__(id__,
+				param_pos)
+assert P_pre_pkg__OP_fcWaypointCall :[deadlock-free]	
+assert P_pre_pkg__OP_fcWaypointCall;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__OP_fcWaypointCall :[deterministic]
+assert P_pre_pkg__OP_fcWaypointCall :[divergence-free]

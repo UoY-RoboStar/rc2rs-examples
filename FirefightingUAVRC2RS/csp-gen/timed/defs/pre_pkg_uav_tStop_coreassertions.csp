@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg_uav_defs.csp"
+include "pre_pkg_uav_tStop.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg_uav_OP_tStop
+P_pre_pkg_uav_OP_tStop = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_uav::OP_tStop::O__(id__)
+assert P_pre_pkg_uav_OP_tStop :[deadlock-free]	
+assert P_pre_pkg_uav_OP_tStop;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg_uav_OP_tStop :[deterministic]
+assert P_pre_pkg_uav_OP_tStop :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg_uav_OP_tStop[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg_uav_OP_tStop

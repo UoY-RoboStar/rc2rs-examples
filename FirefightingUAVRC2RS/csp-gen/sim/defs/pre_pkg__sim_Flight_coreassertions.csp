@@ -1,0 +1,39 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:10
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "pre_pkg__sim_Flight.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_Flight
+P_pre_pkg__sim_Flight = let
+	cycle_pre_pkg__sim_Flight_Flight = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__sim_Flight::O__(
+		id__,
+		const_pre_pkg__sim_Flight_CLIMB_LIFT,
+		const_pre_pkg__sim_Flight_DELAY_DISARM,
+		const_pre_pkg__sim_Flight_HOME
+	)
+assert P_pre_pkg__sim_Flight :[deadlock-free]	
+assert P_pre_pkg__sim_Flight;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_Flight :[deterministic]
+assert P_pre_pkg__sim_Flight :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_Flight[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_Flight

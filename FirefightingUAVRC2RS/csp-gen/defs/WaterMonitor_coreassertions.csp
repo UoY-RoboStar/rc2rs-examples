@@ -1,0 +1,33 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "state_defs.csp"
+include "WaterMonitor.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate WaterMonitor
+P_WaterMonitor = let
+	id__ = 0
+	
+	
+	const_WaterMonitor_TIME_PER_UNIT = 1
+	
+within
+	WaterMonitor::O__(
+		id__,
+		const_WaterMonitor_WATER_FLOW,
+		const_WaterMonitor_TIME_PER_UNIT
+	)
+assert P_WaterMonitor :[deadlock-free]	
+assert P_WaterMonitor;RUN({r__}) :[deadlock-free]
+assert P_WaterMonitor :[deterministic]
+assert P_WaterMonitor :[divergence-free]

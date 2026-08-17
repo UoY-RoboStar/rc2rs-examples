@@ -1,0 +1,1622 @@
+package pre_pkg_ 
+//import ::AircraftStatus import ::MissionStatus import ::NavCommand 
+interface SearchVars {
+	var searchComplete : boolean
+}
+
+interface Search {
+	search ( )
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_inact_sinceEntry {
+	var inact_Planning_Connected_Mission_LosingFire : boolean = true
+	clock clk_Planning_Connected_Mission_LosingFire
+}
+
+interface I_normal_Planning_Connect_inact_sinceEntry {
+	var inact_Planning_Connect : boolean = true
+	clock clk_Planning_Connect
+}
+
+interface I_events_normal_Planning_Connected_Mission_BatMS_op {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_BatMS_op {
+	normal_Planning_Connected_Mission_BatMS_op ( )
+}
+
+interface req_normal_Planning_Connected_Mission_FlyToWall_entry {
+	const WALL_LOC : Position
+}
+
+interface I_events_normal_Planning_Connected_Mission_FlyToWall_entry {
+	event missionStatus : MissionStatus
+	event waypoint : Position
+}
+
+interface I_normal_Planning_Connected_Mission_FlyToWall_entry {
+	normal_Planning_Connected_Mission_FlyToWall_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_Search_entry {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_Search_entry {
+	normal_Planning_Connected_Mission_Search_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_SPRT_op {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_SPRT_op {
+	normal_Planning_Connected_Mission_SPRT_op ( )
+}
+
+interface I_events_normal_Planning_Connected_TakeOffAndClimb_entry {
+	event missionStatus : MissionStatus
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_TakeOffAndClimb_entry {
+	normal_Planning_Connected_TakeOffAndClimb_entry ( )
+}
+
+interface req_normal_Planning_Connect_entry {
+	var inact_Planning_Connect : boolean = true
+	clock clk_Planning_Connect
+}
+
+interface I_normal_Planning_Connect_entry {
+	normal_Planning_Connect_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_Search_SETF_op {
+	event vnavEnable
+}
+
+interface I_normal_Planning_Connected_Mission_Search_SETF_op {
+	normal_Planning_Connected_Mission_Search_SETF_op ( )
+}
+
+interface req_normal_Planning_Connected_Mission_LosingFire_exit {
+	var inact_Planning_Connected_Mission_LosingFire : boolean = true
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_exit {
+	normal_Planning_Connected_Mission_LosingFire_exit ( )
+}
+
+interface req_normal_Planning_Connect_exit {
+	var inact_Planning_Connect : boolean = true
+}
+
+interface I_normal_Planning_Connect_exit {
+	normal_Planning_Connect_exit ( )
+}
+
+interface req_normal_Planning_Connected_Mission_entry {
+	var searchComplete : boolean
+}
+
+interface I_normal_Planning_Connected_Mission_entry {
+	normal_Planning_Connected_Mission_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_Spray_entry {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_Spray_entry {
+	normal_Planning_Connected_Mission_Spray_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_exit {
+	event vnavDisable
+}
+
+interface I_normal_Planning_Connected_Mission_exit {
+	normal_Planning_Connected_Mission_exit ( )
+}
+
+interface I_events_normal_Planning_Connected_Disarm_entry {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Disarm_entry {
+	normal_Planning_Connected_Disarm_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_LosingFire_LostFire_op {
+	event vnavDisable
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_LostFire_op {
+	normal_Planning_Connected_Mission_LosingFire_LostFire_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Land_entry {
+	event missionStatus : MissionStatus
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_Land_entry {
+	normal_Planning_Connected_Land_entry ( )
+}
+
+interface I_events_normal_Planning_Connect_ConnectTO_op {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connect_ConnectTO_op {
+	normal_Planning_Connect_ConnectTO_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_TrackFire_entry {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_TrackFire_entry {
+	normal_Planning_Connected_Mission_TrackFire_entry ( )
+}
+
+interface req_normal_Planning_Connected_Mission_LosingFire_entry {
+	var inact_Planning_Connected_Mission_LosingFire : boolean = true
+	clock clk_Planning_Connected_Mission_LosingFire
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_entry {
+	normal_Planning_Connected_Mission_LosingFire_entry ( )
+}
+
+interface I_events_normal_Planning_Connect_ConnectOK_op {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connect_ConnectOK_op {
+	normal_Planning_Connect_ConnectOK_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_WatMS_op {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_WatMS_op {
+	normal_Planning_Connected_Mission_WatMS_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_Spray_Spraying_exit {
+	event stopSpray
+}
+
+interface I_normal_Planning_Connected_Mission_Spray_Spraying_exit {
+	normal_Planning_Connected_Mission_Spray_Spraying_exit ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_Spray_Spraying_entry {
+	event startSpray
+}
+
+interface I_normal_Planning_Connected_Mission_Spray_Spraying_entry {
+	normal_Planning_Connected_Mission_Spray_Spraying_entry ( )
+}
+
+interface I_events_normal_Planning_Connected_GoHome_entry {
+	event missionStatus : MissionStatus
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_GoHome_entry {
+	normal_Planning_Connected_GoHome_entry ( )
+}
+
+interface I_req_normal_Planning_Connect_entry_t_thenJ__t_thenTA_ {
+	clock clk_Planning_Connect
+}
+
+interface I_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op {
+	normal_Planning_Connect_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_req_normal_Planning_Connect_entry_j_2_15_t_2_15 {
+	var inact_Planning_Connect : boolean = true
+}
+
+interface I_normal_Planning_Connect_entry_j_2_15_t_2_15_op {
+	normal_Planning_Connect_entry_j_2_15_t_2_15_op ( )
+}
+
+interface I_events_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11 {
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op {
+	normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op ( )
+}
+
+interface I_events_normal_Planning_Connected_TakeOffAndClimb_entry_i_t {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op {
+	normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op ( )
+}
+
+interface I_events_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9 {
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op {
+	normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Land_entry_i_t {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Land_entry_i_t_op {
+	normal_Planning_Connected_Land_entry_i_t_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Mission_FlyToWall_entry_i_t {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op {
+	normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op ( )
+}
+
+interface I_req_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA_ {
+	clock clk_Planning_Connected_Mission_LosingFire
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op {
+	normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_events_normal_Planning_Connected_GoHome_entry_i_t {
+	event missionStatus : MissionStatus
+}
+
+interface I_normal_Planning_Connected_GoHome_entry_i_t_op {
+	normal_Planning_Connected_GoHome_entry_i_t_op ( )
+}
+
+interface I_req_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 {
+	const WALL_LOC : Position
+}
+
+interface I_events_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 {
+	event waypoint : Position
+}
+
+interface I_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op {
+	normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op ( )
+}
+
+interface I_events_normal_Planning_Connected_Land_entry_j_2_17_t_2_17 {
+	event navCommand : NavCommand
+}
+
+interface I_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op {
+	normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op ( )
+}
+
+interface I_req_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8 {
+	var inact_Planning_Connected_Mission_LosingFire : boolean = true
+}
+
+interface I_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op {
+	normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_Search_SETF_op {
+	clone_normal_Planning_Connected_Mission_Search_SETF_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_Spray_entry {
+	clone_normal_Planning_Connected_Mission_Spray_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_exit {
+	clone_normal_Planning_Connected_Mission_exit ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_Search_entry {
+	clone_normal_Planning_Connected_Mission_Search_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Land_entry {
+	clone_normal_Planning_Connected_Land_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_LosingFire_exit {
+	clone_normal_Planning_Connected_Mission_LosingFire_exit ( )
+}
+
+interface I_clone_normal_Planning_Connected_TakeOffAndClimb_entry {
+	clone_normal_Planning_Connected_TakeOffAndClimb_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_SPRT_op {
+	clone_normal_Planning_Connected_Mission_SPRT_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_BatMS_op {
+	clone_normal_Planning_Connected_Mission_BatMS_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_WatMS_op {
+	clone_normal_Planning_Connected_Mission_WatMS_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_TrackFire_entry {
+	clone_normal_Planning_Connected_Mission_TrackFire_entry ( )
+}
+
+interface I_clone_normal_Planning_Connect_ConnectTO_op {
+	clone_normal_Planning_Connect_ConnectTO_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_GoHome_entry {
+	clone_normal_Planning_Connected_GoHome_entry ( )
+}
+
+interface I_clone_normal_Planning_Connect_ConnectOK_op {
+	clone_normal_Planning_Connect_ConnectOK_op ( )
+}
+
+interface I_clone_normal_Planning_Connected_Disarm_entry {
+	clone_normal_Planning_Connected_Disarm_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_Spray_Spraying_exit {
+	clone_normal_Planning_Connected_Mission_Spray_Spraying_exit ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_FlyToWall_entry {
+	clone_normal_Planning_Connected_Mission_FlyToWall_entry ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_LosingFire_LostFire_op {
+	clone_normal_Planning_Connected_Mission_LosingFire_LostFire_op ( )
+}
+
+interface I_clone_normal_Planning_Connect_entry {
+	clone_normal_Planning_Connect_entry ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op_i_j_2_4_4 {
+	clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op_i_j_2_4_4 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_i_t_op_i_j_2_11_9 {
+	clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_i_t_op_i_j_2_11_9 ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_Spray_Spraying_entry {
+	clone_normal_Planning_Connected_Mission_Spray_Spraying_entry ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op_j_2_11_f_16 {
+	clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op_j_2_11_f_16 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op_i_j_2_9_19 {
+	clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op_i_j_2_9_19 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op_j_2_17_f_26 {
+	clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op_j_2_17_f_26 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op_j_2_9_f_30 {
+	clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op_j_2_9_f_30 ( )
+}
+
+interface I_clone_normal_Planning_Connect_exit {
+	clone_normal_Planning_Connect_exit ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_entry {
+	clone_normal_Planning_Connected_Mission_entry ( )
+}
+
+interface I_clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_15_39 {
+	clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_15_39 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_j_2_15_t_2_15_op_j_2_15_f_42 {
+	clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_j_2_15_t_2_15_op_j_2_15_f_42 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_i_t_op_i_j_2_17_45 {
+	clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_i_t_op_i_j_2_17_45 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46 {
+	clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46 ( )
+}
+
+interface I_clone_normal_Planning_Connected_Mission_LosingFire_entry {
+	clone_normal_Planning_Connected_Mission_LosingFire_entry ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_8_52 {
+	clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_8_52 ( )
+}
+
+interface I_clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op_j_2_8_f_53 {
+	clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op_j_2_8_f_53 ( )
+}
+
+stm Planning {
+	uses GCSMissionEvents uses SprayPlanningEvents uses FirePlanningEvents uses FlightPlanningEvents uses BatteryPlanningEvents uses GimbalPlanningEvents uses VisualPlanningEvents uses SearchVars uses I_normal_Planning_Connected_Mission_LosingFire_inact_sinceEntry uses I_normal_Planning_Connect_inact_sinceEntry requires GCS requires Search requires I_clone_normal_Planning_Connected_Mission_Search_SETF_op requires I_clone_normal_Planning_Connected_Mission_Spray_entry requires I_clone_normal_Planning_Connected_Mission_exit requires I_clone_normal_Planning_Connected_Mission_Search_entry requires I_clone_normal_Planning_Connected_Land_entry requires I_clone_normal_Planning_Connected_Mission_LosingFire_exit requires I_clone_normal_Planning_Connected_TakeOffAndClimb_entry requires I_clone_normal_Planning_Connected_Mission_SPRT_op requires I_clone_normal_Planning_Connected_Mission_BatMS_op requires I_clone_normal_Planning_Connected_Mission_WatMS_op requires I_clone_normal_Planning_Connected_Mission_TrackFire_entry requires I_clone_normal_Planning_Connect_ConnectTO_op requires I_clone_normal_Planning_Connected_GoHome_entry requires I_clone_normal_Planning_Connect_ConnectOK_op requires I_clone_normal_Planning_Connected_Disarm_entry requires I_clone_normal_Planning_Connected_Mission_Spray_Spraying_exit requires I_clone_normal_Planning_Connected_Mission_FlyToWall_entry requires I_clone_normal_Planning_Connected_Mission_LosingFire_LostFire_op requires I_clone_normal_Planning_Connect_entry requires I_clone_normal_Planning_Connected_Mission_Spray_Spraying_entry requires I_clone_normal_Planning_Connect_exit requires I_clone_normal_Planning_Connected_Mission_entry requires I_clone_normal_Planning_Connected_Mission_LosingFire_entry const WALL_LOC : Position
+	const FIRE_TO : nat , INIT_TO : nat
+	var astatus : AircraftStatus
+	initial I
+	state Connect {
+		initial I
+		state Waiting {
+			state EmptyCycle {
+			}
+			initial i
+			transition tWaiting {
+				from i
+				to EmptyCycle
+			}
+		}
+		transition IW {
+			from I
+			to Waiting
+		}
+		transition PollS {
+			from Waiting
+			to Waiting
+			trigger uavStatus ? astatus
+		}
+		exit clone_normal_Planning_Connect_exit ( )
+		entry clone_normal_Planning_Connect_entry ( )
+	}
+	state Connected {
+		initial I
+		state TakeOffAndClimb {
+			initial I
+			state Waiting {
+				initial i
+				state EmptyCycle {
+				}
+				transition tWaiting {
+					from i
+					to EmptyCycle
+				}
+			}
+			transition IW {
+				from I
+				to Waiting
+			}
+			transition PollS {
+				from Waiting
+				to Waiting
+				trigger uavStatus ? astatus
+			}
+			entry clone_normal_Planning_Connected_TakeOffAndClimb_entry ( )
+		}
+		state Mission {
+			initial I
+			state FlyToWall {
+				initial I
+				state Waiting {
+					initial i
+					state EmptyCycle {
+					}
+					transition tWaiting {
+						from i
+						to EmptyCycle
+					}
+				}
+				transition IW {
+					from I
+					to Waiting
+				}
+				transition PollS {
+					from Waiting
+					to Waiting
+					trigger uavStatus ? astatus
+				}
+				entry clone_normal_Planning_Connected_Mission_FlyToWall_entry ( )
+			}
+			state Search {
+				initial i
+				state EmptyCycle {
+				}
+				transition tSearch {
+					from i
+					to EmptyCycle
+				}
+				entry clone_normal_Planning_Connected_Mission_Search_entry ( )
+			}
+			state TrackFire {
+				initial i
+				state EmptyCycle {
+				}
+				transition tTrackFire {
+					from i
+					to EmptyCycle
+				}
+				entry clone_normal_Planning_Connected_Mission_TrackFire_entry ( )
+			}
+			state Spray {
+				initial I
+				state WaitGimbal {
+					state EmptyCycle {
+					}
+					initial i
+					transition tWaitGimbal {
+						from i
+						to EmptyCycle
+					}
+				}
+				state Spraying {
+					initial i
+					state EmptyCycle {
+					}
+					transition tSpraying {
+						from i
+						to EmptyCycle
+					}
+					entry clone_normal_Planning_Connected_Mission_Spray_Spraying_entry ( )
+					exit clone_normal_Planning_Connected_Mission_Spray_Spraying_exit ( )
+				}
+				transition Init {
+					from I
+					to WaitGimbal
+				}
+				transition DoSpray {
+					from WaitGimbal
+					to Spraying
+					trigger gimbalAimed
+				}
+				entry clone_normal_Planning_Connected_Mission_Spray_entry ( )
+			}
+			state LosingFire {
+				initial i
+				state EmptyCycle {
+				}
+				transition tLosingFire {
+					from i
+					to EmptyCycle
+				}
+				exit clone_normal_Planning_Connected_Mission_LosingFire_exit ( )
+				entry clone_normal_Planning_Connected_Mission_LosingFire_entry ( )
+			}
+			transition Init {
+				from I
+				to FlyToWall
+			}
+			transition FWSE {
+				from FlyToWall
+				to Search
+				condition astatus == AircraftStatus :: AtWaypoint
+			}
+			transition SETF {
+				from Search
+				to TrackFire
+				trigger fireDetected
+				action clone_normal_Planning_Connected_Mission_Search_SETF_op ( )
+			}
+			transition TFSE {
+				from TrackFire
+				to LosingFire
+				trigger fireLost
+			}
+			transition TFSP {
+				from TrackFire
+				to Spray
+				trigger trackingGained
+			}
+			transition SPTF {
+				from Spray
+				to TrackFire
+				trigger trackingLost
+			}
+			transition RegainedFire {
+				from LosingFire
+				to TrackFire
+				trigger fireDetected
+			}
+			transition LostFire {
+				from LosingFire
+				to Search
+				condition FIRE_TO < since ( clk_Planning_Connected_Mission_LosingFire )
+				action clone_normal_Planning_Connected_Mission_LosingFire_LostFire_op ( )
+			}
+			entry clone_normal_Planning_Connected_Mission_entry ( )
+			exit clone_normal_Planning_Connected_Mission_exit ( )
+		}
+		state GoHome {
+			initial I
+			state Waiting {
+				state EmptyCycle {
+				}
+				initial i
+				transition tWaiting {
+					from i
+					to EmptyCycle
+				}
+			}
+			transition IW {
+				from I
+				to Waiting
+			}
+			transition Poll {
+				from Waiting
+				to Waiting
+				trigger uavStatus ? astatus
+			}
+			entry clone_normal_Planning_Connected_GoHome_entry ( )
+		}
+		state Land {
+			initial I
+			state Waiting {
+				state EmptyCycle {
+				}
+				initial i
+				transition tWaiting {
+					from i
+					to EmptyCycle
+				}
+			}
+			transition IW {
+				from I
+				to Waiting
+			}
+			transition Poll {
+				from Waiting
+				to Waiting
+				trigger uavStatus ? astatus
+			}
+			entry clone_normal_Planning_Connected_Land_entry ( )
+		}
+		state Disarm {
+			initial I
+			state Waiting {
+				initial i
+				state EmptyCycle {
+				}
+				transition tWaiting {
+					from i
+					to EmptyCycle
+				}
+			}
+			transition IW {
+				from I
+				to Waiting
+			}
+			transition Poll {
+				from Waiting
+				to Waiting
+				trigger uavStatus ? astatus
+			}
+			entry clone_normal_Planning_Connected_Disarm_entry ( )
+		}
+		transition Start {
+			from I
+			to TakeOffAndClimb
+		}
+		transition TOFW {
+			from TakeOffAndClimb
+			to Mission
+			condition astatus == AircraftStatus :: AtAltitude
+		}
+		transition SPRT {
+			from Mission
+			to GoHome
+			condition searchComplete
+			action clone_normal_Planning_Connected_Mission_SPRT_op ( )
+		}
+		transition Retreated {
+			from GoHome
+			to Land
+			condition astatus == AircraftStatus :: AtHome
+		}
+		transition Landed {
+			from Land
+			to Disarm
+			condition astatus == AircraftStatus :: Landed
+		}
+		transition BatMS {
+			from Mission
+			to GoHome
+			trigger batteryLow
+			action clone_normal_Planning_Connected_Mission_BatMS_op ( )
+		}
+		transition WatMS {
+			from Mission
+			to GoHome
+			trigger waterEmpty
+			action clone_normal_Planning_Connected_Mission_WatMS_op ( )
+		}
+	}
+	final SwitchedOff
+	transition On {
+		from I
+		to Connect
+	}
+	transition ConnectOK {
+		from Connect
+		to Connected
+		condition astatus == AircraftStatus :: Connected
+		action clone_normal_Planning_Connect_ConnectOK_op ( )
+	}
+	transition ConnectTO {
+		from Connect
+		to SwitchedOff
+		condition INIT_TO < since ( clk_Planning_Connect )
+		action clone_normal_Planning_Connect_ConnectTO_op ( )
+	}
+	transition SwitchOff {
+		from Connected
+		to SwitchedOff
+		condition astatus == AircraftStatus :: Disarmed
+	}
+}
+
+operation normal_Planning_Connected_Mission_BatMS_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_BatMS_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: BatteryError
+	}
+}
+
+operation normal_Planning_Connected_Mission_FlyToWall_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry requires req_normal_Planning_Connected_Mission_FlyToWall_entry requires I_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op requires I_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op initial i
+	final f
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op ( )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op ( )
+	}
+}
+
+operation normal_Planning_Connected_Mission_Search_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Search_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Searching
+	}
+}
+
+operation normal_Planning_Connected_Mission_SPRT_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_SPRT_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: SearchComplete
+	}
+}
+
+operation normal_Planning_Connected_TakeOffAndClimb_entry ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry requires I_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op requires I_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op final f
+	initial i
+	junction j_2_9
+	transition t {
+		from i
+		to j_2_9
+		action normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op ( )
+	}
+	transition t_2_9 {
+		from j_2_9
+		to f
+		action normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op ( )
+	}
+}
+
+operation normal_Planning_Connect_entry ( ) {
+	requires req_normal_Planning_Connect_entry requires I_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op requires I_normal_Planning_Connect_entry_j_2_15_t_2_15_op final f
+	initial i
+	junction j_2_15
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_15 {
+		from j_2_15
+		to f
+		action normal_Planning_Connect_entry_j_2_15_t_2_15_op ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_15
+		action normal_Planning_Connect_entry_t_thenJ__t_thenTA__op ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_Planning_Connect
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_15
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_Planning_Connect
+	}
+}
+
+operation normal_Planning_Connected_Mission_Search_SETF_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Search_SETF_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action vnavEnable
+	}
+}
+
+operation normal_Planning_Connected_Mission_LosingFire_exit ( ) {
+	requires req_normal_Planning_Connected_Mission_LosingFire_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connected_Mission_LosingFire = true
+	}
+}
+
+operation normal_Planning_Connect_exit ( ) {
+	requires req_normal_Planning_Connect_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connect = true
+	}
+}
+
+operation normal_Planning_Connected_Mission_entry ( ) {
+	requires req_normal_Planning_Connected_Mission_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action searchComplete = false
+	}
+}
+
+operation normal_Planning_Connected_Mission_Spray_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Spraying
+	}
+}
+
+operation normal_Planning_Connected_Mission_exit ( ) {
+	uses I_events_normal_Planning_Connected_Mission_exit final f
+	initial i
+	transition t {
+		from i
+		to f
+		action vnavDisable
+	}
+}
+
+operation normal_Planning_Connected_Disarm_entry ( ) {
+	uses I_events_normal_Planning_Connected_Disarm_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Disarming
+	}
+}
+
+operation normal_Planning_Connected_Mission_LosingFire_LostFire_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_LosingFire_LostFire_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action vnavDisable
+	}
+}
+
+operation normal_Planning_Connected_Land_entry ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry requires I_normal_Planning_Connected_Land_entry_i_t_op requires I_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op final f
+	initial i
+	junction j_2_17
+	transition t {
+		from i
+		to j_2_17
+		action normal_Planning_Connected_Land_entry_i_t_op ( )
+	}
+	transition t_2_17 {
+		from j_2_17
+		to f
+		action normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op ( )
+	}
+}
+
+operation normal_Planning_Connect_ConnectTO_op ( ) {
+	uses I_events_normal_Planning_Connect_ConnectTO_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: ConnectTimeout
+	}
+}
+
+operation normal_Planning_Connected_Mission_TrackFire_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_TrackFire_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: TrackingFire
+	}
+}
+
+operation normal_Planning_Connected_Mission_LosingFire_entry ( ) {
+	requires req_normal_Planning_Connected_Mission_LosingFire_entry requires I_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op requires I_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op initial i
+	final f
+	junction j_2_8
+	junction t_initialJunction_
+	junction t_elseJ_
+	junction t_thenJ_
+	transition t_2_8 {
+		from j_2_8
+		to f
+		action normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_8
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_Planning_Connected_Mission_LosingFire
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_Planning_Connected_Mission_LosingFire
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_8
+		action normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op ( )
+	}
+}
+
+operation normal_Planning_Connect_ConnectOK_op ( ) {
+	uses I_events_normal_Planning_Connect_ConnectOK_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Connected
+	}
+}
+
+operation normal_Planning_Connected_Mission_WatMS_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_WatMS_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: WaterError
+	}
+}
+
+operation normal_Planning_Connected_Mission_Spray_Spraying_exit ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_Spraying_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action stopSpray
+	}
+}
+
+operation normal_Planning_Connected_Mission_Spray_Spraying_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_Spraying_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action startSpray
+	}
+}
+
+operation normal_Planning_Connected_GoHome_entry ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry requires I_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op requires I_normal_Planning_Connected_GoHome_entry_i_t_op final f
+	initial i
+	junction j_2_11
+	transition t {
+		from i
+		to j_2_11
+		action normal_Planning_Connected_GoHome_entry_i_t_op ( )
+	}
+	transition t_2_11 {
+		from j_2_11
+		to f
+		action normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op ( )
+	}
+}
+
+operation normal_Planning_Connect_entry_t_thenJ__t_thenTA__op ( ) {
+	requires I_req_normal_Planning_Connect_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # clk_Planning_Connect
+	}
+}
+
+operation normal_Planning_Connect_entry_j_2_15_t_2_15_op ( ) {
+	requires I_req_normal_Planning_Connect_entry_j_2_15_t_2_15 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connect = false
+	}
+}
+
+operation normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: GoHome
+	}
+}
+
+operation normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: TakingOff
+	}
+}
+
+operation normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: TakeOff
+	}
+}
+
+operation normal_Planning_Connected_Land_entry_i_t_op ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Landing
+	}
+}
+
+operation normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: FlyingToWall
+	}
+}
+
+operation normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op ( ) {
+	requires I_req_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # clk_Planning_Connected_Mission_LosingFire
+	}
+}
+
+operation normal_Planning_Connected_GoHome_entry_i_t_op ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: GoingHome
+	}
+}
+
+operation normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 requires I_req_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action waypoint ! WALL_LOC
+	}
+}
+
+operation normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry_j_2_17_t_2_17 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: Land
+	}
+}
+
+operation normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op ( ) {
+	requires I_req_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connected_Mission_LosingFire = false
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_Search_SETF_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Search_SETF_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action vnavEnable
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_Spray_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Spraying
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_exit ( ) {
+	uses I_events_normal_Planning_Connected_Mission_exit final f
+	initial i
+	transition t {
+		from i
+		to f
+		action vnavDisable
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_Search_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Search_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Searching
+	}
+}
+
+operation clone_normal_Planning_Connected_Land_entry ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry requires I_clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op_j_2_17_f_26 requires I_clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_i_t_op_i_j_2_17_45 final f
+	initial i
+	junction j_2_17
+	transition t {
+		from i
+		to j_2_17
+		action clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_i_t_op_i_j_2_17_45 ( )
+	}
+	transition t_2_17 {
+		from j_2_17
+		to f
+		action clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op_j_2_17_f_26 ( )
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_LosingFire_exit ( ) {
+	requires req_normal_Planning_Connected_Mission_LosingFire_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connected_Mission_LosingFire = true
+	}
+}
+
+operation clone_normal_Planning_Connected_TakeOffAndClimb_entry ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry requires I_clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op_i_j_2_9_19 requires I_clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op_j_2_9_f_30 final f
+	initial i
+	junction j_2_9
+	transition t {
+		from i
+		to j_2_9
+		action clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op_i_j_2_9_19 ( )
+	}
+	transition t_2_9 {
+		from j_2_9
+		to f
+		action clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op_j_2_9_f_30 ( )
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_SPRT_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_SPRT_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: SearchComplete
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_BatMS_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_BatMS_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: BatteryError
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_WatMS_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_WatMS_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: WaterError
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_TrackFire_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_TrackFire_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: TrackingFire
+	}
+}
+
+operation clone_normal_Planning_Connect_ConnectTO_op ( ) {
+	uses I_events_normal_Planning_Connect_ConnectTO_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: ConnectTimeout
+	}
+}
+
+operation clone_normal_Planning_Connected_GoHome_entry ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry requires I_clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_i_t_op_i_j_2_11_9 requires I_clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op_j_2_11_f_16 final f
+	initial i
+	junction j_2_11
+	transition t {
+		from i
+		to j_2_11
+		action clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_i_t_op_i_j_2_11_9 ( )
+	}
+	transition t_2_11 {
+		from j_2_11
+		to f
+		action clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op_j_2_11_f_16 ( )
+	}
+}
+
+operation clone_normal_Planning_Connect_ConnectOK_op ( ) {
+	uses I_events_normal_Planning_Connect_ConnectOK_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Connected
+	}
+}
+
+operation clone_normal_Planning_Connected_Disarm_entry ( ) {
+	uses I_events_normal_Planning_Connected_Disarm_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Disarming
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_Spray_Spraying_exit ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_Spraying_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action stopSpray
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_FlyToWall_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry requires req_normal_Planning_Connected_Mission_FlyToWall_entry requires I_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op_i_j_2_4_4 requires I_clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46 initial i
+	final f
+	junction j_2_4
+	transition t {
+		from i
+		to j_2_4
+		action clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op_i_j_2_4_4 ( )
+	}
+	transition t_2_4 {
+		from j_2_4
+		to f
+		action clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46 ( )
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_LosingFire_LostFire_op ( ) {
+	uses I_events_normal_Planning_Connected_Mission_LosingFire_LostFire_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action vnavDisable
+	}
+}
+
+operation clone_normal_Planning_Connect_entry ( ) {
+	requires req_normal_Planning_Connect_entry requires I_clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_15_39 requires I_clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_j_2_15_t_2_15_op_j_2_15_f_42 final f
+	initial i
+	junction j_2_15
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_15 {
+		from j_2_15
+		to f
+		action clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_j_2_15_t_2_15_op_j_2_15_f_42 ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_15
+		action clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_15_39 ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_Planning_Connect
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_15
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_Planning_Connect
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_i_t_op_i_j_2_4_4 ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: FlyingToWall
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_i_t_op_i_j_2_11_9 ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: GoingHome
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_Spray_Spraying_entry ( ) {
+	uses I_events_normal_Planning_Connected_Mission_Spray_Spraying_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action startSpray
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_GoHome_entry_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11_op_j_2_11_f_16 ( ) {
+	uses I_events_normal_Planning_Connected_GoHome_entry_j_2_11_t_2_11 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: GoHome
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_i_t_op_i_j_2_9_19 ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: TakingOff
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_j_2_17_t_2_17_op_j_2_17_f_26 ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry_j_2_17_t_2_17 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: Land
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_TakeOffAndClimb_entry_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9_op_j_2_9_f_30 ( ) {
+	uses I_events_normal_Planning_Connected_TakeOffAndClimb_entry_j_2_9_t_2_9 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action navCommand ! NavCommand :: TakeOff
+	}
+}
+
+operation clone_normal_Planning_Connect_exit ( ) {
+	requires req_normal_Planning_Connect_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connect = true
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_entry ( ) {
+	requires req_normal_Planning_Connected_Mission_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action searchComplete = false
+	}
+}
+
+operation clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_15_39 ( ) {
+	requires I_req_normal_Planning_Connect_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # clk_Planning_Connect
+	}
+}
+
+operation clone_clone_normal_Planning_Connect_entry_normal_Planning_Connect_entry_j_2_15_t_2_15_op_j_2_15_f_42 ( ) {
+	requires I_req_normal_Planning_Connect_entry_j_2_15_t_2_15 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connect = false
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Land_entry_normal_Planning_Connected_Land_entry_i_t_op_i_j_2_17_45 ( ) {
+	uses I_events_normal_Planning_Connected_Land_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action missionStatus ! MissionStatus :: Landing
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Mission_FlyToWall_entry_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4_op_j_2_4_f_46 ( ) {
+	uses I_events_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 requires I_req_normal_Planning_Connected_Mission_FlyToWall_entry_j_2_4_t_2_4 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action waypoint ! WALL_LOC
+	}
+}
+
+operation clone_normal_Planning_Connected_Mission_LosingFire_entry ( ) {
+	requires req_normal_Planning_Connected_Mission_LosingFire_entry requires I_clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_8_52 requires I_clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op_j_2_8_f_53 initial i
+	final f
+	junction j_2_8
+	junction t_initialJunction_
+	junction t_elseJ_
+	junction t_thenJ_
+	transition t_2_8 {
+		from j_2_8
+		to f
+		action clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op_j_2_8_f_53 ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_8
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_Planning_Connected_Mission_LosingFire
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_Planning_Connected_Mission_LosingFire
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_8
+		action clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_8_52 ( )
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_8_52 ( ) {
+	requires I_req_normal_Planning_Connected_Mission_LosingFire_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action # clk_Planning_Connected_Mission_LosingFire
+	}
+}
+
+operation clone_clone_normal_Planning_Connected_Mission_LosingFire_entry_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8_op_j_2_8_f_53 ( ) {
+	requires I_req_normal_Planning_Connected_Mission_LosingFire_entry_j_2_8_t_2_8 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_Planning_Connected_Mission_LosingFire = false
+	}
+}
+

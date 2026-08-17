@@ -1,0 +1,1115 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:10
+--
+
+module pre_pkg__sim_BatteryMonitor
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_I|
+	              NID_Monitoring
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_battery, set_battery, setL_battery, setR_battery: Battery
+	channel get_batteryInfoF, set_batteryInfoF, setL_batteryInfoF, setR_batteryInfoF: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_normal_BatteryMonitor_Monitoring_entryCall
+	
+	enterSS = {|
+	I::enter,
+	Monitoring::enter
+	|}
+	
+	enteredSS = 	{|
+	Monitoring::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Monitoring : core_clock_type 
+	--channel increment__
+	
+	CLID_Monitoring_clock_type(id__,
+			          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+			          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+	
+	-- RoboSim-specific declarations
+	channel endexec, endexec_action
+	channel endexec__ : NIDS
+	channel startexec, startexec_action
+	
+	-- declaring registerRead/Write datatypes
+	datatype RegisterDataInput = i_batteryInfo.Bool.Battery
+	
+	
+	datatype RegisterDataOutput = o_batteryLow
+	
+	
+	nametype RegisterOutputs = {|
+	o_batteryLow|}
+		
+	nametype RegisterInputs = {|
+	i_batteryInfo|}
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	-- variable channels
+	channel get_batteryInfo : Bool.Battery
+	
+	-- channel set with all visible events
+	sem__events = {|endexec,terminate
+				,registerRead
+				,registerWrite
+	,	clone_normal_BatteryMonitor_Monitoring_entryCall
+		|}
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: I
+		module I
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Monitoring
+		module Monitoring
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+					          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_BatteryMonitor_Monitoring_entry(
+								id__,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_batteryInfoF <- setL_batteryInfoF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_batteryInfoF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF |} ]]
+						 				 )
+						 				)[[setL_batteryInfoF <- set_batteryInfoF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_batteryInfoF,setR_battery |} ]] 
+						  [[set_batteryInfoF <- setL_batteryInfoF,set_battery <- setL_battery]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_batteryInfoF
+						 			,setL_battery
+						 			,setR_batteryInfoF
+						 			 			,setR_battery
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF,setL_battery |} ]]
+						  [[set_batteryInfoF <- setR_batteryInfoF,set_battery <- setR_battery]]
+						 )
+						)[[setL_batteryInfoF <- set_batteryInfoF,setL_battery <- set_battery]]
+						 [[setR_batteryInfoF <- set_batteryInfoF,setR_battery <- set_battery]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_BatteryMonitor_Monitoring_entry(
+								id__,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+							    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_batteryInfoF <- setL_batteryInfoF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_batteryInfoF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF |} ]]
+						 				 )
+						 				)[[setL_batteryInfoF <- set_batteryInfoF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_batteryInfoF,setR_battery |} ]] 
+						  [[set_batteryInfoF <- setL_batteryInfoF,set_battery <- setL_battery]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_batteryInfoF
+						 			,setL_battery
+						 			,setR_batteryInfoF
+						 			 			,setR_battery
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF,setL_battery |} ]]
+						  [[set_batteryInfoF <- setR_batteryInfoF,set_battery <- setR_battery]]
+						 )
+						)[[setL_batteryInfoF <- set_batteryInfoF,setL_battery <- set_battery]]
+						 [[setR_batteryInfoF <- set_batteryInfoF,setR_battery <- set_battery]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = ((let
+					Trans = share__choice(get_batteryInfoF?batteryInfoF -> get_batteryInfo?batteryInfo -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+						 [] dbisim(((not (((true and (((member(batteryInfo,{true.battery | battery <- Battery}) and batteryInfoF))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_batteryInfo?b__?x__ -> set_battery!x__ -> SKIP
+						 ; share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_batteryInfoF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)),
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_BatteryMonitor_Monitoring_entry(id__,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = EDeadline(clone_normal_BatteryMonitor_Monitoring_entryCall,0)
+		
+		-- END of Operation calls --
+	
+		datatype SOutputEvents = SOutput_batteryLow
+		
+		cycle(cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor) =
+			let
+				project(o_batteryLow) = SOutput_batteryLow
+		
+				Cycle =
+					Deadline(
+						(registerRead.i_batteryInfo?x__ -> SKIP);
+						startexec -> CollectOutputs(SOutputEvents),0);
+					TimeOut_1(terminate -> SKIP,WAIT(cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor-1);Cycle)
+				
+				CollectOutputs(sout) =
+					(registerWrite?outp:{ outp | outc <- inter(sout,SOutputEvents), outp <- RegisterDataOutput,project(outp) == outc} -> CollectOutputs(diff(sout,{project(outp)}))
+						[]
+					endexec -> SKIP
+					)
+			within
+				Cycle
+		
+		-- STM processes
+		STM(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+			)\sharedVarHide
+		)\{startexec}
+		
+		STM_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+			)\sharedVarHide
+		)\{startexec}
+		
+		-- Transitions
+		Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = ((let
+			Trans = share__choice(get_batteryInfoF?batteryInfoF -> get_batteryInfo?batteryInfo -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Monitoring::enter -> SKIP))))
+				 [] dbisim((((member(batteryInfo,{true.battery | battery <- Battery}) and batteryInfoF)))&(internal__!NID_Monitoring -> SKIP ; get_batteryInfo?b__?x__ -> set_battery!x__ -> SKIP
+				 ; share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_batteryInfoF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Monitoring::enter -> SKIP)))
+				 []
+				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 []
+				 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Monitoring::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Monitoring|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						   [| { share__, terminate } |] (
+						   Monitoring::D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						   )
+						 )
+						 [[Monitoring::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Monitoring|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_batteryInfoF <- setL_batteryInfoF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_batteryInfoF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF |} ]]
+						 )
+						)[[setL_batteryInfoF <- set_batteryInfoF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Monitoring,Monitoring::entered|}
+			 within
+				(MachineBody(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Monitoring,Monitoring::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						MachineBody(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						[| {|get_CLID_Monitoring,Monitoring::entered,terminate|} |]
+						dbisim(Clock_CLID_Monitoring(id__,0,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+					)\{|get_CLID_Monitoring|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			((let
+				getsetLocalChannels = {|get_battery,set_battery,
+				get_batteryInfoF,set_batteryInfoF|}
+				clockSync = {||}
+			within
+				(Behaviour(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							IteratedBehaviour(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+									    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+									    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+							[| {|get_batteryInfoF,set_batteryInfoF,terminate|} |]
+							Memory_batteryInfoF(true)
+						)\{|get_batteryInfoF,set_batteryInfoF|}
+					)
+					[| {|get_battery,set_battery,terminate|} |]
+					Memory_battery((0))
+				)\{|get_battery,set_battery|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Monitoring::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Monitoring|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						   [| { share__, terminate } |] (
+						   Monitoring::VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						   		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						   )
+						 )
+						 [[Monitoring::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Monitoring|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_batteryInfoF <- setL_batteryInfoF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_batteryInfoF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_batteryInfoF |} ]]
+						 )
+						)[[setL_batteryInfoF <- set_batteryInfoF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Monitoring,Monitoring::entered|}
+			 within
+				(MachineBody_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Monitoring,Monitoring::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						MachineBody_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+						[| {|get_CLID_Monitoring,Monitoring::entered,terminate|} |]
+						dbisim(Clock_CLID_Monitoring(id__,0,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+								          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+					)\{|get_CLID_Monitoring|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			dbisim((let
+				getsetLocalChannels = {|get_battery,set_battery,
+				get_batteryInfoF,set_batteryInfoF|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				 		          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+									    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+									    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+							[| {|get_batteryInfoF,set_batteryInfoF,terminate|} |]
+							Memory_batteryInfoF(true)
+						)\{|get_batteryInfoF,set_batteryInfoF|}
+					)
+					[| {|get_battery,set_battery,terminate|} |]
+					Memory_battery((0))
+				)\{|get_battery,set_battery|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_battery(battery) =
+			get_battery!battery -> Memory_battery(battery)
+			[]
+			set_battery?x__ -> Memory_battery(x__)
+			[]
+			terminate -> SKIP
+		Memory_batteryInfoF(batteryInfoF) =
+			get_batteryInfoF!batteryInfoF -> Memory_batteryInfoF(batteryInfoF)
+			[]
+			set_batteryInfoF?x__ -> Memory_batteryInfoF(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = Memory_battery((0))
+		[| { terminate } |] (
+		Memory_batteryInfoF(true)
+		)
+		
+		getsetLocalChannels = {|get_battery,set_battery,get_batteryInfoF,set_batteryInfoF|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = STM_VS_O(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) \ localClockResets
+		D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = timed_priority(STM(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) \ union(internal_events,localClockResets))
+		O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = dbisim(D__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+		VS__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = FVS__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+		VS_O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = dbisim(FVS__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+		HEXT__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [|shared_variable_events|] SKIP
+		FVS_C__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = dbisim(timed_priority(STM(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) \ internal_events))
+		HUP__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = timed_priority(O__(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Monitoring(id__,x__,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = 
+			TimeOut_1(
+				Monitoring::entered -> Clock_CLID_Monitoring(id__,0,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+				[]
+				get_CLID_Monitoring!x__ -> Clock_CLID_Monitoring(id__,x__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)
+				[]
+				terminate -> SKIP,Clock_CLID_Monitoring(id__,clock_type_plus(x__,1,CLID_Monitoring_clock_type(id__,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD)),
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+						          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+		
+		StateClocks(id__,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = dbisim(Clock_CLID_Monitoring(id__,0,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				          const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD))
+		
+		stateClockSync = {|get_CLID_Monitoring,Monitoring::entered|}
+		
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		Memory_batteryInfo(x__) = (
+			get_batteryInfo!x__ -> Memory_batteryInfo(x__)
+			[]
+			registerRead.i_batteryInfo?x__ -> Memory_batteryInfo(x__)
+			[]
+			terminate -> SKIP
+		)
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,cycle_pre_pkg__sim_BatteryMonitor_BatteryMonitor,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD) = (
+		 (terminate -> SKIP
+		 )
+		 [| { terminate } |]
+		 (Memory_batteryInfo(false.(0))
+		 )
+		)
+		
+		sharedVarSync = union({|get_batteryInfo|},
+			  {||}
+			 )
+		
+		sharedVarHide = union({|get_batteryInfo|},
+			  {||}
+			 )
+		
+		}
+endmodule

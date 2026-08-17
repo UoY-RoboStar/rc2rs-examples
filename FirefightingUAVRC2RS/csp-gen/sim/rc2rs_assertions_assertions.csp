@@ -1,0 +1,431 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:08
+--
+
+include "../software/defs/actrl_defs.csp"
+include "../software/defs/comm_defs.csp"
+include "../software/defs/ctrl_defs.csp"
+include "../timed/defs/_.csp"
+include "../rc2rs/preprocessing/software/defs/actrl_defs.csp"
+include "defs/core_timed_defs.csp"
+include "../rc2rs/preprocessing/software/defs/ctrl_defs.csp"
+include "../software/defs/mlx90640_defs.csp"
+include "../software/defs/gimbal_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "rc2rs/translation/software/defs/actrl_defs.csp"
+include "rc2rs/translation/software/defs/planning_defs.csp"
+include "rc2rs/translation/software/defs/fire_defs.csp"
+include "defs/relation_toolkit_defs.csp"
+include "../software/defs/datatypes_defs.csp"
+include "rc2rs/translation/software/defs/ctrl_defs.csp"
+include "../timed/defs/pre_pkg_uav.csp"
+include "defs/pre_pkg_uav_sim.csp"
+include "../software/defs/visual_defs.csp"
+include "rc2rs/translation/software/defs/spray_defs.csp"
+include "../software/defs/uav_defs.csp"
+include "../rc2rs/preprocessing/software/defs/spray_defs.csp"
+include "../software/defs/gcs_defs.csp"
+include "sims/defs/RCRaspberryPi_defs.csp"
+include "../rc2rs/preprocessing/software/defs/uav_defs.csp"
+include "../software/defs/spray_defs.csp"
+include "defs/state_timed_defs.csp"
+include "../rc2rs/preprocessing/software/defs/flight_defs.csp"
+include "../software/defs/rsd435i_defs.csp"
+include "../timed/defs/pre_pkg_.csp"
+include "rc2rs/translation/software/defs/flight_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "defs/pre_pkg__sim.csp"
+include "../timed/defs/uav.csp"
+include "rc2rs/translation/software/defs/waterMonitor_defs.csp"
+include "../software/defs/fire_defs.csp"
+include "../rc2rs/preprocessing/software/defs/visual_defs.csp"
+include "../rc2rs/preprocessing/software/defs/waterMonitor_defs.csp"
+include "../software/defs/controller_comm_defs.csp"
+include "../rc2rs/preprocessing/software/defs/m600_defs.csp"
+include "../software/defs/m600_defs.csp"
+include "defs/_.csp"
+include "../rc2rs/preprocessing/software/defs/fire_defs.csp"
+include "defs/core_defs.csp"
+include "../software/defs/pump_defs.csp"
+include "../rc2rs/preprocessing/software/defs/planning_defs.csp"
+include "../rc2rs/preprocessing/software/defs/pump_defs.csp"
+include "../software/defs/waterMonitor_defs.csp"
+include "../software/defs/planning_defs.csp"
+include "rc2rs/translation/software/defs/visual_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "software/defs/main_defs.csp"
+include "../rc2rs/preprocessing/software/defs/gimbal_defs.csp"
+include "sims/defs/RC_defs.csp"
+include "rc2rs/translation/software/defs/uav_defs.csp"
+include "instantiations.csp"
+include "../software/defs/flight_defs.csp"
+
+channel r__
+
+-- A1 - timed deadlock free
+assert prioritise(let 
+	cycle_pre_pkg__sim_Arduino_Arduino = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+	const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW = const_pre_pkg__sim_WaterMonitor_WATER_FLOW
+	const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	pre_pkg__sim::Arduino::D__(id__,cycle_pre_pkg__sim_Arduino_Arduino,
+			    const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
+
+-- A2 - timed deadlock free
+assert prioritise(let 
+	cycle_pre_pkg__sim_RaspberryPi_RaspberryPi = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X = const_pre_pkg__sim_FireDetect_LEFT_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X = const_pre_pkg__sim_FireDetect_CENTRE_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X = const_pre_pkg__sim_FireDetect_RIGHT_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y = const_pre_pkg__sim_FireDetect_CENTRE_Y
+	const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST = const_pre_pkg__sim_VisualNav_TRACK_DIST
+	const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST = const_pre_pkg__sim_VisualNav_SCAN_DIST
+	const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT = const_pre_pkg__sim_Flight_CLIMB_LIFT
+	const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM = const_pre_pkg__sim_Flight_DELAY_DISARM
+	const_pre_pkg__sim_RaspberryPi_CFlight_HOME = const_pre_pkg__sim_Flight_HOME
+	const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST = const_pre_pkg__sim_GimbalAim_TRACK_DIST
+	const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC = const_pre_pkg__sim_Planning_WALL_LOC
+	const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO = const_pre_pkg__sim_Planning_FIRE_TO
+	const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO = const_pre_pkg__sim_Planning_INIT_TO
+		
+within
+	pre_pkg__sim::RaspberryPi::D__(id__,cycle_pre_pkg__sim_RaspberryPi_RaspberryPi,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_HOME,
+			    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO)[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]] :[tau priority]: {tock}
+
+-- A3 - refinement
+assert let
+	rename_in_RC(RC::i_stopSpray.x__) = pre_pkg__sim::Arduino::i_stopSpray.x__
+	rename_in_RC(RC::i_gimbalYaw.x__.y__) = pre_pkg__sim::Arduino::i_gimbalYaw.x__.y__
+	rename_in_RC(RC::i_gimbalPitch.x__.y__) = pre_pkg__sim::Arduino::i_gimbalPitch.x__.y__
+	rename_in_RC(RC::i_startSpray.x__) = pre_pkg__sim::Arduino::i_startSpray.x__
+	rename_out_RC(RC::o_gimbalWritePan.angle) = pre_pkg__sim::Arduino::o_gimbalWritePan.angle
+	rename_out_RC(RC::o_gimbalWriteTilt.angle) = pre_pkg__sim::Arduino::o_gimbalWriteTilt.angle
+	rename_out_RC(RC::o_waterEmpty) = pre_pkg__sim::Arduino::o_waterEmpty
+	rename_out_RC(RC::o_pumpOn) = pre_pkg__sim::Arduino::o_pumpOn
+	rename_out_RC(RC::o_gimbalYawAck) = pre_pkg__sim::Arduino::o_gimbalYawAck
+	rename_out_RC(RC::o_gimbalPitchAck) = pre_pkg__sim::Arduino::o_gimbalPitchAck
+	rename_out_RC(RC::o_pumpOff) = pre_pkg__sim::Arduino::o_pumpOff
+within
+	prioritise(let 
+		cycle_RC_RC = 1
+		id__ = 0
+		
+		
+		
+		const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+		const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+		const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+			
+	within
+		RC::D__(id__,cycle_RC_RC,
+				    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+				    const_Arduino_AWaterMonitor_WATER_FLOW,
+				    const_Arduino_AWaterMonitor_TIME_PER_UNIT),<{},{tock}>)
+	[[ RC::registerRead.x__ <- pre_pkg__sim::Arduino::registerRead.rename_in_RC(x__) | x__ <- RC::RegisterInputs ]]
+	[[ RC::registerWrite.x__ <- pre_pkg__sim::Arduino::registerWrite.rename_out_RC(x__) | x__ <- RC::RegisterOutputs ]]
+ [T= prioritise((let 
+	cycle_pre_pkg__sim_Arduino_Arduino = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+	const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW = const_pre_pkg__sim_WaterMonitor_WATER_FLOW
+	const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	pre_pkg__sim::Arduino::D__(id__,cycle_pre_pkg__sim_Arduino_Arduino,
+			    const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT))\{|pre_pkg__sim::Arduino::endexec,pre_pkg__sim::Arduino::terminate|},<{},{tock}>) :[tau priority]: {tock}
+
+-- A4 - refinement
+assert let
+	rename_in_Arduino(pre_pkg__sim::Arduino::i_gimbalPitch.x__.y__) = RC::i_gimbalPitch.x__.y__
+	rename_in_Arduino(pre_pkg__sim::Arduino::i_startSpray.x__) = RC::i_startSpray.x__
+	rename_in_Arduino(pre_pkg__sim::Arduino::i_gimbalYaw.x__.y__) = RC::i_gimbalYaw.x__.y__
+	rename_in_Arduino(pre_pkg__sim::Arduino::i_stopSpray.x__) = RC::i_stopSpray.x__
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_gimbalYawAck) = RC::o_gimbalYawAck
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_pumpOn) = RC::o_pumpOn
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_gimbalWriteTilt.angle) = RC::o_gimbalWriteTilt.angle
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_pumpOff) = RC::o_pumpOff
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_gimbalWritePan.angle) = RC::o_gimbalWritePan.angle
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_gimbalPitchAck) = RC::o_gimbalPitchAck
+	rename_out_Arduino(pre_pkg__sim::Arduino::o_waterEmpty) = RC::o_waterEmpty
+within
+	prioritise(((let 
+		cycle_pre_pkg__sim_Arduino_Arduino = 1
+		id__ = 0
+		
+		
+		
+		const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+		const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW = const_pre_pkg__sim_WaterMonitor_WATER_FLOW
+		const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+			
+	within
+		pre_pkg__sim::Arduino::D__(id__,cycle_pre_pkg__sim_Arduino_Arduino,
+				    const_pre_pkg__sim_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+				    const_pre_pkg__sim_Arduino_AWaterMonitor_WATER_FLOW,
+				    const_pre_pkg__sim_Arduino_AWaterMonitor_TIME_PER_UNIT))\{|pre_pkg__sim::Arduino::endexec,pre_pkg__sim::Arduino::terminate|}),<{},{tock}>)
+	[[ pre_pkg__sim::Arduino::registerRead.x__ <- RC::registerRead.rename_in_Arduino(x__) | x__ <- pre_pkg__sim::Arduino::RegisterInputs ]]
+	[[ pre_pkg__sim::Arduino::registerWrite.x__ <- RC::registerWrite.rename_out_Arduino(x__) | x__ <- pre_pkg__sim::Arduino::RegisterOutputs ]]
+ [T= let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+	const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+	const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	RC::D__(id__,cycle_RC_RC,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT) :[tau priority]: {tock}
+
+-- A5 - refinement
+assert let
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcTakeoffRet.x__) = pre_pkg__sim::RaspberryPi::i_fcTakeoffRet.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcGoHomeRet.x__) = pre_pkg__sim::RaspberryPi::i_fcGoHomeRet.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_rsRgbFrame.x__.y__) = pre_pkg__sim::RaspberryPi::i_rsRgbFrame.x__.y__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcMoveRelativeRet.x__) = pre_pkg__sim::RaspberryPi::i_fcMoveRelativeRet.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcWaypointFinishedMission.x__) = pre_pkg__sim::RaspberryPi::i_fcWaypointFinishedMission.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_batteryInfo.x__.y__) = pre_pkg__sim::RaspberryPi::i_batteryInfo.x__.y__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_gimbalPitchAck.x__) = pre_pkg__sim::RaspberryPi::i_gimbalPitchAck.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_rsDepthFrame.x__.y__) = pre_pkg__sim::RaspberryPi::i_rsDepthFrame.x__.y__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_gimbalYawAck.x__) = pre_pkg__sim::RaspberryPi::i_gimbalYawAck.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_waterEmpty.x__) = pre_pkg__sim::RaspberryPi::i_waterEmpty.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcControlAuth.x__) = pre_pkg__sim::RaspberryPi::i_fcControlAuth.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_fcLandRet.x__) = pre_pkg__sim::RaspberryPi::i_fcLandRet.x__
+	rename_in_RCRaspberryPi(RCRaspberryPi::i_mlxHeatmap.x__.y__) = pre_pkg__sim::RaspberryPi::i_mlxHeatmap.x__.y__
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_startSpray) = pre_pkg__sim::RaspberryPi::o_startSpray
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_fcTakeoffCall) = pre_pkg__sim::RaspberryPi::o_fcTakeoffCall
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_fcMoveRelativeCall.movement) = pre_pkg__sim::RaspberryPi::o_fcMoveRelativeCall.movement
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_gimbalYaw.x__) = pre_pkg__sim::RaspberryPi::o_gimbalYaw.x__
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_gimbalPitch.x__) = pre_pkg__sim::RaspberryPi::o_gimbalPitch.x__
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_fcGoHomeCall) = pre_pkg__sim::RaspberryPi::o_fcGoHomeCall
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_missionStatus.x__) = pre_pkg__sim::RaspberryPi::o_missionStatus.x__
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_fcWaypointCall.pos) = pre_pkg__sim::RaspberryPi::o_fcWaypointCall.pos
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_fcLandCall) = pre_pkg__sim::RaspberryPi::o_fcLandCall
+	rename_out_RCRaspberryPi(RCRaspberryPi::o_stopSpray) = pre_pkg__sim::RaspberryPi::o_stopSpray
+within
+	prioritise(let 
+		cycle_RCRaspberryPi_RCRaspberryPi = 1
+		id__ = 0
+		
+		
+		
+		const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+		const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+		const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+		const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+		const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+		const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+		const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+		const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+		const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+		const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+		const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+		const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+		const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+		const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+		const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+			
+	within
+		RCRaspberryPi::D__(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+				    const_RaspberryPi_CFireDetect_LEFT_X,
+				    const_RaspberryPi_CFireDetect_CENTRE_X,
+				    const_RaspberryPi_CFireDetect_RIGHT_X,
+				    const_RaspberryPi_CFireDetect_CENTRE_Y,
+				    const_RaspberryPi_CVisualNav_TRACK_DIST,
+				    const_RaspberryPi_CVisualNav_SCAN_DIST,
+				    const_RaspberryPi_CFlight_CLIMB_LIFT,
+				    const_RaspberryPi_CFlight_DELAY_DISARM,
+				    const_RaspberryPi_CFlight_HOME,
+				    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+				    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+				    const_RaspberryPi_CPlanning_WALL_LOC,
+				    const_RaspberryPi_CPlanning_FIRE_TO,
+				    const_RaspberryPi_CPlanning_INIT_TO),<{},{tock}>)
+	[[ RCRaspberryPi::registerRead.x__ <- pre_pkg__sim::RaspberryPi::registerRead.rename_in_RCRaspberryPi(x__) | x__ <- RCRaspberryPi::RegisterInputs ]]
+	[[ RCRaspberryPi::registerWrite.x__ <- pre_pkg__sim::RaspberryPi::registerWrite.rename_out_RCRaspberryPi(x__) | x__ <- RCRaspberryPi::RegisterOutputs ]]
+ [T= prioritise((let 
+	cycle_pre_pkg__sim_RaspberryPi_RaspberryPi = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X = const_pre_pkg__sim_FireDetect_LEFT_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X = const_pre_pkg__sim_FireDetect_CENTRE_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X = const_pre_pkg__sim_FireDetect_RIGHT_X
+	const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y = const_pre_pkg__sim_FireDetect_CENTRE_Y
+	const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST = const_pre_pkg__sim_VisualNav_TRACK_DIST
+	const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST = const_pre_pkg__sim_VisualNav_SCAN_DIST
+	const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT = const_pre_pkg__sim_Flight_CLIMB_LIFT
+	const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM = const_pre_pkg__sim_Flight_DELAY_DISARM
+	const_pre_pkg__sim_RaspberryPi_CFlight_HOME = const_pre_pkg__sim_Flight_HOME
+	const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST = const_pre_pkg__sim_GimbalAim_TRACK_DIST
+	const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC = const_pre_pkg__sim_Planning_WALL_LOC
+	const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO = const_pre_pkg__sim_Planning_FIRE_TO
+	const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO = const_pre_pkg__sim_Planning_INIT_TO
+		
+within
+	pre_pkg__sim::RaspberryPi::D__(id__,cycle_pre_pkg__sim_RaspberryPi_RaspberryPi,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_pre_pkg__sim_RaspberryPi_CFlight_HOME,
+			    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO,
+			    const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO))\{|pre_pkg__sim::RaspberryPi::endexec,pre_pkg__sim::RaspberryPi::terminate|},<{},{tock}>) :[tau priority]: {tock}
+
+-- A6 - refinement
+assert let
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_fcControlAuth.x__) = RCRaspberryPi::i_fcControlAuth.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_mlxHeatmap.x__.y__) = RCRaspberryPi::i_mlxHeatmap.x__.y__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_fcWaypointFinishedMission.x__) = RCRaspberryPi::i_fcWaypointFinishedMission.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_rsDepthFrame.x__.y__) = RCRaspberryPi::i_rsDepthFrame.x__.y__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_rsRgbFrame.x__.y__) = RCRaspberryPi::i_rsRgbFrame.x__.y__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_gimbalYawAck.x__) = RCRaspberryPi::i_gimbalYawAck.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_fcTakeoffRet.x__) = RCRaspberryPi::i_fcTakeoffRet.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_waterEmpty.x__) = RCRaspberryPi::i_waterEmpty.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_fcLandRet.x__) = RCRaspberryPi::i_fcLandRet.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_gimbalPitchAck.x__) = RCRaspberryPi::i_gimbalPitchAck.x__
+	rename_in_RaspberryPi(pre_pkg__sim::RaspberryPi::i_batteryInfo.x__.y__) = RCRaspberryPi::i_batteryInfo.x__.y__
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_gimbalYaw.x__) = RCRaspberryPi::o_gimbalYaw.x__
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_startSpray) = RCRaspberryPi::o_startSpray
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_fcLandCall) = RCRaspberryPi::o_fcLandCall
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_missionStatus.x__) = RCRaspberryPi::o_missionStatus.x__
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_gimbalPitch.x__) = RCRaspberryPi::o_gimbalPitch.x__
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_fcGoHomeCall) = RCRaspberryPi::o_fcGoHomeCall
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_fcTakeoffCall) = RCRaspberryPi::o_fcTakeoffCall
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_stopSpray) = RCRaspberryPi::o_stopSpray
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_fcWaypointCall.pos) = RCRaspberryPi::o_fcWaypointCall.pos
+	rename_out_RaspberryPi(pre_pkg__sim::RaspberryPi::o_fcMoveRelativeCall.movement) = RCRaspberryPi::o_fcMoveRelativeCall.movement
+within
+	prioritise(((let 
+		cycle_pre_pkg__sim_RaspberryPi_RaspberryPi = 1
+		id__ = 0
+		
+		
+		
+		const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X = const_pre_pkg__sim_FireDetect_LEFT_X
+		const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X = const_pre_pkg__sim_FireDetect_CENTRE_X
+		const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X = const_pre_pkg__sim_FireDetect_RIGHT_X
+		const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y = const_pre_pkg__sim_FireDetect_CENTRE_Y
+		const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST = const_pre_pkg__sim_VisualNav_TRACK_DIST
+		const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST = const_pre_pkg__sim_VisualNav_SCAN_DIST
+		const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT = const_pre_pkg__sim_Flight_CLIMB_LIFT
+		const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM = const_pre_pkg__sim_Flight_DELAY_DISARM
+		const_pre_pkg__sim_RaspberryPi_CFlight_HOME = const_pre_pkg__sim_Flight_HOME
+		const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_LOW_THRESHOLD
+		const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_pre_pkg__sim_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+		const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST = const_pre_pkg__sim_GimbalAim_TRACK_DIST
+		const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC = const_pre_pkg__sim_Planning_WALL_LOC
+		const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO = const_pre_pkg__sim_Planning_FIRE_TO
+		const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO = const_pre_pkg__sim_Planning_INIT_TO
+			
+	within
+		pre_pkg__sim::RaspberryPi::D__(id__,cycle_pre_pkg__sim_RaspberryPi_RaspberryPi,
+				    const_pre_pkg__sim_RaspberryPi_CFireDetect_LEFT_X,
+				    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_X,
+				    const_pre_pkg__sim_RaspberryPi_CFireDetect_RIGHT_X,
+				    const_pre_pkg__sim_RaspberryPi_CFireDetect_CENTRE_Y,
+				    const_pre_pkg__sim_RaspberryPi_CVisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_RaspberryPi_CVisualNav_SCAN_DIST,
+				    const_pre_pkg__sim_RaspberryPi_CFlight_CLIMB_LIFT,
+				    const_pre_pkg__sim_RaspberryPi_CFlight_DELAY_DISARM,
+				    const_pre_pkg__sim_RaspberryPi_CFlight_HOME,
+				    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_pre_pkg__sim_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+				    const_pre_pkg__sim_RaspberryPi_CGimbalAim_TRACK_DIST,
+				    const_pre_pkg__sim_RaspberryPi_CPlanning_WALL_LOC,
+				    const_pre_pkg__sim_RaspberryPi_CPlanning_FIRE_TO,
+				    const_pre_pkg__sim_RaspberryPi_CPlanning_INIT_TO))\{|pre_pkg__sim::RaspberryPi::endexec,pre_pkg__sim::RaspberryPi::terminate|}),<{},{tock}>)
+	[[ pre_pkg__sim::RaspberryPi::registerRead.x__ <- RCRaspberryPi::registerRead.rename_in_RaspberryPi(x__) | x__ <- pre_pkg__sim::RaspberryPi::RegisterInputs ]]
+	[[ pre_pkg__sim::RaspberryPi::registerWrite.x__ <- RCRaspberryPi::registerWrite.rename_out_RaspberryPi(x__) | x__ <- pre_pkg__sim::RaspberryPi::RegisterOutputs ]]
+ [T= let 
+	cycle_RCRaspberryPi_RCRaspberryPi = 1
+	id__ = 0
+	
+	
+	
+	const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+	const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+	const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+	const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+	const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+	const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+	const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+	const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+	const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+	const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+	const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+	const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+	const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+		
+within
+	RCRaspberryPi::D__(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO) :[tau priority]: {tock}
+

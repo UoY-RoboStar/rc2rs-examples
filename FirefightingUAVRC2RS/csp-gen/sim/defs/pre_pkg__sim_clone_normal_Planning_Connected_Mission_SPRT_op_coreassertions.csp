@@ -1,0 +1,34 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:11
+--
+
+include "core_timed_defs.csp"
+include "pre_pkg__sim_clone_normal_Planning_Connected_Mission_SPRT_op.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op
+P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg__sim::OP_clone_normal_Planning_Connected_Mission_SPRT_op::O__(id__)
+assert P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op :[deadlock-free]	
+assert P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op :[deterministic]
+assert P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_OP_clone_normal_Planning_Connected_Mission_SPRT_op

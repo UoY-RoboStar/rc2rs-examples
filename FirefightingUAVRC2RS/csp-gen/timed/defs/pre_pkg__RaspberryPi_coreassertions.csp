@@ -1,0 +1,198 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:52
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "pre_pkg__RaspberryPi.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__RaspberryPi
+P_pre_pkg__RaspberryPi = let
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__RaspberryPi_CFireDetect_LEFT_X = const_pre_pkg__FireDetect_LEFT_X
+	const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_X = const_pre_pkg__FireDetect_CENTRE_X
+	const_pre_pkg__RaspberryPi_CFireDetect_RIGHT_X = const_pre_pkg__FireDetect_RIGHT_X
+	const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_Y = const_pre_pkg__FireDetect_CENTRE_Y
+	const_pre_pkg__RaspberryPi_CVisualNav_TRACK_DIST = const_pre_pkg__VisualNav_TRACK_DIST
+	const_pre_pkg__RaspberryPi_CVisualNav_SCAN_DIST = const_pre_pkg__VisualNav_SCAN_DIST
+	const_pre_pkg__RaspberryPi_CFlight_CLIMB_LIFT = const_pre_pkg__Flight_CLIMB_LIFT
+	const_pre_pkg__RaspberryPi_CFlight_DELAY_DISARM = const_pre_pkg__Flight_DELAY_DISARM
+	const_pre_pkg__RaspberryPi_CFlight_HOME = const_pre_pkg__Flight_HOME
+	const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_pre_pkg__BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_pre_pkg__BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_pre_pkg__RaspberryPi_CGimbalAim_TRACK_DIST = const_pre_pkg__GimbalAim_TRACK_DIST
+	const_pre_pkg__RaspberryPi_CPlanning_WALL_LOC = const_pre_pkg__Planning_WALL_LOC
+	const_pre_pkg__RaspberryPi_CPlanning_FIRE_TO = const_pre_pkg__Planning_FIRE_TO
+	const_pre_pkg__RaspberryPi_CPlanning_INIT_TO = const_pre_pkg__Planning_INIT_TO
+		
+within
+	pre_pkg__RaspberryPi::O__(id__,
+			    const_pre_pkg__RaspberryPi_CFireDetect_LEFT_X,
+			    const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_X,
+			    const_pre_pkg__RaspberryPi_CFireDetect_RIGHT_X,
+			    const_pre_pkg__RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_pre_pkg__RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_pre_pkg__RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_pre_pkg__RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_pre_pkg__RaspberryPi_CFlight_DELAY_DISARM,
+			    const_pre_pkg__RaspberryPi_CFlight_HOME,
+			    const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_pre_pkg__RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_pre_pkg__RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_pre_pkg__RaspberryPi_CPlanning_WALL_LOC,
+			    const_pre_pkg__RaspberryPi_CPlanning_FIRE_TO,
+			    const_pre_pkg__RaspberryPi_CPlanning_INIT_TO)
+
+assert P_pre_pkg__RaspberryPi :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi :[deterministic]
+assert P_pre_pkg__RaspberryPi :[divergence-free]
+
+-- generate pre_pkg__RaspberryPi_CFireDetect
+P_pre_pkg__RaspberryPi_CFireDetect = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CFireDetect::O__(
+		id__,
+		const_pre_pkg__FireDetect_LEFT_X,
+		const_pre_pkg__FireDetect_CENTRE_X,
+		const_pre_pkg__FireDetect_RIGHT_X,
+		const_pre_pkg__FireDetect_CENTRE_Y
+	)
+assert P_pre_pkg__RaspberryPi_CFireDetect :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CFireDetect;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CFireDetect :[deterministic]
+assert P_pre_pkg__RaspberryPi_CFireDetect :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CFireDetect[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CFireDetect
+-- generate pre_pkg__RaspberryPi_CVisualNav
+P_pre_pkg__RaspberryPi_CVisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CVisualNav::O__(
+		id__,
+		const_pre_pkg__VisualNav_TRACK_DIST,
+		const_pre_pkg__VisualNav_SCAN_DIST
+	)
+assert P_pre_pkg__RaspberryPi_CVisualNav :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CVisualNav;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CVisualNav :[deterministic]
+assert P_pre_pkg__RaspberryPi_CVisualNav :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CVisualNav[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CVisualNav
+-- generate pre_pkg__RaspberryPi_CFlight
+P_pre_pkg__RaspberryPi_CFlight = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CFlight::O__(
+		id__,
+		const_pre_pkg__Flight_CLIMB_LIFT,
+		const_pre_pkg__Flight_DELAY_DISARM,
+		const_pre_pkg__Flight_HOME
+	)
+assert P_pre_pkg__RaspberryPi_CFlight :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CFlight;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CFlight :[deterministic]
+assert P_pre_pkg__RaspberryPi_CFlight :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CFlight[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CFlight
+-- generate pre_pkg__RaspberryPi_CBatteryMonitor
+P_pre_pkg__RaspberryPi_CBatteryMonitor = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CBatteryMonitor::O__(
+		id__,
+		const_pre_pkg__BatteryMonitor_BATTERY_LOW_THRESHOLD,
+		const_pre_pkg__BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	)
+assert P_pre_pkg__RaspberryPi_CBatteryMonitor :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CBatteryMonitor;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CBatteryMonitor :[deterministic]
+assert P_pre_pkg__RaspberryPi_CBatteryMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CBatteryMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CBatteryMonitor
+-- generate pre_pkg__RaspberryPi_CGimbalAim
+P_pre_pkg__RaspberryPi_CGimbalAim = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CGimbalAim::O__(
+		id__,
+		const_pre_pkg__GimbalAim_TRACK_DIST
+	)
+assert P_pre_pkg__RaspberryPi_CGimbalAim :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CGimbalAim;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CGimbalAim :[deterministic]
+assert P_pre_pkg__RaspberryPi_CGimbalAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CGimbalAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CGimbalAim
+-- generate pre_pkg__RaspberryPi_CPlanning
+P_pre_pkg__RaspberryPi_CPlanning = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__RaspberryPi::CPlanning::O__(
+		id__,
+		const_pre_pkg__Planning_WALL_LOC,
+		const_pre_pkg__Planning_FIRE_TO,
+		const_pre_pkg__Planning_INIT_TO
+	)
+assert P_pre_pkg__RaspberryPi_CPlanning :[deadlock-free]	
+assert P_pre_pkg__RaspberryPi_CPlanning;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__RaspberryPi_CPlanning :[deterministic]
+assert P_pre_pkg__RaspberryPi_CPlanning :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi_CPlanning[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi_CPlanning
+-- timed deadlock free
+assert prioritise(P_pre_pkg__RaspberryPi[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__RaspberryPi

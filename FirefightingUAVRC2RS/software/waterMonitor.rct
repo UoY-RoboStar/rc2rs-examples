@@ -1,0 +1,38 @@
+//stm WaterMonitor {
+//	//const INITIAL_WATER_LEVEL: real, 
+//	const WATER_FLOW: real
+//	const TIME_PER_UNIT: nat = 1
+// 
+//	//var water: real = INITIAL_WATER_LEVEL
+//	var water : real = 1  //mscf
+//	
+//	event monitorOn
+//	event monitorOff
+//	event monitorEmpty
+//	
+//	initial I
+//	 
+//	state Off {
+//		
+//	}
+//	
+//	state On {
+//		  
+//	}
+//	
+//	final F
+//	
+//	transition Init { from I to Off }
+//	
+//	transition SwitchOn { from Off to On trigger monitorOn condition 0 < water }
+//	transition SwitchOff { from On to Off trigger monitorOff condition sinceEntry(On) < TIME_PER_UNIT //0 < water /\ 
+//		
+//	}
+//	
+//	transition Tick { from On to On condition TIME_PER_UNIT <= sinceEntry(On)// 0 < water ///\  
+//		action water = water - WATER_FLOW
+//	}
+//	
+//	transition Out { from On to F condition water <= 0 action monitorEmpty }
+//	transition OffOut { from Off to F condition water <= 0 action monitorEmpty }
+//}

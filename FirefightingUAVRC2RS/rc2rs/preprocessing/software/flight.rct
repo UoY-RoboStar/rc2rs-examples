@@ -1,0 +1,932 @@
+package pre_pkg_ 
+//import ::AircraftStatus import ::NavCommand 
+interface I_events_normal_Flight_GoingHome_ReturnedHome_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_GoingHome_ReturnedHome_op {
+	normal_Flight_GoingHome_ReturnedHome_op ( )
+}
+
+interface req_normal_Flight_Landing_Landed_op {
+	const DELAY_DISARM : int
+}
+
+interface I_events_normal_Flight_Landing_Landed_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Landing_Landed_op {
+	normal_Flight_Landing_Landed_op ( )
+}
+
+interface req_normal_Flight_Waypoint_entry {
+	fcWaypointCall ( pos : Position )
+	var wp : Position , start : Position , gotStart : boolean = false
+}
+
+interface I_normal_Flight_Waypoint_entry {
+	normal_Flight_Waypoint_entry ( )
+}
+
+interface I_events_normal_Flight_Climbing_Climbed_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Climbing_Climbed_op {
+	normal_Flight_Climbing_Climbed_op ( )
+}
+
+interface I_events_normal_Flight_Waiting_WaypointNotify_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Waiting_WaypointNotify_op {
+	normal_Flight_Waiting_WaypointNotify_op ( )
+}
+
+interface I_events_normal_Flight_Connect_CI_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Connect_CI_op {
+	normal_Flight_Connect_CI_op ( )
+}
+
+interface req_normal_BatteryMonitor_Monitoring_entry {
+	var battery : Battery
+	const BATTERY_LOW_THRESHOLD : int
+}
+
+interface I_events_normal_BatteryMonitor_Monitoring_entry {
+	event batteryLow
+}
+
+interface I_normal_BatteryMonitor_Monitoring_entry {
+	normal_BatteryMonitor_Monitoring_entry ( )
+}
+
+interface req_normal_Flight_Climbing_entry {
+	fcWaypointCall ( pos : Position )
+	const CLIMB_LIFT : real , HOME : Position
+	var wp : Position
+}
+
+interface I_normal_Flight_Climbing_entry {
+	normal_Flight_Climbing_entry ( )
+}
+
+interface I_events_normal_Flight_TakingOff_TakenOff_op {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_TakingOff_TakenOff_op {
+	normal_Flight_TakingOff_TakenOff_op ( )
+}
+
+interface I_events_normal_Flight_Landing_Landed_op_j_2_29_t_2_29 {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op {
+	normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op ( )
+}
+
+interface I_req_normal_Flight_Climbing_entry_j_3_12_t_3_12 {
+	var wp : Position
+	const CLIMB_LIFT : real
+}
+
+interface I_normal_Flight_Climbing_entry_j_3_12_t_3_12_op {
+	normal_Flight_Climbing_entry_j_3_12_t_3_12_op ( )
+}
+
+interface I_events_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA_ {
+	event batteryLow
+}
+
+interface I_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op {
+	normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_events_normal_Flight_Landing_Landed_op_i_t {
+	event uavStatus : AircraftStatus
+}
+
+interface I_normal_Flight_Landing_Landed_op_i_t_op {
+	normal_Flight_Landing_Landed_op_i_t_op ( )
+}
+
+interface I_req_normal_Flight_Climbing_entry_i_t {
+	const HOME : Position
+	var wp : Position
+}
+
+interface I_normal_Flight_Climbing_entry_i_t_op {
+	normal_Flight_Climbing_entry_i_t_op ( )
+}
+
+interface I_req_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA_ {
+	var start : Position , wp : Position
+}
+
+interface I_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op {
+	normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_req_normal_Flight_Waypoint_entry_j_2_36_t_2_36 {
+	var gotStart : boolean = false
+}
+
+interface I_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op {
+	normal_Flight_Waypoint_entry_j_2_36_t_2_36_op ( )
+}
+
+interface I_clone_normal_Flight_Connect_CI_op {
+	clone_normal_Flight_Connect_CI_op ( )
+}
+
+interface I_clone_normal_BatteryMonitor_Monitoring_entry {
+	clone_normal_BatteryMonitor_Monitoring_entry ( )
+}
+
+interface I_clone_normal_Flight_Landing_Landed_op {
+	clone_normal_Flight_Landing_Landed_op ( )
+}
+
+interface I_clone_normal_Flight_Climbing_Climbed_op {
+	clone_normal_Flight_Climbing_Climbed_op ( )
+}
+
+interface I_clone_normal_Flight_Waypoint_entry {
+	clone_normal_Flight_Waypoint_entry ( )
+}
+
+interface I_clone_normal_Flight_Climbing_entry {
+	clone_normal_Flight_Climbing_entry ( )
+}
+
+interface I_clone_normal_Flight_TakingOff_TakenOff_op {
+	clone_normal_Flight_TakingOff_TakenOff_op ( )
+}
+
+interface I_clone_normal_Flight_GoingHome_ReturnedHome_op {
+	clone_normal_Flight_GoingHome_ReturnedHome_op ( )
+}
+
+interface I_clone_normal_Flight_Waiting_WaypointNotify_op {
+	clone_normal_Flight_Waiting_WaypointNotify_op ( )
+}
+
+interface I_clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_36_11 {
+	clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_36_11 ( )
+}
+
+interface I_clone_clone_normal_BatteryMonitor_Monitoring_entry_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op_t_thenJ__f_14 {
+	clone_clone_normal_BatteryMonitor_Monitoring_entry_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op_t_thenJ__f_14 ( )
+}
+
+interface I_clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op_j_2_36_j_2_23_20 {
+	clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op_j_2_36_j_2_23_20 ( )
+}
+
+interface I_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21 {
+	clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21 ( )
+}
+
+interface I_clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op_j_2_29_f_22 {
+	clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op_j_2_29_f_22 ( )
+}
+
+interface I_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27 {
+	clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27 ( )
+}
+
+interface I_clone_clone_normal_Flight_Landing_Landed_op_waitOp_j_3_24_j_2_29_32 {
+	clone_clone_normal_Flight_Landing_Landed_op_waitOp_j_3_24_j_2_29_32 ( i : nat )
+}
+
+interface I_clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_i_t_op_i_j_3_24_34 {
+	clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_i_t_op_i_j_3_24_34 ( )
+}
+
+stm Flight {
+	uses pre_pkg_::M600FlightEvents uses pre_pkg_::M600TelemetryEvents uses GCSControlEvents uses FlightPlanningEvents uses VisualFlightEvents requires pre_pkg_::M600Flight requires GCS requires I_clone_normal_Flight_Connect_CI_op requires I_clone_normal_Flight_Landing_Landed_op requires I_clone_normal_Flight_Climbing_Climbed_op requires I_clone_normal_Flight_Waypoint_entry requires I_clone_normal_Flight_Climbing_entry requires I_clone_normal_Flight_TakingOff_TakenOff_op requires I_clone_normal_Flight_GoingHome_ReturnedHome_op requires I_clone_normal_Flight_Waiting_WaypointNotify_op const CLIMB_LIFT : real
+	const DELAY_DISARM : int
+	const HOME : Position
+	var h : real , cmd : NavCommand , vp : RelativeMotion , wp : Position
+	var start : Position , gotStart : boolean = false
+	initial I
+	state Connect {
+		initial i
+		state EmptyCycle {
+		}
+		transition tConnect {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition tWaiting {
+			from i
+			to EmptyCycle
+		}
+	}
+	junction ProcessingCommand
+	state Waypoint {
+		initial i
+		state EmptyCycle {
+		}
+		transition tWaypoint {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_Flight_Waypoint_entry ( )
+	}
+	state Relative {
+		initial i
+		state EmptyCycle {
+		}
+		transition tRelative {
+			from i
+			to EmptyCycle
+		}
+		entry fcMoveRelativeCall ( vp )
+	}
+	state TakingOff {
+		state EmptyCycle {
+		}
+		initial i
+		transition tTakingOff {
+			from i
+			to EmptyCycle
+		}
+		entry fcTakeoffCall ( )
+	}
+	state Climbing {
+		state EmptyCycle {
+		}
+		initial i
+		transition tClimbing {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_Flight_Climbing_entry ( )
+	}
+	junction GoHome
+	state BackToStart {
+		state EmptyCycle {
+		}
+		initial i
+		transition tBackToStart {
+			from i
+			to EmptyCycle
+		}
+		entry fcWaypointCall ( start )
+	}
+	state Landing {
+		initial i
+		state EmptyCycle {
+		}
+		transition tLanding {
+			from i
+			to EmptyCycle
+		}
+		entry fcLandCall ( )
+	}
+	final Disarmed
+	state GoingHome {
+		initial i
+		state EmptyCycle {
+		}
+		transition tGoingHome {
+			from i
+			to EmptyCycle
+		}
+		entry fcGoHomeCall ( )
+	}
+	transition II {
+		from I
+		to Connect
+	}
+	transition CI {
+		from Connect
+		to Waiting
+		trigger fcControlAuth
+		action clone_normal_Flight_Connect_CI_op ( )
+	}
+	transition GotWaypoint {
+		from Waiting
+		to Waypoint
+		trigger waypoint ? wp
+	}
+	transition WaypointOff {
+		from Waypoint
+		to Waiting
+	}
+	transition WaypointNotify {
+		from Waiting
+		to Waiting
+		trigger fcWaypointFinishedMission
+		action clone_normal_Flight_Waiting_WaypointNotify_op ( )
+	}
+	transition GotRelative {
+		from Waiting
+		to Relative
+		trigger visualPosition ? vp
+	}
+	transition RelativeOff {
+		from Relative
+		to Waiting
+	}
+	transition Command {
+		from Waiting
+		to ProcessingCommand
+		trigger navCommand ? cmd
+	}
+	transition CoTO {
+		from ProcessingCommand
+		to TakingOff
+		condition cmd == NavCommand :: TakeOff
+	}
+	transition CoRH {
+		from ProcessingCommand
+		to GoHome
+		condition cmd == NavCommand :: GoHome
+	}
+	transition CoLD {
+		from ProcessingCommand
+		to Landing
+		condition cmd == NavCommand :: Land
+	}
+	transition TakenOff {
+		from TakingOff
+		to Climbing
+		trigger fcTakeoffRet
+		action clone_normal_Flight_TakingOff_TakenOff_op ( )
+	}
+	transition Climbed {
+		from Climbing
+		to Waiting
+		trigger fcWaypointFinishedMission
+		action clone_normal_Flight_Climbing_Climbed_op ( )
+	}
+	transition GoHomeW {
+		from GoHome
+		to BackToStart
+		condition gotStart
+	}
+	transition GoHomeNW {
+		from GoHome
+		to GoingHome
+		condition not gotStart
+	}
+	transition GoHomeWD {
+		from BackToStart
+		to GoingHome
+		trigger fcWaypointFinishedMission
+	}
+	transition Landed {
+		from Landing
+		to Disarmed
+		trigger fcLandRet
+		action clone_normal_Flight_Landing_Landed_op ( )
+	}
+	transition ReturnedHome {
+		from GoingHome
+		to Waiting
+		trigger fcWaypointFinishedMission
+		action clone_normal_Flight_GoingHome_ReturnedHome_op ( )
+	}
+}
+
+stm BatteryMonitor {
+	uses BatteryPlanningEvents uses pre_pkg_::M600BatteryTelemetryEvents requires I_clone_normal_BatteryMonitor_Monitoring_entry const BATTERY_LOW_THRESHOLD : int , BATTERY_UNSAFE_THRESHOLD : int
+	var battery : Battery
+	initial I
+	state Monitoring {
+		initial i
+		state EmptyCycle {
+		}
+		transition tMonitoring {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_BatteryMonitor_Monitoring_entry ( )
+	}
+	transition M {
+		from I
+		to Monitoring
+	}
+	transition SenseBatteryW {
+		from Monitoring
+		to Monitoring
+		trigger batteryInfo ? battery
+	}
+}
+
+operation normal_Flight_GoingHome_ReturnedHome_op ( ) {
+	uses I_events_normal_Flight_GoingHome_ReturnedHome_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtHome
+	}
+}
+
+operation normal_Flight_Landing_Landed_op ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op requires req_normal_Flight_Landing_Landed_op requires pre_pkg_uav::I_waitOp requires I_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op requires I_normal_Flight_Landing_Landed_op_i_t_op final f
+	initial i
+	junction j_3_24
+	junction j_2_29
+	transition t {
+		from i
+		to j_3_24
+		action normal_Flight_Landing_Landed_op_i_t_op ( )
+	}
+	transition t_3_24 {
+		from j_3_24
+		to j_2_29
+		action waitOp ( 1 ) //DELAY_DISARM )
+	}
+	transition t_2_29 {
+		from j_2_29
+		to f
+		action normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op ( )
+	}
+}
+
+operation normal_Flight_Waypoint_entry ( ) {
+	requires req_normal_Flight_Waypoint_entry requires I_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op requires I_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op final f
+	initial i
+	junction j_2_23
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	junction j_2_36
+	transition t_2_23 {
+		from j_2_23
+		to f
+		action fcWaypointCall ( wp )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_23
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_36
+		action normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition not gotStart
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not not gotStart
+	}
+	transition t_2_36 {
+		from j_2_36
+		to j_2_23
+		action normal_Flight_Waypoint_entry_j_2_36_t_2_36_op ( )
+	}
+}
+
+operation normal_Flight_Climbing_Climbed_op ( ) {
+	uses I_events_normal_Flight_Climbing_Climbed_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtAltitude
+	}
+}
+
+operation normal_Flight_Waiting_WaypointNotify_op ( ) {
+	uses I_events_normal_Flight_Waiting_WaypointNotify_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtWaypoint
+	}
+}
+
+operation normal_Flight_Connect_CI_op ( ) {
+	uses I_events_normal_Flight_Connect_CI_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Connected
+	}
+}
+
+operation normal_BatteryMonitor_Monitoring_entry ( ) {
+	uses I_events_normal_BatteryMonitor_Monitoring_entry requires req_normal_BatteryMonitor_Monitoring_entry requires I_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op initial i
+	final f
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to f
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to f
+		action normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op ( )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not battery . percentage < BATTERY_LOW_THRESHOLD
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition battery . percentage < BATTERY_LOW_THRESHOLD
+	}
+}
+
+operation normal_Flight_Climbing_entry ( ) {
+	requires req_normal_Flight_Climbing_entry requires I_normal_Flight_Climbing_entry_j_3_12_t_3_12_op requires I_normal_Flight_Climbing_entry_i_t_op final f
+	initial i
+	junction j_3_12
+	junction j_2_31
+	transition t {
+		from i
+		to j_3_12
+		action normal_Flight_Climbing_entry_i_t_op ( )
+	}
+	transition t_3_12 {
+		from j_3_12
+		to j_2_31
+		action normal_Flight_Climbing_entry_j_3_12_t_3_12_op ( )
+	}
+	transition t_2_31 {
+		from j_2_31
+		to f
+		action fcWaypointCall ( wp )
+	}
+}
+
+operation normal_Flight_TakingOff_TakenOff_op ( ) {
+	uses I_events_normal_Flight_TakingOff_TakenOff_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: TakenOff
+	}
+}
+
+operation normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op_j_2_29_t_2_29 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Disarmed
+	}
+}
+
+operation normal_Flight_Climbing_entry_j_3_12_t_3_12_op ( ) {
+	requires I_req_normal_Flight_Climbing_entry_j_3_12_t_3_12 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action wp . alt = wp . alt + CLIMB_LIFT
+	}
+}
+
+operation normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op ( ) {
+	uses I_events_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action batteryLow
+	}
+}
+
+operation normal_Flight_Landing_Landed_op_i_t_op ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Landed
+	}
+}
+
+operation normal_Flight_Climbing_entry_i_t_op ( ) {
+	requires I_req_normal_Flight_Climbing_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wp = HOME
+	}
+}
+
+operation normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op ( ) {
+	requires I_req_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action start = wp
+	}
+}
+
+operation normal_Flight_Waypoint_entry_j_2_36_t_2_36_op ( ) {
+	requires I_req_normal_Flight_Waypoint_entry_j_2_36_t_2_36 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotStart = true
+	}
+}
+
+operation clone_normal_Flight_Connect_CI_op ( ) {
+	uses I_events_normal_Flight_Connect_CI_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Connected
+	}
+}
+
+operation clone_normal_BatteryMonitor_Monitoring_entry ( ) {
+	uses I_events_normal_BatteryMonitor_Monitoring_entry requires req_normal_BatteryMonitor_Monitoring_entry requires I_clone_clone_normal_BatteryMonitor_Monitoring_entry_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op_t_thenJ__f_14 initial i
+	final f
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to f
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to f
+		action clone_clone_normal_BatteryMonitor_Monitoring_entry_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op_t_thenJ__f_14 ( )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not battery . percentage < BATTERY_LOW_THRESHOLD
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition battery . percentage < BATTERY_LOW_THRESHOLD
+	}
+}
+
+operation clone_normal_Flight_Landing_Landed_op ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op requires req_normal_Flight_Landing_Landed_op requires I_clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op_j_2_29_f_22 requires I_clone_clone_normal_Flight_Landing_Landed_op_waitOp_j_3_24_j_2_29_32 requires I_clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_i_t_op_i_j_3_24_34 final f
+	initial i
+	junction j_3_24
+	junction j_2_29
+	transition t {
+		from i
+		to j_3_24
+		action clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_i_t_op_i_j_3_24_34 ( )
+	}
+	transition t_3_24 {
+		from j_3_24
+		to j_2_29
+		action clone_clone_normal_Flight_Landing_Landed_op_waitOp_j_3_24_j_2_29_32 ( 1 ) //DELAY_DISARM )
+	}
+	transition t_2_29 {
+		from j_2_29
+		to f
+		action clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op_j_2_29_f_22 ( )
+	}
+}
+
+operation clone_normal_Flight_Climbing_Climbed_op ( ) {
+	uses I_events_normal_Flight_Climbing_Climbed_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtAltitude
+	}
+}
+
+operation clone_normal_Flight_Waypoint_entry ( ) {
+	requires req_normal_Flight_Waypoint_entry requires I_clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_36_11 requires I_clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op_j_2_36_j_2_23_20 final f
+	initial i
+	junction j_2_23
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	junction j_2_36
+	transition t_2_23 {
+		from j_2_23
+		to f
+		action fcWaypointCall ( wp )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_23
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_36
+		action clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_36_11 ( )
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition not gotStart
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not not gotStart
+	}
+	transition t_2_36 {
+		from j_2_36
+		to j_2_23
+		action clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op_j_2_36_j_2_23_20 ( )
+	}
+}
+
+operation clone_normal_Flight_Climbing_entry ( ) {
+	requires req_normal_Flight_Climbing_entry requires I_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21 requires I_clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27 final f
+	initial i
+	junction j_3_12
+	junction j_2_31
+	transition t {
+		from i
+		to j_3_12
+		action clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27 ( )
+	}
+	transition t_3_12 {
+		from j_3_12
+		to j_2_31
+		action clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21 ( )
+	}
+	transition t_2_31 {
+		from j_2_31
+		to f
+		action fcWaypointCall ( wp )
+	}
+}
+
+operation clone_normal_Flight_TakingOff_TakenOff_op ( ) {
+	uses I_events_normal_Flight_TakingOff_TakenOff_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: TakenOff
+	}
+}
+
+operation clone_normal_Flight_GoingHome_ReturnedHome_op ( ) {
+	uses I_events_normal_Flight_GoingHome_ReturnedHome_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtHome
+	}
+}
+
+operation clone_normal_Flight_Waiting_WaypointNotify_op ( ) {
+	uses I_events_normal_Flight_Waiting_WaypointNotify_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: AtWaypoint
+	}
+}
+
+operation clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_36_11 ( ) {
+	requires I_req_normal_Flight_Waypoint_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action start = wp
+	}
+}
+
+operation clone_clone_normal_BatteryMonitor_Monitoring_entry_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA__op_t_thenJ__f_14 ( ) {
+	uses I_events_normal_BatteryMonitor_Monitoring_entry_t_thenJ__t_thenTA_ initial i
+	final f
+	transition t {
+		from i
+		to f
+		action batteryLow
+	}
+}
+
+operation clone_clone_normal_Flight_Waypoint_entry_normal_Flight_Waypoint_entry_j_2_36_t_2_36_op_j_2_36_j_2_23_20 ( ) {
+	requires I_req_normal_Flight_Waypoint_entry_j_2_36_t_2_36 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotStart = true
+	}
+}
+
+operation clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_j_3_12_t_3_12_op_j_3_12_j_2_31_21 ( ) {
+	requires I_req_normal_Flight_Climbing_entry_j_3_12_t_3_12 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action wp . alt = wp . alt + CLIMB_LIFT
+	}
+}
+
+operation clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_j_2_29_t_2_29_op_j_2_29_f_22 ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op_j_2_29_t_2_29 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Disarmed
+	}
+}
+
+operation clone_clone_normal_Flight_Climbing_entry_normal_Flight_Climbing_entry_i_t_op_i_j_3_12_27 ( ) {
+	requires I_req_normal_Flight_Climbing_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wp = HOME
+	}
+}
+
+operation clone_clone_normal_Flight_Landing_Landed_op_waitOp_j_3_24_j_2_29_32 ( i : nat
+) {
+	final f
+	initial i0
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	clock C
+}
+
+operation clone_clone_normal_Flight_Landing_Landed_op_normal_Flight_Landing_Landed_op_i_t_op_i_j_3_24_34 ( ) {
+	uses I_events_normal_Flight_Landing_Landed_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action uavStatus ! AircraftStatus :: Landed
+	}
+}
+

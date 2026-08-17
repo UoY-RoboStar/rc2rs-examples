@@ -1,0 +1,133 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:49
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "uav_FirefightingUAV.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "uav_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate uav_FirefightingUAV
+P_uav_FirefightingUAV = let
+	id__ = 0
+	
+	
+	
+	const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+	const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+	const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+	const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+	const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+	const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+	const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+	const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+	const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+	const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+	const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+	const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+	const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+	const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+	const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+	const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+		
+	
+within
+	uav_FirefightingUAV::O__(id__,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO)
+assert P_uav_FirefightingUAV :[deadlock-free]	
+assert P_uav_FirefightingUAV;RUN({r__}) :[deadlock-free]
+assert P_uav_FirefightingUAV :[deterministic]
+assert P_uav_FirefightingUAV :[divergence-free]
+
+-- generate uav_FirefightingUAV_AnArduino
+P_uav_FirefightingUAV_AnArduino = let
+	id__ = 0
+	
+	
+	
+	const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+	const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+	const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	uav_FirefightingUAV::AnArduino::O__(id__,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT)
+
+assert P_uav_FirefightingUAV_AnArduino :[deadlock-free]	
+assert P_uav_FirefightingUAV_AnArduino;RUN({r__}) :[deadlock-free]
+assert P_uav_FirefightingUAV_AnArduino :[deterministic]
+assert P_uav_FirefightingUAV_AnArduino :[divergence-free]
+
+-- generate uav_FirefightingUAV_ARaspberryPi
+P_uav_FirefightingUAV_ARaspberryPi = let
+	id__ = 0
+	
+	
+	
+	const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+	const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+	const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+	const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+	const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+	const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+	const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+	const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+	const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+	const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+	const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+	const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+	const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+		
+within
+	uav_FirefightingUAV::ARaspberryPi::O__(id__,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO)
+
+assert P_uav_FirefightingUAV_ARaspberryPi :[deadlock-free]	
+assert P_uav_FirefightingUAV_ARaspberryPi;RUN({r__}) :[deadlock-free]
+assert P_uav_FirefightingUAV_ARaspberryPi :[deterministic]
+assert P_uav_FirefightingUAV_ARaspberryPi :[divergence-free]
+

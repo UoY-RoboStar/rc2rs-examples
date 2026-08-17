@@ -1,0 +1,40 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:10
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg__sim_FireDetect.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_FireDetect
+P_pre_pkg__sim_FireDetect = let
+	cycle_pre_pkg__sim_FireDetect_FireDetect = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__sim_FireDetect::O__(
+		id__,
+		const_pre_pkg__sim_FireDetect_LEFT_X,
+		const_pre_pkg__sim_FireDetect_CENTRE_X,
+		const_pre_pkg__sim_FireDetect_RIGHT_X,
+		const_pre_pkg__sim_FireDetect_CENTRE_Y
+	)
+assert P_pre_pkg__sim_FireDetect :[deadlock-free]	
+assert P_pre_pkg__sim_FireDetect;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_FireDetect :[deterministic]
+assert P_pre_pkg__sim_FireDetect :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_FireDetect[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_FireDetect

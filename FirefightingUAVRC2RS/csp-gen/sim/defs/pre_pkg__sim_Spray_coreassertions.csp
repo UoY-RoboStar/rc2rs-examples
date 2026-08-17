@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:11
+--
+
+include "pre_pkg__sim_Spray.csp"
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_Spray
+P_pre_pkg__sim_Spray = let
+	cycle_pre_pkg__sim_Spray_Spray = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__sim_Spray::O__(
+		id__
+	)
+assert P_pre_pkg__sim_Spray :[deadlock-free]	
+assert P_pre_pkg__sim_Spray;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_Spray :[deterministic]
+assert P_pre_pkg__sim_Spray :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_Spray[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_Spray

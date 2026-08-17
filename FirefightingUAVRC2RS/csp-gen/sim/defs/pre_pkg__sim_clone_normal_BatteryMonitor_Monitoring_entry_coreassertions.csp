@@ -1,0 +1,36 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:10
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "pre_pkg__sim_clone_normal_BatteryMonitor_Monitoring_entry.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry
+P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry = let
+	id__ = 0
+	
+	
+	const_pre_pkg__sim_clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD = 0
+	
+	
+within
+	pre_pkg__sim::OP_clone_normal_BatteryMonitor_Monitoring_entry::O__(id__,
+			    const_pre_pkg__sim_clone_normal_BatteryMonitor_Monitoring_entry_BATTERY_LOW_THRESHOLD)
+assert P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry :[deadlock-free]	
+assert P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry :[deterministic]
+assert P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_OP_clone_normal_BatteryMonitor_Monitoring_entry

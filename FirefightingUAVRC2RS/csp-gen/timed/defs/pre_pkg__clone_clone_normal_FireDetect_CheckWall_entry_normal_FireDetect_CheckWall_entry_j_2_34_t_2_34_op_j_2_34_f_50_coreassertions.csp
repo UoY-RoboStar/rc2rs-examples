@@ -1,0 +1,37 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:37
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg__clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50
+P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 = let
+	id__ = 0
+	
+	
+	
+	
+within
+	pre_pkg_::OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50::O__(id__)
+assert P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 :[deadlock-free]	
+assert P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 :[deterministic]
+assert P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__OP_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50

@@ -1,0 +1,106 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:39
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "pre_pkg__Arduino.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_timed_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__Arduino
+P_pre_pkg__Arduino = let
+	id__ = 0
+	
+	
+	
+	const_pre_pkg__Arduino_AAim_GIMBAL_FLOOD_DELAY = const_pre_pkg__Aim_GIMBAL_FLOOD_DELAY
+	const_pre_pkg__Arduino_AWaterMonitor_WATER_FLOW = const_pre_pkg__WaterMonitor_WATER_FLOW
+	const_pre_pkg__Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	pre_pkg__Arduino::O__(id__,
+			    const_pre_pkg__Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_pre_pkg__Arduino_AWaterMonitor_WATER_FLOW,
+			    const_pre_pkg__Arduino_AWaterMonitor_TIME_PER_UNIT)
+
+assert P_pre_pkg__Arduino :[deadlock-free]	
+assert P_pre_pkg__Arduino;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__Arduino :[deterministic]
+assert P_pre_pkg__Arduino :[divergence-free]
+
+-- generate pre_pkg__Arduino_ASpray
+P_pre_pkg__Arduino_ASpray = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__Arduino::ASpray::O__(
+		id__
+	)
+assert P_pre_pkg__Arduino_ASpray :[deadlock-free]	
+assert P_pre_pkg__Arduino_ASpray;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__Arduino_ASpray :[deterministic]
+assert P_pre_pkg__Arduino_ASpray :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__Arduino_ASpray[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__Arduino_ASpray
+-- generate pre_pkg__Arduino_AAim
+P_pre_pkg__Arduino_AAim = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__Arduino::AAim::O__(
+		id__,
+		const_pre_pkg__Aim_GIMBAL_FLOOD_DELAY
+	)
+assert P_pre_pkg__Arduino_AAim :[deadlock-free]	
+assert P_pre_pkg__Arduino_AAim;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__Arduino_AAim :[deterministic]
+assert P_pre_pkg__Arduino_AAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__Arduino_AAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__Arduino_AAim
+-- generate pre_pkg__Arduino_AWaterMonitor
+P_pre_pkg__Arduino_AWaterMonitor = let
+	id__ = 0
+	
+	
+	const_pre_pkg__WaterMonitor_TIME_PER_UNIT = 1
+	
+within
+	pre_pkg__Arduino::AWaterMonitor::O__(
+		id__,
+		const_pre_pkg__WaterMonitor_WATER_FLOW,
+		const_pre_pkg__WaterMonitor_TIME_PER_UNIT
+	)
+assert P_pre_pkg__Arduino_AWaterMonitor :[deadlock-free]	
+assert P_pre_pkg__Arduino_AWaterMonitor;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__Arduino_AWaterMonitor :[deterministic]
+assert P_pre_pkg__Arduino_AWaterMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__Arduino_AWaterMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__Arduino_AWaterMonitor
+-- timed deadlock free
+assert prioritise(P_pre_pkg__Arduino[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__Arduino

@@ -1,0 +1,29 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:38
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "pumpOff.csp"
+include "state_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate OP_pumpOff
+P_OP_pumpOff = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_pumpOff::O__(id__)
+assert P_OP_pumpOff :[deadlock-free]	
+assert P_OP_pumpOff;RUN({r__}) :[deadlock-free]
+assert P_OP_pumpOff :[deterministic]
+assert P_OP_pumpOff :[divergence-free]

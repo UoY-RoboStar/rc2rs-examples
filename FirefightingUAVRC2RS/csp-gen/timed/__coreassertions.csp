@@ -1,0 +1,658 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:53
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "_csp"
+
+-- generate Flight
+P_Flight = let
+	id__ = 0
+	
+	
+	
+within
+	Flight::O__(
+		id__,
+		const_Flight_CLIMB_LIFT,
+		const_Flight_DELAY_DISARM,
+		const_Flight_HOME
+	)
+assert P_Flight :[deadlock-free]	
+assert P_Flight;RUN({r__}) :[deadlock-free]
+assert P_Flight :[deterministic]
+assert P_Flight :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Flight[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Flight
+-- generate BatteryMonitor
+P_BatteryMonitor = let
+	id__ = 0
+	
+	
+	
+within
+	BatteryMonitor::O__(
+		id__,
+		const_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+		const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	)
+assert P_BatteryMonitor :[deadlock-free]	
+assert P_BatteryMonitor;RUN({r__}) :[deadlock-free]
+assert P_BatteryMonitor :[deterministic]
+assert P_BatteryMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_BatteryMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_BatteryMonitor
+-- generate Aim
+P_Aim = let
+	id__ = 0
+	
+	
+	
+within
+	Aim::O__(
+		id__,
+		const_Aim_GIMBAL_FLOOD_DELAY
+	)
+assert P_Aim :[deadlock-free]	
+assert P_Aim;RUN({r__}) :[deadlock-free]
+assert P_Aim :[deterministic]
+assert P_Aim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Aim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Aim
+-- generate Spray
+P_Spray = let
+	id__ = 0
+	
+	
+	
+within
+	Spray::O__(
+		id__
+	)
+assert P_Spray :[deadlock-free]	
+assert P_Spray;RUN({r__}) :[deadlock-free]
+assert P_Spray :[deterministic]
+assert P_Spray :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Spray[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Spray
+-- generate WaterMonitor
+P_WaterMonitor = let
+	id__ = 0
+	
+	
+	const_WaterMonitor_TIME_PER_UNIT = 1
+	
+within
+	WaterMonitor::O__(
+		id__,
+		const_WaterMonitor_WATER_FLOW,
+		const_WaterMonitor_TIME_PER_UNIT
+	)
+assert P_WaterMonitor :[deadlock-free]	
+assert P_WaterMonitor;RUN({r__}) :[deadlock-free]
+assert P_WaterMonitor :[deterministic]
+assert P_WaterMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_WaterMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_WaterMonitor
+-- generate Planning
+P_Planning = let
+	id__ = 0
+	
+	
+	
+within
+	Planning::O__(
+		id__,
+		const_Planning_WALL_LOC,
+		const_Planning_FIRE_TO,
+		const_Planning_INIT_TO
+	)
+assert P_Planning :[deadlock-free]	
+assert P_Planning;RUN({r__}) :[deadlock-free]
+assert P_Planning :[deterministic]
+assert P_Planning :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Planning[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Planning
+-- generate FireDetect
+P_FireDetect = let
+	id__ = 0
+	
+	
+	
+within
+	FireDetect::O__(
+		id__,
+		const_FireDetect_LEFT_X,
+		const_FireDetect_CENTRE_X,
+		const_FireDetect_RIGHT_X,
+		const_FireDetect_CENTRE_Y
+	)
+assert P_FireDetect :[deadlock-free]	
+assert P_FireDetect;RUN({r__}) :[deadlock-free]
+assert P_FireDetect :[deterministic]
+assert P_FireDetect :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_FireDetect[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_FireDetect
+-- generate VisualNav
+P_VisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	VisualNav::O__(
+		id__,
+		const_VisualNav_TRACK_DIST,
+		const_VisualNav_SCAN_DIST
+	)
+assert P_VisualNav :[deadlock-free]	
+assert P_VisualNav;RUN({r__}) :[deadlock-free]
+assert P_VisualNav :[deterministic]
+assert P_VisualNav :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_VisualNav[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_VisualNav
+-- generate GimbalAim
+P_GimbalAim = let
+	id__ = 0
+	
+	
+	
+within
+	GimbalAim::O__(
+		id__,
+		const_GimbalAim_TRACK_DIST
+	)
+assert P_GimbalAim :[deadlock-free]	
+assert P_GimbalAim;RUN({r__}) :[deadlock-free]
+assert P_GimbalAim :[deterministic]
+assert P_GimbalAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_GimbalAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_GimbalAim
+
+-- generate OP_search
+P_OP_search = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_search::O__(id__)
+assert P_OP_search :[deadlock-free]	
+assert P_OP_search;RUN({r__}) :[deadlock-free]
+assert P_OP_search :[deterministic]
+assert P_OP_search :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_search[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_search
+-- generate OP_pumpOn
+P_OP_pumpOn = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_pumpOn::O__(id__)
+assert P_OP_pumpOn :[deadlock-free]	
+assert P_OP_pumpOn;RUN({r__}) :[deadlock-free]
+assert P_OP_pumpOn :[deterministic]
+assert P_OP_pumpOn :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_pumpOn[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_pumpOn
+-- generate OP_pumpOff
+P_OP_pumpOff = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_pumpOff::O__(id__)
+assert P_OP_pumpOff :[deadlock-free]	
+assert P_OP_pumpOff;RUN({r__}) :[deadlock-free]
+assert P_OP_pumpOff :[deterministic]
+assert P_OP_pumpOff :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_pumpOff[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_pumpOff
+-- generate OP_fcTakeoffCall
+P_OP_fcTakeoffCall = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_fcTakeoffCall::O__(id__)
+assert P_OP_fcTakeoffCall :[deadlock-free]	
+assert P_OP_fcTakeoffCall;RUN({r__}) :[deadlock-free]
+assert P_OP_fcTakeoffCall :[deterministic]
+assert P_OP_fcTakeoffCall :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_fcTakeoffCall[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_fcTakeoffCall
+-- generate OP_fcGoHomeCall
+P_OP_fcGoHomeCall = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_fcGoHomeCall::O__(id__)
+assert P_OP_fcGoHomeCall :[deadlock-free]	
+assert P_OP_fcGoHomeCall;RUN({r__}) :[deadlock-free]
+assert P_OP_fcGoHomeCall :[deterministic]
+assert P_OP_fcGoHomeCall :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_fcGoHomeCall[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_fcGoHomeCall
+-- generate OP_fcLandCall
+P_OP_fcLandCall = let
+	id__ = 0
+	
+	
+	
+	
+within
+	OP_fcLandCall::O__(id__)
+assert P_OP_fcLandCall :[deadlock-free]	
+assert P_OP_fcLandCall;RUN({r__}) :[deadlock-free]
+assert P_OP_fcLandCall :[deterministic]
+assert P_OP_fcLandCall :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_fcLandCall[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_fcLandCall
+-- generate OP_fcWaypointCall
+P_OP_fcWaypointCall = let
+	id__ = 0
+	
+	param_pos = (0,0,0,0)
+	
+	
+	
+within
+	OP_fcWaypointCall::O__(id__,
+				param_pos)
+assert P_OP_fcWaypointCall :[deadlock-free]	
+assert P_OP_fcWaypointCall;RUN({r__}) :[deadlock-free]
+assert P_OP_fcWaypointCall :[deterministic]
+assert P_OP_fcWaypointCall :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_fcWaypointCall[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_fcWaypointCall
+-- generate OP_fcMoveRelativeCall
+P_OP_fcMoveRelativeCall = let
+	id__ = 0
+	
+	param_movement = (0,0,0,0)
+	
+	
+	
+within
+	OP_fcMoveRelativeCall::O__(id__,
+				param_movement)
+assert P_OP_fcMoveRelativeCall :[deadlock-free]	
+assert P_OP_fcMoveRelativeCall;RUN({r__}) :[deadlock-free]
+assert P_OP_fcMoveRelativeCall :[deterministic]
+assert P_OP_fcMoveRelativeCall :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_fcMoveRelativeCall[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_fcMoveRelativeCall
+-- generate OP_gimbalWritePan
+P_OP_gimbalWritePan = let
+	id__ = 0
+	
+	param_angle = 0
+	
+	
+	
+within
+	OP_gimbalWritePan::O__(id__,
+				param_angle)
+assert P_OP_gimbalWritePan :[deadlock-free]	
+assert P_OP_gimbalWritePan;RUN({r__}) :[deadlock-free]
+assert P_OP_gimbalWritePan :[deterministic]
+assert P_OP_gimbalWritePan :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_gimbalWritePan[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_gimbalWritePan
+-- generate OP_gimbalWriteTilt
+P_OP_gimbalWriteTilt = let
+	id__ = 0
+	
+	param_angle = 0
+	
+	
+	
+within
+	OP_gimbalWriteTilt::O__(id__,
+				param_angle)
+assert P_OP_gimbalWriteTilt :[deadlock-free]	
+assert P_OP_gimbalWriteTilt;RUN({r__}) :[deadlock-free]
+assert P_OP_gimbalWriteTilt :[deterministic]
+assert P_OP_gimbalWriteTilt :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_OP_gimbalWriteTilt[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_OP_gimbalWriteTilt
+
+-- generate RaspberryPi
+P_RaspberryPi = let
+	id__ = 0
+	
+	
+	
+	const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+	const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+	const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+	const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+	const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+	const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+	const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+	const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+	const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+	const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+	const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+	const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+	const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+		
+within
+	RaspberryPi::O__(id__,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO)
+
+assert P_RaspberryPi :[deadlock-free]	
+assert P_RaspberryPi;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi :[deterministic]
+assert P_RaspberryPi :[divergence-free]
+
+-- generate RaspberryPi_CFireDetect
+P_RaspberryPi_CFireDetect = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CFireDetect::O__(
+		id__,
+		const_FireDetect_LEFT_X,
+		const_FireDetect_CENTRE_X,
+		const_FireDetect_RIGHT_X,
+		const_FireDetect_CENTRE_Y
+	)
+assert P_RaspberryPi_CFireDetect :[deadlock-free]	
+assert P_RaspberryPi_CFireDetect;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CFireDetect :[deterministic]
+assert P_RaspberryPi_CFireDetect :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CFireDetect[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CFireDetect
+-- generate RaspberryPi_CVisualNav
+P_RaspberryPi_CVisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CVisualNav::O__(
+		id__,
+		const_VisualNav_TRACK_DIST,
+		const_VisualNav_SCAN_DIST
+	)
+assert P_RaspberryPi_CVisualNav :[deadlock-free]	
+assert P_RaspberryPi_CVisualNav;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CVisualNav :[deterministic]
+assert P_RaspberryPi_CVisualNav :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CVisualNav[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CVisualNav
+-- generate RaspberryPi_CFlight
+P_RaspberryPi_CFlight = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CFlight::O__(
+		id__,
+		const_Flight_CLIMB_LIFT,
+		const_Flight_DELAY_DISARM,
+		const_Flight_HOME
+	)
+assert P_RaspberryPi_CFlight :[deadlock-free]	
+assert P_RaspberryPi_CFlight;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CFlight :[deterministic]
+assert P_RaspberryPi_CFlight :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CFlight[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CFlight
+-- generate RaspberryPi_CBatteryMonitor
+P_RaspberryPi_CBatteryMonitor = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CBatteryMonitor::O__(
+		id__,
+		const_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+		const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	)
+assert P_RaspberryPi_CBatteryMonitor :[deadlock-free]	
+assert P_RaspberryPi_CBatteryMonitor;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CBatteryMonitor :[deterministic]
+assert P_RaspberryPi_CBatteryMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CBatteryMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CBatteryMonitor
+-- generate RaspberryPi_CGimbalAim
+P_RaspberryPi_CGimbalAim = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CGimbalAim::O__(
+		id__,
+		const_GimbalAim_TRACK_DIST
+	)
+assert P_RaspberryPi_CGimbalAim :[deadlock-free]	
+assert P_RaspberryPi_CGimbalAim;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CGimbalAim :[deterministic]
+assert P_RaspberryPi_CGimbalAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CGimbalAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CGimbalAim
+-- generate RaspberryPi_CPlanning
+P_RaspberryPi_CPlanning = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CPlanning::O__(
+		id__,
+		const_Planning_WALL_LOC,
+		const_Planning_FIRE_TO,
+		const_Planning_INIT_TO
+	)
+assert P_RaspberryPi_CPlanning :[deadlock-free]	
+assert P_RaspberryPi_CPlanning;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CPlanning :[deterministic]
+assert P_RaspberryPi_CPlanning :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_RaspberryPi_CPlanning[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi_CPlanning
+-- timed deadlock free
+assert prioritise(P_RaspberryPi[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_RaspberryPi
+-- generate Arduino
+P_Arduino = let
+	id__ = 0
+	
+	
+	
+	const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+	const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+	const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	Arduino::O__(id__,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT)
+
+assert P_Arduino :[deadlock-free]	
+assert P_Arduino;RUN({r__}) :[deadlock-free]
+assert P_Arduino :[deterministic]
+assert P_Arduino :[divergence-free]
+
+-- generate Arduino_ASpray
+P_Arduino_ASpray = let
+	id__ = 0
+	
+	
+	
+within
+	Arduino::ASpray::O__(
+		id__
+	)
+assert P_Arduino_ASpray :[deadlock-free]	
+assert P_Arduino_ASpray;RUN({r__}) :[deadlock-free]
+assert P_Arduino_ASpray :[deterministic]
+assert P_Arduino_ASpray :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Arduino_ASpray[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Arduino_ASpray
+-- generate Arduino_AAim
+P_Arduino_AAim = let
+	id__ = 0
+	
+	
+	
+within
+	Arduino::AAim::O__(
+		id__,
+		const_Aim_GIMBAL_FLOOD_DELAY
+	)
+assert P_Arduino_AAim :[deadlock-free]	
+assert P_Arduino_AAim;RUN({r__}) :[deadlock-free]
+assert P_Arduino_AAim :[deterministic]
+assert P_Arduino_AAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Arduino_AAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Arduino_AAim
+-- generate Arduino_AWaterMonitor
+P_Arduino_AWaterMonitor = let
+	id__ = 0
+	
+	
+	const_WaterMonitor_TIME_PER_UNIT = 1
+	
+within
+	Arduino::AWaterMonitor::O__(
+		id__,
+		const_WaterMonitor_WATER_FLOW,
+		const_WaterMonitor_TIME_PER_UNIT
+	)
+assert P_Arduino_AWaterMonitor :[deadlock-free]	
+assert P_Arduino_AWaterMonitor;RUN({r__}) :[deadlock-free]
+assert P_Arduino_AWaterMonitor :[deterministic]
+assert P_Arduino_AWaterMonitor :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Arduino_AWaterMonitor[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Arduino_AWaterMonitor
+-- timed deadlock free
+assert prioritise(P_Arduino[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Arduino
+

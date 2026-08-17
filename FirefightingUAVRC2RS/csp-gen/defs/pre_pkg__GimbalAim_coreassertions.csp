@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pre_pkg__GimbalAim.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pre_pkg__GimbalAim
+P_pre_pkg__GimbalAim = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__GimbalAim::O__(
+		id__,
+		const_pre_pkg__GimbalAim_TRACK_DIST
+	)
+assert P_pre_pkg__GimbalAim :[deadlock-free]	
+assert P_pre_pkg__GimbalAim;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__GimbalAim :[deterministic]
+assert P_pre_pkg__GimbalAim :[divergence-free]

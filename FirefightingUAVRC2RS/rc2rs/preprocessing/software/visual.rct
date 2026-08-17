@@ -1,0 +1,962 @@
+package pre_pkg_ 
+//import ::FireStatus 
+interface req_normal_GimbalAim_I_Init_op {
+	var tgt : FireTarget
+}
+
+interface I_normal_GimbalAim_I_Init_op {
+	normal_GimbalAim_I_Init_op ( )
+}
+
+interface req_normal_GimbalAim_Yaw_entry {
+	var yaw : nat
+}
+
+interface I_events_normal_GimbalAim_Yaw_entry {
+	event gimbalYaw : nat
+}
+
+interface I_normal_GimbalAim_Yaw_entry {
+	normal_GimbalAim_Yaw_entry ( )
+}
+
+interface req_normal_VisualNav_Active_NoFire_entry {
+	var movement : RelativeMotion , tgt : FireTarget
+	const SCAN_DIST : real
+}
+
+interface I_normal_VisualNav_Active_NoFire_entry {
+	normal_VisualNav_Active_NoFire_entry ( )
+}
+
+interface req_normal_GimbalAim_Pitch_entry {
+	var pitch : nat
+}
+
+interface I_events_normal_GimbalAim_Pitch_entry {
+	event gimbalPitch : nat
+}
+
+interface I_normal_GimbalAim_Pitch_entry {
+	normal_GimbalAim_Pitch_entry ( )
+}
+
+interface I_events_normal_GimbalAim_MaybeAimed_DidAim_op {
+	event gimbalAimed
+}
+
+interface I_normal_GimbalAim_MaybeAimed_DidAim_op {
+	normal_GimbalAim_MaybeAimed_DidAim_op ( )
+}
+
+interface req_normal_VisualNav_Active_Commit_Loop_op {
+	var movement : RelativeMotion
+}
+
+interface I_events_normal_VisualNav_Active_Commit_Loop_op {
+	event visualPosition : RelativeMotion
+}
+
+interface I_normal_VisualNav_Active_Commit_Loop_op {
+	normal_VisualNav_Active_Commit_Loop_op ( )
+}
+
+interface req_normal_GimbalAim_Calculate_entry {
+	var pitch : nat , tgt : FireTarget , yaw : nat
+}
+
+interface I_normal_GimbalAim_Calculate_entry {
+	normal_GimbalAim_Calculate_entry ( )
+}
+
+interface req_normal_VisualNav_Active_Wall_entry {
+	var movement : RelativeMotion , wm : WallMetrics
+}
+
+interface I_normal_VisualNav_Active_Wall_entry {
+	normal_VisualNav_Active_Wall_entry ( )
+}
+
+interface req_normal_GimbalAim_Clamp_entry {
+	var pitch : nat , cYaw : nat , YAW_DEAD_ZONE : nat , PITCH_DEAD_ZONE : nat , yaw : nat , cPitch : nat
+}
+
+interface I_normal_GimbalAim_Clamp_entry {
+	normal_GimbalAim_Clamp_entry ( )
+}
+
+interface req_normal_VisualNav_Active_Fire_entry {
+	var movement : RelativeMotion , tgt : FireTarget
+	const TRACK_DIST : real
+}
+
+interface I_normal_VisualNav_Active_Fire_entry {
+	normal_VisualNav_Active_Fire_entry ( )
+}
+
+interface I_req_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21 {
+	var movement : RelativeMotion
+}
+
+interface I_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op {
+	normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op ( )
+}
+
+interface I_req_normal_GimbalAim_Calculate_entry_i_t {
+	var yaw : nat , tgt : FireTarget
+}
+
+interface I_normal_GimbalAim_Calculate_entry_i_t_op {
+	normal_GimbalAim_Calculate_entry_i_t_op ( )
+}
+
+interface I_req_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6 {
+	var pitch : nat , tgt : FireTarget
+}
+
+interface I_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op {
+	normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op ( )
+}
+
+interface I_req_normal_VisualNav_Active_NoFire_entry_i_t {
+	const SCAN_DIST : real
+	var tgt : FireTarget , movement : RelativeMotion
+}
+
+interface I_normal_VisualNav_Active_NoFire_entry_i_t_op {
+	normal_VisualNav_Active_NoFire_entry_i_t_op ( )
+}
+
+interface I_req_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16 {
+	var cPitch : nat , PITCH_DEAD_ZONE : nat , pitch : nat
+}
+
+interface I_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op {
+	normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op ( )
+}
+
+interface I_req_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7 {
+	var movement : RelativeMotion , tgt : FireTarget
+}
+
+interface I_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op {
+	normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op ( )
+}
+
+interface I_req_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26 {
+	var movement : RelativeMotion , tgt : FireTarget
+}
+
+interface I_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op {
+	normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op ( )
+}
+
+interface I_req_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28 {
+	var movement : RelativeMotion
+}
+
+interface I_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op {
+	normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op ( )
+}
+
+interface I_req_normal_GimbalAim_Clamp_entry_i_t {
+	var cYaw : nat , YAW_DEAD_ZONE : nat , yaw : nat
+}
+
+interface I_normal_GimbalAim_Clamp_entry_i_t_op {
+	normal_GimbalAim_Clamp_entry_i_t_op ( )
+}
+
+interface I_req_normal_VisualNav_Active_Fire_entry_i_t {
+	const TRACK_DIST : real
+	var movement : RelativeMotion , tgt : FireTarget
+}
+
+interface I_normal_VisualNav_Active_Fire_entry_i_t_op {
+	normal_VisualNav_Active_Fire_entry_i_t_op ( )
+}
+
+interface I_clone_normal_GimbalAim_MaybeAimed_DidAim_op {
+	clone_normal_GimbalAim_MaybeAimed_DidAim_op ( )
+}
+
+interface I_clone_normal_VisualNav_Active_NoFire_entry {
+	clone_normal_VisualNav_Active_NoFire_entry ( )
+}
+
+interface I_clone_normal_GimbalAim_I_Init_op {
+	clone_normal_GimbalAim_I_Init_op ( )
+}
+
+interface I_clone_normal_GimbalAim_Calculate_entry {
+	clone_normal_GimbalAim_Calculate_entry ( )
+}
+
+interface I_clone_normal_VisualNav_Active_Wall_entry {
+	clone_normal_VisualNav_Active_Wall_entry ( )
+}
+
+interface I_clone_normal_GimbalAim_Clamp_entry {
+	clone_normal_GimbalAim_Clamp_entry ( )
+}
+
+interface I_clone_normal_GimbalAim_Pitch_entry {
+	clone_normal_GimbalAim_Pitch_entry ( )
+}
+
+interface I_clone_normal_GimbalAim_Yaw_entry {
+	clone_normal_GimbalAim_Yaw_entry ( )
+}
+
+interface I_clone_normal_VisualNav_Active_Commit_Loop_op {
+	clone_normal_VisualNav_Active_Commit_Loop_op ( )
+}
+
+interface I_clone_normal_VisualNav_Active_Fire_entry {
+	clone_normal_VisualNav_Active_Fire_entry ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op_j_3_7_j_2_26_1 {
+	clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op_j_3_7_j_2_26_1 ( )
+}
+
+interface I_clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_i_t_op_i_j_2_16_6 {
+	clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_i_t_op_i_j_2_16_6 ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op_j_2_28_f_8 {
+	clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op_j_2_28_f_8 ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18 {
+	clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18 ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24 {
+	clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24 ( )
+}
+
+interface I_clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op_j_2_6_f_25 {
+	clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op_j_2_6_f_25 ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op_j_3_21_j_2_28_29 {
+	clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op_j_3_21_j_2_28_29 ( )
+}
+
+interface I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op_j_2_26_f_38 {
+	clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op_j_2_26_f_38 ( )
+}
+
+interface I_clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op_j_2_16_f_47 {
+	clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op_j_2_16_f_47 ( )
+}
+
+interface I_clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_i_t_op_i_j_2_6_48 {
+	clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_i_t_op_i_j_2_6_48 ( )
+}
+
+stm VisualNav {
+	uses FireVisualEvents uses VisualFlightEvents uses VisualPlanningEvents requires I_clone_normal_VisualNav_Active_NoFire_entry requires I_clone_normal_VisualNav_Active_Wall_entry requires I_clone_normal_VisualNav_Active_Commit_Loop_op requires I_clone_normal_VisualNav_Active_Fire_entry var tgt : FireTarget , wm : WallMetrics , movement : RelativeMotion
+	const TRACK_DIST : real , SCAN_DIST : real
+	initial I
+	state Inactive {
+		initial i
+		state EmptyCycle {
+		}
+		transition tInactive {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Active {
+		initial I
+		state Waiting {
+			state EmptyCycle {
+			}
+			initial i
+			transition tWaiting {
+				from i
+				to EmptyCycle
+			}
+		}
+		state Wall {
+			state EmptyCycle {
+			}
+			initial i
+			transition tWall {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_VisualNav_Active_Wall_entry ( )
+		}
+		junction FIsValid
+		state Fire {
+			state EmptyCycle {
+			}
+			initial i
+			transition tFire {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_VisualNav_Active_Fire_entry ( )
+		}
+		state NoFire {
+			state EmptyCycle {
+			}
+			initial i
+			transition tNoFire {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_VisualNav_Active_NoFire_entry ( )
+		}
+		junction Commit
+		transition Init {
+			from I
+			to Waiting
+		}
+		transition WW {
+			from Waiting
+			to Wall
+			trigger wallMetrics ? wm
+		}
+		transition WF {
+			from Wall
+			to FIsValid
+			trigger fvSeenFire ? tgt
+		}
+		transition FValid {
+			from FIsValid
+			to Fire
+			condition tgt . status == FireStatus :: Tracked
+		}
+		transition FNotValid {
+			from FIsValid
+			to NoFire
+			condition tgt . status != FireStatus :: Tracked
+		}
+		transition FCommit {
+			from Fire
+			to Commit
+		}
+		transition NCommit {
+			from NoFire
+			to Commit
+		}
+		transition Loop {
+			from Commit
+			to Waiting
+			action clone_normal_VisualNav_Active_Commit_Loop_op ( )
+		}
+	}
+	transition Init {
+		from I
+		to Inactive
+	}
+	transition Activate {
+		from Inactive
+		to Active
+		trigger vnavEnable
+	}
+	transition Deactivate {
+		from Active
+		to Inactive
+		trigger vnavDisable
+	}
+	transition IgnoreDeactivate {
+		from Inactive
+		to Inactive
+		trigger vnavDisable
+	}
+	transition IgnoreW {
+		from Inactive
+		to Inactive
+		trigger wallMetrics ? wm
+	}
+	transition IgnoreF {
+		from Inactive
+		to Inactive
+		trigger fvSeenFire ? tgt
+	}
+}
+
+stm GimbalAim {
+	uses FireGimbalEvents uses GimbalSprayEvents uses GimbalPlanningEvents requires I_clone_normal_GimbalAim_MaybeAimed_DidAim_op requires I_clone_normal_GimbalAim_I_Init_op requires I_clone_normal_GimbalAim_Calculate_entry requires I_clone_normal_GimbalAim_Clamp_entry requires I_clone_normal_GimbalAim_Pitch_entry requires I_clone_normal_GimbalAim_Yaw_entry var tgt : FireTarget , yaw : nat , pitch : nat , tracking : boolean = false
+	var cYaw : nat , cPitch : nat , YAW_DEAD_ZONE : nat , PITCH_DEAD_ZONE : nat
+	const TRACK_DIST : real
+	initial I
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition tWaiting {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Calculate {
+		state EmptyCycle {
+		}
+		initial i
+		transition tCalculate {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_GimbalAim_Calculate_entry ( )
+	}
+	state Yaw {
+		initial i
+		state EmptyCycle {
+		}
+		transition tYaw {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_GimbalAim_Yaw_entry ( )
+	}
+	state Pitch {
+		initial i
+		state EmptyCycle {
+		}
+		transition tPitch {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_GimbalAim_Pitch_entry ( )
+	}
+	junction IsValid
+	state Clamp {
+		state EmptyCycle {
+		}
+		initial i
+		transition tClamp {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_GimbalAim_Clamp_entry ( )
+	}
+	junction MaybeAimed
+	transition Init {
+		from I
+		to Waiting
+		action clone_normal_GimbalAim_I_Init_op ( )
+	}
+	transition GotFire {
+		from Waiting
+		to IsValid
+		trigger fgSeenFire ? tgt
+	}
+	transition CalcYaw {
+		from Calculate
+		to Clamp
+	}
+	transition YP {
+		from Yaw
+		to Pitch
+		trigger gimbalYawAck
+	}
+	transition PW {
+		from Pitch
+		to MaybeAimed
+		trigger gimbalPitchAck
+	}
+	transition Valid {
+		from IsValid
+		to Calculate
+		condition tgt . status == FireStatus :: Tracked
+	}
+	transition NotValid {
+		from IsValid
+		to Waiting
+		condition tgt . status != FireStatus :: Tracked
+	}
+	transition Clamped {
+		from Clamp
+		to Yaw
+	}
+	transition DidAim {
+		from MaybeAimed
+		to Waiting
+		condition cYaw == yaw /\ cPitch == pitch
+		action clone_normal_GimbalAim_MaybeAimed_DidAim_op ( )
+	}
+	transition DidNotAim {
+		from MaybeAimed
+		to Waiting
+		condition cYaw != yaw \/ cPitch != pitch
+	}
+}
+
+operation normal_GimbalAim_I_Init_op ( ) {
+	requires req_normal_GimbalAim_I_Init_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tgt . status = FireStatus :: NoFire
+	}
+}
+
+operation normal_GimbalAim_Yaw_entry ( ) {
+	uses I_events_normal_GimbalAim_Yaw_entry requires req_normal_GimbalAim_Yaw_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gimbalYaw ! yaw
+	}
+}
+
+operation normal_VisualNav_Active_NoFire_entry ( ) {
+	requires req_normal_VisualNav_Active_NoFire_entry requires I_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op requires I_normal_VisualNav_Active_NoFire_entry_i_t_op requires I_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op final f
+	initial i
+	junction j_3_21
+	junction j_2_28
+	transition t {
+		from i
+		to j_3_21
+		action normal_VisualNav_Active_NoFire_entry_i_t_op ( )
+	}
+	transition t_3_21 {
+		from j_3_21
+		to j_2_28
+		action normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op ( )
+	}
+	transition t_2_28 {
+		from j_2_28
+		to f
+		action normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op ( )
+	}
+}
+
+operation normal_GimbalAim_Pitch_entry ( ) {
+	uses I_events_normal_GimbalAim_Pitch_entry requires req_normal_GimbalAim_Pitch_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gimbalPitch ! pitch
+	}
+}
+
+operation normal_GimbalAim_MaybeAimed_DidAim_op ( ) {
+	uses I_events_normal_GimbalAim_MaybeAimed_DidAim_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalAimed
+	}
+}
+
+operation normal_VisualNav_Active_Commit_Loop_op ( ) {
+	uses I_events_normal_VisualNav_Active_Commit_Loop_op requires req_normal_VisualNav_Active_Commit_Loop_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action visualPosition ! movement
+	}
+}
+
+operation normal_GimbalAim_Calculate_entry ( ) {
+	requires req_normal_GimbalAim_Calculate_entry requires I_normal_GimbalAim_Calculate_entry_i_t_op requires I_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op initial i
+	final f
+	junction j_2_6
+	transition t {
+		from i
+		to j_2_6
+		action normal_GimbalAim_Calculate_entry_i_t_op ( )
+	}
+	transition t_2_6 {
+		from j_2_6
+		to f
+		action normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op ( )
+	}
+}
+
+operation normal_VisualNav_Active_Wall_entry ( ) {
+	requires req_normal_VisualNav_Active_Wall_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dyaw = calcYawDelta ( wm )
+	}
+}
+
+operation normal_GimbalAim_Clamp_entry ( ) {
+	requires req_normal_GimbalAim_Clamp_entry requires I_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op requires I_normal_GimbalAim_Clamp_entry_i_t_op final f
+	initial i
+	junction j_2_16
+	transition t {
+		from i
+		to j_2_16
+		action normal_GimbalAim_Clamp_entry_i_t_op ( )
+	}
+	transition t_2_16 {
+		from j_2_16
+		to f
+		action normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op ( )
+	}
+}
+
+operation normal_VisualNav_Active_Fire_entry ( ) {
+	requires req_normal_VisualNav_Active_Fire_entry requires I_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op requires I_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op requires I_normal_VisualNav_Active_Fire_entry_i_t_op initial i
+	final f
+	junction j_3_7
+	junction j_2_26
+	transition t {
+		from i
+		to j_3_7
+		action normal_VisualNav_Active_Fire_entry_i_t_op ( )
+	}
+	transition t_3_7 {
+		from j_3_7
+		to j_2_26
+		action normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op ( )
+	}
+	transition t_2_26 {
+		from j_2_26
+		to f
+		action normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op ( )
+	}
+}
+
+operation normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dy = 0
+	}
+}
+
+operation normal_GimbalAim_Calculate_entry_i_t_op ( ) {
+	requires I_req_normal_GimbalAim_Calculate_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action yaw = calcGimbalAxis ( tgt . distance , tgt . dx )
+	}
+}
+
+operation normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op ( ) {
+	requires I_req_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action pitch = calcGimbalAxis ( tgt . distance , tgt . dy )
+	}
+}
+
+operation normal_VisualNav_Active_NoFire_entry_i_t_op ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dx = tgt . distance - SCAN_DIST
+	}
+}
+
+operation normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op ( ) {
+	requires I_req_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action cPitch = clamp ( pitch , PITCH_DEAD_ZONE )
+	}
+}
+
+operation normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dy = tgt . dx
+	}
+}
+
+operation normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dz = tgt . dy
+	}
+}
+
+operation normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dz = 0
+	}
+}
+
+operation normal_GimbalAim_Clamp_entry_i_t_op ( ) {
+	requires I_req_normal_GimbalAim_Clamp_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action cYaw = clamp ( yaw , YAW_DEAD_ZONE )
+	}
+}
+
+operation normal_VisualNav_Active_Fire_entry_i_t_op ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dx = tgt . distance - TRACK_DIST
+	}
+}
+
+operation clone_normal_GimbalAim_MaybeAimed_DidAim_op ( ) {
+	uses I_events_normal_GimbalAim_MaybeAimed_DidAim_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gimbalAimed
+	}
+}
+
+operation clone_normal_VisualNav_Active_NoFire_entry ( ) {
+	requires req_normal_VisualNav_Active_NoFire_entry requires I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op_j_2_28_f_8 requires I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24 requires I_clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op_j_3_21_j_2_28_29 final f
+	initial i
+	junction j_3_21
+	junction j_2_28
+	transition t {
+		from i
+		to j_3_21
+		action clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24 ( )
+	}
+	transition t_3_21 {
+		from j_3_21
+		to j_2_28
+		action clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op_j_3_21_j_2_28_29 ( )
+	}
+	transition t_2_28 {
+		from j_2_28
+		to f
+		action clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op_j_2_28_f_8 ( )
+	}
+}
+
+operation clone_normal_GimbalAim_I_Init_op ( ) {
+	requires req_normal_GimbalAim_I_Init_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tgt . status = FireStatus :: NoFire
+	}
+}
+
+operation clone_normal_GimbalAim_Calculate_entry ( ) {
+	requires req_normal_GimbalAim_Calculate_entry requires I_clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op_j_2_6_f_25 requires I_clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_i_t_op_i_j_2_6_48 initial i
+	final f
+	junction j_2_6
+	transition t {
+		from i
+		to j_2_6
+		action clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_i_t_op_i_j_2_6_48 ( )
+	}
+	transition t_2_6 {
+		from j_2_6
+		to f
+		action clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op_j_2_6_f_25 ( )
+	}
+}
+
+operation clone_normal_VisualNav_Active_Wall_entry ( ) {
+	requires req_normal_VisualNav_Active_Wall_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dyaw = calcYawDelta ( wm )
+	}
+}
+
+operation clone_normal_GimbalAim_Clamp_entry ( ) {
+	requires req_normal_GimbalAim_Clamp_entry requires I_clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_i_t_op_i_j_2_16_6 requires I_clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op_j_2_16_f_47 final f
+	initial i
+	junction j_2_16
+	transition t {
+		from i
+		to j_2_16
+		action clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_i_t_op_i_j_2_16_6 ( )
+	}
+	transition t_2_16 {
+		from j_2_16
+		to f
+		action clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op_j_2_16_f_47 ( )
+	}
+}
+
+operation clone_normal_GimbalAim_Pitch_entry ( ) {
+	uses I_events_normal_GimbalAim_Pitch_entry requires req_normal_GimbalAim_Pitch_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gimbalPitch ! pitch
+	}
+}
+
+operation clone_normal_GimbalAim_Yaw_entry ( ) {
+	uses I_events_normal_GimbalAim_Yaw_entry requires req_normal_GimbalAim_Yaw_entry final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gimbalYaw ! yaw
+	}
+}
+
+operation clone_normal_VisualNav_Active_Commit_Loop_op ( ) {
+	uses I_events_normal_VisualNav_Active_Commit_Loop_op requires req_normal_VisualNav_Active_Commit_Loop_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action visualPosition ! movement
+	}
+}
+
+operation clone_normal_VisualNav_Active_Fire_entry ( ) {
+	requires req_normal_VisualNav_Active_Fire_entry requires I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op_j_3_7_j_2_26_1 requires I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18 requires I_clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op_j_2_26_f_38 initial i
+	final f
+	junction j_3_7
+	junction j_2_26
+	transition t {
+		from i
+		to j_3_7
+		action clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18 ( )
+	}
+	transition t_3_7 {
+		from j_3_7
+		to j_2_26
+		action clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op_j_3_7_j_2_26_1 ( )
+	}
+	transition t_2_26 {
+		from j_2_26
+		to f
+		action clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op_j_2_26_f_38 ( )
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7_op_j_3_7_j_2_26_1 ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_j_3_7_t_3_7 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dy = tgt . dx
+	}
+}
+
+operation clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_i_t_op_i_j_2_16_6 ( ) {
+	requires I_req_normal_GimbalAim_Clamp_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action cYaw = clamp ( yaw , YAW_DEAD_ZONE )
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28_op_j_2_28_f_8 ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_j_2_28_t_2_28 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dz = 0
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_i_t_op_i_j_3_7_18 ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dx = tgt . distance - TRACK_DIST
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_i_t_op_i_j_3_21_24 ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dx = tgt . distance - SCAN_DIST
+	}
+}
+
+operation clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6_op_j_2_6_f_25 ( ) {
+	requires I_req_normal_GimbalAim_Calculate_entry_j_2_6_t_2_6 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action pitch = calcGimbalAxis ( tgt . distance , tgt . dy )
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_NoFire_entry_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21_op_j_3_21_j_2_28_29 ( ) {
+	requires I_req_normal_VisualNav_Active_NoFire_entry_j_3_21_t_3_21 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action movement . dy = 0
+	}
+}
+
+operation clone_clone_normal_VisualNav_Active_Fire_entry_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26_op_j_2_26_f_38 ( ) {
+	requires I_req_normal_VisualNav_Active_Fire_entry_j_2_26_t_2_26 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action movement . dz = tgt . dy
+	}
+}
+
+operation clone_clone_normal_GimbalAim_Clamp_entry_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16_op_j_2_16_f_47 ( ) {
+	requires I_req_normal_GimbalAim_Clamp_entry_j_2_16_t_2_16 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action cPitch = clamp ( pitch , PITCH_DEAD_ZONE )
+	}
+}
+
+operation clone_clone_normal_GimbalAim_Calculate_entry_normal_GimbalAim_Calculate_entry_i_t_op_i_j_2_6_48 ( ) {
+	requires I_req_normal_GimbalAim_Calculate_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action yaw = calcGimbalAxis ( tgt . distance , tgt . dx )
+	}
+}
+

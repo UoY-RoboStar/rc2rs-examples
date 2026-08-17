@@ -1,0 +1,77 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:36
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+-- data definitions used by platform:/resource/FirefightingUAVRC2RS/software/datatypes.rct
+nametype FireTarget = (FireStatus,core_real,core_real,core_real)
+FireTarget_status((status,distance,dx,dy)) = status
+update_FireTarget_status((status,distance,dx,dy),v__) = (v__,distance,dx,dy)
+FireTarget_distance((status,distance,dx,dy)) = distance
+update_FireTarget_distance((status,distance,dx,dy),v__) = (status,v__,dx,dy)
+FireTarget_dx((status,distance,dx,dy)) = dx
+update_FireTarget_dx((status,distance,dx,dy),v__) = (status,distance,v__,dy)
+FireTarget_dy((status,distance,dx,dy)) = dy
+update_FireTarget_dy((status,distance,dx,dy),v__) = (status,distance,dx,v__)
+nametype WallMetrics = (core_real,core_real,core_real)
+WallMetrics_leftDist((leftDist,centreDist,rightDist)) = leftDist
+update_WallMetrics_leftDist((leftDist,centreDist,rightDist),v__) = (v__,centreDist,rightDist)
+WallMetrics_centreDist((leftDist,centreDist,rightDist)) = centreDist
+update_WallMetrics_centreDist((leftDist,centreDist,rightDist),v__) = (leftDist,v__,rightDist)
+WallMetrics_rightDist((leftDist,centreDist,rightDist)) = rightDist
+update_WallMetrics_rightDist((leftDist,centreDist,rightDist),v__) = (leftDist,centreDist,v__)
+nametype Position = (core_real,core_real,core_real,core_real)
+Position_lat((lat,lon,alt,heading)) = lat
+update_Position_lat((lat,lon,alt,heading),v__) = (v__,lon,alt,heading)
+Position_lon((lat,lon,alt,heading)) = lon
+update_Position_lon((lat,lon,alt,heading),v__) = (lat,v__,alt,heading)
+Position_alt((lat,lon,alt,heading)) = alt
+update_Position_alt((lat,lon,alt,heading),v__) = (lat,lon,v__,heading)
+Position_heading((lat,lon,alt,heading)) = heading
+update_Position_heading((lat,lon,alt,heading),v__) = (lat,lon,alt,v__)
+nametype Rgb = (core_real,core_real,core_real)
+Rgb_r((r,g,b)) = r
+update_Rgb_r((r,g,b),v__) = (v__,g,b)
+Rgb_g((r,g,b)) = g
+update_Rgb_g((r,g,b),v__) = (r,v__,b)
+Rgb_b((r,g,b)) = b
+update_Rgb_b((r,g,b),v__) = (r,g,v__)
+nametype Superimpose = (Rgb,core_real,core_real)
+Superimpose_rgb((rgb,d,t)) = rgb
+update_Superimpose_rgb((rgb,d,t),v__) = (v__,d,t)
+Superimpose_d((rgb,d,t)) = d
+update_Superimpose_d((rgb,d,t),v__) = (rgb,v__,t)
+Superimpose_t((rgb,d,t)) = t
+update_Superimpose_t((rgb,d,t),v__) = (rgb,d,v__)
+nametype Frame = (core_nat)
+Frame_contents((contents)) = contents
+update_Frame_contents((contents),v__) = (v__)
+nametype RgbFrame = (core_nat)
+RgbFrame_contents((contents)) = contents
+update_RgbFrame_contents((contents),v__) = (v__)
+nametype SuperimposedFrame = (core_nat)
+SuperimposedFrame_contents((contents)) = contents
+update_SuperimposedFrame_contents((contents),v__) = (v__)
+nametype RelativeMotion = (core_real,core_real,core_real,core_real)
+RelativeMotion_dx((dx,dy,dz,dyaw)) = dx
+update_RelativeMotion_dx((dx,dy,dz,dyaw),v__) = (v__,dy,dz,dyaw)
+RelativeMotion_dy((dx,dy,dz,dyaw)) = dy
+update_RelativeMotion_dy((dx,dy,dz,dyaw),v__) = (dx,v__,dz,dyaw)
+RelativeMotion_dz((dx,dy,dz,dyaw)) = dz
+update_RelativeMotion_dz((dx,dy,dz,dyaw),v__) = (dx,dy,v__,dyaw)
+RelativeMotion_dyaw((dx,dy,dz,dyaw)) = dyaw
+update_RelativeMotion_dyaw((dx,dy,dz,dyaw),v__) = (dx,dy,dz,v__)
+datatype FireStatus = FireStatus_NoFire | FireStatus_Detected | FireStatus_Tracked
+FireStatus_is(FireStatus_NoFire,FireStatus_NoFire) = true
+FireStatus_is(_,FireStatus_NoFire) = false
+FireStatus_is(FireStatus_Detected,FireStatus_Detected) = true
+FireStatus_is(_,FireStatus_Detected) = false
+FireStatus_is(FireStatus_Tracked,FireStatus_Tracked) = true
+FireStatus_is(_,FireStatus_Tracked) = false
+
+
+	

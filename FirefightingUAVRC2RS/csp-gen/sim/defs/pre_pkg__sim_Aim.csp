@@ -1,0 +1,2032 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:11
+--
+
+module pre_pkg__sim_Aim
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_I|
+	              NID_Waiting|
+	              NID_SetPitch|
+	              NID_SetYaw
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_angle, set_angle, setL_angle, setR_angle: core_nat
+	channel get_gimbalYawF, set_gimbalYawF, setL_gimbalYawF, setR_gimbalYawF: core_boolean
+	channel get_gimbalPitchF, set_gimbalPitchF, setL_gimbalPitchF, setR_gimbalPitchF: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	
+	-- Declaring call and ret events for undefined operations
+	channel gimbalWritePanCall: core_int
+	channel clone_normal_Aim_SetPitch_GimbalPitchAck_opCall
+	channel clone_normal_Aim_SetYaw_entryCall
+	channel clone_normal_Aim_SetYaw_GimbalYawAck_opCall
+	channel clone_normal_Aim_SetPitch_entryCall
+	channel gimbalWriteTiltCall: core_int
+	
+	enterSS = {|
+	I::enter,
+	Waiting::enter,
+	SetPitch::enter,
+	SetYaw::enter
+	|}
+	
+	enteredSS = 	{|
+	Waiting::entered,
+	SetPitch::entered,
+	SetYaw::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_SetYaw : core_clock_type 
+	channel get_CLID_SetPitch : core_clock_type 
+	channel get_CLID_Waiting : core_clock_type 
+	--channel increment__
+	
+	CLID_SetYaw_clock_type(id__,
+			          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_SetPitch_clock_type(id__,
+			          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Waiting_clock_type(id__,
+			          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+	
+	-- RoboSim-specific declarations
+	channel endexec, endexec_action
+	channel endexec__ : NIDS
+	channel startexec, startexec_action
+	
+	-- declaring registerRead/Write datatypes
+	datatype RegisterDataInput = i_gimbalYaw.Bool.core_nat
+		| i_gimbalPitch.Bool.core_nat
+	
+	
+	datatype RegisterDataOutput = o_gimbalPitchAck
+		| o_gimbalYawAck
+		| o_gimbalWriteTilt.core_int
+		| o_gimbalWritePan.core_int
+	
+	
+	nametype RegisterOutputs = {|
+	o_gimbalPitchAck,
+	o_gimbalYawAck,
+	o_gimbalWriteTilt,
+	o_gimbalWritePan|}
+		
+	nametype RegisterInputs = {|
+	i_gimbalYaw,
+	i_gimbalPitch|}
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	-- variable channels
+	channel get_gimbalYaw : Bool.core_nat
+	channel get_gimbalPitch : Bool.core_nat
+	
+	-- channel set with all visible events
+	sem__events = {|endexec,terminate
+				,registerRead
+				,registerWrite
+	,	gimbalWritePanCall,
+		clone_normal_Aim_SetPitch_GimbalPitchAck_opCall,
+		clone_normal_Aim_SetYaw_entryCall,
+		clone_normal_Aim_SetYaw_GimbalYawAck_opCall,
+		clone_normal_Aim_SetPitch_entryCall,
+		gimbalWriteTiltCall
+		|}
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: I
+		module I
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Waiting
+		module Waiting
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_gimbalYawF
+						 				 			,setL_gimbalPitchF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						 				 )
+						 				)[[setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_gimbalYawF
+						 				 			,setL_gimbalPitchF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						 				 )
+						 				)[[setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = ((let
+					Trans = share__choice(get_gimbalYaw?gimbalYaw -> get_gimbalPitch?gimbalPitch -> get_gimbalYawF?gimbalYawF -> get_gimbalPitchF?gimbalPitchF -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+						 [] dbisim(((not (((((true and (((member(gimbalPitch,{true.angle | angle <- core_nat}) and gimbalPitchF))))) or ((true and (((member(gimbalYaw,{true.angle | angle <- core_nat}) and gimbalYawF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_gimbalPitch?b__?x__ -> set_angle!x__ -> SKIP;
+						 
+						 get_gimbalYaw?b__?x__ -> set_angle!x__ -> SKIP
+						 ; share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_gimbalPitchF!true -> SKIP)));share__choice(true & (share__choice(set_gimbalYawF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SetPitch
+		module SetPitch
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Aim_SetPitch_entry(
+								id__,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Aim_SetPitch_entry(
+								id__,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+						 [] dbisim(((not ((true))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_gimbalPitchF!true -> SKIP)));share__choice(true & (share__choice(set_gimbalYawF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: SetYaw
+		module SetYaw
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Aim_SetYaw_entry(
+								id__,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= true&CALL__clone_normal_Aim_SetYaw_entry(
+								id__,
+							    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+							) ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+						 				 )
+						 				)
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_angle,setR_gimbalYawF,setR_gimbalPitchF |} ]] 
+						  [[set_angle <- setL_angle,set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_angle
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						 			,setR_angle
+						 			 			,setR_gimbalYawF
+						 			 			,setR_gimbalPitchF
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_angle,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						  [[set_angle <- setR_angle,set_gimbalYawF <- setR_gimbalYawF,set_gimbalPitchF <- setR_gimbalPitchF]]
+						 )
+						)[[setL_angle <- set_angle,setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						 [[setR_angle <- set_angle,setR_gimbalYawF <- set_gimbalYawF,setR_gimbalPitchF <- set_gimbalPitchF]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+						 [] dbisim(((not ((true))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_gimbalPitchF!true -> SKIP)));share__choice(true & (share__choice(set_gimbalYawF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__gimbalWritePan(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY,
+					param_angle) = EDeadline(registerWrite.o_gimbalWritePan.param_angle,0)
+		CALL__clone_normal_Aim_SetPitch_GimbalPitchAck_op(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = EDeadline(clone_normal_Aim_SetPitch_GimbalPitchAck_opCall,0)
+		CALL__clone_normal_Aim_SetYaw_entry(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = EDeadline(clone_normal_Aim_SetYaw_entryCall,0)
+		CALL__clone_normal_Aim_SetYaw_GimbalYawAck_op(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = EDeadline(clone_normal_Aim_SetYaw_GimbalYawAck_opCall,0)
+		CALL__clone_normal_Aim_SetPitch_entry(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = EDeadline(clone_normal_Aim_SetPitch_entryCall,0)
+		CALL__gimbalWriteTilt(id__,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY,
+					param_angle) = EDeadline(registerWrite.o_gimbalWriteTilt.param_angle,0)
+		
+		-- END of Operation calls --
+	
+		datatype SOutputEvents = SOutput_gimbalPitchAck
+			| SOutput_gimbalYawAck
+			| SOutput_gimbalWriteTilt
+			| SOutput_gimbalWritePan
+		
+		cycle(cycle_pre_pkg__sim_Aim_Aim) =
+			let
+				project(o_gimbalPitchAck) = SOutput_gimbalPitchAck
+				project(o_gimbalYawAck) = SOutput_gimbalYawAck
+				project(o_gimbalWriteTilt.x__) = SOutput_gimbalWriteTilt
+				project(o_gimbalWritePan.x__) = SOutput_gimbalWritePan
+		
+				Cycle =
+					Deadline(
+						(registerRead.i_gimbalYaw?x__ -> SKIP
+							||| registerRead.i_gimbalPitch?x__ -> SKIP);
+						startexec -> CollectOutputs(SOutputEvents),0);
+					TimeOut_1(terminate -> SKIP,WAIT(cycle_pre_pkg__sim_Aim_Aim-1);Cycle)
+				
+				CollectOutputs(sout) =
+					(registerWrite?outp:{ outp | outc <- inter(sout,SOutputEvents), outp <- RegisterDataOutput,project(outp) == outc} -> CollectOutputs(diff(sout,{project(outp)}))
+						[]
+					endexec -> SKIP
+					)
+			within
+				Cycle
+		
+		-- STM processes
+		STM(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_Aim_Aim)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful(id__,cycle_pre_pkg__sim_Aim_Aim,
+								    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+			)\sharedVarHide
+		)\{startexec}
+		
+		STM_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_Aim_Aim)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+								    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+			)\sharedVarHide
+		)\{startexec}
+		
+		-- Transitions
+		Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = ((let
+			Trans = share__choice(get_gimbalYaw?gimbalYaw -> get_gimbalPitch?gimbalPitch -> get_gimbalYawF?gimbalYawF -> get_gimbalPitchF?gimbalPitchF -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP))))
+				 [] dbisim((((member(gimbalPitch,{true.angle | angle <- core_nat}) and gimbalPitchF)))&(internal__!NID_Waiting -> SKIP ; get_gimbalPitch?b__?x__ -> set_angle!x__ -> SKIP
+				 ; share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_gimbalPitchF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SetPitch::enter -> SKIP)))
+				 [] dbisim((((member(gimbalYaw,{true.angle | angle <- core_nat}) and gimbalYawF)))&(internal__!NID_Waiting -> SKIP ; get_gimbalYaw?b__?x__ -> set_angle!x__ -> SKIP
+				 ; share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_gimbalYawF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; SetYaw::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SetPitch -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((true&CALL__clone_normal_Aim_SetPitch_GimbalPitchAck_op(
+				  				id__,
+				  			    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+				  			))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP)))
+				 [] dbisim((true)&(internal__!NID_SetYaw -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((true&CALL__clone_normal_Aim_SetYaw_GimbalYawAck_op(
+				  				id__,
+				  			    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY
+				  			))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP)))
+				 []
+				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 []
+				 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Waiting::enter,
+					SetPitch::enter,
+					SetYaw::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Waiting,internal__.NID_Waiting,internal__.NID_SetPitch,internal__.NID_SetYaw|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   Waiting::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   SetPitch::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   SetYaw::D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   )
+						   )
+						   )
+						 )
+						 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waiting,internal__.NID_Waiting|}]]
+						 [[SetPitch::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SetPitch|}]]
+						 [[SetYaw::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SetYaw|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						 )
+						)[[setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SetYaw,SetYaw::entered,get_CLID_SetPitch,SetPitch::entered,get_CLID_Waiting,Waiting::entered|}
+			 within
+				(MachineBody(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SetYaw,SetYaw::entered,get_CLID_SetPitch,SetPitch::entered,get_CLID_Waiting,Waiting::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody(id__,cycle_pre_pkg__sim_Aim_Aim,
+												    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+										[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+										dbisim(Clock_CLID_Waiting(id__,0,
+												          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+									)\{|get_CLID_Waiting|}
+								)
+								[| {|get_CLID_SetPitch,SetPitch::entered,terminate|} |]
+								dbisim(Clock_CLID_SetPitch(id__,0,
+										          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+							)\{|get_CLID_SetPitch|}
+						)
+						[| {|get_CLID_SetYaw,SetYaw::entered,terminate|} |]
+						dbisim(Clock_CLID_SetYaw(id__,0,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+					)\{|get_CLID_SetYaw|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			((let
+				getsetLocalChannels = {|get_angle,set_angle,
+				get_gimbalYawF,set_gimbalYawF,
+				get_gimbalPitchF,set_gimbalPitchF|}
+				clockSync = {||}
+			within
+				(Behaviour(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									IteratedBehaviour(id__,cycle_pre_pkg__sim_Aim_Aim,
+											    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+									[| {|get_gimbalPitchF,set_gimbalPitchF,terminate|} |]
+									Memory_gimbalPitchF(true)
+								)\{|get_gimbalPitchF,set_gimbalPitchF|}
+							)
+							[| {|get_gimbalYawF,set_gimbalYawF,terminate|} |]
+							Memory_gimbalYawF(true)
+						)\{|get_gimbalYawF,set_gimbalYawF|}
+					)
+					[| {|get_angle,set_angle,terminate|} |]
+					Memory_angle(0)
+				)\{|get_angle,set_angle|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Waiting::enter,
+					SetPitch::enter,
+					SetYaw::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Waiting,internal__.NID_Waiting,internal__.NID_SetPitch,internal__.NID_SetYaw|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   Waiting::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   SetPitch::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   [| { share__, terminate } |] (
+						   SetYaw::VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+						   		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+						   )
+						   )
+						   )
+						 )
+						 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waiting,internal__.NID_Waiting|}]]
+						 [[SetPitch::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SetPitch|}]]
+						 [[SetYaw::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_SetYaw|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_gimbalYawF <- setL_gimbalYawF,set_gimbalPitchF <- setL_gimbalPitchF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_gimbalYawF
+						 			,setL_gimbalPitchF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_Aim_Aim,
+						 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_gimbalYawF,setL_gimbalPitchF |} ]]
+						 )
+						)[[setL_gimbalYawF <- set_gimbalYawF,setL_gimbalPitchF <- set_gimbalPitchF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SetYaw,SetYaw::entered,get_CLID_SetPitch,SetPitch::entered,get_CLID_Waiting,Waiting::entered|}
+			 within
+				(MachineBody_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_SetYaw,SetYaw::entered,get_CLID_SetPitch,SetPitch::entered,get_CLID_Waiting,Waiting::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+												    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+										[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+										dbisim(Clock_CLID_Waiting(id__,0,
+												          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+									)\{|get_CLID_Waiting|}
+								)
+								[| {|get_CLID_SetPitch,SetPitch::entered,terminate|} |]
+								dbisim(Clock_CLID_SetPitch(id__,0,
+										          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+							)\{|get_CLID_SetPitch|}
+						)
+						[| {|get_CLID_SetYaw,SetYaw::entered,terminate|} |]
+						dbisim(Clock_CLID_SetYaw(id__,0,
+								          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+					)\{|get_CLID_SetYaw|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			dbisim((let
+				getsetLocalChannels = {|get_angle,set_angle,
+				get_gimbalYawF,set_gimbalYawF,
+				get_gimbalPitchF,set_gimbalPitchF|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+						    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+				 		    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+											    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+									[| {|get_gimbalPitchF,set_gimbalPitchF,terminate|} |]
+									Memory_gimbalPitchF(true)
+								)\{|get_gimbalPitchF,set_gimbalPitchF|}
+							)
+							[| {|get_gimbalYawF,set_gimbalYawF,terminate|} |]
+							Memory_gimbalYawF(true)
+						)\{|get_gimbalYawF,set_gimbalYawF|}
+					)
+					[| {|get_angle,set_angle,terminate|} |]
+					Memory_angle(0)
+				)\{|get_angle,set_angle|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_angle(angle) =
+			get_angle!angle -> Memory_angle(angle)
+			[]
+			set_angle?x__ -> Memory_angle(x__)
+			[]
+			terminate -> SKIP
+		Memory_gimbalYawF(gimbalYawF) =
+			get_gimbalYawF!gimbalYawF -> Memory_gimbalYawF(gimbalYawF)
+			[]
+			set_gimbalYawF?x__ -> Memory_gimbalYawF(x__)
+			[]
+			terminate -> SKIP
+		Memory_gimbalPitchF(gimbalPitchF) =
+			get_gimbalPitchF!gimbalPitchF -> Memory_gimbalPitchF(gimbalPitchF)
+			[]
+			set_gimbalPitchF?x__ -> Memory_gimbalPitchF(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = Memory_angle(0)
+		[| { terminate } |] (
+		Memory_gimbalYawF(true)
+		[| { terminate } |] (
+		Memory_gimbalPitchF(true)
+		)
+		)
+		
+		getsetLocalChannels = {|get_angle,set_angle,get_gimbalYawF,set_gimbalYawF,get_gimbalPitchF,set_gimbalPitchF|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = STM_VS_O(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) \ localClockResets
+		D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = timed_priority(STM(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) \ union(internal_events,localClockResets))
+		O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(D__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		VS__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = FVS__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+		VS_O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(FVS__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		HEXT__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [|shared_variable_events|] SKIP
+		FVS_C__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(timed_priority(STM(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) \ internal_events))
+		HUP__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = timed_priority(O__(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_SetYaw(id__,x__,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			TimeOut_1(
+				SetYaw::entered -> Clock_CLID_SetYaw(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				get_CLID_SetYaw!x__ -> Clock_CLID_SetYaw(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				terminate -> SKIP,Clock_CLID_SetYaw(id__,clock_type_plus(x__,1,CLID_SetYaw_clock_type(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		Clock_CLID_SetPitch(id__,x__,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			TimeOut_1(
+				SetPitch::entered -> Clock_CLID_SetPitch(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				get_CLID_SetPitch!x__ -> Clock_CLID_SetPitch(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				terminate -> SKIP,Clock_CLID_SetPitch(id__,clock_type_plus(x__,1,CLID_SetPitch_clock_type(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		Clock_CLID_Waiting(id__,x__,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = 
+			TimeOut_1(
+				Waiting::entered -> Clock_CLID_Waiting(id__,0,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				get_CLID_Waiting!x__ -> Clock_CLID_Waiting(id__,x__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)
+				[]
+				terminate -> SKIP,Clock_CLID_Waiting(id__,clock_type_plus(x__,1,CLID_Waiting_clock_type(id__,
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY)),
+						          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		
+		StateClocks(id__,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = dbisim(Clock_CLID_SetYaw(id__,0,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_SetPitch(id__,0,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Waiting(id__,0,
+				          const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY))
+		)
+		)
+		
+		stateClockSync = {|get_CLID_SetYaw,SetYaw::entered,get_CLID_SetPitch,SetPitch::entered,get_CLID_Waiting,Waiting::entered|}
+		
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		Memory_gimbalYaw(x__) = (
+			get_gimbalYaw!x__ -> Memory_gimbalYaw(x__)
+			[]
+			registerRead.i_gimbalYaw?x__ -> Memory_gimbalYaw(x__)
+			[]
+			terminate -> SKIP
+		)
+		Memory_gimbalPitch(x__) = (
+			get_gimbalPitch!x__ -> Memory_gimbalPitch(x__)
+			[]
+			registerRead.i_gimbalPitch?x__ -> Memory_gimbalPitch(x__)
+			[]
+			terminate -> SKIP
+		)
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,cycle_pre_pkg__sim_Aim_Aim,
+				    const_pre_pkg__sim_Aim_GIMBAL_FLOOD_DELAY) = (
+		 (terminate -> SKIP
+		 )
+		 [| { terminate } |]
+		 (Memory_gimbalYaw(false.0)
+		 [| { terminate } |] (
+		 Memory_gimbalPitch(false.0)
+		 )
+		 )
+		)
+		
+		sharedVarSync = union({|get_gimbalYaw,
+		get_gimbalPitch|},
+			  {||}
+			 )
+		
+		sharedVarHide = union({|get_gimbalYaw,
+		get_gimbalPitch|},
+			  {||}
+			 )
+		
+		}
+endmodule

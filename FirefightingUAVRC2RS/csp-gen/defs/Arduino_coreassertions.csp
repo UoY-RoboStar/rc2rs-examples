@@ -1,0 +1,83 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:42
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_defs.csp"
+include "Arduino.csp"
+include "state_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate Arduino
+P_Arduino = let
+	id__ = 0
+	
+	
+	
+	const_Arduino_AAim_GIMBAL_FLOOD_DELAY = const_Aim_GIMBAL_FLOOD_DELAY
+	const_Arduino_AWaterMonitor_WATER_FLOW = const_WaterMonitor_WATER_FLOW
+	const_Arduino_AWaterMonitor_TIME_PER_UNIT = 1
+		
+within
+	Arduino::O__(id__,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT)
+
+assert P_Arduino :[deadlock-free]	
+assert P_Arduino;RUN({r__}) :[deadlock-free]
+assert P_Arduino :[deterministic]
+assert P_Arduino :[divergence-free]
+
+-- generate Arduino_ASpray
+P_Arduino_ASpray = let
+	id__ = 0
+	
+	
+	
+within
+	Arduino::ASpray::O__(
+		id__
+	)
+assert P_Arduino_ASpray :[deadlock-free]	
+assert P_Arduino_ASpray;RUN({r__}) :[deadlock-free]
+assert P_Arduino_ASpray :[deterministic]
+assert P_Arduino_ASpray :[divergence-free]
+-- generate Arduino_AAim
+P_Arduino_AAim = let
+	id__ = 0
+	
+	
+	
+within
+	Arduino::AAim::O__(
+		id__,
+		const_Aim_GIMBAL_FLOOD_DELAY
+	)
+assert P_Arduino_AAim :[deadlock-free]	
+assert P_Arduino_AAim;RUN({r__}) :[deadlock-free]
+assert P_Arduino_AAim :[deterministic]
+assert P_Arduino_AAim :[divergence-free]
+-- generate Arduino_AWaterMonitor
+P_Arduino_AWaterMonitor = let
+	id__ = 0
+	
+	
+	const_WaterMonitor_TIME_PER_UNIT = 1
+	
+within
+	Arduino::AWaterMonitor::O__(
+		id__,
+		const_WaterMonitor_WATER_FLOW,
+		const_WaterMonitor_TIME_PER_UNIT
+	)
+assert P_Arduino_AWaterMonitor :[deadlock-free]	
+assert P_Arduino_AWaterMonitor;RUN({r__}) :[deadlock-free]
+assert P_Arduino_AWaterMonitor :[deterministic]
+assert P_Arduino_AWaterMonitor :[divergence-free]

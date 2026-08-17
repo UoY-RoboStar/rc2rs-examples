@@ -1,0 +1,31 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:48
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pre_pkg__gimbalWriteTilt.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pre_pkg__OP_gimbalWriteTilt
+P_pre_pkg__OP_gimbalWriteTilt = let
+	id__ = 0
+	
+	param_angle = 0
+	
+	
+	
+within
+	pre_pkg_::OP_gimbalWriteTilt::O__(id__,
+				param_angle)
+assert P_pre_pkg__OP_gimbalWriteTilt :[deadlock-free]	
+assert P_pre_pkg__OP_gimbalWriteTilt;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__OP_gimbalWriteTilt :[deterministic]
+assert P_pre_pkg__OP_gimbalWriteTilt :[divergence-free]

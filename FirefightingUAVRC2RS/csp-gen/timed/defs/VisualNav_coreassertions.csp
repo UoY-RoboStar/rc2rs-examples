@@ -1,0 +1,40 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:53
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "VisualNav.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate VisualNav
+P_VisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	VisualNav::O__(
+		id__,
+		const_VisualNav_TRACK_DIST,
+		const_VisualNav_SCAN_DIST
+	)
+assert P_VisualNav :[deadlock-free]	
+assert P_VisualNav;RUN({r__}) :[deadlock-free]
+assert P_VisualNav :[deterministic]
+assert P_VisualNav :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_VisualNav[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_VisualNav

@@ -1,0 +1,353 @@
+/* 
+
+package pre_pkg_ interface I_normal_WaterMonitor_On_inact_sinceEntry {
+	var inact_WaterMonitor_On : boolean = true
+	clock clk_WaterMonitor_On
+}
+
+interface I_events_normal_WaterMonitor_Off_OffOut_op {
+	event monitorEmpty
+}
+
+interface I_normal_WaterMonitor_Off_OffOut_op {
+	normal_WaterMonitor_Off_OffOut_op ( )
+}
+
+interface req_normal_WaterMonitor_On_exit {
+	var inact_WaterMonitor_On : boolean = true
+}
+
+interface I_normal_WaterMonitor_On_exit {
+	normal_WaterMonitor_On_exit ( )
+}
+
+interface req_normal_WaterMonitor_On_entry {
+	var inact_WaterMonitor_On : boolean = true
+	clock clk_WaterMonitor_On
+}
+
+interface I_normal_WaterMonitor_On_entry {
+	normal_WaterMonitor_On_entry ( )
+}
+
+interface req_normal_WaterMonitor_On_Tick_op {
+	const WATER_FLOW : real
+	var water : real
+}
+
+interface I_normal_WaterMonitor_On_Tick_op {
+	normal_WaterMonitor_On_Tick_op ( )
+}
+
+interface I_events_normal_WaterMonitor_On_Out_op {
+	event monitorEmpty
+}
+
+interface I_normal_WaterMonitor_On_Out_op {
+	normal_WaterMonitor_On_Out_op ( )
+}
+
+interface I_req_normal_WaterMonitor_On_entry_j_2_12_t_2_12 {
+	var inact_WaterMonitor_On : boolean = true
+}
+
+interface I_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op {
+	normal_WaterMonitor_On_entry_j_2_12_t_2_12_op ( )
+}
+
+interface I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ {
+	clock clk_WaterMonitor_On
+}
+
+interface I_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op {
+	normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( )
+}
+
+interface I_clone_normal_WaterMonitor_Off_OffOut_op {
+	clone_normal_WaterMonitor_Off_OffOut_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_Tick_op {
+	clone_normal_WaterMonitor_On_Tick_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_exit {
+	clone_normal_WaterMonitor_On_exit ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_Out_op {
+	clone_normal_WaterMonitor_On_Out_op ( )
+}
+
+interface I_clone_normal_WaterMonitor_On_entry {
+	clone_normal_WaterMonitor_On_entry ( )
+}
+
+interface I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op_j_2_12_f_40 {
+	clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op_j_2_12_f_40 ( )
+}
+
+interface I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_12_41 {
+	clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_12_41 ( )
+}
+
+stm WaterMonitor {
+	uses I_normal_WaterMonitor_On_inact_sinceEntry requires I_clone_normal_WaterMonitor_Off_OffOut_op requires I_clone_normal_WaterMonitor_On_Tick_op requires I_clone_normal_WaterMonitor_On_exit requires I_clone_normal_WaterMonitor_On_Out_op requires I_clone_normal_WaterMonitor_On_entry const WATER_FLOW : real
+	const TIME_PER_UNIT : nat = 1
+	var water : real = 1
+	event monitorOn
+	event monitorOff
+	event monitorEmpty
+	initial I
+	state Off {
+		state EmptyCycle {
+		}
+		initial i
+		transition tOff {
+			from i
+			to EmptyCycle
+		}
+	}
+	state On {
+		initial i
+		state EmptyCycle {
+		}
+		transition tOn {
+			from i
+			to EmptyCycle
+		}
+		exit clone_normal_WaterMonitor_On_exit ( )
+		entry clone_normal_WaterMonitor_On_entry ( )
+	}
+	final F
+	transition Init {
+		from I
+		to Off
+	}
+	transition SwitchOn {
+		from Off
+		to On
+		trigger monitorOn
+		condition 0 < water
+	}
+	transition SwitchOff {
+		from On
+		to Off
+		trigger monitorOff
+		condition since ( clk_WaterMonitor_On ) < TIME_PER_UNIT
+	}
+	transition Tick {
+		from On
+		to On
+		condition TIME_PER_UNIT <= since ( clk_WaterMonitor_On )
+		action clone_normal_WaterMonitor_On_Tick_op ( )
+	}
+	transition Out {
+		from On
+		to F
+		condition water <= 0
+		action clone_normal_WaterMonitor_On_Out_op ( )
+	}
+	transition OffOut {
+		from Off
+		to F
+		condition water <= 0
+		action clone_normal_WaterMonitor_Off_OffOut_op ( )
+	}
+}
+
+operation normal_WaterMonitor_Off_OffOut_op ( ) {
+	uses I_events_normal_WaterMonitor_Off_OffOut_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation normal_WaterMonitor_On_exit ( ) {
+	requires req_normal_WaterMonitor_On_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = true
+	}
+}
+
+operation normal_WaterMonitor_On_entry ( ) {
+	requires req_normal_WaterMonitor_On_entry requires I_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op requires I_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op initial i
+	final f
+	junction j_2_12
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_12 {
+		from j_2_12
+		to f
+		action normal_WaterMonitor_On_entry_j_2_12_t_2_12_op ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_WaterMonitor_On
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_12
+		action normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_WaterMonitor_On
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_12
+	}
+}
+
+operation normal_WaterMonitor_On_Tick_op ( ) {
+	requires req_normal_WaterMonitor_On_Tick_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action water = water - WATER_FLOW
+	}
+}
+
+operation normal_WaterMonitor_On_Out_op ( ) {
+	uses I_events_normal_WaterMonitor_On_Out_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation normal_WaterMonitor_On_entry_j_2_12_t_2_12_op ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_j_2_12_t_2_12 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = false
+	}
+}
+
+operation normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # clk_WaterMonitor_On
+	}
+}
+
+operation clone_normal_WaterMonitor_Off_OffOut_op ( ) {
+	uses I_events_normal_WaterMonitor_Off_OffOut_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation clone_normal_WaterMonitor_On_Tick_op ( ) {
+	requires req_normal_WaterMonitor_On_Tick_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action water = water - WATER_FLOW
+	}
+}
+
+operation clone_normal_WaterMonitor_On_exit ( ) {
+	requires req_normal_WaterMonitor_On_exit initial i
+	final f
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = true
+	}
+}
+
+operation clone_normal_WaterMonitor_On_Out_op ( ) {
+	uses I_events_normal_WaterMonitor_On_Out_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action monitorEmpty
+	}
+}
+
+operation clone_normal_WaterMonitor_On_entry ( ) {
+	requires req_normal_WaterMonitor_On_entry requires I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op_j_2_12_f_40 requires I_clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_12_41 initial i
+	final f
+	junction j_2_12
+	junction t_initialJunction_
+	junction t_thenJ_
+	junction t_elseJ_
+	transition t_2_12 {
+		from j_2_12
+		to f
+		action clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op_j_2_12_f_40 ( )
+	}
+	transition t_initial_ {
+		from i
+		to t_initialJunction_
+	}
+	transition t_thenTG_ {
+		from t_initialJunction_
+		to t_thenJ_
+		condition inact_WaterMonitor_On
+	}
+	transition t_thenTA_ {
+		from t_thenJ_
+		to j_2_12
+		action clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_12_41 ( )
+	}
+	transition t_elseTG_ {
+		from t_initialJunction_
+		to t_elseJ_
+		condition not inact_WaterMonitor_On
+	}
+	transition t_elseTA_ {
+		from t_elseJ_
+		to j_2_12
+	}
+}
+
+operation clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_j_2_12_t_2_12_op_j_2_12_f_40 ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_j_2_12_t_2_12 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action inact_WaterMonitor_On = false
+	}
+}
+
+operation clone_clone_normal_WaterMonitor_On_entry_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA__op_t_thenJ__j_2_12_41 ( ) {
+	requires I_req_normal_WaterMonitor_On_entry_t_thenJ__t_thenTA_ final f
+	initial i
+	transition t {
+		from i
+		to f
+		action # clk_WaterMonitor_On
+	}
+}
+
+*/

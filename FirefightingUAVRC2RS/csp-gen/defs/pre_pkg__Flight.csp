@@ -1,0 +1,4687 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:41
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+module pre_pkg__Flight
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_I|
+	              NID_Connect|
+	              NID_Waiting|
+	              NID_ProcessingCommand|
+	              NID_Waypoint|
+	              NID_Relative|
+	              NID_TakingOff|
+	              NID_Climbing|
+	              NID_GoHome|
+	              NID_BackToStart|
+	              NID_Landing|
+	              NID_Disarmed|
+	              NID_GoingHome
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_h, set_h, setL_h, setR_h: core_real
+	channel get_cmd, set_cmd, setL_cmd, setR_cmd: NavCommand
+	channel get_vp, set_vp, setL_vp, setR_vp: RelativeMotion
+	channel get_wp, set_wp, setL_wp, setR_wp: Position
+	channel get_start, set_start, setL_start, setR_start: Position
+	channel get_gotStart, set_gotStart, setL_gotStart, setR_gotStart: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	channel fcControlAuth__: NIDS.InOut
+	channel fcControlAuth: InOut
+	channel fcTakeoffRet__: NIDS.InOut
+	channel fcTakeoffRet: InOut
+	channel fcGoHomeRet__: NIDS.InOut
+	channel fcGoHomeRet: InOut
+	channel fcLandRet__: NIDS.InOut
+	channel fcLandRet: InOut
+	channel fcWaypointFinishedMission__: NIDS.InOut
+	channel fcWaypointFinishedMission: InOut
+	channel fcMoveRelativeRet__: NIDS.InOut
+	channel fcMoveRelativeRet: InOut
+	channel navCommand__: NIDS.InOut.NavCommand
+	channel navCommand: InOut.NavCommand
+	channel waypoint__: NIDS.InOut.Position
+	channel waypoint: InOut.Position
+	channel uavStatus__: NIDS.InOut.AircraftStatus
+	channel uavStatus: InOut.AircraftStatus
+	channel visualPosition__: NIDS.InOut.RelativeMotion
+	channel visualPosition: InOut.RelativeMotion
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_normal_Flight_Landing_Landed_opCall
+	channel fcGoHomeCallCall
+	channel clone_normal_Flight_Climbing_Climbed_opCall
+	channel clone_normal_Flight_TakingOff_TakenOff_opCall
+	channel fcWaypointCallCall: Position
+	channel clone_normal_Flight_Climbing_entryCall
+	channel fcTakeoffCallCall
+	channel clone_normal_Flight_Waiting_WaypointNotify_opCall
+	channel clone_normal_Flight_Connect_CI_opCall
+	channel clone_normal_Flight_GoingHome_ReturnedHome_opCall
+	channel fcLandCallCall
+	channel fcMoveRelativeCallCall: RelativeMotion
+	channel clone_normal_Flight_Waypoint_entryCall
+	
+	enterSS = {|
+	I::enter,
+	Connect::enter,
+	Waiting::enter,
+	ProcessingCommand::enter,
+	Waypoint::enter,
+	Relative::enter,
+	TakingOff::enter,
+	Climbing::enter,
+	GoHome::enter,
+	BackToStart::enter,
+	Landing::enter,
+	Disarmed::enter,
+	GoingHome::enter
+	|}
+	
+	enteredSS = 	{|
+	Connect::entered,
+	Waiting::entered,
+	Waypoint::entered,
+	Relative::entered,
+	TakingOff::entered,
+	Climbing::entered,
+	BackToStart::entered,
+	Landing::entered,
+	Disarmed::entered,
+	GoingHome::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	-- channel set with all visible events
+	sem__events = {|
+		terminate
+	,	fcControlAuth,
+		fcTakeoffRet,
+		fcGoHomeRet,
+		fcLandRet,
+		fcWaypointFinishedMission,
+		fcMoveRelativeRet,
+		navCommand,
+		waypoint,
+		uavStatus,
+		visualPosition
+	,	clone_normal_Flight_Landing_Landed_opCall,
+		fcGoHomeCallCall,
+		clone_normal_Flight_Climbing_Climbed_opCall,
+		clone_normal_Flight_TakingOff_TakenOff_opCall,
+		fcWaypointCallCall,
+		clone_normal_Flight_Climbing_entryCall,
+		fcTakeoffCallCall,
+		clone_normal_Flight_Waiting_WaypointNotify_opCall,
+		clone_normal_Flight_Connect_CI_opCall,
+		clone_normal_Flight_GoingHome_ReturnedHome_opCall,
+		fcLandCallCall,
+		fcMoveRelativeCallCall,
+		clone_normal_Flight_Waypoint_entryCall
+		|}
+
+	-- Nodes --
+	-- declaring all nodes
+	
+	----------------------------------------------------------------------
+	-- Initial: I
+	module I
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+		
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Connect
+	module Connect
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Waiting
+	module Waiting
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= SKIP ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: ProcessingCommand
+	module ProcessingCommand
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Waypoint
+	module Waypoint
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__clone_normal_Flight_Waypoint_entry(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__clone_normal_Flight_Waypoint_entry(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Relative
+	module Relative
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(get_vp?vp -> true&CALL__fcMoveRelativeCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME,
+						vp
+					)) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(get_vp?vp -> true&CALL__fcMoveRelativeCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME,
+						vp
+					)) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: TakingOff
+	module TakingOff
+	
+	enterSS = 
+			{|			EmptyCycle::enter,
+				i::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_EmptyCycle|
+		              NID_i
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcTakeoffCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcTakeoffCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Climbing
+	module Climbing
+	
+	enterSS = 
+			{|			EmptyCycle::enter,
+				i::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_EmptyCycle|
+		              NID_i
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__clone_normal_Flight_Climbing_entry(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__clone_normal_Flight_Climbing_entry(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Junction: GoHome
+	module GoHome
+	exports
+	
+		channel enter, interrupt
+		
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Active 		= share__choice(interrupt -> SKIP) ; Inactive
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: BackToStart
+	module BackToStart
+	
+	enterSS = 
+			{|			EmptyCycle::enter,
+				i::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_EmptyCycle|
+		              NID_i
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(get_start?start -> true&CALL__fcWaypointCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME,
+						start
+					)) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= share__choice(get_start?start -> true&CALL__fcWaypointCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME,
+						start
+					)) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	EmptyCycle::enter,
+				 	i::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: Landing
+	module Landing
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcLandCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcLandCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- Final state: Disarmed
+	module Disarmed
+	
+	exports
+	
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+		--	Rule: behaviours(Node)
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Entering
+				
+				Entering 	= entered -> SKIP ; Active
+				Active		= share__choice(terminate -> SKIP [] interrupt -> SKIP) ; Interrupted
+				Interrupted	= share__choice(exit -> exited -> Inactive)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	
+	----------------------------------------------------------------------
+	-- State: GoingHome
+	module GoingHome
+	
+	enterSS = 
+			{|			i::enter,
+				EmptyCycle::enter
+			|}
+	enteredSS = 
+			{|			EmptyCycle::entered
+			|}
+	exports
+	
+		--  Declarations
+		
+		channel enter, entered, interrupt
+		channel enteredL, enteredR
+		
+						
+		-- declaring identifiers of transitions
+		datatype NIDS = 
+		              NID_i|
+		              NID_EmptyCycle
+		
+		channel internal__ : NIDS
+		channel fcControlAuth__: NIDS.InOut
+		channel fcTakeoffRet__: NIDS.InOut
+		channel fcGoHomeRet__: NIDS.InOut
+		channel fcLandRet__: NIDS.InOut
+		channel fcWaypointFinishedMission__: NIDS.InOut
+		channel fcMoveRelativeRet__: NIDS.InOut
+		channel navCommand__: NIDS.InOut.NavCommand
+		channel waypoint__: NIDS.InOut.Position
+		channel uavStatus__: NIDS.InOut.AircraftStatus
+		channel visualPosition__: NIDS.InOut.RelativeMotion
+		
+		--	Nodes
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: i
+		module i
+		exports
+		
+			channel enter, interrupt
+			
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= share__choice(interrupt -> SKIP) ; Inactive
+				within
+					Inactive [| {terminate} |> SKIP)
+			
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME)
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: EmptyCycle
+		module EmptyCycle
+		
+		enterSS = {}
+		
+		enteredSS = {}
+		
+		exports
+		
+			--  Declarations
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			
+			--	Rule: behaviours(Node)
+			--  Note that FDR has problems with efficiently compiling the process below
+			-- 	if using a different recursion pattern.
+			D__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				-- IMPLEMENTATION NOTE: 
+				-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+				-- however FDR struggles with that form in certain cases. So we use the exception operator
+				-- instead to 'terminate'.
+				
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+				
+			VS_O__(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) = 
+			dbisim(let
+				Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+				
+				Termination = terminate -> SKIP
+				
+				Active 		= SKIP ; 
+						 	  Behaviour ; 
+						 	  share__choice(exit -> SKIP) ; SKIP ; 
+						 	  share__choice(exited -> SKIP) ; Inactive
+			
+				Behaviour 	= entered -> During
+				During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+			within
+				Inactive [| {terminate} |> SKIP)
+			
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		
+		--	Rule: behaviours(Node)
+		--  Note that FDR has problems with efficiently compiling the process below
+		-- 	if using a different recursion pattern.
+		D__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			-- IMPLEMENTATION NOTE: 
+			-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+			-- however FDR struggles with that form in certain cases. So we use the exception operator
+			-- instead to 'terminate'.
+			
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcGoHomeCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::D__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\union(enteredSS,{terminate}) 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+			
+		VS_O__(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = 
+		dbisim(let
+			Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+			
+			Termination = terminate -> SKIP
+			
+			Active 		= true&CALL__fcGoHomeCall(
+						id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME
+					) ; 
+					 	  Behaviour ; 
+					 	  share__choice(exit -> SKIP) ; SKIP ; 
+					 	  share__choice(exited -> SKIP) ; Inactive
+		
+		
+			Behaviour 	= dbisim(
+				((
+				 (((let
+				 	-- IMPLEMENTATION NOTE:
+				 	-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				 	-- modules for defining the semantics of each node.
+				 	enterSS = {|
+				 	i::enter,
+				 	EmptyCycle::enter
+				 	|}
+				 	hideSet = union(enterSS,{|exit,exited,internal__|})
+				 within 
+				 	((let
+				 		-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+				 		-- because CSPM modules are used for the semantics of Node.
+				 		flowevts = union(enterSS,{|exit,exited,interrupt|})
+				 		transSync = {|internal__.NID_i|}
+				 	within
+				 		((
+				 		 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+				 		   i::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   [| { share__, terminate } |] (
+				 		   EmptyCycle::VS_O__(id__,
+				 		   		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		   		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		   		    const_pre_pkg__Flight_HOME)
+				 		   )
+				 		 )
+				 		 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt|}]]
+				 		 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+				 		 )
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+				 		 )
+				 		 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+				 		|}) |]
+				 		 ((i::enter -> Transitions(id__,
+				 		 		    const_pre_pkg__Flight_CLIMB_LIFT,
+				 		 		    const_pre_pkg__Flight_DELAY_DISARM,
+				 		 		    const_pre_pkg__Flight_HOME))
+				 		  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+				 		 )
+				 		)
+				 		)
+				 	)
+				 	 \ hideSet)
+				 	[[
+				 		fcControlAuth__.x____ <- fcControlAuth,
+				 		fcTakeoffRet__.x____ <- fcTakeoffRet,
+				 		fcGoHomeRet__.x____ <- fcGoHomeRet,
+				 		fcLandRet__.x____ <- fcLandRet,
+				 		fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+				 		fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+				 		navCommand__.x____ <- navCommand,
+				 		waypoint__.x____ <- waypoint,
+				 		uavStatus__.x____ <- uavStatus,
+				 		visualPosition__.x____ <- visualPosition
+				 		| x____ <- NIDS
+				 	]]
+				 )
+				 )
+				  [[ share__ <- x__ | x__ <- {| share__,setR_h,setR_cmd,setR_start,setR_wp,setR_vp,setR_gotStart |} ]] 
+				  [[set_h <- setL_h,set_cmd <- setL_cmd,set_start <- setL_start,set_wp <- setL_wp,set_vp <- setL_vp,set_gotStart <- setL_gotStart]]
+				 )
+				 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+				 			,setL_h
+				 			,setL_cmd
+				 			,setL_start
+				 			,setL_wp
+				 			,setL_vp
+				 			,setL_gotStart
+				 			,setR_h
+				 			 			,setR_cmd
+				 			 			,setR_start
+				 			 			,setR_wp
+				 			 			,setR_vp
+				 			 			,setR_gotStart
+				 			|}) |]
+				 ((During)
+				  [[ share__ <- x__ | x__ <- {| share__,setL_h,setL_cmd,setL_start,setL_wp,setL_vp,setL_gotStart |} ]]
+				  [[set_h <- setR_h,set_cmd <- setR_cmd,set_start <- setR_start,set_wp <- setR_wp,set_vp <- setR_vp,set_gotStart <- setR_gotStart]]
+				 )
+				)[[setL_h <- set_h,setL_cmd <- set_cmd,setL_start <- set_start,setL_wp <- set_wp,setL_vp <- set_vp,setL_gotStart <- set_gotStart]]
+				 [[setR_h <- set_h,setR_cmd <- set_cmd,setR_start <- set_start,setR_wp <- set_wp,setR_vp <- set_vp,setR_gotStart <- set_gotStart]]
+				)\{terminate} 
+			)
+			During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+					 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+		within
+			Inactive [| {terminate} |> SKIP)
+		
+		Transitions(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME) = ((let
+			Trans = (
+				((share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((SKIP ; EmptyCycle::enter -> SKIP))))
+				 ) ; Trans)
+				 []
+				 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+			)
+		within
+			Trans
+		)
+		)
+		
+	
+	endmodule
+	----------------------------------------------------------------------
+	
+	-- END of Nodes --
+	
+	-- Operation calls --
+	-- Only the undefined operations are declared here.
+	-- If the state machine is in isolation, all required operations will be undefined.
+	-- If it is in the context of a controller, the required operations not provided by the
+	-- controller will be declared here, and the defined operations will be defined in the
+	-- context of the Controller module, and therefore within scope of the state machine module.
+	CALL__clone_normal_Flight_Landing_Landed_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Landing_Landed_opCall -> SKIP
+	CALL__fcGoHomeCall(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= fcGoHomeCallCall -> SKIP
+	CALL__clone_normal_Flight_Climbing_Climbed_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Climbing_Climbed_opCall -> SKIP
+	CALL__clone_normal_Flight_TakingOff_TakenOff_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_TakingOff_TakenOff_opCall -> SKIP
+	CALL__fcWaypointCall(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME,
+				param_pos) 	= fcWaypointCallCall.param_pos -> SKIP
+	CALL__clone_normal_Flight_Climbing_entry(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Climbing_entryCall -> SKIP
+	CALL__fcTakeoffCall(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= fcTakeoffCallCall -> SKIP
+	CALL__clone_normal_Flight_Waiting_WaypointNotify_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Waiting_WaypointNotify_opCall -> SKIP
+	CALL__clone_normal_Flight_Connect_CI_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Connect_CI_opCall -> SKIP
+	CALL__clone_normal_Flight_GoingHome_ReturnedHome_op(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_GoingHome_ReturnedHome_opCall -> SKIP
+	CALL__fcLandCall(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= fcLandCallCall -> SKIP
+	CALL__fcMoveRelativeCall(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME,
+				param_movement) 	= fcMoveRelativeCallCall.param_movement -> SKIP
+	CALL__clone_normal_Flight_Waypoint_entry(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) 	= clone_normal_Flight_Waypoint_entryCall -> SKIP
+	
+	-- END of Operation calls --
+	
+	-- STM processes
+	STM(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful(id__,
+						    const_pre_pkg__Flight_CLIMB_LIFT,
+						    const_pre_pkg__Flight_DELAY_DISARM,
+						    const_pre_pkg__Flight_HOME) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME))
+	)\sharedVarHide
+	
+	STM_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+	( 
+		(
+			(
+				(IteratedStateful_VS_O(id__,
+						    const_pre_pkg__Flight_CLIMB_LIFT,
+						    const_pre_pkg__Flight_DELAY_DISARM,
+						    const_pre_pkg__Flight_HOME) \ {terminate} ; share__choice(terminate -> SKIP))
+			 	[[ share__ <- x__ | x__ <- {||} ]]
+			)
+		[| {share__} |]
+		SKIP
+		)
+		[| union(sharedVarSync,{terminate}) |]
+		dbisim(sharedVarMemory(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME))
+	)\sharedVarHide
+	
+	-- Transitions
+	Transitions(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = ((let
+		Trans = share__choice(get_cmd?cmd -> get_gotStart?gotStart -> (
+			((share__ -> SKIP
+			 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((SKIP ; Connect::enter -> SKIP))))
+			 	 [] dbisim((true)&(fcControlAuth__!NID_Connect.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_Connect_CI_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Waiting::enter -> SKIP)))
+			 	 [] dbisim((true)&(waypoint__!NID_Waiting.in?wp:{wp|wp <- Position, true} -> share__choice(set_wp!wp -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Waypoint::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Waypoint -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Waiting::enter -> SKIP)))
+			 	 [] dbisim((true)&(fcWaypointFinishedMission__!NID_Waiting.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_Waiting_WaypointNotify_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Waiting::enter -> SKIP)))
+			 	 [] dbisim((true)&(visualPosition__!NID_Waiting.in?vp:{vp|vp <- RelativeMotion, true} -> share__choice(set_vp!vp -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Relative::enter -> SKIP)))
+			 	 [] dbisim((true)&(internal__!NID_Relative -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; Waiting::enter -> SKIP)))
+			 	 [] dbisim((true)&(navCommand__!NID_Waiting.in?cmd:{cmd|cmd <- NavCommand, true} -> share__choice(set_cmd!cmd -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; ProcessingCommand::enter -> SKIP)))
+			 	 [] dbisim(((cmd==NavCommand_TakeOff))&(internal__!NID_ProcessingCommand -> SKIP ;  ((SKIP ; TakingOff::enter -> SKIP))))
+			 	 [] dbisim(((cmd==NavCommand_GoHome))&(internal__!NID_ProcessingCommand -> SKIP ;  ((SKIP ; GoHome::enter -> SKIP))))
+			 	 [] dbisim(((cmd==NavCommand_Land))&(internal__!NID_ProcessingCommand -> SKIP ;  ((SKIP ; Landing::enter -> SKIP))))
+			 	 [] dbisim((true)&(fcTakeoffRet__!NID_TakingOff.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_TakingOff_TakenOff_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Climbing::enter -> SKIP)))
+			 	 [] dbisim((true)&(fcWaypointFinishedMission__!NID_Climbing.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_Climbing_Climbed_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Waiting::enter -> SKIP)))
+			 	 [] dbisim((gotStart)&(internal__!NID_GoHome -> SKIP ;  ((SKIP ; BackToStart::enter -> SKIP))))
+			 	 [] dbisim(((not (gotStart)))&(internal__!NID_GoHome -> SKIP ;  ((SKIP ; GoingHome::enter -> SKIP))))
+			 	 [] dbisim((true)&(fcWaypointFinishedMission__!NID_BackToStart.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; GoingHome::enter -> SKIP)))
+			 	 [] dbisim((true)&(fcLandRet__!NID_Landing.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_Landing_Landed_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Disarmed::enter -> SKIP)))
+			 	 [] dbisim((true)&(fcWaypointFinishedMission__!NID_GoingHome.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&CALL__clone_normal_Flight_GoingHome_ReturnedHome_op(
+			 			id__,
+			 		    const_pre_pkg__Flight_CLIMB_LIFT,
+			 		    const_pre_pkg__Flight_DELAY_DISARM,
+			 		    const_pre_pkg__Flight_HOME
+			 		) ; Waiting::enter -> SKIP)))
+			 ) ; Trans)
+			 []
+			 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+			 []
+			 terminate -> SKIP
+		)
+		)
+	within
+		Trans
+	)
+	)
+	
+	-- Stateful
+	-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+	
+	-- Named process definitions
+	MachineBody(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((
+		let
+			finalNodesEntered = {|Disarmed::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				I::enter,
+				Connect::enter,
+				Waiting::enter,
+				ProcessingCommand::enter,
+				Waypoint::enter,
+				Relative::enter,
+				TakingOff::enter,
+				Climbing::enter,
+				GoHome::enter,
+				BackToStart::enter,
+				Landing::enter,
+				Disarmed::enter,
+				GoingHome::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_I,fcControlAuth__.NID_Connect.in,waypoint__.NID_Waiting.in,internal__.NID_Waypoint,fcWaypointFinishedMission__.NID_Waiting.in,visualPosition__.NID_Waiting.in,internal__.NID_Relative,navCommand__.NID_Waiting.in,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,fcTakeoffRet__.NID_TakingOff.in,fcWaypointFinishedMission__.NID_Climbing.in,internal__.NID_GoHome,internal__.NID_GoHome,fcWaypointFinishedMission__.NID_BackToStart.in,fcLandRet__.NID_Landing.in,fcWaypointFinishedMission__.NID_GoingHome.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   I::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Connect::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Waiting::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   ProcessingCommand::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Waypoint::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Relative::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   TakingOff::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Climbing::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   GoHome::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   BackToStart::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Landing::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Disarmed::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   GoingHome::D__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Connect::interrupt <- x__ | x__ <- {|interrupt,fcControlAuth__.NID_Connect.in|}]]
+					 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,waypoint__.NID_Waiting.in,fcWaypointFinishedMission__.NID_Waiting.in,visualPosition__.NID_Waiting.in,navCommand__.NID_Waiting.in|}]]
+					 [[Waypoint::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waypoint|}]]
+					 [[Relative::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Relative|}]]
+					 [[TakingOff::interrupt <- x__ | x__ <- {|interrupt,fcTakeoffRet__.NID_TakingOff.in|}]]
+					 [[Climbing::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_Climbing.in|}]]
+					 [[BackToStart::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_BackToStart.in|}]]
+					 [[Landing::interrupt <- x__ | x__ <- {|interrupt,fcLandRet__.NID_Landing.in|}]]
+					 [[Disarmed::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[GoingHome::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_GoingHome.in|}]]
+					 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+					 [[ProcessingCommand::interrupt <- x__ | x__ <- {|internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand|}]]
+					 [[GoHome::interrupt <- x__ | x__ <- {|internal__.NID_GoHome,internal__.NID_GoHome|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_cmd,setR_wp,setR_vp |} ]] 
+					  [[set_cmd <- setL_cmd,set_gotStart <- setL_gotStart]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_cmd
+					 			,setL_gotStart
+					 			,setR_cmd
+					 			 			,setR_wp
+					 			 			,setR_vp
+					 			|}) |]
+					 ((I::enter -> Transitions(id__,
+					 		    const_pre_pkg__Flight_CLIMB_LIFT,
+					 		    const_pre_pkg__Flight_DELAY_DISARM,
+					 		    const_pre_pkg__Flight_HOME))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_cmd,setL_gotStart |} ]]
+					  [[set_cmd <- setR_cmd,set_wp <- setR_wp,set_vp <- setR_vp]]
+					 )
+					)[[setL_cmd <- set_cmd,setL_gotStart <- set_gotStart]]
+					 [[setR_cmd <- set_cmd,setR_wp <- set_wp,setR_vp <- set_vp]]
+					)
+				)
+				 \ hideSet)
+				[[
+					fcControlAuth__.x____ <- fcControlAuth,
+					fcTakeoffRet__.x____ <- fcTakeoffRet,
+					fcGoHomeRet__.x____ <- fcGoHomeRet,
+					fcLandRet__.x____ <- fcLandRet,
+					fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+					fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+					navCommand__.x____ <- navCommand,
+					waypoint__.x____ <- waypoint,
+					uavStatus__.x____ <- uavStatus,
+					visualPosition__.x____ <- visualPosition
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((MachineBody(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)\ enteredSS)
+		)
+	
+	IteratedBehaviour(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((MachineBody(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME)\ enteredSS)
+		)
+	
+	Stateful(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		((
+			(Behaviour(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														Behaviour(id__,
+																    const_pre_pkg__Flight_CLIMB_LIFT,
+																    const_pre_pkg__Flight_DELAY_DISARM,
+																    const_pre_pkg__Flight_HOME)
+														[| {|get_gotStart,set_gotStart,terminate|} |]
+														Memory_gotStart(false)
+													)\{|get_gotStart,set_gotStart|}
+												)
+												[| {|get_start,set_start,terminate|} |]
+												Memory_start((0,0,0,0))
+											)\{|get_start,set_start|}
+										)
+										[| {|get_wp,set_wp,terminate|} |]
+										Memory_wp((0,0,0,0))
+									)\{|get_wp,set_wp|}
+								)
+								[| {|get_vp,set_vp,terminate|} |]
+								Memory_vp((0,0,0,0))
+							)\{|get_vp,set_vp|}
+						)
+						[| {|get_cmd,set_cmd,terminate|} |]
+						Memory_cmd(NavCommand_TakeOff)
+					)\{|get_cmd,set_cmd|}
+				)
+				[| {|get_h,set_h,terminate|} |]
+				Memory_h(0)
+			)\{|get_h,set_h|}
+		)
+		)
+	
+	-- Visible counterparts
+	MachineBody_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((
+		let
+			finalNodesEntered = {|Disarmed::entered|}
+		within
+			((let
+				-- IMPLEMENTATION NOTE:
+				-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+				-- modules for defining the semantics of each node.
+				enterSS = {|
+				I::enter,
+				Connect::enter,
+				Waiting::enter,
+				ProcessingCommand::enter,
+				Waypoint::enter,
+				Relative::enter,
+				TakingOff::enter,
+				Climbing::enter,
+				GoHome::enter,
+				BackToStart::enter,
+				Landing::enter,
+				Disarmed::enter,
+				GoingHome::enter
+				|}
+				hideSet = union(enterSS,{|exit,exited,internal__|})
+			within 
+				((let
+					-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+					-- because CSPM modules are used for the semantics of Node.
+					flowevts = union(enterSS,{|exit,exited,interrupt|})
+					transSync = {|internal__.NID_I,fcControlAuth__.NID_Connect.in,waypoint__.NID_Waiting.in,internal__.NID_Waypoint,fcWaypointFinishedMission__.NID_Waiting.in,visualPosition__.NID_Waiting.in,internal__.NID_Relative,navCommand__.NID_Waiting.in,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,fcTakeoffRet__.NID_TakingOff.in,fcWaypointFinishedMission__.NID_Climbing.in,internal__.NID_GoHome,internal__.NID_GoHome,fcWaypointFinishedMission__.NID_BackToStart.in,fcLandRet__.NID_Landing.in,fcWaypointFinishedMission__.NID_GoingHome.in|}
+				within
+					((
+					 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+					   I::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Connect::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Waiting::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   ProcessingCommand::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Waypoint::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Relative::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   TakingOff::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Climbing::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   GoHome::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   BackToStart::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Landing::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   Disarmed::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   [| { share__, terminate } |] (
+					   GoingHome::VS_O__(id__,
+					   		    const_pre_pkg__Flight_CLIMB_LIFT,
+					   		    const_pre_pkg__Flight_DELAY_DISARM,
+					   		    const_pre_pkg__Flight_HOME)
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					   )
+					 )
+					 [[Connect::interrupt <- x__ | x__ <- {|interrupt,fcControlAuth__.NID_Connect.in|}]]
+					 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,waypoint__.NID_Waiting.in,fcWaypointFinishedMission__.NID_Waiting.in,visualPosition__.NID_Waiting.in,navCommand__.NID_Waiting.in|}]]
+					 [[Waypoint::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waypoint|}]]
+					 [[Relative::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Relative|}]]
+					 [[TakingOff::interrupt <- x__ | x__ <- {|interrupt,fcTakeoffRet__.NID_TakingOff.in|}]]
+					 [[Climbing::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_Climbing.in|}]]
+					 [[BackToStart::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_BackToStart.in|}]]
+					 [[Landing::interrupt <- x__ | x__ <- {|interrupt,fcLandRet__.NID_Landing.in|}]]
+					 [[Disarmed::interrupt <- x__ | x__ <- {|interrupt|}]]
+					 [[GoingHome::interrupt <- x__ | x__ <- {|interrupt,fcWaypointFinishedMission__.NID_GoingHome.in|}]]
+					 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+					 [[ProcessingCommand::interrupt <- x__ | x__ <- {|internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand,internal__.NID_ProcessingCommand|}]]
+					 [[GoHome::interrupt <- x__ | x__ <- {|internal__.NID_GoHome,internal__.NID_GoHome|}]]
+					 )
+					  [[ share__ <- x__ | x__ <- {| share__,setR_cmd,setR_wp,setR_vp |} ]] 
+					  [[set_cmd <- setL_cmd,set_gotStart <- setL_gotStart]]
+					 )
+					 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+					 			,setL_cmd
+					 			,setL_gotStart
+					 			,setR_cmd
+					 			 			,setR_wp
+					 			 			,setR_vp
+					 			|}) |]
+					 ((I::enter -> Transitions(id__,
+					 		    const_pre_pkg__Flight_CLIMB_LIFT,
+					 		    const_pre_pkg__Flight_DELAY_DISARM,
+					 		    const_pre_pkg__Flight_HOME))
+					  [[ share__ <- x__ | x__ <- {| share__,setL_cmd,setL_gotStart |} ]]
+					  [[set_cmd <- setR_cmd,set_wp <- setR_wp,set_vp <- setR_vp]]
+					 )
+					)[[setL_cmd <- set_cmd,setL_gotStart <- set_gotStart]]
+					 [[setR_cmd <- set_cmd,setR_wp <- set_wp,setR_vp <- set_vp]]
+					)
+				)
+				 \ hideSet)
+				[[
+					fcControlAuth__.x____ <- fcControlAuth,
+					fcTakeoffRet__.x____ <- fcTakeoffRet,
+					fcGoHomeRet__.x____ <- fcGoHomeRet,
+					fcLandRet__.x____ <- fcLandRet,
+					fcWaypointFinishedMission__.x____ <- fcWaypointFinishedMission,
+					fcMoveRelativeRet__.x____ <- fcMoveRelativeRet,
+					navCommand__.x____ <- navCommand,
+					waypoint__.x____ <- waypoint,
+					uavStatus__.x____ <- uavStatus,
+					visualPosition__.x____ <- visualPosition
+					| x____ <- NIDS
+				]]
+			)
+			 [| {| interrupt |} |] SKIP)
+		)
+		)
+	
+	Behaviour_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME))
+		)
+	
+	IteratedBehaviour_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((MachineBody_VS_O(id__,
+				    const_pre_pkg__Flight_CLIMB_LIFT,
+				    const_pre_pkg__Flight_DELAY_DISARM,
+				    const_pre_pkg__Flight_HOME))
+		)
+	
+	Stateful_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = 
+		dbisim((
+			(Behaviour_VS_O(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME) [| union(getsetLocalChannels,{terminate}) |] varMemory(id__,
+					    const_pre_pkg__Flight_CLIMB_LIFT,
+					    const_pre_pkg__Flight_DELAY_DISARM,
+					    const_pre_pkg__Flight_HOME))
+		 	\getsetLocalChannels
+		)
+		)
+	
+	IteratedStateful_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) =
+		(dbisim(
+			sbisim(
+				dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										dbisim(
+											sbisim(
+												dbisim(
+													sbisim(
+														Behaviour_VS_O(id__,
+																    const_pre_pkg__Flight_CLIMB_LIFT,
+																    const_pre_pkg__Flight_DELAY_DISARM,
+																    const_pre_pkg__Flight_HOME)
+														[| {|get_gotStart,set_gotStart,terminate|} |]
+														Memory_gotStart(false)
+													)\{|get_gotStart,set_gotStart|}
+												)
+												[| {|get_start,set_start,terminate|} |]
+												Memory_start((0,0,0,0))
+											)\{|get_start,set_start|}
+										)
+										[| {|get_wp,set_wp,terminate|} |]
+										Memory_wp((0,0,0,0))
+									)\{|get_wp,set_wp|}
+								)
+								[| {|get_vp,set_vp,terminate|} |]
+								Memory_vp((0,0,0,0))
+							)\{|get_vp,set_vp|}
+						)
+						[| {|get_cmd,set_cmd,terminate|} |]
+						Memory_cmd(NavCommand_TakeOff)
+					)\{|get_cmd,set_cmd|}
+				)
+				[| {|get_h,set_h,terminate|} |]
+				Memory_h(0)
+			)\{|get_h,set_h|}
+		)
+		)
+	
+	-- END
+	
+	-- Memory
+	-- Memory variables
+	Memory_h(h) =
+		get_h!h -> Memory_h(h)
+		[]
+		set_h?x__ -> Memory_h(x__)
+		[]
+		terminate -> SKIP
+	Memory_cmd(cmd) =
+		get_cmd!cmd -> Memory_cmd(cmd)
+		[]
+		set_cmd?x__ -> Memory_cmd(x__)
+		[]
+		terminate -> SKIP
+	Memory_vp(vp) =
+		get_vp!vp -> Memory_vp(vp)
+		[]
+		set_vp?x__ -> Memory_vp(x__)
+		[]
+		terminate -> SKIP
+	Memory_wp(wp) =
+		get_wp!wp -> Memory_wp(wp)
+		[]
+		set_wp?x__ -> Memory_wp(x__)
+		[]
+		terminate -> SKIP
+	Memory_start(start) =
+		get_start!start -> Memory_start(start)
+		[]
+		set_start?x__ -> Memory_start(x__)
+		[]
+		terminate -> SKIP
+	Memory_gotStart(gotStart) =
+		get_gotStart!gotStart -> Memory_gotStart(gotStart)
+		[]
+		set_gotStart?x__ -> Memory_gotStart(x__)
+		[]
+		terminate -> SKIP
+	
+	-- varMemory process
+	varMemory(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = Memory_h(0)
+	[| { terminate } |] (
+	Memory_cmd(NavCommand_TakeOff)
+	[| { terminate } |] (
+	Memory_vp((0,0,0,0))
+	[| { terminate } |] (
+	Memory_wp((0,0,0,0))
+	[| { terminate } |] (
+	Memory_start((0,0,0,0))
+	[| { terminate } |] (
+	Memory_gotStart(false)
+	)
+	)
+	)
+	)
+	)
+	
+	getsetLocalChannels = {|get_h,set_h,get_cmd,set_cmd,get_vp,set_vp,get_wp,set_wp,get_start,set_start,get_gotStart,set_gotStart|}
+	
+	-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+	FVS__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = STM_VS_O(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME)
+	
+	D__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = STM(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) \ internal_events
+	O__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = sbisim(diamond(D__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME)))
+	VS__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = FVS__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME)
+	VS_O__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = sbisim(diamond(FVS__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME)))
+	HEXT__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = O__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) [|shared_variable_events|] SKIP
+	HUP__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = O__(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) [|{share__}|] SKIP
+	
+	-- Shared memory
+	-- Shared memory variables
+	
+	-- sharedVarMemory process
+	sharedVarMemory(id__,
+			    const_pre_pkg__Flight_CLIMB_LIFT,
+			    const_pre_pkg__Flight_DELAY_DISARM,
+			    const_pre_pkg__Flight_HOME) = terminate -> SKIP
+	
+	sharedVarSync = {||}
+	
+	sharedVarHide = {||}
+endmodule

@@ -1,0 +1,179 @@
+module RC
+	--include "../../../timed/defs/_.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|Arduino::stopSpray.in,Arduino::gimbalYaw.in,Arduino::gimbalPitch.in,Arduino::startSpray.in|}
+	OutputEvents = {|Arduino::gimbalWritePanCall,Arduino::gimbalWriteTiltCall,Arduino::waterEmpty.out,Arduino::pumpOnCall,Arduino::gimbalYawAck.out,Arduino::gimbalPitchAck.out,Arduino::pumpOffCall|}
+	ExternalEvents = {|Arduino::stopSpray.in,Arduino::gimbalYaw.in,Arduino::gimbalPitch.in,Arduino::startSpray.in
+					   ,Arduino::gimbalWritePanCall,Arduino::gimbalWriteTiltCall,Arduino::waterEmpty.out,Arduino::pumpOnCall,Arduino::gimbalYawAck.out,Arduino::gimbalPitchAck.out,Arduino::pumpOffCall|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_stopSpray.Bool
+		| i_gimbalYaw.Bool.core_nat
+		| i_gimbalPitch.Bool.core_nat
+		| i_startSpray.Bool
+	
+	datatype RegisterDataOutput = o_gimbalWritePan.core_int
+		| o_gimbalWriteTilt.core_int
+		| o_waterEmpty
+		| o_pumpOn
+		| o_gimbalYawAck
+		| o_gimbalPitchAck
+		| o_pumpOff
+	
+	
+	nametype RegisterOutputs = {|
+	o_gimbalWritePan,
+	o_gimbalWriteTilt,
+	o_waterEmpty,
+	o_pumpOn,
+	o_gimbalYawAck,
+	o_gimbalPitchAck,
+	o_pumpOff|}
+	
+	nametype RegisterInputs = {|
+	i_stopSpray,
+	i_gimbalYaw,
+	i_gimbalPitch,
+	i_startSpray|}
+	
+	datatype COutputEvents = COutput_gimbalWritePan
+		| COutput_gimbalWriteTilt
+		| COutput_waterEmpty
+		| COutput_pumpOn
+		| COutput_gimbalYawAck
+		| COutput_gimbalPitchAck
+		| COutput_pumpOff
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_stopSpray = registerRead.i_stopSpray?b__ ->
+								if b__ then (Arduino::stopSpray.in -> A1_stopSpray [] A1_stopSpray)
+									   else A1_stopSpray
+		A1_gimbalYaw = registerRead.i_gimbalYaw?b__.x__ ->
+								if b__ then (Arduino::gimbalYaw.in.x__ -> A1_gimbalYaw [] A1_gimbalYaw)
+									   else A1_gimbalYaw
+		A1_gimbalPitch = registerRead.i_gimbalPitch?b__.x__ ->
+								if b__ then (Arduino::gimbalPitch.in.x__ -> A1_gimbalPitch [] A1_gimbalPitch)
+									   else A1_gimbalPitch
+		A1_startSpray = registerRead.i_startSpray?b__ ->
+								if b__ then (Arduino::startSpray.in -> A1_startSpray [] A1_startSpray)
+									   else A1_startSpray
+		
+														
+	within
+			     	A1_stopSpray
+			     	 |||
+			     	A1_gimbalYaw
+			     	 |||
+			     	A1_gimbalPitch
+			     	 |||
+			     	A1_startSpray
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+			read(COutput_gimbalWritePan) = Arduino::gimbalWritePanCall?x__ -> registerWrite.o_gimbalWritePan.x__ -> SKIP
+			read(COutput_gimbalWriteTilt) = Arduino::gimbalWriteTiltCall?x__ -> registerWrite.o_gimbalWriteTilt.x__ -> SKIP
+			read(COutput_waterEmpty) = Arduino::waterEmpty.out -> registerWrite.o_waterEmpty -> SKIP
+			read(COutput_pumpOn) = Arduino::pumpOnCall -> registerWrite.o_pumpOn -> SKIP
+			read(COutput_gimbalYawAck) = Arduino::gimbalYawAck.out -> registerWrite.o_gimbalYawAck -> SKIP
+			read(COutput_gimbalPitchAck) = Arduino::gimbalPitchAck.out -> registerWrite.o_gimbalPitchAck -> SKIP
+			read(COutput_pumpOff) = Arduino::pumpOffCall -> registerWrite.o_pumpOff -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_stopSpray?x__ -> SKIP)
+				|||
+			(registerRead.i_gimbalYaw?x__ -> SKIP)
+				|||
+			(registerRead.i_gimbalPitch?x__ -> SKIP)
+				|||
+			(registerRead.i_startSpray?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(Arduino::D__(id__,
+				    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+				    const_Arduino_AWaterMonitor_WATER_FLOW,
+				    const_Arduino_AWaterMonitor_TIME_PER_UNIT)\{|Arduino::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT) =
+		prioritise(
+			((TLFree(id__,
+					    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+					    const_Arduino_AWaterMonitor_WATER_FLOW,
+					    const_Arduino_AWaterMonitor_TIME_PER_UNIT) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT) =
+		prioritise(
+			((Arduino::D__(id__,
+					    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+					    const_Arduino_AWaterMonitor_WATER_FLOW,
+					    const_Arduino_AWaterMonitor_TIME_PER_UNIT)\{|Arduino::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT) = D__(id__,cycle_RC_RC,
+			    const_Arduino_AAim_GIMBAL_FLOOD_DELAY,
+			    const_Arduino_AWaterMonitor_WATER_FLOW,
+			    const_Arduino_AWaterMonitor_TIME_PER_UNIT)
+
+endmodule

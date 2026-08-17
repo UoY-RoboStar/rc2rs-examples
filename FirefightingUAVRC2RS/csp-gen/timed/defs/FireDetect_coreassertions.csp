@@ -1,0 +1,42 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:43
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "FireDetect.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate FireDetect
+P_FireDetect = let
+	id__ = 0
+	
+	
+	
+within
+	FireDetect::O__(
+		id__,
+		const_FireDetect_LEFT_X,
+		const_FireDetect_CENTRE_X,
+		const_FireDetect_RIGHT_X,
+		const_FireDetect_CENTRE_Y
+	)
+assert P_FireDetect :[deadlock-free]	
+assert P_FireDetect;RUN({r__}) :[deadlock-free]
+assert P_FireDetect :[deterministic]
+assert P_FireDetect :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_FireDetect[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_FireDetect

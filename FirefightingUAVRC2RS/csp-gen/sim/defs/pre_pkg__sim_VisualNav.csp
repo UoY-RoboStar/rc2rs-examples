@@ -1,0 +1,3886 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:12
+--
+
+module pre_pkg__sim_VisualNav
+exports
+	transparent diamond
+	transparent sbisim
+	transparent dbisim
+	transparent chase
+
+	-- Transition identifiers
+	-- declaring identifiers of transitions
+	datatype NIDS = 
+	              NID_I|
+	              NID_Inactive|
+	              NID_Active
+	
+	channel internal__ : NIDS
+	
+	-- Flow channels		
+	channel interrupt
+	channel exited
+	channel exit
+	channel terminate
+	
+	-- Variable channels
+	channel get_tgt, set_tgt, setL_tgt, setR_tgt: FireTarget
+	channel get_wm, set_wm, setL_wm, setR_wm: WallMetrics
+	channel get_movement, set_movement, setL_movement, setR_movement: RelativeMotion
+	channel get_vnavEnableF, set_vnavEnableF, setL_vnavEnableF, setR_vnavEnableF: core_boolean
+	channel get_wallMetricsF, set_wallMetricsF, setL_wallMetricsF, setR_wallMetricsF: core_boolean
+	channel get_fvSeenFireF, set_fvSeenFireF, setL_fvSeenFireF, setR_fvSeenFireF: core_boolean
+	channel get_vnavDisableF, set_vnavDisableF, setL_vnavDisableF, setR_vnavDisableF: core_boolean
+	
+	-- Shared variable channels
+	
+	-- Local variable channels for defined operations that are required by the state machine
+	
+	-- Declaring state machine events
+	
+	-- Declaring call and ret events for undefined operations
+	channel clone_normal_VisualNav_Active_Wall_entryCall
+	channel clone_normal_VisualNav_Active_Commit_Loop_opCall
+	channel clone_normal_VisualNav_Active_NoFire_entryCall
+	channel clone_normal_VisualNav_Active_Fire_entryCall
+	
+	enterSS = {|
+	I::enter,
+	Inactive::enter,
+	Active::enter
+	|}
+	
+	enteredSS = 	{|
+	Inactive::entered,
+	Active::entered
+	|}
+	
+	internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+	
+	shared_variable_events = {|
+	|}
+	
+	
+	channel clockReset, clockResetL, clockResetR 
+	
+	localClockResets = {||}
+	
+	
+	channel get_CLID_Active : core_clock_type 
+	channel get_CLID_Inactive : core_clock_type 
+	--channel increment__
+	
+	CLID_Active_clock_type(id__,
+			          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+			          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	CLID_Inactive_clock_type(id__,
+			          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+			          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+		let
+			max = (clock_type_max(Union({
+	{}
+	}))+1)
+		ctype = {0..max}
+	within
+		if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+	
+	
+	
+	-- RoboSim-specific declarations
+	channel endexec, endexec_action
+	channel endexec__ : NIDS
+	channel startexec, startexec_action
+	
+	-- declaring registerRead/Write datatypes
+	datatype RegisterDataInput = i_vnavDisable.Bool
+		| i_fvSeenFire.Bool.FireTarget
+		| i_vnavEnable.Bool
+		| i_wallMetrics.Bool.WallMetrics
+	
+	
+	datatype RegisterDataOutput = o_visualPosition.RelativeMotion
+	
+	
+	nametype RegisterOutputs = {|
+	o_visualPosition|}
+		
+	nametype RegisterInputs = {|
+	i_vnavDisable,
+	i_fvSeenFire,
+	i_vnavEnable,
+	i_wallMetrics|}
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	-- variable channels
+	channel get_wallMetrics : Bool.WallMetrics
+	channel get_fvSeenFire : Bool.FireTarget
+	channel get_vnavEnable : Bool
+	channel get_vnavDisable : Bool
+	
+	-- channel set with all visible events
+	sem__events = {|endexec,terminate
+				,registerRead
+				,registerWrite
+	,	clone_normal_VisualNav_Active_Wall_entryCall,
+		clone_normal_VisualNav_Active_Commit_Loop_opCall,
+		clone_normal_VisualNav_Active_NoFire_entryCall,
+		clone_normal_VisualNav_Active_Fire_entryCall
+		|}
+
+		-- Nodes --
+		-- declaring all nodes
+		
+		----------------------------------------------------------------------
+		-- Initial: I
+		module I
+		exports
+		
+			channel enter, interrupt
+			
+			Timed(OneStep) {
+				D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= share__choice(interrupt -> SKIP) ; Inactive
+					within
+						Inactive [| {terminate} |> SKIP)
+				
+				VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Inactive
+		module Inactive
+		
+		enterSS = 
+				{|			i::enter,
+					EmptyCycle::enter
+				|}
+		enteredSS = 
+				{|			EmptyCycle::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i|
+			              NID_EmptyCycle
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_EmptyCycle : core_clock_type 
+			--channel increment__
+			
+			CLID_EmptyCycle_clock_type(id__,
+					          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+					          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: i
+			module i
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: EmptyCycle
+			module EmptyCycle
+			
+			enterSS = {}
+			
+			enteredSS = {}
+			
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				
+				--channel increment__
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+						Behaviour 	= entered -> During
+						During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					
+					-- Clocks
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+					
+					stateClockSync = {||}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_vnavEnableF <- setL_vnavEnableF,set_vnavDisableF <- setL_vnavDisableF,set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_vnavEnableF
+						 				 			,setL_vnavDisableF
+						 				 			,setL_wallMetricsF
+						 				 			,setL_fvSeenFireF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_vnavDisableF,setL_wallMetricsF,setL_fvSeenFireF |} ]]
+						 				 )
+						 				)[[setL_vnavEnableF <- set_vnavEnableF,setL_vnavDisableF <- set_vnavDisableF,setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_wallMetricsF
+						 			,setL_vnavDisableF
+						 			,setL_wm
+						 			,setL_fvSeenFireF
+						 			,setL_tgt
+						 			,setL_movement
+						 			,setR_vnavEnableF
+						 			 			,setR_wallMetricsF
+						 			 			,setR_vnavDisableF
+						 			 			,setR_wm
+						 			 			,setR_fvSeenFireF
+						 			 			,setR_tgt
+						 			 			,setR_movement
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+						  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+						 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		(let
+						 			-- IMPLEMENTATION NOTE:
+						 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 			-- modules for defining the semantics of each node.
+						 			enterSS = {|
+						 			i::enter,
+						 			EmptyCycle::enter
+						 			|}
+						 			hideSet = union(enterSS,{|exit,exited,internal__|})
+						 		within 
+						 			((let
+						 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 				-- because CSPM modules are used for the semantics of Node.
+						 				flowevts = union(enterSS,{|exit,exited|})
+						 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+						 			within
+						 				((
+						 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 				   i::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 				   [| { share__, terminate } |] (
+						 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 				   )
+						 				 )
+						 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+						 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+						 				 )
+						 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 				  [[set_vnavEnableF <- setL_vnavEnableF,set_vnavDisableF <- setL_vnavDisableF,set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF]]
+						 				 )
+						 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 				 			,setL_vnavEnableF
+						 				 			,setL_vnavDisableF
+						 				 			,setL_wallMetricsF
+						 				 			,setL_fvSeenFireF
+						 				|}) |]
+						 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_vnavDisableF,setL_wallMetricsF,setL_fvSeenFireF |} ]]
+						 				 )
+						 				)[[setL_vnavEnableF <- set_vnavEnableF,setL_vnavDisableF <- set_vnavDisableF,setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF]]
+						 				)
+						 			)
+						 			 \ hideSet)
+						 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 			[[ endexec_action <- endexec ]]
+						 			[[ startexec_action <- startexec ]]
+						 		)
+						 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+						 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+						 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 	)\{|get_CLID_EmptyCycle|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_wallMetricsF
+						 			,setL_vnavDisableF
+						 			,setL_wm
+						 			,setL_fvSeenFireF
+						 			,setL_tgt
+						 			,setL_movement
+						 			,setR_vnavEnableF
+						 			 			,setR_wallMetricsF
+						 			 			,setR_vnavDisableF
+						 			 			,setR_wm
+						 			 			,setR_fvSeenFireF
+						 			 			,setR_tgt
+						 			 			,setR_movement
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+						  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+						 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+					Trans = share__choice(get_fvSeenFire?fvSeenFire -> get_vnavEnableF?vnavEnableF -> get_vnavDisableF?vnavDisableF -> get_wallMetrics?wallMetrics -> get_wallMetricsF?wallMetricsF -> get_vnavEnable?vnavEnable -> get_vnavDisable?vnavDisable -> get_fvSeenFireF?fvSeenFireF -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+						 [] dbisim(((not (((((((((true and (((member(vnavEnable,{true}) and vnavEnableF))))) or ((true and (((member(vnavDisable,{true}) and vnavDisableF))))))) or ((true and (((member(fvSeenFire,{true.tgt | tgt <- FireTarget}) and fvSeenFireF))))))) or ((true and (((member(wallMetrics,{true.wm | wm <- WallMetrics}) and wallMetricsF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_fvSeenFire?b__?x__ -> set_tgt!x__ -> SKIP;
+						 
+						 get_wallMetrics?b__?x__ -> set_wm!x__ -> SKIP
+						 ; share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_vnavDisableF!true -> SKIP)));share__choice(true & (share__choice(set_fvSeenFireF!true -> SKIP)));share__choice(true & (share__choice(set_wallMetricsF!true -> SKIP)));share__choice(true & (share__choice(set_vnavEnableF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_EmptyCycle(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					TimeOut_1(
+						EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				
+				stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		
+		----------------------------------------------------------------------
+		-- State: Active
+		module Active
+		
+		enterSS = 
+				{|			I::enter,
+					Waiting::enter,
+					Wall::enter,
+					FIsValid::enter,
+					NoFire::enter,
+					Fire::enter,
+					Commit::enter
+				|}
+		enteredSS = 
+				{|			Waiting::entered,
+					Wall::entered,
+					NoFire::entered,
+					Fire::entered
+				|}
+		exports
+		
+			--  Declarations
+			channel endexec__ : NIDS
+			
+			
+			channel enter, entered, interrupt
+			channel enteredL, enteredR
+			
+							
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_I|
+			              NID_Waiting|
+			              NID_Wall|
+			              NID_FIsValid|
+			              NID_NoFire|
+			              NID_Fire|
+			              NID_Commit
+			
+			channel internal__ : NIDS
+			
+			channel get_CLID_Waiting : core_clock_type 
+			channel get_CLID_NoFire : core_clock_type 
+			channel get_CLID_Wall : core_clock_type 
+			channel get_CLID_Fire : core_clock_type 
+			--channel increment__
+			
+			CLID_Waiting_clock_type(id__,
+					          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+					          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_NoFire_clock_type(id__,
+					          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+					          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Wall_clock_type(id__,
+					          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+					          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_Fire_clock_type(id__,
+					          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+					          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				let
+					max = (clock_type_max(Union({
+			{}
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+			--	Nodes
+			-- declaring all nodes
+			
+			----------------------------------------------------------------------
+			-- Initial: I
+			module I
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+					
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Waiting
+			module Waiting
+			
+			enterSS = 
+					{|			i::enter,
+						EmptyCycle::enter
+					|}
+			enteredSS = 
+					{|			EmptyCycle::entered
+					|}
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				-- declaring identifiers of transitions
+				datatype NIDS = 
+				              NID_i|
+				              NID_EmptyCycle
+				
+				channel internal__ : NIDS
+				
+				channel get_CLID_EmptyCycle : core_clock_type 
+				--channel increment__
+				
+				CLID_EmptyCycle_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					let
+						max = (clock_type_max(Union({
+				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i
+				module i
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: EmptyCycle
+				module EmptyCycle
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					channel endexec__ : NIDS
+					
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_wallMetricsF
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_wallMetricsF,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\union(enteredSS,{terminate}) 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= SKIP ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_wallMetricsF
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_wallMetricsF,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\{terminate} 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+						Trans = share__choice(get_wallMetrics?wallMetrics -> get_wallMetricsF?wallMetricsF -> get_vnavDisableF?vnavDisableF -> get_vnavDisable?vnavDisable -> TimeOut_1(
+							 (share__ -> SKIP
+							 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+							 [] dbisim(((not (((((true and (((member(wallMetrics,{true.wm | wm <- WallMetrics}) and wallMetricsF))))) or ((true and (((member(vnavDisable,{true}) and vnavDisableF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_wallMetrics?b__?x__ -> set_wm!x__ -> SKIP
+							 ; share__choice(exit -> SKIP) ; ((let 
+							 	X = share__choice(exited -> SKIP [] endexec -> Y)
+							 	Y = share__choice(exited -> SKIP [] startexec -> X)
+							  within
+							  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_vnavDisableF!true -> SKIP)));share__choice(true & (share__choice(set_fvSeenFireF!true -> SKIP)));share__choice(true & (share__choice(set_wallMetricsF!true -> SKIP)));share__choice(true & (share__choice(set_vnavEnableF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+							 []
+							 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+							 []
+							 terminate -> SKIP
+							 []
+							 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+							 )
+						,SKIP);Trans
+						)
+					within
+						Trans [|{terminate}|> SKIP
+					)
+					)
+					
+					
+					-- Clocks
+					Clock_CLID_EmptyCycle(id__,x__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						TimeOut_1(
+							EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Wall
+			module Wall
+			
+			enterSS = 
+					{|			i::enter,
+						EmptyCycle::enter
+					|}
+			enteredSS = 
+					{|			EmptyCycle::entered
+					|}
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				-- declaring identifiers of transitions
+				datatype NIDS = 
+				              NID_i|
+				              NID_EmptyCycle
+				
+				channel internal__ : NIDS
+				
+				channel get_CLID_EmptyCycle : core_clock_type 
+				--channel increment__
+				
+				CLID_EmptyCycle_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					let
+						max = (clock_type_max(Union({
+				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i
+				module i
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: EmptyCycle
+				module EmptyCycle
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					channel endexec__ : NIDS
+					
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_Wall_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF,set_fvSeenFireF <- setL_fvSeenFireF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				 			,setL_fvSeenFireF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF,setL_fvSeenFireF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF,setL_fvSeenFireF <- set_fvSeenFireF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\union(enteredSS,{terminate}) 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_Wall_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF,set_fvSeenFireF <- setL_fvSeenFireF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				 			,setL_fvSeenFireF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF,setL_fvSeenFireF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF,setL_fvSeenFireF <- set_fvSeenFireF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\{terminate} 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+						Trans = share__choice(get_fvSeenFire?fvSeenFire -> get_vnavDisableF?vnavDisableF -> get_vnavDisable?vnavDisable -> get_fvSeenFireF?fvSeenFireF -> TimeOut_1(
+							 (share__ -> SKIP
+							 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+							 [] dbisim(((not (((((true and (((member(fvSeenFire,{true.tgt | tgt <- FireTarget}) and fvSeenFireF))))) or ((true and (((member(vnavDisable,{true}) and vnavDisableF))))))))))&(internal__!NID_EmptyCycle -> SKIP ; get_fvSeenFire?b__?x__ -> set_tgt!x__ -> SKIP
+							 ; share__choice(exit -> SKIP) ; ((let 
+							 	X = share__choice(exited -> SKIP [] endexec -> Y)
+							 	Y = share__choice(exited -> SKIP [] startexec -> X)
+							  within
+							  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_vnavDisableF!true -> SKIP)));share__choice(true & (share__choice(set_fvSeenFireF!true -> SKIP)));share__choice(true & (share__choice(set_wallMetricsF!true -> SKIP)));share__choice(true & (share__choice(set_vnavEnableF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+							 []
+							 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+							 []
+							 terminate -> SKIP
+							 []
+							 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+							 )
+						,SKIP);Trans
+						)
+					within
+						Trans [|{terminate}|> SKIP
+					)
+					)
+					
+					
+					-- Clocks
+					Clock_CLID_EmptyCycle(id__,x__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						TimeOut_1(
+							EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: FIsValid
+			module FIsValid
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: NoFire
+			module NoFire
+			
+			enterSS = 
+					{|			i::enter,
+						EmptyCycle::enter
+					|}
+			enteredSS = 
+					{|			EmptyCycle::entered
+					|}
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				-- declaring identifiers of transitions
+				datatype NIDS = 
+				              NID_i|
+				              NID_EmptyCycle
+				
+				channel internal__ : NIDS
+				
+				channel get_CLID_EmptyCycle : core_clock_type 
+				--channel increment__
+				
+				CLID_EmptyCycle_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					let
+						max = (clock_type_max(Union({
+				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i
+				module i
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: EmptyCycle
+				module EmptyCycle
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					channel endexec__ : NIDS
+					
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_NoFire_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\union(enteredSS,{terminate}) 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_NoFire_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\{terminate} 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+						Trans = share__choice(get_vnavDisableF?vnavDisableF -> get_vnavDisable?vnavDisable -> TimeOut_1(
+							 (share__ -> SKIP
+							 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+							 [] dbisim(((not ((((true) or ((true and (((member(vnavDisable,{true}) and vnavDisableF))))))))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+							 	X = share__choice(exited -> SKIP [] endexec -> Y)
+							 	Y = share__choice(exited -> SKIP [] startexec -> X)
+							  within
+							  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_vnavDisableF!true -> SKIP)));share__choice(true & (share__choice(set_fvSeenFireF!true -> SKIP)));share__choice(true & (share__choice(set_wallMetricsF!true -> SKIP)));share__choice(true & (share__choice(set_vnavEnableF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+							 []
+							 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+							 []
+							 terminate -> SKIP
+							 []
+							 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+							 )
+						,SKIP);Trans
+						)
+					within
+						Trans [|{terminate}|> SKIP
+					)
+					)
+					
+					
+					-- Clocks
+					Clock_CLID_EmptyCycle(id__,x__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						TimeOut_1(
+							EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- State: Fire
+			module Fire
+			
+			enterSS = 
+					{|			i::enter,
+						EmptyCycle::enter
+					|}
+			enteredSS = 
+					{|			EmptyCycle::entered
+					|}
+			exports
+			
+				--  Declarations
+				channel endexec__ : NIDS
+				
+				
+				channel enter, entered, interrupt
+				channel enteredL, enteredR
+				
+								
+				-- declaring identifiers of transitions
+				datatype NIDS = 
+				              NID_i|
+				              NID_EmptyCycle
+				
+				channel internal__ : NIDS
+				
+				channel get_CLID_EmptyCycle : core_clock_type 
+				--channel increment__
+				
+				CLID_EmptyCycle_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					let
+						max = (clock_type_max(Union({
+				{}
+				}))+1)
+					ctype = {0..max}
+				within
+					if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+				
+				
+				--	Nodes
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i
+				module i
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: EmptyCycle
+				module EmptyCycle
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					channel endexec__ : NIDS
+					
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				
+				Timed(OneStep) {
+					--	Rule: behaviours(Node)
+					--  Note that FDR has problems with efficiently compiling the process below
+					-- 	if using a different recursion pattern.
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						-- IMPLEMENTATION NOTE: 
+						-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+						-- however FDR struggles with that form in certain cases. So we use the exception operator
+						-- instead to 'terminate'.
+						
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_Fire_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\union(enteredSS,{terminate}) 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					dbisim(let
+						Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+						
+						Termination = terminate -> SKIP
+						
+						Active 		= true&CALL__clone_normal_VisualNav_Active_Fire_entry(
+									id__,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST
+								) ; 
+								 	  Behaviour ; 
+								 	  share__choice(exit -> SKIP) ; SKIP ; 
+								 	  share__choice(exited -> SKIP) ; Inactive
+					
+					
+						Behaviour 	= dbisim(
+							((
+							 (((dbisim(
+							 	sbisim(
+							 		(let
+							 			-- IMPLEMENTATION NOTE:
+							 			-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							 			-- modules for defining the semantics of each node.
+							 			enterSS = {|
+							 			i::enter,
+							 			EmptyCycle::enter
+							 			|}
+							 			hideSet = union(enterSS,{|exit,exited,internal__|})
+							 		within 
+							 			((let
+							 				-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+							 				-- because CSPM modules are used for the semantics of Node.
+							 				flowevts = union(enterSS,{|exit,exited|})
+							 				transSync = {|internal__.NID_i,internal__.NID_EmptyCycle|}
+							 			within
+							 				((
+							 				 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+							 				   i::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   [| { share__, terminate } |] (
+							 				   EmptyCycle::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							 				   )
+							 				 )
+							 				 [[EmptyCycle::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_EmptyCycle|}]]
+							 				 [[i::interrupt <- x__ | x__ <- {|internal__.NID_i|}]]
+							 				 )
+							 				  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+							 				  [[set_vnavDisableF <- setL_vnavDisableF]]
+							 				 )
+							 				 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+							 				 			,setL_vnavDisableF
+							 				|}) |]
+							 				 ((i::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							 				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 				  [[ share__ <- x__ | x__ <- {| share__,setL_vnavDisableF |} ]]
+							 				 )
+							 				)[[setL_vnavDisableF <- set_vnavDisableF]]
+							 				)
+							 			)
+							 			 \ hideSet)
+							 			[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+							 			[[ endexec_action <- endexec ]]
+							 			[[ startexec_action <- startexec ]]
+							 		)
+							 		[| {|get_CLID_EmptyCycle,EmptyCycle::entered,terminate|} |]
+							 		dbisim(Clock_CLID_EmptyCycle(id__,0,
+							 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							 	)\{|get_CLID_EmptyCycle|}
+							 )
+							 ))
+							  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+							  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+							 )
+							 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+							 			,setL_vnavEnableF
+							 			,setL_wallMetricsF
+							 			,setL_vnavDisableF
+							 			,setL_wm
+							 			,setL_fvSeenFireF
+							 			,setL_tgt
+							 			,setL_movement
+							 			,setR_vnavEnableF
+							 			 			,setR_wallMetricsF
+							 			 			,setR_vnavDisableF
+							 			 			,setR_wm
+							 			 			,setR_fvSeenFireF
+							 			 			,setR_tgt
+							 			 			,setR_movement
+							 			|}) |]
+							 ((During)
+							  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+							  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+							 )
+							)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+							 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+							)\{terminate} 
+						)
+						During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+								 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+					within
+						Inactive [| {terminate} |> SKIP)
+					
+					Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+						Trans = share__choice(get_vnavDisableF?vnavDisableF -> get_vnavDisable?vnavDisable -> TimeOut_1(
+							 (share__ -> SKIP
+							 [] dbisim((true)&(internal__!NID_i -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP))))
+							 [] dbisim(((not ((((true) or ((true and (((member(vnavDisable,{true}) and vnavDisableF))))))))))&(internal__!NID_EmptyCycle -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+							 	X = share__choice(exited -> SKIP [] endexec -> Y)
+							 	Y = share__choice(exited -> SKIP [] startexec -> X)
+							  within
+							  	X) ; ((endexec -> startexec -> SKIP;share__choice(true & (share__choice(set_vnavDisableF!true -> SKIP)));share__choice(true & (share__choice(set_fvSeenFireF!true -> SKIP)));share__choice(true & (share__choice(set_wallMetricsF!true -> SKIP)));share__choice(true & (share__choice(set_vnavEnableF!true -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; EmptyCycle::enter -> SKIP)))
+							 []
+							 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+							 []
+							 terminate -> SKIP
+							 []
+							 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+							 )
+						,SKIP);Trans
+						)
+					within
+						Trans [|{terminate}|> SKIP
+					)
+					)
+					
+					
+					-- Clocks
+					Clock_CLID_EmptyCycle(id__,x__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						TimeOut_1(
+							EmptyCycle::entered -> Clock_CLID_EmptyCycle(id__,0,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							get_CLID_EmptyCycle!x__ -> Clock_CLID_EmptyCycle(id__,x__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+							[]
+							terminate -> SKIP,Clock_CLID_EmptyCycle(id__,clock_type_plus(x__,1,CLID_EmptyCycle_clock_type(id__,
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+									          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+									          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					StateClocks(id__,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_EmptyCycle(id__,0,
+							          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					
+					stateClockSync = {|get_CLID_EmptyCycle,EmptyCycle::entered|}
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			----------------------------------------------------------------------
+			-- Junction: Commit
+			module Commit
+			exports
+			
+				channel enter, interrupt
+				
+				Timed(OneStep) {
+					D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Active 		= share__choice(interrupt -> SKIP) ; Inactive
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+					VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST) = D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+							    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+							    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				}
+			
+			endmodule
+			----------------------------------------------------------------------
+			
+			
+			
+			Timed(OneStep) {
+				--	Rule: behaviours(Node)
+				--  Note that FDR has problems with efficiently compiling the process below
+				-- 	if using a different recursion pattern.
+				D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				dbisim(let
+					-- IMPLEMENTATION NOTE: 
+					-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+					-- however FDR struggles with that form in certain cases. So we use the exception operator
+					-- instead to 'terminate'.
+					
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						dbisim(
+						 							sbisim(
+						 								(let
+						 									-- IMPLEMENTATION NOTE:
+						 									-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 									-- modules for defining the semantics of each node.
+						 									enterSS = {|
+						 									I::enter,
+						 									Waiting::enter,
+						 									Wall::enter,
+						 									FIsValid::enter,
+						 									NoFire::enter,
+						 									Fire::enter,
+						 									Commit::enter
+						 									|}
+						 									hideSet = union(enterSS,{|exit,exited,internal__|})
+						 								within 
+						 									((let
+						 										-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 										-- because CSPM modules are used for the semantics of Node.
+						 										flowevts = union(enterSS,{|exit,exited|})
+						 										transSync = {|internal__.NID_I,internal__.NID_Waiting,internal__.NID_Wall,internal__.NID_FIsValid,internal__.NID_FIsValid,internal__.NID_NoFire,internal__.NID_Fire,internal__.NID_Commit|}
+						 									within
+						 										((
+						 										 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 										   I::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Waiting::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Wall::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   FIsValid::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   NoFire::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Fire::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Commit::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										 )
+						 										 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waiting|}]]
+						 										 [[Wall::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Wall|}]]
+						 										 [[NoFire::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NoFire|}]]
+						 										 [[Fire::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Fire|}]]
+						 										 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 										 [[FIsValid::interrupt <- x__ | x__ <- {|internal__.NID_FIsValid,internal__.NID_FIsValid|}]]
+						 										 [[Commit::interrupt <- x__ | x__ <- {|internal__.NID_Commit|}]]
+						 										 )
+						 										  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 										  [[set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt]]
+						 										 )
+						 										 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 										 			,setL_wallMetricsF
+						 										 			,setL_fvSeenFireF
+						 										 			,setL_tgt
+						 										|}) |]
+						 										 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 										  [[ share__ <- x__ | x__ <- {| share__,setL_wallMetricsF,setL_fvSeenFireF,setL_tgt |} ]]
+						 										 )
+						 										)[[setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt]]
+						 										)
+						 									)
+						 									 \ hideSet)
+						 									[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 									[[ endexec_action <- endexec ]]
+						 									[[ startexec_action <- startexec ]]
+						 								)
+						 								[| {|get_CLID_Fire,Fire::entered,terminate|} |]
+						 								dbisim(Clock_CLID_Fire(id__,0,
+						 										          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 							)\{|get_CLID_Fire|}
+						 						)
+						 						[| {|get_CLID_Wall,Wall::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Wall(id__,0,
+						 								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 					)\{|get_CLID_Wall|}
+						 				)
+						 				[| {|get_CLID_NoFire,NoFire::entered,terminate|} |]
+						 				dbisim(Clock_CLID_NoFire(id__,0,
+						 						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 			)\{|get_CLID_NoFire|}
+						 		)
+						 		[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+						 		dbisim(Clock_CLID_Waiting(id__,0,
+						 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 	)\{|get_CLID_Waiting|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_wallMetricsF
+						 			,setL_vnavDisableF
+						 			,setL_wm
+						 			,setL_fvSeenFireF
+						 			,setL_tgt
+						 			,setL_movement
+						 			,setR_vnavEnableF
+						 			 			,setR_wallMetricsF
+						 			 			,setR_vnavDisableF
+						 			 			,setR_wm
+						 			 			,setR_fvSeenFireF
+						 			 			,setR_tgt
+						 			 			,setR_movement
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+						  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+						 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+						)\union(enteredSS,{terminate}) 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+					
+				VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+				dbisim(let
+					Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+					
+					Termination = terminate -> SKIP
+					
+					Active 		= SKIP ; 
+							 	  Behaviour ; 
+							 	  share__choice(exit -> SKIP) ; SKIP ; 
+							 	  share__choice(exited -> SKIP) ; Inactive
+				
+				
+					Behaviour 	= dbisim(
+						((
+						 (((dbisim(
+						 	sbisim(
+						 		dbisim(
+						 			sbisim(
+						 				dbisim(
+						 					sbisim(
+						 						dbisim(
+						 							sbisim(
+						 								(let
+						 									-- IMPLEMENTATION NOTE:
+						 									-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+						 									-- modules for defining the semantics of each node.
+						 									enterSS = {|
+						 									I::enter,
+						 									Waiting::enter,
+						 									Wall::enter,
+						 									FIsValid::enter,
+						 									NoFire::enter,
+						 									Fire::enter,
+						 									Commit::enter
+						 									|}
+						 									hideSet = union(enterSS,{|exit,exited,internal__|})
+						 								within 
+						 									((let
+						 										-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						 										-- because CSPM modules are used for the semantics of Node.
+						 										flowevts = union(enterSS,{|exit,exited|})
+						 										transSync = {|internal__.NID_I,internal__.NID_Waiting,internal__.NID_Wall,internal__.NID_FIsValid,internal__.NID_FIsValid,internal__.NID_NoFire,internal__.NID_Fire,internal__.NID_Commit|}
+						 									within
+						 										((
+						 										 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						 										   I::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Waiting::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Wall::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   FIsValid::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   NoFire::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Fire::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   [| { share__, terminate } |] (
+						 										   Commit::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										   )
+						 										 )
+						 										 [[Waiting::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Waiting|}]]
+						 										 [[Wall::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Wall|}]]
+						 										 [[NoFire::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_NoFire|}]]
+						 										 [[Fire::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Fire|}]]
+						 										 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 										 [[FIsValid::interrupt <- x__ | x__ <- {|internal__.NID_FIsValid,internal__.NID_FIsValid|}]]
+						 										 [[Commit::interrupt <- x__ | x__ <- {|internal__.NID_Commit|}]]
+						 										 )
+						 										  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						 										  [[set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt]]
+						 										 )
+						 										 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 										 			,setL_wallMetricsF
+						 										 			,setL_fvSeenFireF
+						 										 			,setL_tgt
+						 										|}) |]
+						 										 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 										 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 										  [[ share__ <- x__ | x__ <- {| share__,setL_wallMetricsF,setL_fvSeenFireF,setL_tgt |} ]]
+						 										 )
+						 										)[[setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt]]
+						 										)
+						 									)
+						 									 \ hideSet)
+						 									[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+						 									[[ endexec_action <- endexec ]]
+						 									[[ startexec_action <- startexec ]]
+						 								)
+						 								[| {|get_CLID_Fire,Fire::entered,terminate|} |]
+						 								dbisim(Clock_CLID_Fire(id__,0,
+						 										          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 										          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 							)\{|get_CLID_Fire|}
+						 						)
+						 						[| {|get_CLID_Wall,Wall::entered,terminate|} |]
+						 						dbisim(Clock_CLID_Wall(id__,0,
+						 								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 					)\{|get_CLID_Wall|}
+						 				)
+						 				[| {|get_CLID_NoFire,NoFire::entered,terminate|} |]
+						 				dbisim(Clock_CLID_NoFire(id__,0,
+						 						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 			)\{|get_CLID_NoFire|}
+						 		)
+						 		[| {|get_CLID_Waiting,Waiting::entered,terminate|} |]
+						 		dbisim(Clock_CLID_Waiting(id__,0,
+						 				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						 	)\{|get_CLID_Waiting|}
+						 )
+						 ))
+						  [[ share__ <- x__ | x__ <- {| share__,setR_vnavEnableF,setR_wallMetricsF,setR_vnavDisableF,setR_wm,setR_fvSeenFireF,setR_tgt,setR_movement |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_wallMetricsF <- setL_wallMetricsF,set_vnavDisableF <- setL_vnavDisableF,set_wm <- setL_wm,set_fvSeenFireF <- setL_fvSeenFireF,set_tgt <- setL_tgt,set_movement <- setL_movement]]
+						 )
+						 [| union(union(enteredSS,{| interrupt, terminate |}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_wallMetricsF
+						 			,setL_vnavDisableF
+						 			,setL_wm
+						 			,setL_fvSeenFireF
+						 			,setL_tgt
+						 			,setL_movement
+						 			,setR_vnavEnableF
+						 			 			,setR_wallMetricsF
+						 			 			,setR_vnavDisableF
+						 			 			,setR_wm
+						 			 			,setR_fvSeenFireF
+						 			 			,setR_tgt
+						 			 			,setR_movement
+						 			|}) |]
+						 ((During)
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_wallMetricsF,setL_vnavDisableF,setL_wm,setL_fvSeenFireF,setL_tgt,setL_movement |} ]]
+						  [[set_vnavEnableF <- setR_vnavEnableF,set_wallMetricsF <- setR_wallMetricsF,set_vnavDisableF <- setR_vnavDisableF,set_wm <- setR_wm,set_fvSeenFireF <- setR_fvSeenFireF,set_tgt <- setR_tgt,set_movement <- setR_movement]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_wallMetricsF <- set_wallMetricsF,setL_vnavDisableF <- set_vnavDisableF,setL_wm <- set_wm,setL_fvSeenFireF <- set_fvSeenFireF,setL_tgt <- set_tgt,setL_movement <- set_movement]]
+						 [[setR_vnavEnableF <- set_vnavEnableF,setR_wallMetricsF <- set_wallMetricsF,setR_vnavDisableF <- set_vnavDisableF,setR_wm <- set_wm,setR_fvSeenFireF <- set_fvSeenFireF,setR_tgt <- set_tgt,setR_movement <- set_movement]]
+						)\{terminate} 
+					)
+					During 		= share__choice(([] e__ : enteredSS @ e__ -> SKIP))
+							 	  ; entered -> ((CRUN(enteredSS) ||| SKIP ; SStop) /\ interrupt -> share__choice(terminate -> SKIP))
+				within
+					Inactive [| {terminate} |> SKIP)
+				
+				Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+					Trans = share__choice(get_fvSeenFire?fvSeenFire -> get_wallMetrics?wallMetrics -> get_wallMetricsF?wallMetricsF -> get_fvSeenFireF?fvSeenFireF -> get_tgt?tgt -> TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP))))
+						 [] dbisim((((member(wallMetrics,{true.wm | wm <- WallMetrics}) and wallMetricsF)))&(internal__!NID_Waiting -> SKIP ; get_wallMetrics?b__?x__ -> set_wm!x__ -> SKIP
+						 ; share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((share__choice(true & (share__choice(set_wallMetricsF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Wall::enter -> SKIP)))
+						 [] dbisim((((member(fvSeenFire,{true.tgt | tgt <- FireTarget}) and fvSeenFireF)))&(internal__!NID_Wall -> SKIP ; get_fvSeenFire?b__?x__ -> set_tgt!x__ -> SKIP
+						 ; share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((share__choice(true & (share__choice(set_fvSeenFireF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; FIsValid::enter -> SKIP)))
+						 [] dbisim(((FireTarget_status(tgt)!=FireStatus_Tracked))&(internal__!NID_FIsValid -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; NoFire::enter -> SKIP))))
+						 [] dbisim(((FireTarget_status(tgt)==FireStatus_Tracked))&(internal__!NID_FIsValid -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Fire::enter -> SKIP))))
+						 [] dbisim((true)&(internal__!NID_NoFire -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Commit::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_Fire -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+						 	X = share__choice(exited -> SKIP [] endexec -> Y)
+						 	Y = share__choice(exited -> SKIP [] startexec -> X)
+						  within
+						  	X) ; ((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Commit::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_Commit -> SKIP ;  ((((true&CALL__clone_normal_VisualNav_Active_Commit_Loop_op(
+						 			id__,
+						 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 		    const_pre_pkg__sim_VisualNav_SCAN_DIST
+						 		))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Waiting::enter -> SKIP))))
+						 []
+						 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 []
+						 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+						 )
+					,SKIP);Trans
+					)
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				
+				-- Clocks
+				Clock_CLID_Waiting(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					TimeOut_1(
+						Waiting::entered -> Clock_CLID_Waiting(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						get_CLID_Waiting!x__ -> Clock_CLID_Waiting(id__,x__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						terminate -> SKIP,Clock_CLID_Waiting(id__,clock_type_plus(x__,1,CLID_Waiting_clock_type(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				Clock_CLID_NoFire(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					TimeOut_1(
+						NoFire::entered -> Clock_CLID_NoFire(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						get_CLID_NoFire!x__ -> Clock_CLID_NoFire(id__,x__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						terminate -> SKIP,Clock_CLID_NoFire(id__,clock_type_plus(x__,1,CLID_NoFire_clock_type(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				Clock_CLID_Wall(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					TimeOut_1(
+						Wall::entered -> Clock_CLID_Wall(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						get_CLID_Wall!x__ -> Clock_CLID_Wall(id__,x__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						terminate -> SKIP,Clock_CLID_Wall(id__,clock_type_plus(x__,1,CLID_Wall_clock_type(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				Clock_CLID_Fire(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+					TimeOut_1(
+						Fire::entered -> Clock_CLID_Fire(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						get_CLID_Fire!x__ -> Clock_CLID_Fire(id__,x__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						[]
+						terminate -> SKIP,Clock_CLID_Fire(id__,clock_type_plus(x__,1,CLID_Fire_clock_type(id__,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				
+				StateClocks(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_Waiting(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_NoFire(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_Wall(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_Fire(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+				)
+				)
+				)
+				
+				stateClockSync = {|get_CLID_Waiting,Waiting::entered,get_CLID_NoFire,NoFire::entered,get_CLID_Wall,Wall::entered,get_CLID_Fire,Fire::entered|}
+			}
+		
+		endmodule
+		----------------------------------------------------------------------
+		
+		-- END of Nodes --
+		
+		Timed(OneStep) {
+		-- Operation calls --
+		-- Only the undefined operations are declared here.
+		-- If the state machine is in isolation, all required operations will be undefined.
+		-- If it is in the context of a controller, the required operations not provided by the
+		-- controller will be declared here, and the defined operations will be defined in the
+		-- context of the Controller module, and therefore within scope of the state machine module.
+		CALL__clone_normal_VisualNav_Active_Wall_entry(id__,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = EDeadline(clone_normal_VisualNav_Active_Wall_entryCall,0)
+		CALL__clone_normal_VisualNav_Active_Commit_Loop_op(id__,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = EDeadline(clone_normal_VisualNav_Active_Commit_Loop_opCall,0)
+		CALL__clone_normal_VisualNav_Active_NoFire_entry(id__,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = EDeadline(clone_normal_VisualNav_Active_NoFire_entryCall,0)
+		CALL__clone_normal_VisualNav_Active_Fire_entry(id__,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = EDeadline(clone_normal_VisualNav_Active_Fire_entryCall,0)
+		
+		-- END of Operation calls --
+	
+		datatype SOutputEvents = SOutput_visualPosition
+		
+		cycle(cycle_pre_pkg__sim_VisualNav_VisualNav) =
+			let
+				project(o_visualPosition.x__) = SOutput_visualPosition
+		
+				Cycle =
+					Deadline(
+						(registerRead.i_vnavDisable?x__ -> SKIP
+							||| registerRead.i_fvSeenFire?x__ -> SKIP
+							||| registerRead.i_vnavEnable?x__ -> SKIP
+							||| registerRead.i_wallMetrics?x__ -> SKIP);
+						startexec -> CollectOutputs(SOutputEvents),0);
+					TimeOut_1(terminate -> SKIP,WAIT(cycle_pre_pkg__sim_VisualNav_VisualNav-1);Cycle)
+				
+				CollectOutputs(sout) =
+					(registerWrite?outp:{ outp | outc <- inter(sout,SOutputEvents), outp <- RegisterDataOutput,project(outp) == outc} -> CollectOutputs(diff(sout,{project(outp)}))
+						[]
+					endexec -> SKIP
+					)
+			within
+				Cycle
+		
+		-- STM processes
+		STM(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_VisualNav_VisualNav)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+			)\sharedVarHide
+		)\{startexec}
+		
+		STM_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+		(
+			cycle(cycle_pre_pkg__sim_VisualNav_VisualNav)
+			[| {| endexec,registerRead,registerWrite,startexec,terminate |} |]
+			( 
+				(
+					(
+						(startexec -> IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+								    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								    const_pre_pkg__sim_VisualNav_SCAN_DIST) \ {terminate}) 
+						[| {share__} |]
+						SKIP
+					) ; 
+					(let
+						Ending = endexec -> (startexec -> Ending [] terminate -> SKIP)
+					 within
+					 	Ending
+					)
+				)
+				[| union(sharedVarSync,{terminate}) |]
+				dbisim(sharedVarMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+			)\sharedVarHide
+		)\{startexec}
+		
+		-- Transitions
+		Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = ((let
+			Trans = share__choice(get_fvSeenFire?fvSeenFire -> get_vnavEnableF?vnavEnableF -> get_vnavDisableF?vnavDisableF -> get_wallMetrics?wallMetrics -> get_wallMetricsF?wallMetricsF -> get_vnavEnable?vnavEnable -> get_vnavDisable?vnavDisable -> get_fvSeenFireF?fvSeenFireF -> TimeOut_1(
+				 (share__ -> SKIP
+				 [] dbisim((true)&(internal__!NID_I -> SKIP ;  ((((SKIP)[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Inactive::enter -> SKIP))))
+				 [] dbisim((((member(vnavEnable,{true}) and vnavEnableF)))&(internal__!NID_Inactive -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_vnavEnableF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Active::enter -> SKIP)))
+				 [] dbisim((((member(vnavDisable,{true}) and vnavDisableF)))&(internal__!NID_Inactive -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_vnavDisableF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Inactive::enter -> SKIP)))
+				 [] dbisim((((member(fvSeenFire,{true.tgt | tgt <- FireTarget}) and fvSeenFireF)))&(internal__!NID_Inactive -> SKIP ; get_fvSeenFire?b__?x__ -> set_tgt!x__ -> SKIP
+				 ; share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_fvSeenFireF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Inactive::enter -> SKIP)))
+				 [] dbisim((((member(wallMetrics,{true.wm | wm <- WallMetrics}) and wallMetricsF)))&(internal__!NID_Inactive -> SKIP ; get_wallMetrics?b__?x__ -> set_wm!x__ -> SKIP
+				 ; share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_wallMetricsF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Inactive::enter -> SKIP)))
+				 [] dbisim((((member(vnavDisable,{true}) and vnavDisableF)))&(internal__!NID_Active -> SKIP ;  share__choice(exit -> SKIP) ; ((let 
+				 	X = share__choice(exited -> SKIP [] endexec -> Y)
+				 	Y = share__choice(exited -> SKIP [] startexec -> X)
+				  within
+				  	X) ; ((share__choice(true & (share__choice(set_vnavDisableF!false -> SKIP))))[[ endexec <- endexec_action, startexec <- startexec_action ]]) ; Inactive::enter -> SKIP)))
+				 []
+				 (exit -> SKIP ; share__choice(exited -> terminate -> SKIP))
+				 []
+				 terminate -> SKIP
+				 []
+				 (endexec -> SKIP ; share__choice(startexec -> SKIP))
+				 )
+			,SKIP);Trans
+			)
+		within
+			Trans [|{terminate}|> SKIP
+		)
+		)
+		
+		-- Stateful
+		-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+		
+		-- Named process definitions
+		MachineBody(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Inactive::enter,
+					Active::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Active|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   [| { share__, terminate } |] (
+						   Inactive::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   [| { share__, terminate } |] (
+						   Active::D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   )
+						   )
+						 )
+						 [[Inactive::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive|}]]
+						 [[Active::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Active|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_vnavDisableF <- setL_vnavDisableF,set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_vnavDisableF
+						 			,setL_wallMetricsF
+						 			,setL_fvSeenFireF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_vnavDisableF,setL_wallMetricsF,setL_fvSeenFireF |} ]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_vnavDisableF <- set_vnavDisableF,setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Active,Active::entered,get_CLID_Inactive,Inactive::entered|}
+			 within
+				(MachineBody(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		IteratedBehaviour(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Active,Active::entered,get_CLID_Inactive,Inactive::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+										    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+										    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+								[| {|get_CLID_Inactive,Inactive::entered,terminate|} |]
+								dbisim(Clock_CLID_Inactive(id__,0,
+										          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+										          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							)\{|get_CLID_Inactive|}
+						)
+						[| {|get_CLID_Active,Active::entered,terminate|} |]
+						dbisim(Clock_CLID_Active(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					)\{|get_CLID_Active|}
+				)
+				) \ union(stateClockSync,enteredSS)
+			)
+			)
+		
+		Stateful(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			((let
+				getsetLocalChannels = {|get_tgt,set_tgt,
+				get_wm,set_wm,
+				get_movement,set_movement,
+				get_vnavEnableF,set_vnavEnableF,
+				get_wallMetricsF,set_wallMetricsF,
+				get_fvSeenFireF,set_fvSeenFireF,
+				get_vnavDisableF,set_vnavDisableF|}
+				clockSync = {||}
+			within
+				(Behaviour(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	IteratedBehaviour(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+																			    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+																			    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+																	[| {|get_vnavDisableF,set_vnavDisableF,terminate|} |]
+																	Memory_vnavDisableF(true)
+																)\{|get_vnavDisableF,set_vnavDisableF|}
+															)
+															[| {|get_fvSeenFireF,set_fvSeenFireF,terminate|} |]
+															Memory_fvSeenFireF(true)
+														)\{|get_fvSeenFireF,set_fvSeenFireF|}
+													)
+													[| {|get_wallMetricsF,set_wallMetricsF,terminate|} |]
+													Memory_wallMetricsF(true)
+												)\{|get_wallMetricsF,set_wallMetricsF|}
+											)
+											[| {|get_vnavEnableF,set_vnavEnableF,terminate|} |]
+											Memory_vnavEnableF(true)
+										)\{|get_vnavEnableF,set_vnavEnableF|}
+									)
+									[| {|get_movement,set_movement,terminate|} |]
+									Memory_movement((0,0,0,0))
+								)\{|get_movement,set_movement|}
+							)
+							[| {|get_wm,set_wm,terminate|} |]
+							Memory_wm((0,0,0))
+						)\{|get_wm,set_wm|}
+					)
+					[| {|get_tgt,set_tgt,terminate|} |]
+					Memory_tgt((FireStatus_NoFire,0,0,0))
+				)\{|get_tgt,set_tgt|}
+			)
+			)
+		
+		-- Visible counterparts
+		MachineBody_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((
+			let
+				finalNodesEntered = {||}
+			within
+				(dbisim((dbisim((let
+					-- IMPLEMENTATION NOTE:
+					-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+					-- modules for defining the semantics of each node.
+					enterSS = {|
+					I::enter,
+					Inactive::enter,
+					Active::enter
+					|}
+					hideSet = union(enterSS,{|exit,exited,internal__|})
+				within 
+					((let
+						-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+						-- because CSPM modules are used for the semantics of Node.
+						flowevts = union(enterSS,{|exit,exited|})
+						transSync = {|internal__.NID_I,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Active|}
+					within
+						((
+						 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+						   I::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   [| { share__, terminate } |] (
+						   Inactive::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   [| { share__, terminate } |] (
+						   Active::VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						   		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						   		    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+						   )
+						   )
+						 )
+						 [[Inactive::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive,internal__.NID_Inactive|}]]
+						 [[Active::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_Active|}]]
+						 [[I::interrupt <- x__ | x__ <- {|internal__.NID_I|}]]
+						 )
+						  [[ share__ <- x__ | x__ <- {| share__ |} ]] 
+						  [[set_vnavEnableF <- setL_vnavEnableF,set_vnavDisableF <- setL_vnavDisableF,set_wallMetricsF <- setL_wallMetricsF,set_fvSeenFireF <- setL_fvSeenFireF]]
+						 )
+						 [| union(union(union(flowevts,transSync),{|terminate,endexec,startexec|}),{|share__
+						 			,setL_vnavEnableF
+						 			,setL_vnavDisableF
+						 			,setL_wallMetricsF
+						 			,setL_fvSeenFireF
+						|}) |]
+						 ((I::enter -> Transitions(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						 		    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+						  [[ share__ <- x__ | x__ <- {| share__,setL_vnavEnableF,setL_vnavDisableF,setL_wallMetricsF,setL_fvSeenFireF |} ]]
+						 )
+						)[[setL_vnavEnableF <- set_vnavEnableF,setL_vnavDisableF <- set_vnavDisableF,setL_wallMetricsF <- set_wallMetricsF,setL_fvSeenFireF <- set_fvSeenFireF]]
+						)
+					)
+					 \ hideSet)
+					[[ endexec__.x____  <- endexec | x____ <- NIDS ]]
+					[[ endexec_action <- endexec ]]
+					[[ startexec_action <- startexec ]]
+				)
+				)
+				 [| union(stateClockSync,{terminate}) |]
+				 StateClocks(id__,
+				 		          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				)\diff(stateClockSync,enteredSS))
+				 [| {| interrupt |} |] SKIP)
+			)
+			)
+		
+		Behaviour_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Active,Active::entered,get_CLID_Inactive,Inactive::entered|}
+			 within
+				(MachineBody_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) [| union(stateClockSync,{terminate}) |] StateClocks(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((let
+				stateClockSync = {|get_CLID_Active,Active::entered,get_CLID_Inactive,Inactive::entered|}
+			 within
+				(dbisim(
+					sbisim(
+						dbisim(
+							sbisim(
+								MachineBody_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+										    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+										    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+								[| {|get_CLID_Inactive,Inactive::entered,terminate|} |]
+								dbisim(Clock_CLID_Inactive(id__,0,
+										          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+										          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+							)\{|get_CLID_Inactive|}
+						)
+						[| {|get_CLID_Active,Active::entered,terminate|} |]
+						dbisim(Clock_CLID_Active(id__,0,
+								          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+								          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+					)\{|get_CLID_Active|}
+				)
+				) \ diff(union(stateClockSync,enteredSS),enteredSS)
+			)
+			)
+		
+		Stateful_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			dbisim((let
+				getsetLocalChannels = {|get_tgt,set_tgt,
+				get_wm,set_wm,
+				get_movement,set_movement,
+				get_vnavEnableF,set_vnavEnableF,
+				get_wallMetricsF,set_wallMetricsF,
+				get_fvSeenFireF,set_fvSeenFireF,
+				get_vnavDisableF,set_vnavDisableF|}
+				clockSync = {||}
+			within
+				(Behaviour_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+						    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						    const_pre_pkg__sim_VisualNav_SCAN_DIST) 
+				 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+				 (varMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				 		    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		    const_pre_pkg__sim_VisualNav_SCAN_DIST) [| {terminate} |] Clocks(id__,
+				 		          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				 		          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+			 	)\union(getsetLocalChannels,clockSync)
+			)
+			)
+		
+		IteratedStateful_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) =
+			(dbisim(
+				sbisim(
+					dbisim(
+						sbisim(
+							dbisim(
+								sbisim(
+									dbisim(
+										sbisim(
+											dbisim(
+												sbisim(
+													dbisim(
+														sbisim(
+															dbisim(
+																sbisim(
+																	IteratedBehaviour_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+																			    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+																			    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+																	[| {|get_vnavDisableF,set_vnavDisableF,terminate|} |]
+																	Memory_vnavDisableF(true)
+																)\{|get_vnavDisableF,set_vnavDisableF|}
+															)
+															[| {|get_fvSeenFireF,set_fvSeenFireF,terminate|} |]
+															Memory_fvSeenFireF(true)
+														)\{|get_fvSeenFireF,set_fvSeenFireF|}
+													)
+													[| {|get_wallMetricsF,set_wallMetricsF,terminate|} |]
+													Memory_wallMetricsF(true)
+												)\{|get_wallMetricsF,set_wallMetricsF|}
+											)
+											[| {|get_vnavEnableF,set_vnavEnableF,terminate|} |]
+											Memory_vnavEnableF(true)
+										)\{|get_vnavEnableF,set_vnavEnableF|}
+									)
+									[| {|get_movement,set_movement,terminate|} |]
+									Memory_movement((0,0,0,0))
+								)\{|get_movement,set_movement|}
+							)
+							[| {|get_wm,set_wm,terminate|} |]
+							Memory_wm((0,0,0))
+						)\{|get_wm,set_wm|}
+					)
+					[| {|get_tgt,set_tgt,terminate|} |]
+					Memory_tgt((FireStatus_NoFire,0,0,0))
+				)\{|get_tgt,set_tgt|}
+			)
+			)
+		
+		-- END
+		
+		-- Memory
+		-- Memory variables
+		Memory_tgt(tgt) =
+			get_tgt!tgt -> Memory_tgt(tgt)
+			[]
+			set_tgt?x__ -> Memory_tgt(x__)
+			[]
+			terminate -> SKIP
+		Memory_wm(wm) =
+			get_wm!wm -> Memory_wm(wm)
+			[]
+			set_wm?x__ -> Memory_wm(x__)
+			[]
+			terminate -> SKIP
+		Memory_movement(movement) =
+			get_movement!movement -> Memory_movement(movement)
+			[]
+			set_movement?x__ -> Memory_movement(x__)
+			[]
+			terminate -> SKIP
+		Memory_vnavEnableF(vnavEnableF) =
+			get_vnavEnableF!vnavEnableF -> Memory_vnavEnableF(vnavEnableF)
+			[]
+			set_vnavEnableF?x__ -> Memory_vnavEnableF(x__)
+			[]
+			terminate -> SKIP
+		Memory_wallMetricsF(wallMetricsF) =
+			get_wallMetricsF!wallMetricsF -> Memory_wallMetricsF(wallMetricsF)
+			[]
+			set_wallMetricsF?x__ -> Memory_wallMetricsF(x__)
+			[]
+			terminate -> SKIP
+		Memory_fvSeenFireF(fvSeenFireF) =
+			get_fvSeenFireF!fvSeenFireF -> Memory_fvSeenFireF(fvSeenFireF)
+			[]
+			set_fvSeenFireF?x__ -> Memory_fvSeenFireF(x__)
+			[]
+			terminate -> SKIP
+		Memory_vnavDisableF(vnavDisableF) =
+			get_vnavDisableF!vnavDisableF -> Memory_vnavDisableF(vnavDisableF)
+			[]
+			set_vnavDisableF?x__ -> Memory_vnavDisableF(x__)
+			[]
+			terminate -> SKIP
+		
+		-- varMemory process
+		varMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = Memory_tgt((FireStatus_NoFire,0,0,0))
+		[| { terminate } |] (
+		Memory_wm((0,0,0))
+		[| { terminate } |] (
+		Memory_movement((0,0,0,0))
+		[| { terminate } |] (
+		Memory_vnavEnableF(true)
+		[| { terminate } |] (
+		Memory_wallMetricsF(true)
+		[| { terminate } |] (
+		Memory_fvSeenFireF(true)
+		[| { terminate } |] (
+		Memory_vnavDisableF(true)
+		)
+		)
+		)
+		)
+		)
+		)
+		
+		getsetLocalChannels = {|get_tgt,set_tgt,get_wm,set_wm,get_movement,set_movement,get_vnavEnableF,set_vnavEnableF,get_wallMetricsF,set_wallMetricsF,get_fvSeenFireF,set_fvSeenFireF,get_vnavDisableF,set_vnavDisableF|}
+		
+		-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+		FVS__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = STM_VS_O(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) \ localClockResets
+		D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = timed_priority(STM(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) \ union(internal_events,localClockResets))
+		O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(D__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		VS__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = FVS__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST)
+		VS_O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(FVS__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		HEXT__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) [|shared_variable_events|] SKIP
+		FVS_C__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(timed_priority(STM(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) \ internal_events))
+		HUP__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = timed_priority(O__(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) [|{share__}|] SKIP)
+		
+		-- Clocks
+		
+		Clocks(id__,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST) = terminate -> SKIP
+		
+		clockSync = {||}
+		
+		Clock_CLID_Active(id__,x__,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			TimeOut_1(
+				Active::entered -> Clock_CLID_Active(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				[]
+				get_CLID_Active!x__ -> Clock_CLID_Active(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				[]
+				terminate -> SKIP,Clock_CLID_Active(id__,clock_type_plus(x__,1,CLID_Active_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		Clock_CLID_Inactive(id__,x__,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST) = 
+			TimeOut_1(
+				Inactive::entered -> Clock_CLID_Inactive(id__,0,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				[]
+				get_CLID_Inactive!x__ -> Clock_CLID_Inactive(id__,x__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)
+				[]
+				terminate -> SKIP,Clock_CLID_Inactive(id__,clock_type_plus(x__,1,CLID_Inactive_clock_type(id__,
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST)),
+						          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+						          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		
+		StateClocks(id__,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST) = dbisim(Clock_CLID_Active(id__,0,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		[| { terminate } |] (
+		dbisim(Clock_CLID_Inactive(id__,0,
+				          const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				          const_pre_pkg__sim_VisualNav_SCAN_DIST))
+		)
+		
+		stateClockSync = {|get_CLID_Active,Active::entered,get_CLID_Inactive,Inactive::entered|}
+		
+		
+		-- Shared memory
+		-- Shared memory variables
+		
+		Memory_wallMetrics(x__) = (
+			get_wallMetrics!x__ -> Memory_wallMetrics(x__)
+			[]
+			registerRead.i_wallMetrics?x__ -> Memory_wallMetrics(x__)
+			[]
+			terminate -> SKIP
+		)
+		Memory_fvSeenFire(x__) = (
+			get_fvSeenFire!x__ -> Memory_fvSeenFire(x__)
+			[]
+			registerRead.i_fvSeenFire?x__ -> Memory_fvSeenFire(x__)
+			[]
+			terminate -> SKIP
+		)
+		Memory_vnavEnable(x__) = (
+			get_vnavEnable!x__ -> Memory_vnavEnable(x__)
+			[]
+			registerRead.i_vnavEnable?x__ -> Memory_vnavEnable(x__)
+			[]
+			terminate -> SKIP
+		)
+		Memory_vnavDisable(x__) = (
+			get_vnavDisable!x__ -> Memory_vnavDisable(x__)
+			[]
+			registerRead.i_vnavDisable?x__ -> Memory_vnavDisable(x__)
+			[]
+			terminate -> SKIP
+		)
+		
+		-- sharedVarMemory process
+		sharedVarMemory(id__,cycle_pre_pkg__sim_VisualNav_VisualNav,
+				    const_pre_pkg__sim_VisualNav_TRACK_DIST,
+				    const_pre_pkg__sim_VisualNav_SCAN_DIST) = (
+		 (terminate -> SKIP
+		 )
+		 [| { terminate } |]
+		 (Memory_wallMetrics(false.(0,0,0))
+		 [| { terminate } |] (
+		 Memory_fvSeenFire(false.(FireStatus_NoFire,0,0,0))
+		 [| { terminate } |] (
+		 Memory_vnavEnable(false)
+		 [| { terminate } |] (
+		 Memory_vnavDisable(false)
+		 )
+		 )
+		 )
+		 )
+		)
+		
+		sharedVarSync = union({|get_wallMetrics,
+		get_fvSeenFire,
+		get_vnavEnable,
+		get_vnavDisable|},
+			  {||}
+			 )
+		
+		sharedVarHide = union({|get_wallMetrics,
+		get_fvSeenFire,
+		get_vnavEnable,
+		get_vnavDisable|},
+			  {||}
+			 )
+		
+		}
+endmodule

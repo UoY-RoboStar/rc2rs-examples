@@ -1,0 +1,39 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "Aim.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate Aim
+P_Aim = let
+	id__ = 0
+	
+	
+	
+within
+	Aim::O__(
+		id__,
+		const_Aim_GIMBAL_FLOOD_DELAY
+	)
+assert P_Aim :[deadlock-free]	
+assert P_Aim;RUN({r__}) :[deadlock-free]
+assert P_Aim :[deterministic]
+assert P_Aim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Aim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Aim

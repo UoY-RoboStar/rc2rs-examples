@@ -1,0 +1,32 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:41
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "pre_pkg__BatteryMonitor.csp"
+include "core_defs.csp"
+include "pre_pkg__defs.csp"
+include "state_defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate pre_pkg__BatteryMonitor
+P_pre_pkg__BatteryMonitor = let
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__BatteryMonitor::O__(
+		id__,
+		const_pre_pkg__BatteryMonitor_BATTERY_LOW_THRESHOLD,
+		const_pre_pkg__BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	)
+assert P_pre_pkg__BatteryMonitor :[deadlock-free]	
+assert P_pre_pkg__BatteryMonitor;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__BatteryMonitor :[deterministic]
+assert P_pre_pkg__BatteryMonitor :[divergence-free]

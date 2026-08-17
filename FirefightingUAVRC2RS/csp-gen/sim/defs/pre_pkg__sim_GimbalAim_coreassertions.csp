@@ -1,0 +1,37 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 15-08-2026 12:21:12
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "pre_pkg__sim_defs.csp"
+include "state_timed_defs.csp"
+include "pre_pkg__sim_GimbalAim.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate pre_pkg__sim_GimbalAim
+P_pre_pkg__sim_GimbalAim = let
+	cycle_pre_pkg__sim_GimbalAim_GimbalAim = 1
+	id__ = 0
+	
+	
+	
+within
+	pre_pkg__sim_GimbalAim::O__(
+		id__,
+		const_pre_pkg__sim_GimbalAim_TRACK_DIST
+	)
+assert P_pre_pkg__sim_GimbalAim :[deadlock-free]	
+assert P_pre_pkg__sim_GimbalAim;RUN({r__}) :[deadlock-free]
+assert P_pre_pkg__sim_GimbalAim :[deterministic]
+assert P_pre_pkg__sim_GimbalAim :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_pre_pkg__sim_GimbalAim[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_pre_pkg__sim_GimbalAim

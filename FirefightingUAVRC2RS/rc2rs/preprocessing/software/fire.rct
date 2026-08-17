@@ -1,0 +1,1343 @@
+package pre_pkg_ 
+//import ::FireStatus 
+interface req_normal_FireDetect_CheckWall_entry {
+	var wm : WallMetrics
+}
+
+interface I_events_normal_FireDetect_CheckWall_entry {
+	event wallMetrics : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckWall_entry {
+	normal_FireDetect_CheckWall_entry ( )
+}
+
+interface req_normal_FireDetect_Superimpose_entry {
+	var rgb : RgbFrame , d : Frame , super : SuperimposedFrame , t : Frame
+}
+
+interface I_normal_FireDetect_Superimpose_entry {
+	normal_FireDetect_Superimpose_entry ( )
+}
+
+interface req_normal_FireDetect_CheckFire_FI_op {
+	var gotD : boolean , gotR : boolean , gotH : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_FI_op {
+	normal_FireDetect_CheckFire_FI_op ( )
+}
+
+interface req_normal_FireDetect_Idle_ID_op {
+	var gotD : boolean
+}
+
+interface I_normal_FireDetect_Idle_ID_op {
+	normal_FireDetect_Idle_ID_op ( )
+}
+
+interface I_events_normal_FireDetect_CheckFire_FGain_entry {
+	event fireDetected
+}
+
+interface I_normal_FireDetect_CheckFire_FGain_entry {
+	normal_FireDetect_CheckFire_FGain_entry ( )
+}
+
+interface req_normal_FireDetect_Idle_IR_op {
+	var gotD : boolean
+}
+
+interface I_normal_FireDetect_Idle_IR_op {
+	normal_FireDetect_Idle_IR_op ( )
+}
+
+interface I_events_normal_FireDetect_CheckFire_FLoss_entry {
+	event fireLost
+}
+
+interface I_normal_FireDetect_CheckFire_FLoss_entry {
+	normal_FireDetect_CheckFire_FLoss_entry ( )
+}
+
+interface req_normal_FireDetect_I_II_op {
+	var gotD : boolean , gotR : boolean , gotH : boolean
+}
+
+interface I_normal_FireDetect_I_II_op {
+	normal_FireDetect_I_II_op ( )
+}
+
+interface I_events_normal_FireDetect_CheckFire_TLoss_entry {
+	event trackingLost
+}
+
+interface I_normal_FireDetect_CheckFire_TLoss_entry {
+	normal_FireDetect_CheckFire_TLoss_entry ( )
+}
+
+interface I_events_normal_FireDetect_CheckFire_TGain_entry {
+	event trackingGained
+}
+
+interface I_normal_FireDetect_CheckFire_TGain_entry {
+	normal_FireDetect_CheckFire_TGain_entry ( )
+}
+
+interface req_normal_FireDetect_CheckFire_entry {
+	var checkDone : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_entry {
+	normal_FireDetect_CheckFire_entry ( )
+}
+
+interface req_normal_FireDetect_CheckFire_Algorithm_entry {
+	var super : SuperimposedFrame , fp : FireTarget , wm : WallMetrics
+}
+
+interface I_events_normal_FireDetect_CheckFire_Algorithm_entry {
+	event fvSeenFire : FireTarget
+	event fgSeenFire : FireTarget
+}
+
+interface I_normal_FireDetect_CheckFire_Algorithm_entry {
+	normal_FireDetect_CheckFire_Algorithm_entry ( )
+}
+
+interface req_normal_FireDetect_CheckFire_Done_entry {
+	var fs : FireStatus , fp : FireTarget , checkDone : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_Done_entry {
+	normal_FireDetect_CheckFire_Done_entry ( )
+}
+
+interface req_normal_FireDetect_Idle_IT_op {
+	var gotH : boolean
+}
+
+interface I_normal_FireDetect_Idle_IT_op {
+	normal_FireDetect_Idle_IT_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckWall_entry_i_t {
+	var wm : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckWall_entry_i_t_op {
+	normal_FireDetect_CheckWall_entry_i_t_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 {
+	var wm : WallMetrics
+}
+
+interface I_events_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 {
+	event wallMetrics : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op {
+	normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30 {
+	var gotR : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op {
+	normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_FI_op_i_t {
+	var gotD : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_FI_op_i_t_op {
+	normal_FireDetect_CheckFire_FI_op_i_t_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 {
+	var fp : FireTarget
+}
+
+interface I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 {
+	event fvSeenFire : FireTarget
+}
+
+interface I_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op {
+	normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 {
+	var fp : FireTarget
+}
+
+interface I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 {
+	event fgSeenFire : FireTarget
+}
+
+interface I_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op {
+	normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20 {
+	var checkDone : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op {
+	normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33 {
+	var wm : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op {
+	normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14 {
+	var gotH : boolean
+}
+
+interface I_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op {
+	normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op ( )
+}
+
+interface I_req_normal_FireDetect_I_II_op_i_t {
+	var gotD : boolean
+}
+
+interface I_normal_FireDetect_I_II_op_i_t_op {
+	normal_FireDetect_I_II_op_i_t_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22 {
+	var wm : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op {
+	normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3 {
+	var fp : FireTarget , wm : WallMetrics
+}
+
+interface I_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op {
+	normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op ( )
+}
+
+interface I_req_normal_FireDetect_I_II_op_j_3_2_t_3_2 {
+	var gotH : boolean
+}
+
+interface I_normal_FireDetect_I_II_op_j_3_2_t_3_2_op {
+	normal_FireDetect_I_II_op_j_3_2_t_3_2_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Done_entry_i_t {
+	var fp : FireTarget , fs : FireStatus
+}
+
+interface I_normal_FireDetect_CheckFire_Done_entry_i_t_op {
+	normal_FireDetect_CheckFire_Done_entry_i_t_op ( )
+}
+
+interface I_req_normal_FireDetect_I_II_op_j_2_32_t_2_32 {
+	var gotR : boolean
+}
+
+interface I_normal_FireDetect_I_II_op_j_2_32_t_2_32_op {
+	normal_FireDetect_I_II_op_j_2_32_t_2_32_op ( )
+}
+
+interface I_req_normal_FireDetect_CheckFire_Algorithm_entry_i_t {
+	var super : SuperimposedFrame , fp : FireTarget
+}
+
+interface I_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op {
+	normal_FireDetect_CheckFire_Algorithm_entry_i_t_op ( )
+}
+
+interface I_clone_normal_FireDetect_Superimpose_entry {
+	clone_normal_FireDetect_Superimpose_entry ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_TGain_entry {
+	clone_normal_FireDetect_CheckFire_TGain_entry ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_FLoss_entry {
+	clone_normal_FireDetect_CheckFire_FLoss_entry ( )
+}
+
+interface I_clone_normal_FireDetect_Idle_IR_op {
+	clone_normal_FireDetect_Idle_IR_op ( )
+}
+
+interface I_clone_normal_FireDetect_I_II_op {
+	clone_normal_FireDetect_I_II_op ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_Algorithm_entry {
+	clone_normal_FireDetect_CheckFire_Algorithm_entry ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_TLoss_entry {
+	clone_normal_FireDetect_CheckFire_TLoss_entry ( )
+}
+
+interface I_clone_normal_FireDetect_Idle_ID_op {
+	clone_normal_FireDetect_Idle_ID_op ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_FGain_entry {
+	clone_normal_FireDetect_CheckFire_FGain_entry ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_FI_op {
+	clone_normal_FireDetect_CheckFire_FI_op ( )
+}
+
+interface I_clone_normal_FireDetect_CheckWall_entry {
+	clone_normal_FireDetect_CheckWall_entry ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_Done_entry {
+	clone_normal_FireDetect_CheckFire_Done_entry ( )
+}
+
+interface I_clone_normal_FireDetect_Idle_IT_op {
+	clone_normal_FireDetect_Idle_IT_op ( )
+}
+
+interface I_clone_normal_FireDetect_CheckFire_entry {
+	clone_normal_FireDetect_CheckFire_entry ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_i_t_op_i_j_4_22_5 {
+	clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_i_t_op_i_j_4_22_5 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_i_t_op_i_j_3_2_7 {
+	clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_i_t_op_i_j_3_2_7 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op_j_2_30_f_10 {
+	clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op_j_2_30_f_10 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op_j_3_14_j_2_30_12 {
+	clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op_j_3_14_j_2_30_12 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_3_2_t_3_2_op_j_3_2_j_2_32_13 {
+	clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_3_2_t_3_2_op_j_3_2_j_2_32_13 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op_j_2_35_f_15 {
+	clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op_j_2_35_f_15 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_i_t_op_i_j_2_20_17 {
+	clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_i_t_op_i_j_2_20_17 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op_j_3_33_j_2_34_23 {
+	clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op_j_3_33_j_2_34_23 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_2_32_t_2_32_op_j_2_32_f_31 {
+	clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_2_32_t_2_32_op_j_2_32_f_31 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op_j_4_3_j_3_27_33 {
+	clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op_j_4_3_j_3_27_33 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op_j_3_27_j_2_35_36 {
+	clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op_j_3_27_j_2_35_36 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_i_t_op_i_j_3_14_37 {
+	clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_i_t_op_i_j_3_14_37 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 {
+	clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op_j_4_22_j_3_33_43 {
+	clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op_j_4_22_j_3_33_43 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 {
+	clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 ( )
+}
+
+interface I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op_i_j_4_3_51 {
+	clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op_i_j_4_3_51 ( )
+}
+
+stm FireDetect {
+	uses MLX90640Events uses RealSenseD435iEvents uses FireVisualEvents uses FireGimbalEvents uses FirePlanningEvents requires MLX90640 requires RealSenseD435i requires I_clone_normal_FireDetect_Superimpose_entry requires I_clone_normal_FireDetect_CheckFire_TGain_entry requires I_clone_normal_FireDetect_CheckFire_FLoss_entry requires I_clone_normal_FireDetect_Idle_IR_op requires I_clone_normal_FireDetect_I_II_op requires I_clone_normal_FireDetect_CheckFire_Algorithm_entry requires I_clone_normal_FireDetect_CheckFire_TLoss_entry requires I_clone_normal_FireDetect_Idle_ID_op requires I_clone_normal_FireDetect_CheckFire_FGain_entry requires I_clone_normal_FireDetect_CheckFire_FI_op requires I_clone_normal_FireDetect_CheckWall_entry requires I_clone_normal_FireDetect_CheckFire_Done_entry requires I_clone_normal_FireDetect_Idle_IT_op requires I_clone_normal_FireDetect_CheckFire_entry var fp : FireTarget , fs : FireStatus , wm : WallMetrics , checkDone : boolean
+	var gotD : boolean , gotH : boolean , gotR : boolean
+	var rgb : RgbFrame , d : Frame , t : Frame , super : SuperimposedFrame
+	const LEFT_X : nat , CENTRE_X : nat , RIGHT_X : nat , CENTRE_Y : nat
+	initial I
+	state Idle {
+		initial i
+		state EmptyCycle {
+		}
+		transition tIdle {
+			from i
+			to EmptyCycle
+		}
+	}
+	state Superimpose {
+		initial i
+		state EmptyCycle {
+		}
+		transition tSuperimpose {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_FireDetect_Superimpose_entry ( )
+	}
+	state CheckFire {
+		initial I
+		state Algorithm {
+			state EmptyCycle {
+			}
+			initial i
+			transition tAlgorithm {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_Algorithm_entry ( )
+		}
+		junction WasNoFire
+		junction WasDetected
+		junction WasTracked
+		state FGain {
+			initial i
+			state EmptyCycle {
+			}
+			transition tFGain {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_FGain_entry ( )
+		}
+		state TGain {
+			state EmptyCycle {
+			}
+			initial i
+			transition tTGain {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_TGain_entry ( )
+		}
+		state TLoss {
+			state EmptyCycle {
+			}
+			initial i
+			transition tTLoss {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_TLoss_entry ( )
+		}
+		state FLoss {
+			state EmptyCycle {
+			}
+			initial i
+			transition tFLoss {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_FLoss_entry ( )
+		}
+		state Done {
+			initial i
+			state EmptyCycle {
+			}
+			transition tDone {
+				from i
+				to EmptyCycle
+			}
+			entry clone_normal_FireDetect_CheckFire_Done_entry ( )
+		}
+		transition Init {
+			from I
+			to Algorithm
+		}
+		transition WNF {
+			from Algorithm
+			to WasNoFire
+			condition fs == FireStatus :: NoFire
+		}
+		transition WDT {
+			from Algorithm
+			to WasDetected
+			condition fs == FireStatus :: Detected
+		}
+		transition WTR {
+			from Algorithm
+			to WasTracked
+			condition fs == FireStatus :: Tracked
+		}
+		transition NoFirePass {
+			from WasNoFire
+			to Done
+			condition fs == FireStatus :: NoFire
+		}
+		transition DetectedPass {
+			from WasDetected
+			to Done
+			condition fs == FireStatus :: Detected
+		}
+		transition TrackedPass {
+			from WasTracked
+			to Done
+			condition fs == FireStatus :: Tracked
+		}
+		transition FGainPass {
+			from FGain
+			to Done
+			condition fs != FireStatus :: Tracked
+		}
+		transition TGainPass {
+			from TGain
+			to Done
+		}
+		transition TLossPass {
+			from TLoss
+			to Done
+			condition fs != FireStatus :: NoFire
+		}
+		transition FLossPass {
+			from FLoss
+			to Done
+		}
+		transition FGainNF {
+			from WasNoFire
+			to FGain
+			condition fs != FireStatus :: NoFire
+		}
+		transition TGainF {
+			from FGain
+			to TGain
+			condition fs == FireStatus :: Tracked
+		}
+		transition TGainDT {
+			from WasDetected
+			to TGain
+			condition fs == FireStatus :: Tracked
+		}
+		transition TLossNF {
+			from WasTracked
+			to TLoss
+			condition fs != FireStatus :: Tracked
+		}
+		transition FLossT {
+			from TLoss
+			to FLoss
+			condition fs == FireStatus :: NoFire
+		}
+		transition FLossDT {
+			from WasDetected
+			to FLoss
+			condition fs == FireStatus :: NoFire
+		}
+		entry clone_normal_FireDetect_CheckFire_entry ( )
+	}
+	state CheckWall {
+		initial i
+		state EmptyCycle {
+		}
+		transition tCheckWall {
+			from i
+			to EmptyCycle
+		}
+		entry clone_normal_FireDetect_CheckWall_entry ( )
+	}
+	transition II {
+		from I
+		to Idle
+		action clone_normal_FireDetect_I_II_op ( )
+	}
+	transition IT {
+		from Idle
+		to Idle
+		trigger mlxHeatmap ? t
+		action clone_normal_FireDetect_Idle_IT_op ( )
+	}
+	transition ID {
+		from Idle
+		to Idle
+		trigger rsDepthFrame ? d
+		action clone_normal_FireDetect_Idle_ID_op ( )
+	}
+	transition IR {
+		from Idle
+		to Idle
+		trigger rsRgbFrame ? rgb
+		action clone_normal_FireDetect_Idle_IR_op ( )
+	}
+	transition IS {
+		from Idle
+		to Superimpose
+		condition gotH /\ gotD /\ gotR
+	}
+	transition SW {
+		from Superimpose
+		to CheckWall
+	}
+	transition WF {
+		from CheckWall
+		to CheckFire
+	}
+	transition FI {
+		from CheckFire
+		to Idle
+		condition checkDone
+		action clone_normal_FireDetect_CheckFire_FI_op ( )
+	}
+}
+
+operation normal_FireDetect_CheckWall_entry ( ) {
+	uses I_events_normal_FireDetect_CheckWall_entry requires req_normal_FireDetect_CheckWall_entry requires I_normal_FireDetect_CheckWall_entry_i_t_op requires I_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op requires I_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op requires I_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op final f
+	initial i
+	junction j_4_22
+	junction j_3_33
+	junction j_2_34
+	transition t {
+		from i
+		to j_4_22
+		action normal_FireDetect_CheckWall_entry_i_t_op ( )
+	}
+	transition t_4_22 {
+		from j_4_22
+		to j_3_33
+		action normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op ( )
+	}
+	transition t_3_33 {
+		from j_3_33
+		to j_2_34
+		action normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op ( )
+	}
+	transition t_2_34 {
+		from j_2_34
+		to f
+		action normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op ( )
+	}
+}
+
+operation normal_FireDetect_Superimpose_entry ( ) {
+	requires req_normal_FireDetect_Superimpose_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action super = superimpose ( rgb , d , t )
+	}
+}
+
+operation normal_FireDetect_CheckFire_FI_op ( ) {
+	requires req_normal_FireDetect_CheckFire_FI_op requires I_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op requires I_normal_FireDetect_CheckFire_FI_op_i_t_op requires I_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op final f
+	initial i
+	junction j_3_14
+	junction j_2_30
+	transition t {
+		from i
+		to j_3_14
+		action normal_FireDetect_CheckFire_FI_op_i_t_op ( )
+	}
+	transition t_3_14 {
+		from j_3_14
+		to j_2_30
+		action normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op ( )
+	}
+	transition t_2_30 {
+		from j_2_30
+		to f
+		action normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op ( )
+	}
+}
+
+operation normal_FireDetect_Idle_ID_op ( ) {
+	requires req_normal_FireDetect_Idle_ID_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = true
+	}
+}
+
+operation normal_FireDetect_CheckFire_FGain_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_FGain_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fireDetected
+	}
+}
+
+operation normal_FireDetect_Idle_IR_op ( ) {
+	requires req_normal_FireDetect_Idle_IR_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = true
+	}
+}
+
+operation normal_FireDetect_CheckFire_FLoss_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_FLoss_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fireLost
+	}
+}
+
+operation normal_FireDetect_I_II_op ( ) {
+	requires req_normal_FireDetect_I_II_op requires I_normal_FireDetect_I_II_op_i_t_op requires I_normal_FireDetect_I_II_op_j_3_2_t_3_2_op requires I_normal_FireDetect_I_II_op_j_2_32_t_2_32_op initial i
+	final f
+	junction j_3_2
+	junction j_2_32
+	transition t {
+		from i
+		to j_3_2
+		action normal_FireDetect_I_II_op_i_t_op ( )
+	}
+	transition t_3_2 {
+		from j_3_2
+		to j_2_32
+		action normal_FireDetect_I_II_op_j_3_2_t_3_2_op ( )
+	}
+	transition t_2_32 {
+		from j_2_32
+		to f
+		action normal_FireDetect_I_II_op_j_2_32_t_2_32_op ( )
+	}
+}
+
+operation normal_FireDetect_CheckFire_TLoss_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_TLoss_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action trackingLost
+	}
+}
+
+operation normal_FireDetect_CheckFire_TGain_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_TGain_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action trackingGained
+	}
+}
+
+operation normal_FireDetect_CheckFire_entry ( ) {
+	requires req_normal_FireDetect_CheckFire_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action checkDone = false
+	}
+}
+
+operation normal_FireDetect_CheckFire_Algorithm_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry requires req_normal_FireDetect_CheckFire_Algorithm_entry requires I_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op requires I_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op requires I_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op requires I_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op initial i
+	final f
+	junction j_4_3
+	junction j_3_27
+	junction j_2_35
+	transition t {
+		from i
+		to j_4_3
+		action normal_FireDetect_CheckFire_Algorithm_entry_i_t_op ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_27
+		action normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op ( )
+	}
+	transition t_3_27 {
+		from j_3_27
+		to j_2_35
+		action normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op ( )
+	}
+	transition t_2_35 {
+		from j_2_35
+		to f
+		action normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op ( )
+	}
+}
+
+operation normal_FireDetect_CheckFire_Done_entry ( ) {
+	requires req_normal_FireDetect_CheckFire_Done_entry requires I_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op requires I_normal_FireDetect_CheckFire_Done_entry_i_t_op final f
+	initial i
+	junction j_2_20
+	transition t {
+		from i
+		to j_2_20
+		action normal_FireDetect_CheckFire_Done_entry_i_t_op ( )
+	}
+	transition t_2_20 {
+		from j_2_20
+		to f
+		action normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op ( )
+	}
+}
+
+operation normal_FireDetect_Idle_IT_op ( ) {
+	requires req_normal_FireDetect_Idle_IT_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotH = true
+	}
+}
+
+operation normal_FireDetect_CheckWall_entry_i_t_op ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . leftDist = 1
+	}
+}
+
+operation normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op ( ) {
+	uses I_events_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 requires I_req_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wallMetrics ! wm
+	}
+}
+
+operation normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotR = false
+	}
+}
+
+operation normal_FireDetect_CheckFire_FI_op_i_t_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotD = false
+	}
+}
+
+operation normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fvSeenFire ! fp
+	}
+}
+
+operation normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action fgSeenFire ! fp
+	}
+}
+
+operation normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action checkDone = true
+	}
+}
+
+operation normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . rightDist = 1
+	}
+}
+
+operation normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotH = false
+	}
+}
+
+operation normal_FireDetect_I_II_op_i_t_op ( ) {
+	requires I_req_normal_FireDetect_I_II_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = false
+	}
+}
+
+operation normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . centreDist = 1
+	}
+}
+
+operation normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fp . distance = wm . centreDist
+	}
+}
+
+operation normal_FireDetect_I_II_op_j_3_2_t_3_2_op ( ) {
+	requires I_req_normal_FireDetect_I_II_op_j_3_2_t_3_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotH = false
+	}
+}
+
+operation normal_FireDetect_CheckFire_Done_entry_i_t_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Done_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fs = fp . status
+	}
+}
+
+operation normal_FireDetect_I_II_op_j_2_32_t_2_32_op ( ) {
+	requires I_req_normal_FireDetect_I_II_op_j_2_32_t_2_32 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotR = false
+	}
+}
+
+operation normal_FireDetect_CheckFire_Algorithm_entry_i_t_op ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action fp = calcFireTarget ( super )
+	}
+}
+
+operation clone_normal_FireDetect_Superimpose_entry ( ) {
+	requires req_normal_FireDetect_Superimpose_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action super = superimpose ( rgb , d , t )
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_TGain_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_TGain_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action trackingGained
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_FLoss_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_FLoss_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fireLost
+	}
+}
+
+operation clone_normal_FireDetect_Idle_IR_op ( ) {
+	requires req_normal_FireDetect_Idle_IR_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = true
+	}
+}
+
+operation clone_normal_FireDetect_I_II_op ( ) {
+	requires req_normal_FireDetect_I_II_op requires I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_i_t_op_i_j_3_2_7 requires I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_3_2_t_3_2_op_j_3_2_j_2_32_13 requires I_clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_2_32_t_2_32_op_j_2_32_f_31 initial i
+	final f
+	junction j_3_2
+	junction j_2_32
+	transition t {
+		from i
+		to j_3_2
+		action clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_i_t_op_i_j_3_2_7 ( )
+	}
+	transition t_3_2 {
+		from j_3_2
+		to j_2_32
+		action clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_3_2_t_3_2_op_j_3_2_j_2_32_13 ( )
+	}
+	transition t_2_32 {
+		from j_2_32
+		to f
+		action clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_2_32_t_2_32_op_j_2_32_f_31 ( )
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_Algorithm_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry requires req_normal_FireDetect_CheckFire_Algorithm_entry requires I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op_j_2_35_f_15 requires I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op_j_4_3_j_3_27_33 requires I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op_j_3_27_j_2_35_36 requires I_clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op_i_j_4_3_51 initial i
+	final f
+	junction j_4_3
+	junction j_3_27
+	junction j_2_35
+	transition t {
+		from i
+		to j_4_3
+		action clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op_i_j_4_3_51 ( )
+	}
+	transition t_4_3 {
+		from j_4_3
+		to j_3_27
+		action clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op_j_4_3_j_3_27_33 ( )
+	}
+	transition t_3_27 {
+		from j_3_27
+		to j_2_35
+		action clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op_j_3_27_j_2_35_36 ( )
+	}
+	transition t_2_35 {
+		from j_2_35
+		to f
+		action clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op_j_2_35_f_15 ( )
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_TLoss_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_TLoss_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action trackingLost
+	}
+}
+
+operation clone_normal_FireDetect_Idle_ID_op ( ) {
+	requires req_normal_FireDetect_Idle_ID_op initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = true
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_FGain_entry ( ) {
+	uses I_events_normal_FireDetect_CheckFire_FGain_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fireDetected
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_FI_op ( ) {
+	requires req_normal_FireDetect_CheckFire_FI_op requires I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op_j_2_30_f_10 requires I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op_j_3_14_j_2_30_12 requires I_clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_i_t_op_i_j_3_14_37 final f
+	initial i
+	junction j_3_14
+	junction j_2_30
+	transition t {
+		from i
+		to j_3_14
+		action clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_i_t_op_i_j_3_14_37 ( )
+	}
+	transition t_3_14 {
+		from j_3_14
+		to j_2_30
+		action clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op_j_3_14_j_2_30_12 ( )
+	}
+	transition t_2_30 {
+		from j_2_30
+		to f
+		action clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op_j_2_30_f_10 ( )
+	}
+}
+
+operation clone_normal_FireDetect_CheckWall_entry ( ) {
+	uses I_events_normal_FireDetect_CheckWall_entry requires req_normal_FireDetect_CheckWall_entry requires I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_i_t_op_i_j_4_22_5 requires I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op_j_3_33_j_2_34_23 requires I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op_j_4_22_j_3_33_43 requires I_clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 final f
+	initial i
+	junction j_4_22
+	junction j_3_33
+	junction j_2_34
+	transition t {
+		from i
+		to j_4_22
+		action clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_i_t_op_i_j_4_22_5 ( )
+	}
+	transition t_4_22 {
+		from j_4_22
+		to j_3_33
+		action clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op_j_4_22_j_3_33_43 ( )
+	}
+	transition t_3_33 {
+		from j_3_33
+		to j_2_34
+		action clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op_j_3_33_j_2_34_23 ( )
+	}
+	transition t_2_34 {
+		from j_2_34
+		to f
+		action clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 ( )
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_Done_entry ( ) {
+	requires req_normal_FireDetect_CheckFire_Done_entry requires I_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_i_t_op_i_j_2_20_17 requires I_clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 final f
+	initial i
+	junction j_2_20
+	transition t {
+		from i
+		to j_2_20
+		action clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_i_t_op_i_j_2_20_17 ( )
+	}
+	transition t_2_20 {
+		from j_2_20
+		to f
+		action clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 ( )
+	}
+}
+
+operation clone_normal_FireDetect_Idle_IT_op ( ) {
+	requires req_normal_FireDetect_Idle_IT_op final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotH = true
+	}
+}
+
+operation clone_normal_FireDetect_CheckFire_entry ( ) {
+	requires req_normal_FireDetect_CheckFire_entry initial i
+	final f
+	transition t {
+		from i
+		to f
+		action checkDone = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_i_t_op_i_j_4_22_5 ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . leftDist = 1
+	}
+}
+
+operation clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_i_t_op_i_j_3_2_7 ( ) {
+	requires I_req_normal_FireDetect_I_II_op_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotD = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30_op_j_2_30_f_10 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_j_2_30_t_2_30 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotR = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14_op_j_3_14_j_2_30_12 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_j_3_14_t_3_14 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action gotH = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_3_2_t_3_2_op_j_3_2_j_2_32_13 ( ) {
+	requires I_req_normal_FireDetect_I_II_op_j_3_2_t_3_2 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotH = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35_op_j_2_35_f_15 ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_2_35_t_2_35 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action fgSeenFire ! fp
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_i_t_op_i_j_2_20_17 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Done_entry_i_t initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fs = fp . status
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33_op_j_3_33_j_2_34_23 ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_j_3_33_t_3_33 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . rightDist = 1
+	}
+}
+
+operation clone_clone_normal_FireDetect_I_II_op_normal_FireDetect_I_II_op_j_2_32_t_2_32_op_j_2_32_f_31 ( ) {
+	requires I_req_normal_FireDetect_I_II_op_j_2_32_t_2_32 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotR = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3_op_j_4_3_j_3_27_33 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_4_3_t_4_3 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fp . distance = wm . centreDist
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27_op_j_3_27_j_2_35_36 ( ) {
+	uses I_events_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_j_3_27_t_3_27 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action fvSeenFire ! fp
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_FI_op_normal_FireDetect_CheckFire_FI_op_i_t_op_i_j_3_14_37 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_FI_op_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action gotD = false
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Done_entry_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20_op_j_2_20_f_41 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Done_entry_j_2_20_t_2_20 final f
+	initial i
+	transition t {
+		from i
+		to f
+		action checkDone = true
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22_op_j_4_22_j_3_33_43 ( ) {
+	requires I_req_normal_FireDetect_CheckWall_entry_j_4_22_t_4_22 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wm . centreDist = 1
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckWall_entry_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34_op_j_2_34_f_50 ( ) {
+	uses I_events_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 requires I_req_normal_FireDetect_CheckWall_entry_j_2_34_t_2_34 initial i
+	final f
+	transition t {
+		from i
+		to f
+		action wallMetrics ! wm
+	}
+}
+
+operation clone_clone_normal_FireDetect_CheckFire_Algorithm_entry_normal_FireDetect_CheckFire_Algorithm_entry_i_t_op_i_j_4_3_51 ( ) {
+	requires I_req_normal_FireDetect_CheckFire_Algorithm_entry_i_t final f
+	initial i
+	transition t {
+		from i
+		to f
+		action fp = calcFireTarget ( super )
+	}
+}
+

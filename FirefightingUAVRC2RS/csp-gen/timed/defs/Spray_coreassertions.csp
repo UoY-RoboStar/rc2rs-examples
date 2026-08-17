@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:50
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "__defs.csp"
+include "Spray.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate Spray
+P_Spray = let
+	id__ = 0
+	
+	
+	
+within
+	Spray::O__(
+		id__
+	)
+assert P_Spray :[deadlock-free]	
+assert P_Spray;RUN({r__}) :[deadlock-free]
+assert P_Spray :[deterministic]
+assert P_Spray :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_Spray[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_Spray

@@ -1,0 +1,160 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 15-08-2026 12:15:47
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "RaspberryPi.csp"
+include "core_defs.csp"
+include "state_defs.csp"
+include "__defs.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+channel r__
+-- generate RaspberryPi
+P_RaspberryPi = let
+	id__ = 0
+	
+	
+	
+	const_RaspberryPi_CFireDetect_LEFT_X = const_FireDetect_LEFT_X
+	const_RaspberryPi_CFireDetect_CENTRE_X = const_FireDetect_CENTRE_X
+	const_RaspberryPi_CFireDetect_RIGHT_X = const_FireDetect_RIGHT_X
+	const_RaspberryPi_CFireDetect_CENTRE_Y = const_FireDetect_CENTRE_Y
+	const_RaspberryPi_CVisualNav_TRACK_DIST = const_VisualNav_TRACK_DIST
+	const_RaspberryPi_CVisualNav_SCAN_DIST = const_VisualNav_SCAN_DIST
+	const_RaspberryPi_CFlight_CLIMB_LIFT = const_Flight_CLIMB_LIFT
+	const_RaspberryPi_CFlight_DELAY_DISARM = const_Flight_DELAY_DISARM
+	const_RaspberryPi_CFlight_HOME = const_Flight_HOME
+	const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD = const_BatteryMonitor_BATTERY_LOW_THRESHOLD
+	const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD = const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	const_RaspberryPi_CGimbalAim_TRACK_DIST = const_GimbalAim_TRACK_DIST
+	const_RaspberryPi_CPlanning_WALL_LOC = const_Planning_WALL_LOC
+	const_RaspberryPi_CPlanning_FIRE_TO = const_Planning_FIRE_TO
+	const_RaspberryPi_CPlanning_INIT_TO = const_Planning_INIT_TO
+		
+within
+	RaspberryPi::O__(id__,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO)
+
+assert P_RaspberryPi :[deadlock-free]	
+assert P_RaspberryPi;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi :[deterministic]
+assert P_RaspberryPi :[divergence-free]
+
+-- generate RaspberryPi_CFireDetect
+P_RaspberryPi_CFireDetect = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CFireDetect::O__(
+		id__,
+		const_FireDetect_LEFT_X,
+		const_FireDetect_CENTRE_X,
+		const_FireDetect_RIGHT_X,
+		const_FireDetect_CENTRE_Y
+	)
+assert P_RaspberryPi_CFireDetect :[deadlock-free]	
+assert P_RaspberryPi_CFireDetect;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CFireDetect :[deterministic]
+assert P_RaspberryPi_CFireDetect :[divergence-free]
+-- generate RaspberryPi_CVisualNav
+P_RaspberryPi_CVisualNav = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CVisualNav::O__(
+		id__,
+		const_VisualNav_TRACK_DIST,
+		const_VisualNav_SCAN_DIST
+	)
+assert P_RaspberryPi_CVisualNav :[deadlock-free]	
+assert P_RaspberryPi_CVisualNav;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CVisualNav :[deterministic]
+assert P_RaspberryPi_CVisualNav :[divergence-free]
+-- generate RaspberryPi_CFlight
+P_RaspberryPi_CFlight = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CFlight::O__(
+		id__,
+		const_Flight_CLIMB_LIFT,
+		const_Flight_DELAY_DISARM,
+		const_Flight_HOME
+	)
+assert P_RaspberryPi_CFlight :[deadlock-free]	
+assert P_RaspberryPi_CFlight;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CFlight :[deterministic]
+assert P_RaspberryPi_CFlight :[divergence-free]
+-- generate RaspberryPi_CBatteryMonitor
+P_RaspberryPi_CBatteryMonitor = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CBatteryMonitor::O__(
+		id__,
+		const_BatteryMonitor_BATTERY_LOW_THRESHOLD,
+		const_BatteryMonitor_BATTERY_UNSAFE_THRESHOLD
+	)
+assert P_RaspberryPi_CBatteryMonitor :[deadlock-free]	
+assert P_RaspberryPi_CBatteryMonitor;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CBatteryMonitor :[deterministic]
+assert P_RaspberryPi_CBatteryMonitor :[divergence-free]
+-- generate RaspberryPi_CGimbalAim
+P_RaspberryPi_CGimbalAim = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CGimbalAim::O__(
+		id__,
+		const_GimbalAim_TRACK_DIST
+	)
+assert P_RaspberryPi_CGimbalAim :[deadlock-free]	
+assert P_RaspberryPi_CGimbalAim;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CGimbalAim :[deterministic]
+assert P_RaspberryPi_CGimbalAim :[divergence-free]
+-- generate RaspberryPi_CPlanning
+P_RaspberryPi_CPlanning = let
+	id__ = 0
+	
+	
+	
+within
+	RaspberryPi::CPlanning::O__(
+		id__,
+		const_Planning_WALL_LOC,
+		const_Planning_FIRE_TO,
+		const_Planning_INIT_TO
+	)
+assert P_RaspberryPi_CPlanning :[deadlock-free]	
+assert P_RaspberryPi_CPlanning;RUN({r__}) :[deadlock-free]
+assert P_RaspberryPi_CPlanning :[deterministic]
+assert P_RaspberryPi_CPlanning :[divergence-free]

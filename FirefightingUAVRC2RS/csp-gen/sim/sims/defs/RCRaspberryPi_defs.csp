@@ -1,0 +1,368 @@
+module RCRaspberryPi
+	--include "../../../timed/defs/_.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|RaspberryPi::fcTakeoffRet.in,RaspberryPi::fcGoHomeRet.in,RaspberryPi::rsRgbFrame.in,RaspberryPi::fcMoveRelativeRet.in,RaspberryPi::fcWaypointFinishedMission.in,RaspberryPi::batteryInfo.in,RaspberryPi::gimbalPitchAck.in,RaspberryPi::rsDepthFrame.in,RaspberryPi::gimbalYawAck.in,RaspberryPi::waterEmpty.in,RaspberryPi::fcControlAuth.in,RaspberryPi::fcLandRet.in,RaspberryPi::mlxHeatmap.in|}
+	OutputEvents = {|RaspberryPi::startSpray.out,RaspberryPi::fcTakeoffCallCall,RaspberryPi::fcMoveRelativeCallCall,RaspberryPi::gimbalYaw.out,RaspberryPi::gimbalPitch.out,RaspberryPi::fcGoHomeCallCall,RaspberryPi::missionStatus.out,RaspberryPi::fcWaypointCallCall,RaspberryPi::fcLandCallCall,RaspberryPi::stopSpray.out|}
+	ExternalEvents = {|RaspberryPi::fcTakeoffRet.in,RaspberryPi::fcGoHomeRet.in,RaspberryPi::rsRgbFrame.in,RaspberryPi::fcMoveRelativeRet.in,RaspberryPi::fcWaypointFinishedMission.in,RaspberryPi::batteryInfo.in,RaspberryPi::gimbalPitchAck.in,RaspberryPi::rsDepthFrame.in,RaspberryPi::gimbalYawAck.in,RaspberryPi::waterEmpty.in,RaspberryPi::fcControlAuth.in,RaspberryPi::fcLandRet.in,RaspberryPi::mlxHeatmap.in
+					   ,RaspberryPi::startSpray.out,RaspberryPi::fcTakeoffCallCall,RaspberryPi::fcMoveRelativeCallCall,RaspberryPi::gimbalYaw.out,RaspberryPi::gimbalPitch.out,RaspberryPi::fcGoHomeCallCall,RaspberryPi::missionStatus.out,RaspberryPi::fcWaypointCallCall,RaspberryPi::fcLandCallCall,RaspberryPi::stopSpray.out|}
+	
+	sem__events = {|registerRead,registerWrite|}
+	
+	datatype RegisterDataInput = i_fcTakeoffRet.Bool
+		| i_fcGoHomeRet.Bool
+		| i_rsRgbFrame.Bool.RgbFrame
+		| i_fcMoveRelativeRet.Bool
+		| i_fcWaypointFinishedMission.Bool
+		| i_batteryInfo.Bool.Battery
+		| i_gimbalPitchAck.Bool
+		| i_rsDepthFrame.Bool.Frame
+		| i_gimbalYawAck.Bool
+		| i_waterEmpty.Bool
+		| i_fcControlAuth.Bool
+		| i_fcLandRet.Bool
+		| i_mlxHeatmap.Bool.Frame
+	
+	datatype RegisterDataOutput = o_startSpray
+		| o_fcTakeoffCall
+		| o_fcMoveRelativeCall.RelativeMotion
+		| o_gimbalYaw.core_nat
+		| o_gimbalPitch.core_nat
+		| o_fcGoHomeCall
+		| o_missionStatus.MissionStatus
+		| o_fcWaypointCall.Position
+		| o_fcLandCall
+		| o_stopSpray
+	
+	
+	nametype RegisterOutputs = {|
+	o_startSpray,
+	o_fcTakeoffCall,
+	o_fcMoveRelativeCall,
+	o_gimbalYaw,
+	o_gimbalPitch,
+	o_fcGoHomeCall,
+	o_missionStatus,
+	o_fcWaypointCall,
+	o_fcLandCall,
+	o_stopSpray|}
+	
+	nametype RegisterInputs = {|
+	i_fcTakeoffRet,
+	i_fcGoHomeRet,
+	i_rsRgbFrame,
+	i_fcMoveRelativeRet,
+	i_fcWaypointFinishedMission,
+	i_batteryInfo,
+	i_gimbalPitchAck,
+	i_rsDepthFrame,
+	i_gimbalYawAck,
+	i_waterEmpty,
+	i_fcControlAuth,
+	i_fcLandRet,
+	i_mlxHeatmap|}
+	
+	datatype COutputEvents = COutput_startSpray
+		| COutput_fcTakeoffCall
+		| COutput_fcMoveRelativeCall
+		| COutput_gimbalYaw
+		| COutput_gimbalPitch
+		| COutput_fcGoHomeCall
+		| COutput_missionStatus
+		| COutput_fcWaypointCall
+		| COutput_fcLandCall
+		| COutput_stopSpray
+	
+	channel registerRead 	: RegisterDataInput
+	channel registerWrite 	: RegisterDataOutput
+	
+	A1 =
+	let
+		A1_fcTakeoffRet = registerRead.i_fcTakeoffRet?b__ ->
+								if b__ then (RaspberryPi::fcTakeoffRet.in -> A1_fcTakeoffRet [] A1_fcTakeoffRet)
+									   else A1_fcTakeoffRet
+		A1_fcGoHomeRet = registerRead.i_fcGoHomeRet?b__ ->
+								if b__ then (RaspberryPi::fcGoHomeRet.in -> A1_fcGoHomeRet [] A1_fcGoHomeRet)
+									   else A1_fcGoHomeRet
+		A1_rsRgbFrame = registerRead.i_rsRgbFrame?b__.x__ ->
+								if b__ then (RaspberryPi::rsRgbFrame.in.x__ -> A1_rsRgbFrame [] A1_rsRgbFrame)
+									   else A1_rsRgbFrame
+		A1_fcMoveRelativeRet = registerRead.i_fcMoveRelativeRet?b__ ->
+								if b__ then (RaspberryPi::fcMoveRelativeRet.in -> A1_fcMoveRelativeRet [] A1_fcMoveRelativeRet)
+									   else A1_fcMoveRelativeRet
+		A1_fcWaypointFinishedMission = registerRead.i_fcWaypointFinishedMission?b__ ->
+								if b__ then (RaspberryPi::fcWaypointFinishedMission.in -> A1_fcWaypointFinishedMission [] A1_fcWaypointFinishedMission)
+									   else A1_fcWaypointFinishedMission
+		A1_batteryInfo = registerRead.i_batteryInfo?b__.x__ ->
+								if b__ then (RaspberryPi::batteryInfo.in.x__ -> A1_batteryInfo [] A1_batteryInfo)
+									   else A1_batteryInfo
+		A1_gimbalPitchAck = registerRead.i_gimbalPitchAck?b__ ->
+								if b__ then (RaspberryPi::gimbalPitchAck.in -> A1_gimbalPitchAck [] A1_gimbalPitchAck)
+									   else A1_gimbalPitchAck
+		A1_rsDepthFrame = registerRead.i_rsDepthFrame?b__.x__ ->
+								if b__ then (RaspberryPi::rsDepthFrame.in.x__ -> A1_rsDepthFrame [] A1_rsDepthFrame)
+									   else A1_rsDepthFrame
+		A1_gimbalYawAck = registerRead.i_gimbalYawAck?b__ ->
+								if b__ then (RaspberryPi::gimbalYawAck.in -> A1_gimbalYawAck [] A1_gimbalYawAck)
+									   else A1_gimbalYawAck
+		A1_waterEmpty = registerRead.i_waterEmpty?b__ ->
+								if b__ then (RaspberryPi::waterEmpty.in -> A1_waterEmpty [] A1_waterEmpty)
+									   else A1_waterEmpty
+		A1_fcControlAuth = registerRead.i_fcControlAuth?b__ ->
+								if b__ then (RaspberryPi::fcControlAuth.in -> A1_fcControlAuth [] A1_fcControlAuth)
+									   else A1_fcControlAuth
+		A1_fcLandRet = registerRead.i_fcLandRet?b__ ->
+								if b__ then (RaspberryPi::fcLandRet.in -> A1_fcLandRet [] A1_fcLandRet)
+									   else A1_fcLandRet
+		A1_mlxHeatmap = registerRead.i_mlxHeatmap?b__.x__ ->
+								if b__ then (RaspberryPi::mlxHeatmap.in.x__ -> A1_mlxHeatmap [] A1_mlxHeatmap)
+									   else A1_mlxHeatmap
+		
+														
+	within
+			     	A1_fcTakeoffRet
+			     	 |||
+			     	A1_fcGoHomeRet
+			     	 |||
+			     	A1_rsRgbFrame
+			     	 |||
+			     	A1_fcMoveRelativeRet
+			     	 |||
+			     	A1_fcWaypointFinishedMission
+			     	 |||
+			     	A1_batteryInfo
+			     	 |||
+			     	A1_gimbalPitchAck
+			     	 |||
+			     	A1_rsDepthFrame
+			     	 |||
+			     	A1_gimbalYawAck
+			     	 |||
+			     	A1_waterEmpty
+			     	 |||
+			     	A1_fcControlAuth
+			     	 |||
+			     	A1_fcLandRet
+			     	 |||
+			     	A1_mlxHeatmap
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RCRaspberryPi_RCRaspberryPi) = let
+			
+			read(COutput_startSpray) = RaspberryPi::startSpray.out -> registerWrite.o_startSpray -> SKIP
+			read(COutput_fcTakeoffCall) = RaspberryPi::fcTakeoffCallCall -> registerWrite.o_fcTakeoffCall -> SKIP
+			read(COutput_fcMoveRelativeCall) = RaspberryPi::fcMoveRelativeCallCall?x__ -> registerWrite.o_fcMoveRelativeCall.x__ -> SKIP
+			read(COutput_gimbalYaw) = RaspberryPi::gimbalYaw.out?x__ -> registerWrite.o_gimbalYaw.x__ -> SKIP
+			read(COutput_gimbalPitch) = RaspberryPi::gimbalPitch.out?x__ -> registerWrite.o_gimbalPitch.x__ -> SKIP
+			read(COutput_fcGoHomeCall) = RaspberryPi::fcGoHomeCallCall -> registerWrite.o_fcGoHomeCall -> SKIP
+			read(COutput_missionStatus) = RaspberryPi::missionStatus.out?x__ -> registerWrite.o_missionStatus.x__ -> SKIP
+			read(COutput_fcWaypointCall) = RaspberryPi::fcWaypointCallCall?x__ -> registerWrite.o_fcWaypointCall.x__ -> SKIP
+			read(COutput_fcLandCall) = RaspberryPi::fcLandCallCall -> registerWrite.o_fcLandCall -> SKIP
+			read(COutput_stopSpray) = RaspberryPi::stopSpray.out -> registerWrite.o_stopSpray -> SKIP
+	
+			A2(sout) = 
+					([] s : sout @ read(s) ; A2(diff(sout,{s})))
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RCRaspberryPi_RCRaspberryPi); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RCRaspberryPi_RCRaspberryPi) = let
+			A3 = ((registerRead.i_fcTakeoffRet?x__ -> SKIP)
+				|||
+			(registerRead.i_fcGoHomeRet?x__ -> SKIP)
+				|||
+			(registerRead.i_rsRgbFrame?x__ -> SKIP)
+				|||
+			(registerRead.i_fcMoveRelativeRet?x__ -> SKIP)
+				|||
+			(registerRead.i_fcWaypointFinishedMission?x__ -> SKIP)
+				|||
+			(registerRead.i_batteryInfo?x__ -> SKIP)
+				|||
+			(registerRead.i_gimbalPitchAck?x__ -> SKIP)
+				|||
+			(registerRead.i_rsDepthFrame?x__ -> SKIP)
+				|||
+			(registerRead.i_gimbalYawAck?x__ -> SKIP)
+				|||
+			(registerRead.i_waterEmpty?x__ -> SKIP)
+				|||
+			(registerRead.i_fcControlAuth?x__ -> SKIP)
+				|||
+			(registerRead.i_fcLandRet?x__ -> SKIP)
+				|||
+			(registerRead.i_mlxHeatmap?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RCRaspberryPi_RCRaspberryPi);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RCRaspberryPi_RCRaspberryPi) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|registerWrite,terminate,tock|}) ] TA2(cycle_RCRaspberryPi_RCRaspberryPi))
+	    [ union(ExternalEvents,{|registerRead,registerWrite,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RCRaspberryPi_RCRaspberryPi)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(RaspberryPi::D__(id__,
+				    const_RaspberryPi_CFireDetect_LEFT_X,
+				    const_RaspberryPi_CFireDetect_CENTRE_X,
+				    const_RaspberryPi_CFireDetect_RIGHT_X,
+				    const_RaspberryPi_CFireDetect_CENTRE_Y,
+				    const_RaspberryPi_CVisualNav_TRACK_DIST,
+				    const_RaspberryPi_CVisualNav_SCAN_DIST,
+				    const_RaspberryPi_CFlight_CLIMB_LIFT,
+				    const_RaspberryPi_CFlight_DELAY_DISARM,
+				    const_RaspberryPi_CFlight_HOME,
+				    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+				    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+				    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+				    const_RaspberryPi_CPlanning_WALL_LOC,
+				    const_RaspberryPi_CPlanning_FIRE_TO,
+				    const_RaspberryPi_CPlanning_INIT_TO)\{|RaspberryPi::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO) =
+		prioritise(
+			((TLFree(id__,
+					    const_RaspberryPi_CFireDetect_LEFT_X,
+					    const_RaspberryPi_CFireDetect_CENTRE_X,
+					    const_RaspberryPi_CFireDetect_RIGHT_X,
+					    const_RaspberryPi_CFireDetect_CENTRE_Y,
+					    const_RaspberryPi_CVisualNav_TRACK_DIST,
+					    const_RaspberryPi_CVisualNav_SCAN_DIST,
+					    const_RaspberryPi_CFlight_CLIMB_LIFT,
+					    const_RaspberryPi_CFlight_DELAY_DISARM,
+					    const_RaspberryPi_CFlight_HOME,
+					    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+					    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+					    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+					    const_RaspberryPi_CPlanning_WALL_LOC,
+					    const_RaspberryPi_CPlanning_FIRE_TO,
+					    const_RaspberryPi_CPlanning_INIT_TO) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RCRaspberryPi_RCRaspberryPi)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO) =
+		prioritise(
+			((RaspberryPi::D__(id__,
+					    const_RaspberryPi_CFireDetect_LEFT_X,
+					    const_RaspberryPi_CFireDetect_CENTRE_X,
+					    const_RaspberryPi_CFireDetect_RIGHT_X,
+					    const_RaspberryPi_CFireDetect_CENTRE_Y,
+					    const_RaspberryPi_CVisualNav_TRACK_DIST,
+					    const_RaspberryPi_CVisualNav_SCAN_DIST,
+					    const_RaspberryPi_CFlight_CLIMB_LIFT,
+					    const_RaspberryPi_CFlight_DELAY_DISARM,
+					    const_RaspberryPi_CFlight_HOME,
+					    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+					    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+					    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+					    const_RaspberryPi_CPlanning_WALL_LOC,
+					    const_RaspberryPi_CPlanning_FIRE_TO,
+					    const_RaspberryPi_CPlanning_INIT_TO)\{|RaspberryPi::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RCRaspberryPi_RCRaspberryPi)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO) = D__(id__,cycle_RCRaspberryPi_RCRaspberryPi,
+			    const_RaspberryPi_CFireDetect_LEFT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_X,
+			    const_RaspberryPi_CFireDetect_RIGHT_X,
+			    const_RaspberryPi_CFireDetect_CENTRE_Y,
+			    const_RaspberryPi_CVisualNav_TRACK_DIST,
+			    const_RaspberryPi_CVisualNav_SCAN_DIST,
+			    const_RaspberryPi_CFlight_CLIMB_LIFT,
+			    const_RaspberryPi_CFlight_DELAY_DISARM,
+			    const_RaspberryPi_CFlight_HOME,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_LOW_THRESHOLD,
+			    const_RaspberryPi_CBatteryMonitor_BATTERY_UNSAFE_THRESHOLD,
+			    const_RaspberryPi_CGimbalAim_TRACK_DIST,
+			    const_RaspberryPi_CPlanning_WALL_LOC,
+			    const_RaspberryPi_CPlanning_FIRE_TO,
+			    const_RaspberryPi_CPlanning_INIT_TO)
+
+endmodule

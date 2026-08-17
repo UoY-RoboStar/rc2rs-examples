@@ -1,0 +1,41 @@
+package pre_pkg_ interface M600Flight {
+	fcTakeoffCall ( )
+	fcGoHomeCall ( )
+	fcLandCall ( )
+	fcWaypointCall ( pos: Position )
+	fcMoveRelativeCall ( movement: RelativeMotion )
+}
+
+interface M600FlightEvents {
+	event fcControlAuth
+	event fcTakeoffRet
+	event fcGoHomeRet
+	event fcLandRet
+	event fcWaypointFinishedMission
+	event fcMoveRelativeRet
+}
+
+interface M600TelemetryEvents {
+}
+
+interface M600BatteryTelemetryEvents {
+	event batteryInfo : Battery
+}
+
+operation fcTakeoffCall ( ) {
+	terminates }
+
+operation fcGoHomeCall ( ) {
+	terminates }
+
+operation fcLandCall ( ) {
+	terminates }
+
+operation fcWaypointCall ( pos: Position
+) {
+	terminates }
+
+operation fcMoveRelativeCall ( movement: RelativeMotion
+) {
+	terminates }
+

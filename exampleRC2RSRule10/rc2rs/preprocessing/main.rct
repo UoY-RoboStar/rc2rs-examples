@@ -1,0 +1,268 @@
+package pre_pkg_main interface IOps {
+	op ( )
+}
+
+interface req_normal_stm0_S_t2_op {
+	op ( )
+}
+
+interface I_normal_stm0_S_t2_op {
+	normal_stm0_S_t2_op ( )
+}
+
+interface ItStop {
+	tStop ( )
+}
+
+interface I_deadlineCheck {
+	deadlineCheck ( d : nat )
+}
+
+interface I_waitOp {
+	waitOp ( i : nat )
+}
+
+interface I_waitInterval {
+	waitInterval ( m : nat , n : nat )
+}
+
+interface I_normal_stm0_S_t2_op_j_2_2_t_2_2_op {
+	normal_stm0_S_t2_op_j_2_2_t_2_2_op ( )
+}
+
+interface I_clone_normal_stm0_S_t2_op {
+	clone_normal_stm0_S_t2_op ( )
+}
+
+interface I_clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 {
+	clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 ( )
+}
+
+interface I_clone_op_3 {
+	clone_op_3 ( )
+}
+
+controller ctrl0 {
+	opref op1 = op
+	opref ctrl0_ref_normal_stm0_S_t2_op = normal_stm0_S_t2_op
+	opref ctrl0_ref_tStop = tStop
+	opref ctrl0_ref_deadlineCheck = deadlineCheck
+	opref ctrl0_ref_waitOp = waitOp
+	opref ctrl0_ref_waitInterval = waitInterval
+	opref ctrl0_ref_normal_stm0_S_t2_op_j_2_2_t_2_2_op = normal_stm0_S_t2_op_j_2_2_t_2_2_op
+	opref ctrl0_ref_clone_normal_stm0_S_t2_op = clone_normal_stm0_S_t2_op
+	opref ctrl0_ref_clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 = clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2
+	opref ctrl0_ref_clone_op_3 = clone_op_3
+	sref stm_ref0 = stm0
+}
+
+stm stm0 {
+	requires IOps requires I_clone_normal_stm0_S_t2_op var x : int
+	const n : int
+	initial i
+	state S {
+		state EmptyCycle {
+		}
+		initial i
+		transition tS {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t {
+		from i
+		to S
+	}
+	transition t2 {
+		from S
+		to f
+		# C
+		condition x > n
+		action clone_normal_stm0_S_t2_op ( )
+	}
+	clock C
+	clock C2
+}
+
+operation op ( ) {
+	var x : int
+	const n : int
+	initial i
+	state s {
+		initial i
+		state EmptyCycle {
+		}
+		transition ts {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t1 {
+		from i
+		to s
+	}
+	transition t2 {
+		from s
+		to f
+		condition x > n
+	}
+}
+
+operation normal_stm0_S_t2_op ( ) {
+	requires req_normal_stm0_S_t2_op requires I_normal_stm0_S_t2_op_j_2_2_t_2_2_op initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action op ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action normal_stm0_S_t2_op_j_2_2_t_2_2_op ( )
+	}
+}
+
+operation tStop ( ) {
+	initial i
+	state sStop {
+		initial i
+		state EmptyCycle {
+		}
+		transition tsStop {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t {
+		from i
+		to sStop
+	}
+}
+
+operation deadlineCheck ( d : nat
+) {
+	requires ItStop initial i
+	final f
+	transition t {
+		from i
+		to f
+		action tStop ( ) <{ d }
+	}
+}
+
+operation waitOp ( i : nat
+) {
+	initial i0
+	final f
+	state Waiting {
+		initial i
+		state EmptyCycle {
+		}
+		transition t {
+			from i
+			to EmptyCycle
+		}
+	}
+	transition t {
+		from i0
+		to Waiting
+		action # C
+	}
+	transition t2 {
+		from Waiting
+		to f
+		condition since ( C ) == i
+	}
+	clock C
+}
+
+operation waitInterval ( m : nat
+, n : nat
+) {
+	requires I_waitOp junction j
+	initial i
+	final f
+	transition trI {
+		from i
+		to j
+		action # C
+	}
+	transition trF {
+		from j
+		to f
+		condition since ( C ) >= m
+	}
+	transition trSelf {
+		from j
+		to j
+		condition since ( C ) < n
+		action waitOp ( 1 )
+	}
+	clock C
+}
+
+operation normal_stm0_S_t2_op_j_2_2_t_2_2_op ( ) {
+	initial i
+	final f
+	transition t {
+		from i
+		to f
+		action skip
+	}
+}
+
+operation clone_normal_stm0_S_t2_op ( ) {
+	requires req_normal_stm0_S_t2_op requires I_clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 requires I_clone_op_3 initial i
+	final f
+	junction j_2_2
+	transition t {
+		from i
+		to j_2_2
+		action clone_op_3 ( )
+	}
+	transition t_2_2 {
+		from j_2_2
+		to f
+		action clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 ( )
+	}
+}
+
+operation clone_normal_stm0_S_t2_op_j_2_2_t_2_2_op_2 ( ) {
+	initial i
+	final f
+	transition t {
+		from i
+		to f
+		action skip
+	}
+}
+
+operation clone_op_3 ( ) {
+	var x : int
+	const n : int
+	initial i
+	state s {
+		initial i
+		state EmptyCycle {
+		}
+		transition ts {
+			from i
+			to EmptyCycle
+		}
+	}
+	final f
+	transition t1 {
+		from i
+		to s
+	}
+	transition t2 {
+		from s
+		to f
+		condition x > n
+	}
+}
+

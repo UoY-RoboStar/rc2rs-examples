@@ -1,0 +1,92 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 24-10-2026 10:58:04
+--
+
+include "defs/state_timed_defs.csp"
+include "rc2rs/defs/main_defs.csp"
+include "defs/pre_pkg_main_sim.csp"
+include "defs/core_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "../defs/main_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "../timed/defs/main.csp"
+include "defs/core_timed_defs.csp"
+include "sims/defs/RC_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "instantiations.csp"
+include "defs/relation_toolkit_defs.csp"
+
+channel r__
+
+-- A1 - schedulable
+assert let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_main_ctrl0_stm_ref0_n = const_main_stm0_n
+		
+within
+	RC::TLF(id__,cycle_RC_RC,
+			    const_main_ctrl0_stm_ref0_n):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A3 - refinement
+assert let
+	rename_in_RC(RC::i_ev1.x__.y__) = pre_pkg_main_sim::mod0::i_ev1.x__.y__
+within
+	prioritise(let 
+		cycle_RC_RC = 1
+		id__ = 0
+		
+		
+		
+		const_main_ctrl0_stm_ref0_n = const_main_stm0_n
+			
+	within
+		RC::D__(id__,cycle_RC_RC,
+				    const_main_ctrl0_stm_ref0_n),<{},{tock}>)
+	[[ RC::registerRead.x__ <- pre_pkg_main_sim::mod0::registerRead.rename_in_RC(x__) | x__ <- RC::RegisterInputs ]]
+ [FD= let 
+	cycle_pre_pkg_main_sim_mod0_mod0 = 1
+	id__ = 0
+	
+	
+	
+	const_pre_pkg_main_sim_ctrl0_stm_ref0_n = const_pre_pkg_main_sim_stm0_n
+		
+within
+	pre_pkg_main_sim::mod0::D__(id__,cycle_pre_pkg_main_sim_mod0_mod0,
+			    const_pre_pkg_main_sim_ctrl0_stm_ref0_n) :[tau priority]: {tock}
+
+-- A4 - refinement
+assert let
+	rename_in_mod0(pre_pkg_main_sim::mod0::i_ev1.x__.y__) = RC::i_ev1.x__.y__
+within
+	prioritise(let 
+		cycle_pre_pkg_main_sim_mod0_mod0 = 1
+		id__ = 0
+		
+		
+		
+		const_pre_pkg_main_sim_ctrl0_stm_ref0_n = const_pre_pkg_main_sim_stm0_n
+			
+	within
+		pre_pkg_main_sim::mod0::D__(id__,cycle_pre_pkg_main_sim_mod0_mod0,
+				    const_pre_pkg_main_sim_ctrl0_stm_ref0_n),<{},{tock}>)
+	[[ pre_pkg_main_sim::mod0::registerRead.x__ <- RC::registerRead.rename_in_mod0(x__) | x__ <- pre_pkg_main_sim::mod0::RegisterInputs ]]
+ [FD= let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+	const_main_ctrl0_stm_ref0_n = const_main_stm0_n
+		
+within
+	RC::D__(id__,cycle_RC_RC,
+			    const_main_ctrl0_stm_ref0_n) :[tau priority]: {tock}
+

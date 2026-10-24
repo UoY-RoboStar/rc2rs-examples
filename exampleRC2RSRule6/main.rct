@@ -1,0 +1,66 @@
+package main
+
+interface IOps{
+	op()
+}
+
+interface I1{
+	event ev1
+}
+ 
+controller ctrl0 {
+	requires IOps
+
+sref stm_ref0 = stm0
+
+
+}
+
+
+module mod0 {
+	robotic platform rp0 {
+	
+		provides IOps
+	}
+
+	cref ctrl_ref0 = ctrl0
+
+}
+
+stm stm0 {
+	requires IOps
+	uses I1
+	clock C
+
+initial i
+state S{
+	
+	}
+final f
+transition t{
+	from i to S
+}
+transition t2{
+	from j0 to f
+	# C
+		condition x > n
+		action 
+	op ( ) ; skip
+	}
+var x : int
+	const n : int
+junction j0
+	transition t0 {
+		from S
+		to j0
+	}
+	transition t1 {
+		from j0
+		to S
+		# C2
+		condition not x > n
+		action # C
+	}
+	clock C2
+}
+

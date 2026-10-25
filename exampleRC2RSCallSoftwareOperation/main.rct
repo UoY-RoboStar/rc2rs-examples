@@ -1,0 +1,50 @@
+package main
+
+
+interface IOps{
+	op1()
+}
+
+controller ctrl0 {
+	
+	opref opRef = op1 
+sref stm_ref0 = stm0
+
+}
+
+module mod0 {
+	robotic platform rp0 {
+		
+	}
+
+	cref ctrl_ref0 = ctrl0
+
+}
+
+stm stm0 {
+	requires IOps
+var x:int
+initial i
+state s{
+}
+final f
+transition t{
+	from i to s
+}
+transition t2{
+	from s to f
+	action op1()
+}
+}
+
+operation op1(){
+	initial i
+	final f
+	state s{}
+	transition t{
+		from i to s
+	}
+	transition t2{
+		from s to f
+	}
+}

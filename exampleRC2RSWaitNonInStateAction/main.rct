@@ -1,0 +1,40 @@
+package main
+
+
+interface IOps{
+	move()
+}
+
+controller ctrl0 {
+	
+	requires IOps
+sref stm_ref0 = stm0
+
+}
+
+module mod0 {
+	robotic platform rp0 {
+		provides IOps
+	}
+
+	cref ctrl_ref0 = ctrl0
+
+}
+
+stm stm0 {
+	requires IOps
+var x:int
+initial i
+state s{
+	entry wait([0,1])
+}
+final f
+transition t{
+	from i to s
+}
+transition t2{
+	from s to f
+	
+}
+}
+

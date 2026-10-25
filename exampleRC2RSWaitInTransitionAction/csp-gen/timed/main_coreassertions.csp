@@ -1,0 +1,112 @@
+
+--
+-- RoboChart generator version 3.1.0.202608041330
+-- Automatically generated on 25-10-2026 15:17:13
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "maincsp"
+
+-- generate main_stm0
+P_main_stm0 = let
+	id__ = 0
+	
+	
+	
+within
+	main::stm0::O__(
+		id__
+	)
+assert P_main_stm0 :[deadlock-free]	
+assert P_main_stm0;RUN({r__}) :[deadlock-free]
+assert P_main_stm0 :[deterministic]
+assert P_main_stm0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_stm0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_stm0
+
+
+-- generate main_ctrl0
+P_main_ctrl0 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	main::ctrl0::O__(id__)
+
+assert P_main_ctrl0 :[deadlock-free]	
+assert P_main_ctrl0;RUN({r__}) :[deadlock-free]
+assert P_main_ctrl0 :[deterministic]
+assert P_main_ctrl0 :[divergence-free]
+
+-- generate main_ctrl0_stm_ref0
+P_main_ctrl0_stm_ref0 = let
+	id__ = 0
+	
+	
+	
+within
+	main::ctrl0::stm_ref0::O__(
+		id__
+	)
+assert P_main_ctrl0_stm_ref0 :[deadlock-free]	
+assert P_main_ctrl0_stm_ref0;RUN({r__}) :[deadlock-free]
+assert P_main_ctrl0_stm_ref0 :[deterministic]
+assert P_main_ctrl0_stm_ref0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_main_ctrl0_stm_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ctrl0_stm_ref0
+-- timed deadlock free
+assert prioritise(P_main_ctrl0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_ctrl0
+
+-- generate main_mod0
+P_main_mod0 = let
+	id__ = 0
+	
+	
+	
+		
+	
+within
+	main::mod0::O__(id__)
+assert P_main_mod0 :[deadlock-free]	
+assert P_main_mod0;RUN({r__}) :[deadlock-free]
+assert P_main_mod0 :[deterministic]
+assert P_main_mod0 :[divergence-free]
+
+-- generate main_mod0_ctrl_ref0
+P_main_mod0_ctrl_ref0 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	main::mod0::ctrl_ref0::O__(id__)
+
+assert P_main_mod0_ctrl_ref0 :[deadlock-free]	
+assert P_main_mod0_ctrl_ref0;RUN({r__}) :[deadlock-free]
+assert P_main_mod0_ctrl_ref0 :[deterministic]
+assert P_main_mod0_ctrl_ref0 :[divergence-free]
+
+-- timed deadlock free
+assert prioritise(P_main_mod0_ctrl_ref0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_mod0_ctrl_ref0
+-- timed deadlock free
+assert prioritise(P_main_mod0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_main_mod0

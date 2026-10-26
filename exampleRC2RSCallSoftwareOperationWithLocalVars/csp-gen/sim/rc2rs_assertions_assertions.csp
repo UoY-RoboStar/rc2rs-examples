@@ -1,0 +1,84 @@
+
+--
+-- RoboSim generator version 3.1.0.202608041342
+-- Automatically generated on 25-10-2026 21:58:55
+--
+
+include "defs/state_timed_defs.csp"
+include "rc2rs/defs/main_defs.csp"
+include "defs/pre_pkg_main_sim.csp"
+include "defs/core_defs.csp"
+include "defs/sequence_toolkit_defs.csp"
+include "../defs/main_defs.csp"
+include "defs/robochart_defs.csp"
+include "defs/function_toolkit_defs.csp"
+include "../timed/defs/main.csp"
+include "defs/core_timed_defs.csp"
+include "sims/defs/RC_defs.csp"
+include "defs/set_toolkit_defs.csp"
+include "instantiations.csp"
+include "defs/relation_toolkit_defs.csp"
+
+channel r__
+
+-- A1 - schedulable
+assert let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+		
+	const_main_ctrl0_opRef_y = const_main_op1_y
+within
+	RC::TLF(id__,cycle_RC_RC,
+			   	const_main_ctrl0_opRef_y):[deadlock free [F]] :[tau priority]: {tock}
+
+-- A2 - refinement
+assert 	prioritise(let 
+		cycle_RC_RC = 1
+		id__ = 0
+		
+		
+		
+			
+		const_main_ctrl0_opRef_y = const_main_op1_y
+	within
+		RC::D__(id__,cycle_RC_RC,
+				   	const_main_ctrl0_opRef_y),<{},{tock}>)
+ [FD= let 
+	cycle_pre_pkg_main_sim_mod0_mod0 = 1
+	id__ = 0
+	
+	
+	
+		
+	const_pre_pkg_main_sim_ctrl0_ctrl0_ref_clone_op1_1_y = const_pre_pkg_main_sim_clone_op1_1_y
+within
+	pre_pkg_main_sim::mod0::D__(id__,cycle_pre_pkg_main_sim_mod0_mod0,
+			   	const_pre_pkg_main_sim_ctrl0_ctrl0_ref_clone_op1_1_y) :[tau priority]: {tock}
+
+-- A3 - refinement
+assert 	prioritise(let 
+		cycle_pre_pkg_main_sim_mod0_mod0 = 1
+		id__ = 0
+		
+		
+		
+			
+		const_pre_pkg_main_sim_ctrl0_ctrl0_ref_clone_op1_1_y = const_pre_pkg_main_sim_clone_op1_1_y
+	within
+		pre_pkg_main_sim::mod0::D__(id__,cycle_pre_pkg_main_sim_mod0_mod0,
+				   	const_pre_pkg_main_sim_ctrl0_ctrl0_ref_clone_op1_1_y),<{},{tock}>)
+ [FD= let 
+	cycle_RC_RC = 1
+	id__ = 0
+	
+	
+	
+		
+	const_main_ctrl0_opRef_y = const_main_op1_y
+within
+	RC::D__(id__,cycle_RC_RC,
+			   	const_main_ctrl0_opRef_y) :[tau priority]: {tock}
+

@@ -1,0 +1,44 @@
+package main
+
+
+interface I1{
+	event ev1:int
+	event ev2: int
+}controller ctrl0 {
+	
+	uses I1
+sref stm_ref0 = stm0
+connection ctrl0 on ev1 to stm_ref0 on ev1
+connection ctrl0 on ev2 to stm_ref0 on ev2
+}
+
+module mod0 {
+	robotic platform rp0 {
+		uses I1
+	}
+
+	cref ctrl_ref0 = ctrl0
+connection rp0 on ev1 to ctrl_ref0 on ev1 ( _async )
+connection rp0 on ev2 to ctrl_ref0 on ev2 ( _async )
+}
+
+stm stm0 {
+	uses I1
+var x:int, y:int
+clock C
+initial i
+state s{
+}
+final f
+transition t{
+	from i to s
+}
+transition t2{
+	from s to f
+	trigger ev1?x
+	#C
+	condition y>1 /\ x<1
+	action ev2?y
+}
+}
+

@@ -1,0 +1,108 @@
+module RC
+	--include "../../../timed/defs/main.csp"
+	
+	channel terminate
+exports
+
+	external prioritisepo
+	
+	-- TODO: Rework model to be embedded in tick-tock-CSP.
+	
+	InputEvents = {|main::mod0::ev2.in,main::mod0::ev1.in|}
+	OutputEvents = {||}
+	ExternalEvents = {|main::mod0::ev2.in,main::mod0::ev1.in
+					   |}
+	
+	sem__events = {|registerRead|}
+	
+	datatype RegisterDataInput = i_ev2.Bool.core_int
+		| i_ev1.Bool.core_int
+	
+	
+	nametype RegisterOutputs = {||}
+	
+	nametype RegisterInputs = {|
+	i_ev2,
+	i_ev1|}
+	
+	COutputEvents = {}
+	
+	channel registerRead 	: RegisterDataInput
+	
+	A1 =
+	let
+		A1_ev2 = registerRead.i_ev2?b__.x__ ->
+								if b__ then (main::mod0::ev2.in.x__ -> A1_ev2 [] A1_ev2)
+									   else A1_ev2
+		A1_ev1 = registerRead.i_ev1?b__.x__ ->
+								if b__ then (main::mod0::ev1.in.x__ -> A1_ev1 [] A1_ev1)
+									   else A1_ev1
+		
+														
+	within
+			     	A1_ev2
+			     	 |||
+			     	A1_ev1
+							
+	TA1 = A1 /\ terminate -> SKIP 
+	
+	TA2(cycle_RC_RC) = let
+			
+	
+			A2(sout) = 
+					STOP
+					 [] terminate -> SKIP
+					 [] (wait(cycle_RC_RC); A2(COutputEvents))
+		  within
+		  	A2(COutputEvents)
+					
+	TA3(cycle_RC_RC) = let
+			A3 = ((registerRead.i_ev2?x__ -> SKIP)
+				|||
+			(registerRead.i_ev1?x__ -> SKIP));
+				 (RUN(ExternalEvents) /\ (terminate -> SKIP [] wait(cycle_RC_RC);A3))
+		  within
+		  	A3
+	
+	SimAssumptions(cycle_RC_RC) =
+		(TA1 [ union(InputEvents,{|registerRead,terminate|})
+	     	   ||
+	     	   union(OutputEvents,{|terminate,tock|}) ] TA2(cycle_RC_RC))
+	    [ union(ExternalEvents,{|registerRead,terminate,tock|})
+	      ||
+	      union(ExternalEvents,{|registerRead,tock,terminate|}) ] TA3(cycle_RC_RC)
+					
+	
+	channel timelock
+	
+	-- The following set of pairs specifies that events in OutputEvent, and tock, 
+	-- are prioritised over timelock. The prioritisation itself is achieved by using prioritisepo below.
+	
+	porder = {(x__,timelock) | x__ <- union(OutputEvents,{tock})}
+	
+	TLFree(id__) = 
+	prioritisepo(
+		-- The process to be prioritised
+		prioritise(main::mod0::D__(id__)\{|main::mod0::terminate|},<{},{tock}>) /\ timelock -> RUN({tock}),
+		-- The set of events which are affected by prioritisation
+		union(OutputEvents,({tock,timelock})),
+		-- The order
+		porder,
+		-- The set of events that have equal priority as tau and tick
+		{})
+	
+	TLF(id__,cycle_RC_RC) =
+		prioritise(
+			((TLFree(id__) ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>);RUN({tock})
+	
+	D__(id__,cycle_RC_RC) =
+		prioritise(
+			((main::mod0::D__(id__)\{|main::mod0::terminate|} ; terminate -> SKIP)
+		 	[| union(ExternalEvents,{tock,terminate}) |]
+		 	SimAssumptions(cycle_RC_RC)) \ union(ExternalEvents,{|terminate|}),<{},{tock}>)
+		 	
+	O__(id__,cycle_RC_RC) = D__(id__,cycle_RC_RC)
+
+endmodule

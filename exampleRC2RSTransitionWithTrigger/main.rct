@@ -1,0 +1,40 @@
+package main
+
+interface Ievents{
+	event ev1:int
+}
+
+controller ctrl0 {
+	uses Ievents
+
+sref stm_ref0 = stm0
+
+connection ctrl0 on ev1 to stm_ref0 on ev1
+}
+
+module mod0 {
+	robotic platform rp0 {
+		uses Ievents
+	}
+
+	cref ctrl_ref0 = ctrl0
+
+connection rp0 on ev1 to ctrl_ref0 on ev1 ( _async )
+}
+
+stm stm0 {
+	uses Ievents
+var x:int
+initial i
+state s{
+}
+final f
+transition t{
+	from i to s
+}
+transition t2{
+	from s to f
+	trigger ev1?x
+}
+}
+
